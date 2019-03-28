@@ -4,6 +4,7 @@ public class HelloGitHub {
 
 	public static void main(String[] args) {
 		System.out.println("Clementmagnin");
+		System.out.println("Clément Dours");
 	}
 
 }
