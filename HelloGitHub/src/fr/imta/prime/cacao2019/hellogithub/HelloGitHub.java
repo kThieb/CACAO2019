@@ -6,9 +6,7 @@ public class HelloGitHub {
 		System.out.println("changement A");
 		System.out.println("changement E");
 		System.out.println("changement B");
-
 		System.out.println("changement C");  
-
 		System.out.println("Changement F");
 		System.out.println("changement R");
 	}
