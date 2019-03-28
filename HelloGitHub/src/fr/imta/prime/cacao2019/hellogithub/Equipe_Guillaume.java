@@ -10,6 +10,7 @@ public class Equipe_Guillaume {
 	
 	public static void printNames() {
 		System.out.println("GuillaumeD-IMTA");
+		System.out.println("KelianB-IMTA");
 	}
 
 }
