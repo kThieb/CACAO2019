@@ -4,7 +4,7 @@ public class HelloGitHub {
 
 	public static void main(String[] args) {
 		System.out.println("changement A");
-		
+		System.out.println("changement B");
 
 	}
 
