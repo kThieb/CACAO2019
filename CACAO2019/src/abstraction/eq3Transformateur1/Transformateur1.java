@@ -18,7 +18,6 @@ public class Transformateur1 implements IActeur, IAcheteurCacaoAleatoire {
 	private Journal journal;
 	//End Kevin
 	
-	
 	public Transformateur1() {
 		this.stockFeves=new Indicateur("EQ3 stock feves", this, 50);
 		this.soldeBancaire=new Indicateur("EQ3 solde bancaire", this, 100000);
