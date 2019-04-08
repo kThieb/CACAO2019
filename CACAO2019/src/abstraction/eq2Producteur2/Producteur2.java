@@ -3,6 +3,7 @@ package abstraction.eq2Producteur2;
 import abstraction.eq1Producteur1.ventesCacaoAleatoires.IVendeurCacaoAleatoire;
 import abstraction.fourni.IActeur;
 import abstraction.fourni.Indicateur;
+import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 
 public class Producteur2 implements IActeur, IVendeurCacaoAleatoire {
@@ -15,6 +16,7 @@ public class Producteur2 implements IActeur, IVendeurCacaoAleatoire {
 		this.soldeBancaire=new Indicateur("EQ2 solde bancaire", this, 50000);
 		Monde.LE_MONDE.ajouterIndicateur(this.stockFeves);
 		Monde.LE_MONDE.ajouterIndicateur(this.soldeBancaire);
+		Journal journal=new Journal("journal équipe 2");
 	}
 	
 	public String getNom() {
