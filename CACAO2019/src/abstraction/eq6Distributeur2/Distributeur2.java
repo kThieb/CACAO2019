@@ -8,7 +8,8 @@ import abstraction.fourni.Monde;
 public class Distributeur2 implements IActeur {
 	
 	private Journal journal;
-
+	private Journal CARO;
+	
 	public Distributeur2() {
 		this.journal = new Journal("jEq6");
 		Monde.LE_MONDE.ajouterJournal(this.journal);
