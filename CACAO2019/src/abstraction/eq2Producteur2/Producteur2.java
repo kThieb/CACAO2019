@@ -16,7 +16,7 @@ public class Producteur2 implements IActeur, IVendeurCacaoAleatoire {
 		this.soldeBancaire=new Indicateur("EQ2 solde bancaire", this, 50000);
 		Monde.LE_MONDE.ajouterIndicateur(this.stockFeves);
 		Monde.LE_MONDE.ajouterIndicateur(this.soldeBancaire);
-		Journal journal=new Journal("journal équipe 2");
+		Journal journal=new Journal("jEq2");
 	}
 	
 	public String getNom() {
