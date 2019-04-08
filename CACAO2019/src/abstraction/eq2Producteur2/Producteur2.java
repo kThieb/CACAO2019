@@ -17,6 +17,7 @@ public class Producteur2 implements IActeur, IVendeurCacaoAleatoire {
 		Monde.LE_MONDE.ajouterIndicateur(this.stockFeves);
 		Monde.LE_MONDE.ajouterIndicateur(this.soldeBancaire);
 		Journal journal=new Journal("journal équipe 2");
+		Monde.LE_MONDE.ajouterJournal(journal);
 	}
 	
 	public String getNom() {
