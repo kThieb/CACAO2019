@@ -7,7 +7,7 @@ public class Distributeur1 implements IActeur {
 
 	public Distributeur1() {
 	}
-	
+	//Equipe 5
 	public String getNom() {
 		return "EQ5";
 	}
