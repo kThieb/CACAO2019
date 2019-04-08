@@ -3,6 +3,7 @@ package abstraction.eq3Transformateur1;
 import abstraction.eq1Producteur1.ventesCacaoAleatoires.IAcheteurCacaoAleatoire;
 import abstraction.fourni.IActeur;
 import abstraction.fourni.Indicateur;
+import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 
 public class Transformateur1 implements IActeur, IAcheteurCacaoAleatoire {
@@ -10,14 +11,20 @@ public class Transformateur1 implements IActeur, IAcheteurCacaoAleatoire {
 	private Indicateur stockFeves;
     private Indicateur soldeBancaire;
 	private Indicateur stockChocolat;
-
+	//begin Kevin
+	private Journal journal;
+	//End Kevin
+	
+	
 	public Transformateur1() {
 		this.stockFeves=new Indicateur("EQ3 stock feves", this, 50);
 		this.soldeBancaire=new Indicateur("EQ3 solde bancaire", this, 100000);
 		this.stockChocolat=new Indicateur("EQ3 stock chocolat", this, 100);
+		this.journal = new Journal ("Vente aléatoire de cacao");
 		Monde.LE_MONDE.ajouterIndicateur(this.stockFeves);
 		Monde.LE_MONDE.ajouterIndicateur(this.soldeBancaire);
 		Monde.LE_MONDE.ajouterIndicateur(this.stockChocolat);
+		Monde.LE_MONDE.ajouterJournal(this.journal);
 	}
 	
 	public String getNom() {
