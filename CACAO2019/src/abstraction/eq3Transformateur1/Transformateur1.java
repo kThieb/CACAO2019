@@ -28,9 +28,9 @@ public class Transformateur1 implements IActeur, IAcheteurCacaoAleatoire {
 		Monde.LE_MONDE.ajouterIndicateur(this.stockChocolat);
 		Monde.LE_MONDE.ajouterJournal(this.journal);
 		//begin sacha
-		System.out.println("ajout du journal jEq3");
-		this.nbNextAvantEchange = 0;
-		//end Sacha
+				System.out.println("ajout du journal jEq3");
+				this.nbNextAvantEchange = 0;
+				//end Sacha
 	}
 	
 	public String getNom() {
