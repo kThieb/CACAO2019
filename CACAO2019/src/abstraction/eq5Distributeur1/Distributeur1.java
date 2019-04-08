@@ -12,7 +12,7 @@ public class Distributeur1 implements IActeur {
 		this.journal = new Journal("jEq5");
 		Monde.LE_MONDE.ajouterJournal(this.journal);
 	}
-	//Equipe 5
+	
 	public String getNom() {
 		return "EQ5";
 	}
