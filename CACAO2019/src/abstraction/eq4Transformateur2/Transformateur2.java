@@ -9,6 +9,8 @@ public class Transformateur2 implements IActeur {
 	private Indicateur stockFeves;
     private Indicateur soldeBancaire;
 	private Indicateur stockChocolat;
+	private Journal journal;
+
 
 	public Transformateur2() {
 		this.stockFeves=new Indicateur("EQ4 stock feves", this, 50);
@@ -33,4 +35,8 @@ public class Transformateur2 implements IActeur {
 		this.stockChocolat.ajouter(this, (2*quantiteTransformee));// 50% cacao, 50% sucre
 		this.soldeBancaire.retirer(this, quantiteTransformee*1.0234); // sucre, main d'oeuvre, autres frais
 	}
+	
+	this.journal = new Journal("Ventes de cacao");
+	Monde.LE_MONDE.ajouterJournal(this.journal);
+	System.out.println(" ajout du journal...");
 }
