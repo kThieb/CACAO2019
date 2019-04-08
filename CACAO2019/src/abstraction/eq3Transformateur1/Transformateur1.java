@@ -11,7 +11,7 @@ public class Transformateur1 implements IActeur, IAcheteurCacaoAleatoire {
 	private Indicateur stockFeves;
     private Indicateur soldeBancaire;
 	private Indicateur stockChocolat;
-	//begin Kevin
+	//Begin Kevin
 	private Journal journal;
 	//End Kevin
 	
@@ -20,11 +20,14 @@ public class Transformateur1 implements IActeur, IAcheteurCacaoAleatoire {
 		this.stockFeves=new Indicateur("EQ3 stock feves", this, 50);
 		this.soldeBancaire=new Indicateur("EQ3 solde bancaire", this, 100000);
 		this.stockChocolat=new Indicateur("EQ3 stock chocolat", this, 100);
+		//Begin Kevin
 		this.journal = new Journal ("Vente aléatoire de cacao");
+		Monde.LE_MONDE.ajouterJournal(this.journal);
+		//End Kevin
 		Monde.LE_MONDE.ajouterIndicateur(this.stockFeves);
 		Monde.LE_MONDE.ajouterIndicateur(this.soldeBancaire);
 		Monde.LE_MONDE.ajouterIndicateur(this.stockChocolat);
-		Monde.LE_MONDE.ajouterJournal(this.journal);
+		
 	}
 	
 	public String getNom() {
