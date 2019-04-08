@@ -6,6 +6,7 @@ import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 
 public class Distributeur2 implements IActeur {
+	private int volume ;
 	
 	private Journal journal;
 	private Journal CARO;
