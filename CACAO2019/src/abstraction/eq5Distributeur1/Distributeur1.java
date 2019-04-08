@@ -23,3 +23,4 @@ public class Distributeur1 implements IActeur {
 	public void next() {
 	}
 }
+
