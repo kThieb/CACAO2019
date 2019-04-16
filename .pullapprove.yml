@@ -15,8 +15,6 @@ groups:
     reviews:
       required: 1
       author_value: 1
-    reset_on_push:
-      enabled: false
 
   eq1:
     conditions:
