@@ -2,13 +2,14 @@ package abstraction.eq4Transformateur2;
 
 import abstraction.fourni.IActeur;
 import abstraction.fourni.Indicateur;
+import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 
 public class Transformateur2 implements IActeur {
-	
 	private Indicateur stockFeves;
     private Indicateur soldeBancaire;
 	private Indicateur stockChocolat;
+	private Journal journal;
 
 	public Transformateur2() {
 		this.stockFeves=new Indicateur("EQ4 stock feves", this, 50);
@@ -24,6 +25,11 @@ public class Transformateur2 implements IActeur {
 	}
 
 	public void initialiser() {
+		// Initialisation du journal
+		this.journal = new Journal("jEq4");
+		Monde.LE_MONDE.ajouterJournal(this.journal);
+		this.journal.ajouter("Initialisation du transformateur 2 (équipe 4).");
+		System.out.println("Ajout du journal...");
 	}
 
 	public void next() {
