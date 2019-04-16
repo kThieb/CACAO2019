@@ -1,73 +1,79 @@
 version: 3
 
-group_defaults:
-  author_approval:
-      auto: true
-  approve_by_comment:
-    enabled: true
-    approve_regex: '(^Approved|OK|Ok|ok)'
-
 groups:
   general:
     conditions:
-      files:
-        exclude:
-          - CACAO2019/src/abstraction/eq1Producteur1/*
-          - CACAO2019/src/abstraction/eq2Producteur2/*
-          - CACAO2019/src/abstraction/eq3Transformateur1/*
-          - CACAO2019/src/abstraction/eq4Transformateur2/*
-          - CACAO2019/src/abstraction/eq5Distributeur1/*
-          - CACAO2019/src/abstraction/eq6Distributeur2/*
-    required: 1
+    - "files.exclude('CACAO2019/src/abstraction/eq1Producteur1/*')"
+    - "files.exclude('CACAO2019/src/abstraction/eq2Producteur2/*')"
+    - "files.exclude('CACAO2019/src/abstraction/eq3Transformateur1/*')"
+    - "files.exclude('CACAO2019/src/abstraction/eq4Transformateur2/*')"
+    - "files.exclude('CACAO2019/src/abstraction/eq5Distributeur1/*')"
+    - "files.exclude('CACAO2019/src/abstraction/eq6Distributeur2/*')"
+    reviewers:
+      users:
+      - massimotisi
+    reviews:
+      required: 1
+      author_value: 1
     reset_on_push:
       enabled: false
-    users:
-    - massimotisi
 
   eq1:
     conditions:
-      files:
-        - CACAO2019/src/abstraction/eq1Producteur1/*
-    required: 1
-    teams: 
+    - "files.include('CACAO2019/src/abstraction/eq1Producteur1/*')"
+    reviews:
+      required: 1
+      author_value: 1
+    reviewers:
+      teams: 
       - eq1
 
   eq2:
     conditions:
-      files:
-        - CACAO2019/src/abstraction/eq2Producteur2/*
-    required: 1
-    teams: 
+    - "files.include('CACAO2019/src/abstraction/eq2Producteur2/*')"
+    reviews:
+      required: 1
+      author_value: 1
+    reviewers:
+      teams: 
       - eq2
 
   eq3:
     conditions:
-      files:
-        - CACAO2019/src/abstraction/eq3Transformateur1/*
-    required: 1
-    teams: 
+    - "files.include('CACAO2019/src/abstraction/eq3Transformateur1/*')"
+    reviews:
+      required: 1
+      author_value: 1
+    reviewers:
+      teams: 
       - eq3
 
   eq4:
     conditions:
-      files:
-        - CACAO2019/src/abstraction/eq4Transformateur2/*
-    required: 1
-    teams: 
+    - "files.include('CACAO2019/src/abstraction/eq4Transformateur2/*')"
+    reviews:
+      required: 1
+      author_value: 1
+    reviewers:
+      teams: 
       - eq4
 
   eq5:
     conditions:
-      files:
-        - CACAO2019/src/abstraction/eq5Distributeur1/*
-    required: 1
-    teams: 
+    - "files.include('CACAO2019/src/abstraction/eq5Distributeur1/*')"
+    reviews:
+      required: 1
+      author_value: 1
+    reviewers:
+      teams: 
       - eq5
 
   eq6:
     conditions:
-      files:
-        - CACAO2019/src/abstraction/eq6Distributeur2/*
-    required: 1
-    teams: 
+    - "files.include('CACAO2019/src/abstraction/eq6Distributeur2/*')"
+    reviews:
+      required: 1
+      author_value: 1
+    reviewers:    
+      teams: 
       - eq6
