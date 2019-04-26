@@ -1,7 +1,6 @@
 package abstraction.fourni;
 
 public enum Vis {
-	
 	V3540(3.5, 40), 
 	V3530(3.5, 30), 
 	V5060(5.0, 60);
