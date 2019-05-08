@@ -1,4 +1,4 @@
-package abstraction.fourni;
+package abstraction.eq7Romu;
 
 public enum Vis {
 	V3540(3.5, 40), 
