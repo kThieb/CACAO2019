@@ -1,6 +1,8 @@
 package abstraction.eq3Transformateur1;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import abstraction.eq7Romu.produits.Chocolat;
 import abstraction.eq7Romu.produits.Feve;
@@ -21,6 +23,8 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	private int nbNextAvantEchange;
 	private Journal journal;
 	
+	private List<ContratCadre<Chocolat>> contratsChocolatEnCours;
+	private List<ContratCadre<Feve>> contratsFeveEnCours;
 	private HashMap<Chocolat,Stock> stockChocolat;
 	private HashMap<Feve,Stock> stockFeves;
 	
@@ -39,7 +43,9 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 //		Monde.LE_MONDE.ajouterIndicateur(this.iStockFeves);
 		Monde.LE_MONDE.ajouterIndicateur(this.soldeBancaire);
 //		Monde.LE_MONDE.ajouterIndicateur(this.iStockChocolat);
-
+		
+		this.contratsChocolatEnCours = new ArrayList<ContratCadre<Chocolat>>();
+		this.contratsFeveEnCours = new ArrayList<ContratCadre<Feve>>();
 		
 		this.nbNextAvantEchange = 0;
 
@@ -103,8 +109,9 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 
 	@Override
 	public void notifierAcheteur(ContratCadre<Feve> cc) {
-		// TODO Auto-generated method stub
-		
+		// begin sacha
+		this.contratsFeveEnCours.add(cc);
+		//end sachaaa
 	}
 
 	@Override
