@@ -134,7 +134,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	
 	@Override
 	public double getPrix(Chocolat produit, Double quantite) {
-		// TODO Auto-generated method stub
+		
 		return 0;
 	}
 
