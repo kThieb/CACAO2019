@@ -3,6 +3,8 @@ package presentation;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -36,6 +38,17 @@ public class FenetreJournal extends JFrame {
 		this.setLayout(new BorderLayout());
 		this.label = new JLabel();
 		this.label.setText(this.journal.toHtml());
+		this.label.addMouseListener(new MouseListener() {
+			public void mouseClicked(MouseEvent e) {
+				journal.augmenterLignesAffichables();
+				repaint();
+			}
+			public void mousePressed(MouseEvent e) {}
+			public void mouseReleased(MouseEvent e) {}
+			public void mouseEntered(MouseEvent e) {}
+			public void mouseExited(MouseEvent e) {} 
+			
+		});
 		JScrollPane sp = new JScrollPane(label);
 		this.add(sp, BorderLayout.CENTER);
 		this.setSize(new Dimension(800,600));
