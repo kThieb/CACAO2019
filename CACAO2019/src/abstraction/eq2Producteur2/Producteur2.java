@@ -1,12 +1,16 @@
 package abstraction.eq2Producteur2;
 
 import abstraction.eq1Producteur1.ventesCacaoAleatoires.IVendeurCacaoAleatoire;
+import abstraction.eq7Romu.produits.Feve;
+import abstraction.eq7Romu.ventesContratCadre.ContratCadre;
+import abstraction.eq7Romu.ventesContratCadre.IVendeurContratCadre;
+import abstraction.eq7Romu.ventesContratCadre.StockEnVente;
 import abstraction.fourni.IActeur;
 import abstraction.fourni.Indicateur;
 import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 
-public class Producteur2 implements IActeur, IVendeurCacaoAleatoire {
+public class Producteur2 implements IActeur, IVendeurCacaoAleatoire, IVendeurContratCadre<Feve> {
 	
 	private Indicateur stockFeves;
 	private Indicateur soldeBancaire;
@@ -40,6 +44,59 @@ public class Producteur2 implements IActeur, IVendeurCacaoAleatoire {
 	public void notificationVente(double quantite, double prix) {
 		this.stockFeves.retirer(this, quantite);
 		this.soldeBancaire.ajouter(this, quantite*prix);
+	}
+
+	@Override
+	public StockEnVente getStockEnVente() {
+		return null;
+	}
+
+	@Override
+	public double getPrix(Object produit, Double quantite) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void proposerEcheancierVendeur(ContratCadre cc) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void proposerPrixVendeur(ContratCadre cc) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void notifierVendeur(ContratCadre cc) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public double livrer(Object produit, double quantite, ContratCadre cc) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void encaisser(double montant, ContratCadre cc) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public double getPrix(Feve produit, Double quantite) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public double livrer(Feve produit, double quantite, ContratCadre<Feve> cc) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }
