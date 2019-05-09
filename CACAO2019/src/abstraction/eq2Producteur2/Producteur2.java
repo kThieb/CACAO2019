@@ -32,14 +32,19 @@ public class Producteur2 implements IActeur, IVendeurCacaoAleatoire, IVendeurCon
 	private double prixVente;
 	
 	
-	public Producteur2() {
-		this.stockFeves=new Indicateur("EQ2 stock feves", this, 1000);
-		this.soldeBancaire=new Indicateur("EQ2 solde bancaire", this, 50000);
+	public Producteur2(Feve fevesProduites, int productionParStep, double stockInitial, double soldeInitial) {
+		NB_PROD++;
+		this.numero = NB_PROD;
+		this.prixVente = PRIX_INIT;
+		this.fevesProduites = fevesProduites;
+		this.productionParStep = productionParStep;
+		this.stockFeves = new Indicateur(this.getNom()+" Stock", this, stockInitial);
 		Monde.LE_MONDE.ajouterIndicateur(this.stockFeves);
+		this.soldeBancaire = new Indicateur(this.getNom()+" Solde", this, soldeInitial);
 		Monde.LE_MONDE.ajouterIndicateur(this.soldeBancaire);
-		Journal journal=new Journal("jEq2");
-		Monde.LE_MONDE.ajouterJournal(journal);
-		
+		this.contratsEnCours = new ArrayList<ContratCadre<Feve>>();
+		this.journal = new Journal("Journal "+this.getNom());
+		Monde.LE_MONDE.ajouterJournal(this.journal);
 	}
 	
 	public String getNom() {
