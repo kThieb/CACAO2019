@@ -1,24 +1,24 @@
 package abstraction.eq4Transformateur2;
 
 public class Stock {
-	private int quantité;
+	private double quantité;
 	
 	public Stock() {
 		
 	}
 	
-	public int getQuantité() {
+	public double getQuantité() {
 		return quantité;
 	}
 	
 
-	public void add(int n) {
+	public void add(double n) {
 		this.quantité += n;
 	}
 	
-	public void take(int n) {
+	public void take(double n) {
 		this.quantité -= n;
-		if(this.quantité <= 0) {
+		if(this.quantité < 0) {
 			System.err.println("Stock négatif !");
 			// Throw exception ?
 		}
