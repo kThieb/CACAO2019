@@ -1,5 +1,5 @@
 package abstraction.eq5Distributeur1;
 
-public class VendeurContratCadre {
+public class VendeurClient {
 
 }
