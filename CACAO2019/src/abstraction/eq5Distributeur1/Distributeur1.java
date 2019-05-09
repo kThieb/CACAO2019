@@ -94,8 +94,8 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 	
 	@Override
 	public StockEnVente<Chocolat> getStockEnVente() {
-		// TODO Auto-generated method stub
-		return null;
+		StockEnVente<Chocolat> res = new StockEnVente<Chocolat>();
+		return res;
 	}
 
 	@Override
