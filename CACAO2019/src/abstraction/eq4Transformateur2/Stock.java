@@ -11,6 +11,7 @@ public class Stock {
 		return feves;
 	}
 	
+
 	public void addFeves(int n) {
 		this.feves += n;
 	}
