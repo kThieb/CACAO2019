@@ -26,6 +26,9 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	private List<ContratCadre<Chocolat>> contratsChocolatEnCours;
 	private List<ContratCadre<Feve>> contratsFeveEnCours;
 	//end sacha
+	//begin Raphael
+	private Indicateur prixAchats;
+	//end Raphael
 	private HashMap<Chocolat,Stock> stockChocolat;
 	private HashMap<Feve,Stock> stockFeves;
 	
@@ -39,7 +42,6 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 //		int sommeChocolat = 0;
 //		this.iStockChocolat = new Indicateur("EQ3 stock chocolat", this, sommeChocolat);
 		// end eve
-		
 		this.soldeBancaire=new Indicateur("EQ3 solde bancaire", this, 100000);
 		this.journal = new Journal ("Vente aléatoire de cacao");
 		Monde.LE_MONDE.ajouterJournal(this.journal);
@@ -52,6 +54,10 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		this.contratsChocolatEnCours = new ArrayList<ContratCadre<Chocolat>>();
 		this.contratsFeveEnCours = new ArrayList<ContratCadre<Feve>>();
 		//end sacha
+		
+		//begin Raphael
+		this.prixAchats=new Indicateur("EQ3 prix achats", this);
+		//end Raphael
 		
 		this.nbNextAvantEchange = 0;
 
