@@ -4,12 +4,16 @@ import abstraction.eq1Producteur1.ventesCacaoAleatoires.IVendeurCacaoAleatoire;
 import abstraction.eq1Producteur1.ventesCacaoAleatoires.SuperviseurVentesCacaoAleatoires;
 import abstraction.fourni.IActeur;
 import abstraction.fourni.Indicateur;
+import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 
 public class Producteur1 implements IActeur, IVendeurCacaoAleatoire {
 	
 	private Indicateur stockFeves;
 	private Indicateur soldeBancaire;
+	// BEGIN Manon
+	private Journal journal1;
+	//END MANON
 
 	public Producteur1() {
 		this.stockFeves=new Indicateur("EQ1 stock feves", this, 1000);
@@ -17,6 +21,12 @@ public class Producteur1 implements IActeur, IVendeurCacaoAleatoire {
 		Monde.LE_MONDE.ajouterIndicateur(this.stockFeves);
 		Monde.LE_MONDE.ajouterIndicateur(this.soldeBancaire);
 		Monde.LE_MONDE.ajouterActeur(new SuperviseurVentesCacaoAleatoires());
+		//BEGIN Manon
+		this.journal1=new Journal("Ventes aleatoires de cacao");
+		Monde.LE_MONDE.ajouterJournal(this.journal1);
+		System.out.println(" ajout du journal...");
+		// END Manon
+		
 	}
 	
 	public String getNom() {
