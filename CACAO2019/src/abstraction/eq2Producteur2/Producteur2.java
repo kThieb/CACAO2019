@@ -1,6 +1,9 @@
 package abstraction.eq2Producteur2;
 
+<<<<<<< HEAD
 import java.util.ArrayList;
+=======
+>>>>>>> branch 'master' of https://github.com/Clementmagnin/CACAO2019.git
 import java.util.List;
 
 import abstraction.eq1Producteur1.ventesCacaoAleatoires.IVendeurCacaoAleatoire;
@@ -40,6 +43,7 @@ public class Producteur2 implements IActeur, IVendeurCacaoAleatoire, IVendeurCon
 		this.fevesProduites = fevesProduites;
 		this.productionParStep = productionParStep;
 		this.stockFeves = new Indicateur(this.getNom()+" Stock", this, stockInitial);
+
 		Monde.LE_MONDE.ajouterIndicateur(this.stockFeves);
 		this.soldeBancaire = new Indicateur(this.getNom()+" Solde", this, soldeInitial);
 		Monde.LE_MONDE.ajouterIndicateur(this.soldeBancaire);
@@ -71,7 +75,7 @@ public class Producteur2 implements IActeur, IVendeurCacaoAleatoire, IVendeurCon
 
 	@Override
 	public StockEnVente getStockEnVente() {
-		double stockrestant = this.stockFeves.getValeur();
+		double stockRestant = this.stockFeves.getValeur();
 		for (ContratCadre<Feve> cc : this.contratsEnCours) {
 			if (Monde.LE_MONDE != null) {
 				stockRestant = stockRestant - cc.getQuantiteRestantALivrer();
