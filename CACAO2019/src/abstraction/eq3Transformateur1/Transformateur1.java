@@ -18,6 +18,9 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	private Indicateur iStockChocolat;
 	private int nbNextAvantEchange;
 	private Journal journal;
+	//begin Raphael
+	private Indicateur prixAchats;
+	//end Raphael
 	
 	
 	public Transformateur1() {
@@ -120,7 +123,15 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 
 	@Override
 	public void proposerPrixAcheteur(ContratCadre<Feve> cc) {
-		// TODO Auto-generated method stub
+		//begin Raphael
+		//Code de Romu, a modifier
+		double prixVendeur = cc.getListePrixAuKilo().get(0);
+		if (Math.random()<0.25) { // probabilite de 25% d'accepter
+			cc.ajouterPrixAuKilo(cc.getPrixAuKilo());
+		} else {
+			cc.ajouterPrixAuKilo((prixVendeur*(0.9+Math.random()*0.1))); // rabais de 10% max
+		}
+		//End Raphael
 		
 	}
 
