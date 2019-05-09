@@ -7,6 +7,7 @@ import abstraction.eq7Romu.distributionChocolat.IDistributeurChocolat;
 import abstraction.eq7Romu.produits.Chocolat;
 import abstraction.eq7Romu.ventesContratCadre.ContratCadre;
 import abstraction.eq7Romu.ventesContratCadre.IAcheteurContratCadre;
+import abstraction.eq7Romu.ventesContratCadre.IVendeurContratCadre;
 import abstraction.eq7Romu.ventesContratCadre.StockEnVente;
 import abstraction.fourni.IActeur;
 import abstraction.fourni.Indicateur;
@@ -107,9 +108,32 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 	}
 
 	@Override
-	public ContratCadre<Chocolat> getNouveauContrat() {
-		// TODO Auto-generated method stub
-		return null;
+	public ContratCadre<Chocolat> getNouveauContrat() { //ILIAS
+		ContratCadre<Chocolat> res=null;
+		double solde = this.soldeBancaire.getValeur();
+		for (ContratCadre<Chocolat> cc : this.contratsEnCours) {
+			solde = solde - cc.getMontantRestantARegler();
+		}
+		List<IVendeurContratCadre<Chocolat>> vendeurs = new ArrayList<IVendeurContratCadre<Chocolat>>();
+		for (IActeur acteur : Monde.LE_MONDE.getActeurs()) {
+			if (acteur instanceof IVendeurContratCadre) {
+				IVendeurContratCadre vacteur = (IVendeurContratCadre)acteur;
+				StockEnVente stock = vacteur.getStockEnVente();
+				vendeurs.add((IVendeurContratCadre<Chocolat>)vacteur);
+			}
+		}
+		if (vendeurs.size()>=1) {
+			double quantite = 50;
+			IVendeurContratCadre<Chocolat> vendeur = vendeurs.get( (int)( Math.random()*vendeurs.size()));
+			double prix = vendeur.getPrix(this.produit, quantite);
+			while (!Double.isNaN(prix)) {
+				quantite=quantite*1.1;
+				prix = vendeur.getPrix(this.produit,  quantite);
+			}
+			quantite = quantite/1.1;
+			res = new ContratCadre<Chocolat>(this, vendeur, this.produit, quantite);
+		}
+		return res;
 	}
 
 	@Override
