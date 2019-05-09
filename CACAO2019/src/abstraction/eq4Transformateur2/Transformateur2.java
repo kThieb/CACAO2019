@@ -65,7 +65,7 @@ public class Transformateur2 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		}
 		
 		
-		ContratCadre<Feve> cc = new ContratCadre<Feve>(this, , , quantite);
+		//ContratCadre<Feve> cc = new ContratCadre<Feve>(this, , , quantite);
 		return null;
 	}
 
