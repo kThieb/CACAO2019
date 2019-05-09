@@ -60,13 +60,7 @@ public class Producteur2 implements IActeur, IVendeurCacaoAleatoire, IVendeurCon
 		return res;
 	}
 
-	@Override
-	public double getPrix(Object produit, Double quantite) {
-		if (produit==null || quantite<=0.0 || this.getStockEnVente().get(produit)<quantite) {
-			return Double.NaN;
-		}
-		return this.prixVente;
-	}
+
 
 	@Override
 	public void proposerEcheancierVendeur(ContratCadre cc) {
@@ -101,15 +95,7 @@ public class Producteur2 implements IActeur, IVendeurCacaoAleatoire, IVendeurCon
 		this.contratsEnCours.add(cc);
 	}
 
-	@Override
-	public double livrer(Object produit, double quantite, ContratCadre cc) {
-		if (produit==null || !produit.equals(this.fevesProduites)) {
-			throw new IllegalArgumentException("Appel de la methode livrer de ProducteurRomu avec un produit ne correspondant pas aux feves produites");
-		}
-		double livraison = Math.min(quantite, this.stock.getValeur());
-		this.stock.retirer(this, livraison);
-		return livraison;
-	}
+
 
 	@Override
 	public void encaisser(double montant, ContratCadre cc) {
@@ -117,6 +103,24 @@ public class Producteur2 implements IActeur, IVendeurCacaoAleatoire, IVendeurCon
 			throw new IllegalArgumentException("Appel de la methode encaisser de ProducteurRomu avec un montant negatif");
 		}
 		this.soldeBancaire.ajouter(this,  montant);
+	}
+
+	@Override
+	public double getPrix(Feve produit, Double quantite) {
+		if (produit==null || quantite<=0.0 || this.getStockEnVente().get(produit)<quantite) {
+			return Double.NaN;
+		}
+		return this.prixVente;
+	}
+
+	@Override
+	public double livrer(Feve produit, double quantite, ContratCadre<Feve> cc) {
+		if (produit==null || !produit.equals(this.fevesProduites)) {
+			throw new IllegalArgumentException("Appel de la methode livrer de ProducteurRomu avec un produit ne correspondant pas aux feves produites");
+		}
+		double livraison = Math.min(quantite, this.stock.getValeur());
+		this.stock.retirer(this, livraison);
+		return livraison;
 	}
 
 }
