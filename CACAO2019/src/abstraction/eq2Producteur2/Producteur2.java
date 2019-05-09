@@ -1,5 +1,7 @@
 package abstraction.eq2Producteur2;
 
+import java.util.List;
+
 import abstraction.eq1Producteur1.ventesCacaoAleatoires.IVendeurCacaoAleatoire;
 import abstraction.eq7Romu.produits.Feve;
 import abstraction.eq7Romu.ventesContratCadre.ContratCadre;
@@ -15,6 +17,10 @@ public class Producteur2 implements IActeur, IVendeurCacaoAleatoire, IVendeurCon
 	
 	private Indicateur stockFeves;
 	private Indicateur soldeBancaire;
+
+	private Feve fevesProduites;
+	private List<ContratCadre<Feve>> contratsEnCours;
+	private double prixVente;
 
 	public Producteur2() {
 		this.stockFeves=new Indicateur("EQ2 stock feves", this, 1000);
@@ -49,7 +55,7 @@ public class Producteur2 implements IActeur, IVendeurCacaoAleatoire, IVendeurCon
 
 	@Override
 	public StockEnVente getStockEnVente() {
-		double stockrestant = this.stockFeves.getValeur();
+		double stockRestant = this.stockFeves.getValeur();
 		for (ContratCadre<Feve> cc : this.contratsEnCours) {
 			if (Monde.LE_MONDE != null) {
 				stockRestant = stockRestant - cc.getQuantiteRestantALivrer();
