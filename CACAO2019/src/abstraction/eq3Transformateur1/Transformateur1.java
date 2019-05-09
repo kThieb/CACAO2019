@@ -15,30 +15,33 @@ import abstraction.fourni.Monde;
 
 public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IVendeurContratCadre<Chocolat>  {
 	
-	private Indicateur iStockFeves;
+//	private Indicateur iStockFeves;
+//	private Indicateur iStockChocolat;
     private Indicateur soldeBancaire;
-	private Indicateur iStockChocolat;
 	private int nbNextAvantEchange;
 	private Journal journal;
 	
 	private HashMap<Chocolat,Stock> stockChocolat;
 	private HashMap<Feve,Stock> stockFeves;
 	
-	
 	public Transformateur1() {
-		this.iStockFeves=new Indicateur("EQ3 stock feves", this, 50);
+		this.stockFeves = new HashMap<Feve,Stock>();
+		this.stockChocolat = new HashMap<Chocolat,Stock>();
+//		int sommeFeves = 0;
+//		this.iStockFeves = new Indicateur("EQ3 stock feves", this, sommeFeves);
+//		int sommeChocolat = 0;
+//		this.iStockChocolat = new Indicateur("EQ3 stock chocolat", this, sommeChocolat);
+		
 		this.soldeBancaire=new Indicateur("EQ3 solde bancaire", this, 100000);
-		this.iStockChocolat=new Indicateur("EQ3 stock chocolat", this, 100);
 		this.journal = new Journal ("Vente aléatoire de cacao");
 		Monde.LE_MONDE.ajouterJournal(this.journal);
 		System.out.println("ajout du journal jEq3");
-		Monde.LE_MONDE.ajouterIndicateur(this.iStockFeves);
+//		Monde.LE_MONDE.ajouterIndicateur(this.iStockFeves);
 		Monde.LE_MONDE.ajouterIndicateur(this.soldeBancaire);
-		Monde.LE_MONDE.ajouterIndicateur(this.iStockChocolat);
+//		Monde.LE_MONDE.ajouterIndicateur(this.iStockChocolat);
 
 		
 		this.nbNextAvantEchange = 0;
-		//end Sacha
 
 	}
 	
@@ -60,21 +63,22 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 
 	public void next() {
 		// transformation
-		double quantiteTransformee = Math.random()*Math.min(100, this.iStockFeves.getValeur()); // on suppose qu'on a un stock infini de sucre
-		this.iStockFeves.retirer(this, quantiteTransformee);
-		this.iStockChocolat.ajouter(this, (2*quantiteTransformee));// 50% cacao, 50% sucre
-		this.soldeBancaire.retirer(this, quantiteTransformee*1.0234); // sucre, main d'oeuvre, autres frais
+//		double quantiteTransformee = Math.random()*Math.min(100, this.iStockFeves.getValeur()); // on suppose qu'on a un stock infini de sucre
+//		this.iStockFeves.retirer(this, quantiteTransformee);
+//		this.iStockChocolat.ajouter(this, (2*quantiteTransformee));// 50% cacao, 50% sucre
+//		this.soldeBancaire.retirer(this, quantiteTransformee*1.0234); // sucre, main d'oeuvre, autres frais
 	}
 	
 	// -------------------------------------------------------------------------------------------
 	// 			ACHETEUR
 	// -------------------------------------------------------------------------------------------
 
+	// A MODIFIER
 	public double quantiteDesiree(double quantiteEnVente, double prix) {
 		double possible = Math.max(0.0, soldeBancaire.getValeur()/prix);
 		
 		double desiree= Math.min(possible,  quantiteEnVente); // achete le plus possible
-		this.iStockFeves.ajouter(this, desiree);
+//		this.iStockFeves.ajouter(this, desiree);
 		this.soldeBancaire.retirer(this, desiree*prix);
 		return desiree;
 	}
