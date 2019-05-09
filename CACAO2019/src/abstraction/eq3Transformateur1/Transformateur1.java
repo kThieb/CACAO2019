@@ -137,7 +137,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		if (quantite<=0.0) {
 			throw new IllegalArgumentException("Appel de la methode receptionner de Transformateur1 avec une quantite egale a "+quantite);
 		}
-		this.stockFeves.ajou;
+		this.stockFeves.put(Feve produit, double quantite);
 		
 	}
 
