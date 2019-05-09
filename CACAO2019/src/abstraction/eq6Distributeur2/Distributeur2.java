@@ -59,10 +59,44 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 		// TODO Auto-generated method stub
 		
 	}
+	
+	//Caroline
+	public boolean satisfaitParPrixContratCadre (ContratCadre<Chocolat> cc) {
+		boolean satisfait = true;
+		Chocolat produit = cc.getProduit();
+		
+		double marge = 1.05;
+		
+		double dernierprixpropose = cc.getListePrixAuKilo().get(cc.getListePrixAuKilo().size() -1);
+		double notreprix = this.getStockEnVente().get(produit);
+		
+		if (notreprix/dernierprixpropose > 1.05) {
+			satisfait = true;
+		}else {
+			satisfait = false;
+		}
+		
+		return satisfait;
+	}
 
 	@Override
+	//Caroline
 	public void proposerPrixAcheteur(ContratCadre<Chocolat> cc) {
-		// TODO Auto-generated method stub
+		double prixVendeur = cc.getListePrixAuKilo().get(0);
+		//Si le dernier prix de la liste nous satisfait => proposer le même prix
+		//Sinon, le dernier prix nous satisfait pas :
+			//Si le vendeur propose 2 fois le même prix et pas satisfait => ne pas ajouter de prix
+			// Sinon proposer un nouveau prix 
+		
+		if (satisfaitParPrixContratCadre (cc)) {
+			cc.ajouterPrixAuKilo(cc.getPrixAuKilo());
+		} else {
+			if (cc.getListePrixAuKilo().get(cc.getListePrixAuKilo().size() -1)==cc.getListePrixAuKilo().get(cc.getListePrixAuKilo().size() -1)) {
+				cc.ajouterPrixAuKilo(null);
+			} else {
+				cc.ajouterPrixAuKilo(cc.getPrixAuKilo()*0.95);
+			}
+		}
 		
 	}
 
