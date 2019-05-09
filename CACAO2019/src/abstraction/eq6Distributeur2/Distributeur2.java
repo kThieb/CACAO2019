@@ -1,5 +1,7 @@
 package abstraction.eq6Distributeur2;
 
+import java.util.List;
+
 import abstraction.eq7Romu.distributionChocolat.IDistributeurChocolat;
 import abstraction.eq7Romu.produits.Chocolat;
 import abstraction.eq7Romu.ventesContratCadre.ContratCadre;
@@ -11,17 +13,19 @@ import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 
 public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, IDistributeurChocolat {
-
 	
+	private Indicateur stock;
+	private Indicateur soldeBancaire;
+	private Chocolat produit;
 	private Journal journal;
+	private List<ContratCadre<Chocolat>> contratsEnCours;
 	
 	public Distributeur2() {
-		this.journal = new Journal("jEq6");
-		Monde.LE_MONDE.ajouterJournal(this.journal);
+	
 	}
 	
 	public String getNom() {
-		return "EQ6";
+		return "Walmart";
 	}
 
 	public void initialiser() {
@@ -32,8 +36,9 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 
 	@Override
 	public StockEnVente<Chocolat> getStockEnVente() {
-		// TODO Auto-generated method stub
-		return null;
+		StockEnVente<Chocolat> stockEnVente = new StockEnVente<Chocolat>();
+		stockEnVente.ajouter(produit, this.stock.getValeur());
+		return stockEnVente;		
 	}
 
 	@Override
