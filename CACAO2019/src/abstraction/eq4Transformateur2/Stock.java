@@ -1,26 +1,25 @@
 package abstraction.eq4Transformateur2;
 
 public class Stock {
-	// Quantité de fèves, en kg
-	private int feves;
+	private int quantité;
 	
 	public Stock() {
 		
 	}
 	
-	public int getFeves() {
-		return feves;
+	public int getQuantité() {
+		return quantité;
 	}
 	
 
-	public void addFeves(int n) {
-		this.feves += n;
+	public void add(int n) {
+		this.quantité += n;
 	}
 	
-	public void removeFeves(int n) {
-		this.feves -= n;
-		if(this.feves <= 0) {
-			System.err.println("Nombre de fèves négatif !");
+	public void take(int n) {
+		this.quantité -= n;
+		if(this.quantité <= 0) {
+			System.err.println("Stock négatif !");
 			// Throw exception ?
 		}
 	}
