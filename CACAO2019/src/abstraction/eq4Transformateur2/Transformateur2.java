@@ -84,7 +84,6 @@ public class Transformateur2 implements IActeur, IAcheteurContratCadre<Feve>, IV
 
 	@Override
 	public double payer(double montant, ContratCadre<Feve> cc) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
