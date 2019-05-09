@@ -1,12 +1,17 @@
 package abstraction.eq3Transformateur1;
 
-import abstraction.eq1Producteur1.ventesCacaoAleatoires.IAcheteurCacaoAleatoire;
+import abstraction.eq7Romu.produits.Chocolat;
+import abstraction.eq7Romu.produits.Feve;
+import abstraction.eq7Romu.ventesContratCadre.ContratCadre;
+import abstraction.eq7Romu.ventesContratCadre.IAcheteurContratCadre;
+import abstraction.eq7Romu.ventesContratCadre.IVendeurContratCadre;
+import abstraction.eq7Romu.ventesContratCadre.StockEnVente;
 import abstraction.fourni.IActeur;
 import abstraction.fourni.Indicateur;
 import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 
-public class Transformateur1 implements IActeur, IAcheteurCacaoAleatoire {
+public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IVendeurContratCadre<Chocolat>  {
 	
 	private Indicateur stockFeves;
     private Indicateur soldeBancaire;
@@ -61,4 +66,84 @@ public class Transformateur1 implements IActeur, IAcheteurCacaoAleatoire {
 		this.soldeBancaire.retirer(this, desiree*prix);
 		return desiree;
 	}
+
+	@Override
+	public StockEnVente<Chocolat> getStockEnVente() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public double getPrix(Chocolat produit, Double quantite) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void proposerEcheancierVendeur(ContratCadre<Chocolat> cc) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void proposerPrixVendeur(ContratCadre<Chocolat> cc) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void notifierVendeur(ContratCadre<Chocolat> cc) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public double livrer(Chocolat produit, double quantite, ContratCadre<Chocolat> cc) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void encaisser(double montant, ContratCadre<Chocolat> cc) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public ContratCadre<Feve> getNouveauContrat() {
+		
+		return null;
+	}
+
+	@Override
+	public void proposerEcheancierAcheteur(ContratCadre<Feve> cc) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void proposerPrixAcheteur(ContratCadre<Feve> cc) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void notifierAcheteur(ContratCadre<Feve> cc) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void receptionner(Feve produit, double quantite, ContratCadre<Feve> cc) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public double payer(double montant, ContratCadre<Feve> cc) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	
 }
