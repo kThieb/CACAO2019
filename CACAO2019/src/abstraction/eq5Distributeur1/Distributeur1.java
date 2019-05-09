@@ -51,7 +51,7 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 		produits.add(Chocolat.MG_E_SHP);
 		produits.add(Chocolat.MG_NE_HP);
 		produits.add(Chocolat.MG_NE_SHP);
-		int index =;
+		
 		
 		//Choix quantité
 		
