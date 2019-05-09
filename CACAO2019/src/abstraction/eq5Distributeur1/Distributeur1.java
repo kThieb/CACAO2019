@@ -1,6 +1,7 @@
 package abstraction.eq5Distributeur1;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import abstraction.eq7Romu.distributionChocolat.IDistributeurChocolat;
 import abstraction.eq7Romu.produits.Chocolat;
@@ -14,6 +15,7 @@ import abstraction.fourni.Monde;
 
 public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistributeurChocolat {
 	private Journal journal;
+	private List<Indicateur> stock;
 
 	public Distributeur1() {
 		this.journal = new Journal("jEq5");
