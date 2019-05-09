@@ -1,5 +1,9 @@
 package abstraction.eq3Transformateur1;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 import abstraction.eq7Romu.produits.Chocolat;
 import abstraction.eq7Romu.produits.Feve;
 import abstraction.eq7Romu.ventesContratCadre.ContratCadre;
@@ -18,35 +22,45 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	private Indicateur iStockChocolat;
 	private int nbNextAvantEchange;
 	private Journal journal;
-	//begin Raphael
-	private Indicateur prixAchats;
-	//end Raphael
+	
+	private List<ContratCadre<Chocolat>> contratsChocolatEnCours;
+	private List<ContratCadre<Feve>> contratsFeveEnCours;
+	private HashMap<Chocolat,Stock> stockChocolat;
+	private HashMap<Feve,Stock> stockFeves;
 	
 	
 	public Transformateur1() {
 		this.iStockFeves=new Indicateur("EQ3 stock feves", this, 50);
 		this.soldeBancaire=new Indicateur("EQ3 solde bancaire", this, 100000);
 		this.iStockChocolat=new Indicateur("EQ3 stock chocolat", this, 100);
-		//Begin Kevin
 		this.journal = new Journal ("Vente aléatoire de cacao");
 		Monde.LE_MONDE.ajouterJournal(this.journal);
-		//End Kevin
+		System.out.println("ajout du journal jEq3");
 		Monde.LE_MONDE.ajouterIndicateur(this.iStockFeves);
 		Monde.LE_MONDE.ajouterIndicateur(this.soldeBancaire);
 		Monde.LE_MONDE.ajouterIndicateur(this.iStockChocolat);
-
-		Monde.LE_MONDE.ajouterJournal(this.journal);
-		//begin sacha
-		System.out.println("ajout du journal jEq3");
+		
+		this.contratsChocolatEnCours = new ArrayList<ContratCadre<Chocolat>>();
+		this.contratsFeveEnCours = new ArrayList<ContratCadre<Feve>>();
+		
 		this.nbNextAvantEchange = 0;
-		//end Sacha
+
 
 	}
+	
+	// -------------------------------------------------------------------------------------------
+	// 			GETTERS & SETTERS
+	// -------------------------------------------------------------------------------------------
 	
 	public String getNom() {
 		return "EQ3";
 	}
-
+	
+	
+	// -------------------------------------------------------------------------------------------
+	// 			STEPS
+	// -------------------------------------------------------------------------------------------
+		
 	public void initialiser() {
 	}
 
@@ -57,6 +71,10 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		this.iStockChocolat.ajouter(this, (2*quantiteTransformee));// 50% cacao, 50% sucre
 		this.soldeBancaire.retirer(this, quantiteTransformee*1.0234); // sucre, main d'oeuvre, autres frais
 	}
+	
+	// -------------------------------------------------------------------------------------------
+	// 			ACHETEUR
+	// -------------------------------------------------------------------------------------------
 
 	public double quantiteDesiree(double quantiteEnVente, double prix) {
 		double possible = Math.max(0.0, soldeBancaire.getValeur()/prix);
@@ -66,13 +84,54 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		this.soldeBancaire.retirer(this, desiree*prix);
 		return desiree;
 	}
+	
+	@Override
+	public ContratCadre<Feve> getNouveauContrat() {
+		// TODO
+		return null;
+	}
+
+	@Override
+	public void proposerEcheancierAcheteur(ContratCadre<Feve> cc) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void proposerPrixAcheteur(ContratCadre<Feve> cc) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void notifierAcheteur(ContratCadre<Feve> cc) {
+		// begin sacha
+		this.contratsFeveEnCours.add(cc);
+		//end sachaaa
+	}
+
+	@Override
+	public void receptionner(Feve produit, double quantite, ContratCadre<Feve> cc) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public double payer(double montant, ContratCadre<Feve> cc) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	// -------------------------------------------------------------------------------------------
+	// 			VENDEUR
+	// -------------------------------------------------------------------------------------------
 
 	@Override
 	public StockEnVente<Chocolat> getStockEnVente() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
 	@Override
 	public double getPrix(Chocolat produit, Double quantite) {
 		// TODO Auto-generated method stub
@@ -107,50 +166,6 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	public void encaisser(double montant, ContratCadre<Chocolat> cc) {
 		// TODO Auto-generated method stub
 		
-	}
-
-	@Override
-	public ContratCadre<Feve> getNouveauContrat() {
-		// Choix du vendeur
-		return null;
-	}
-
-	@Override
-	public void proposerEcheancierAcheteur(ContratCadre<Feve> cc) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void proposerPrixAcheteur(ContratCadre<Feve> cc) {
-		//begin Raphael
-		//Code de Romu, a modifier
-		double prixVendeur = cc.getListePrixAuKilo().get(0);
-		if (Math.random()<0.25) { // probabilite de 25% d'accepter
-			cc.ajouterPrixAuKilo(cc.getPrixAuKilo());
-		} else {
-			cc.ajouterPrixAuKilo((prixVendeur*(0.9+Math.random()*0.1))); // rabais de 10% max
-		}
-		//End Raphael
-		
-	}
-
-	@Override
-	public void notifierAcheteur(ContratCadre<Feve> cc) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void receptionner(Feve produit, double quantite, ContratCadre<Feve> cc) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public double payer(double montant, ContratCadre<Feve> cc) {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 	
 	
