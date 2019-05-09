@@ -1,5 +1,7 @@
 package abstraction.eq4Transformateur2;
 
+import java.util.HashMap;
+
 import abstraction.eq7Romu.produits.Chocolat;
 import abstraction.eq7Romu.produits.Feve;
 import abstraction.eq7Romu.ventesContratCadre.ContratCadre;
@@ -12,23 +14,26 @@ import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 
 public class Transformateur2 implements IActeur, IAcheteurContratCadre<Feve>, IVendeurContratCadre<Chocolat> {
-	private Indicateur stockFeves;
-    private Indicateur soldeBancaire;
-	private Indicateur stockChocolat;
+	private Indicateur iStockFeves;
+    private Indicateur iSoldeBancaire;
+	private Indicateur iStockChocolat;
 	private Journal journal;
 	
-
+	
+	private HashMap<Chocolat, Stock> stocksChocolat;
+	private Stock stockFeves;
+	
 	public Transformateur2() {
-		this.stockFeves=new Indicateur("EQ4 stock feves", this, 50);
-		this.soldeBancaire=new Indicateur("EQ4 solde bancaire", this, 100000);
-		this.stockChocolat=new Indicateur("EQ4 stock chocolat", this, 100);
-		Monde.LE_MONDE.ajouterIndicateur(this.stockFeves);
-		Monde.LE_MONDE.ajouterIndicateur(this.soldeBancaire);
-		Monde.LE_MONDE.ajouterIndicateur(this.stockChocolat);
+		this.iStockFeves=new Indicateur("EQ4 stock feves", this, 50);
+		this.iSoldeBancaire=new Indicateur("EQ4 solde bancaire", this, 100000);
+		this.iStockChocolat=new Indicateur("EQ4 stock chocolat", this, 100);
+		Monde.LE_MONDE.ajouterIndicateur(this.iStockFeves);
+		Monde.LE_MONDE.ajouterIndicateur(this.iSoldeBancaire);
+		Monde.LE_MONDE.ajouterIndicateur(this.iStockChocolat);
 	}
 	
 	public String getNom() {
-		return "EQ4";
+		return "EQ4";	
 	}
 
 	public void initialiser() {
@@ -41,10 +46,10 @@ public class Transformateur2 implements IActeur, IAcheteurContratCadre<Feve>, IV
 
 	public void next() {
 		// transformation
-		double quantiteTransformee = Math.random()*Math.min(100, this.stockFeves.getValeur()); // on suppose qu'on a un stock infini de sucre
-		this.stockFeves.retirer(this, quantiteTransformee);
-		this.stockChocolat.ajouter(this, (2*quantiteTransformee));// 50% cacao, 50% sucre
-		this.soldeBancaire.retirer(this, quantiteTransformee*1.0234); // sucre, main d'oeuvre, autres frais
+		double quantiteTransformee = Math.random()*Math.min(100, this.iStockFeves.getValeur()); // on suppose qu'on a un stock infini de sucre
+		this.iStockFeves.retirer(this, quantiteTransformee);
+		this.iStockChocolat.ajouter(this, (2*quantiteTransformee));// 50% cacao, 50% sucre
+		this.iSoldeBancaire.retirer(this, quantiteTransformee*1.0234); // sucre, main d'oeuvre, autres frais
 	}
 
 	
@@ -54,7 +59,13 @@ public class Transformateur2 implements IActeur, IAcheteurContratCadre<Feve>, IV
 
 	@Override
 	public ContratCadre<Feve> getNouveauContrat() {
-		// TODO Auto-generated method stub
+		// Choix du vendeur
+		for(IActeur a : Monde.LE_MONDE.getActeurs()) {
+			
+		}
+		
+		
+		ContratCadre<Feve> cc = new ContratCadre<Feve>(this, , , quantite);
 		return null;
 	}
 
