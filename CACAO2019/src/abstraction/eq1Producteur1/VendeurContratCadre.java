@@ -24,13 +24,29 @@ public class VendeurContratCadre implements IVendeurContratCadre {
 		// TODO Auto-generated method stub
 		
 	}
-
+//Manon
 	@Override
 	public void proposerPrixVendeur(ContratCadre cc) {
-		// TODO Auto-generated method stub
+		if(cc.getListePrixAuKilo()==null) {
+			cc.ajouterPrixAuKilo(this.getPrix(cc.getProduit(), cc.getQuantite()));
+		}
+		else {
+			double prixVendeur = (double) cc.getListePrixAuKilo().get(-2);
+			double prixAcheteur =cc.getPrixAuKilo();
+			if (prixVendeur-prixAcheteur<0.05*prixVendeur){
+			cc.ajouterPrixAuKilo(prixAcheteur);
+		}
+			else{
+				double nouveauPrix;
+				nouveauPrix= prixVendeur-(prixVendeur-prixAcheteur)*0.2;
+				cc.ajouterPrixAuKilo(nouveauPrix);
+				
+			}}
+			
+		
 		
 	}
-
+//END
 	@Override
 	public void notifierVendeur(ContratCadre cc) {
 		// TODO Auto-generated method stub
