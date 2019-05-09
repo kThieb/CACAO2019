@@ -22,6 +22,9 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
     private Indicateur soldeBancaire;
 	private int nbNextAvantEchange;
 	private Journal journal;
+	//Begin Kevin
+	private static final double PRIX_VENTE_PAR_DEFAUT = 40.0;
+	//End Kevin
 	
 	private List<ContratCadre<Chocolat>> contratsChocolatEnCours;
 	private List<ContratCadre<Feve>> contratsFeveEnCours;
@@ -138,8 +141,24 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	
 	@Override
 	public double getPrix(Chocolat produit, Double quantite) {
+		//Begin Kevin
+		if (produit==null || quantite<=0.0 || this.getStockEnVente().get(produit)<quantite) {
+			return Double.NaN;
+		}
+		if (this.contratsFeveEnCours.size()==0) {
+			return PRIX_VENTE_PAR_DEFAUT;
+		}
+		else {
+			double prixMoyen = 0;
+			for (ContratCadre<Feve> cc : this.contratsFevesEnCours) {
+				prixMoyen+=cc.getPrixAuKilo();
+			}
+			prixMoyen = prixMoyen/ this.contratsFevesEnCours.size();
+			double prixProposé = 0 ;
+			prixProposé = prixMoyen + prixMoyen*0.05
+		}
 		
-		return 0;
+		//End Kevin
 	}
 
 	@Override
