@@ -60,7 +60,7 @@ public class Transformateur2 implements IActeur, IAcheteurContratCadre<Feve>, IV
 
 	@Override
 	public void proposerEcheancierAcheteur(ContratCadre<Feve> cc) {
-		// TODO Auto-generated method stub
+
 		
 	}
 
@@ -84,7 +84,6 @@ public class Transformateur2 implements IActeur, IAcheteurContratCadre<Feve>, IV
 
 	@Override
 	public double payer(double montant, ContratCadre<Feve> cc) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
@@ -100,7 +99,6 @@ public class Transformateur2 implements IActeur, IAcheteurContratCadre<Feve>, IV
 
 	@Override
 	public double getPrix(Chocolat produit, Double quantite) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
