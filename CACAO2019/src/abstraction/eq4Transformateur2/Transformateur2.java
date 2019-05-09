@@ -61,7 +61,7 @@ public class Transformateur2 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	public ContratCadre<Feve> getNouveauContrat() {
 		// Choix du vendeur
 		for(IActeur a : Monde.LE_MONDE.getActeurs()) {
-			
+		
 		}
 		
 		
