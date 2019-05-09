@@ -60,7 +60,7 @@ public class Transformateur2 implements IActeur, IAcheteurContratCadre<Feve>, IV
 
 	@Override
 	public void proposerEcheancierAcheteur(ContratCadre<Feve> cc) {
-		// TODO Auto-generated method stub
+
 		
 	}
 
