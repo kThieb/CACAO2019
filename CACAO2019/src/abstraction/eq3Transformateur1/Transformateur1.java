@@ -30,12 +30,15 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	private HashMap<Feve,Stock> stockFeves;
 	
 	public Transformateur1() {
+		
+		// begin eve
 		this.stockFeves = new HashMap<Feve,Stock>();
 		this.stockChocolat = new HashMap<Chocolat,Stock>();
 //		int sommeFeves = 0;
 //		this.iStockFeves = new Indicateur("EQ3 stock feves", this, sommeFeves);
 //		int sommeChocolat = 0;
 //		this.iStockChocolat = new Indicateur("EQ3 stock chocolat", this, sommeChocolat);
+		// end eve
 		
 		this.soldeBancaire=new Indicateur("EQ3 solde bancaire", this, 100000);
 		this.journal = new Journal ("Vente aléatoire de cacao");
