@@ -15,7 +15,9 @@ import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 
 public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, IDistributeurChocolat {
-	
+	private static int NB_DIST = 2;
+
+	private int numero;
 	private Indicateur soldeBancaire;
 	private Chocolat mG_E_SHP;
 	private Chocolat mG_NE_SHP;
@@ -62,7 +64,7 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 	}
 
 	public String getNom() {
-		return "Walmart";
+		return "DI"+this.numero+"Romu";
 	}
 
 	public void initialiser() {
@@ -110,7 +112,8 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 	@Override
 	public ContratCadre<Chocolat> getNouveauContrat() { //ILIAS
 		ContratCadre<Chocolat> res=null;
-		double solde = this.soldeBancaire.getValeur();
+		return null;
+		/*double solde = this.soldeBancaire.getValeur();
 		for (ContratCadre<Chocolat> cc : this.contratsEnCours) {
 			solde = solde - cc.getMontantRestantARegler();
 		}
@@ -133,7 +136,7 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 			quantite = quantite/1.1;
 			res = new ContratCadre<Chocolat>(this, vendeur, this.produit, quantite);
 		}
-		return res;
+		return res;*/
 	}
 
 	@Override
