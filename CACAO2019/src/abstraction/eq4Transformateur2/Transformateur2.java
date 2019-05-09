@@ -29,6 +29,7 @@ public class Transformateur2 implements IActeur {
 		Monde.LE_MONDE.ajouterJournal(this.journal);
 		this.journal.ajouter("Initialisation du transformateur 2 (équipe 4).");
 		System.out.println("Ajout du journal...");
+
 	}
 
 	public void next() {
