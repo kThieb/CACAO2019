@@ -18,6 +18,7 @@ import java.util.Observable;
 public class Journal  extends Observable{
 	private String nom;            // le nom du journal
 	private ArrayList<String>liste;// la liste des messages deposes sur le journal
+	private int lignesAffichables;
 
 	/**
 	 * Initialise le journal avec le nom nom et une liste de messages vide   
@@ -26,6 +27,7 @@ public class Journal  extends Observable{
 	public Journal(String nom) {
 		this.nom = nom;
 		this.liste=new ArrayList<String>();
+		this.lignesAffichables=200;
 	}
 	/**
 	 * @return Retourne le nom du journal
@@ -39,6 +41,11 @@ public class Journal  extends Observable{
 	public int getTaille() {
 		return this.liste.size();
 	}
+	
+	public void augmenterLignesAffichables() {
+		this.lignesAffichables*=2;
+	}
+	
 	/**
 	 * Ajoute le message s sur le journal
 	 * @param s le message a ajouter sur le journal
@@ -81,7 +88,7 @@ public class Journal  extends Observable{
 	 */
 	public String toHtml() {
 		String s="<html>...<br/>";
-		for (int i=Math.max(0,this.getTaille()-200); i<this.getTaille(); i++) {
+		for (int i=Math.max(0,this.getTaille()-this.lignesAffichables); i<this.getTaille(); i++) {
 			s+=this.get(i).toString()+"<br/>";
 		}
 		return s+"</html>";
