@@ -1,5 +1,8 @@
 package abstraction.eq2Producteur2;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import abstraction.eq1Producteur1.ventesCacaoAleatoires.IVendeurCacaoAleatoire;
 import abstraction.eq7Romu.produits.Feve;
 import abstraction.eq7Romu.ventesContratCadre.ContratCadre;
@@ -14,7 +17,15 @@ public class Producteur2 implements IActeur, IVendeurCacaoAleatoire, IVendeurCon
 	
 	private Indicateur stockFeves;
 	private Indicateur soldeBancaire;
+	private Journal journal;
 
+	private int productionParStep; // kg
+	private Feve fevesProduites;
+	private int numero;
+	private List<ContratCadre<Feve>> contratsEnCours;
+	private double prixVente;
+	
+	
 	public Producteur2() {
 		this.stockFeves=new Indicateur("EQ2 stock feves", this, 1000);
 		this.soldeBancaire=new Indicateur("EQ2 solde bancaire", this, 50000);
