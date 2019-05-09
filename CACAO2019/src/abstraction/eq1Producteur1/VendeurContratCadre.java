@@ -15,8 +15,14 @@ public class VendeurContratCadre implements IVendeurContratCadre {
 
 	@Override
 	public double getPrix(Object produit, Double quantite) {
-		// TODO Auto-generated method stub
-		return 0;
+		// BEGIN Pauline
+		if (produit== null || quantite<=0.0) {
+			return Double.NaN;
+		} else if (quantite > this.getStockEnVente().get(produit)) {
+			return Double.NaN;
+		} else {
+			return 5.0;
+		}
 	}
 
 	@Override
