@@ -42,7 +42,6 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 		//Choix du produit
 		ArrayList<Chocolat> produits = new ArrayList<Chocolat>();
 		produits.add(Chocolat.HG_E_SHP);
-
 		
 		//Choix quantité
 		
