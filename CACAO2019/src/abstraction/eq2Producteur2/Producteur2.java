@@ -15,6 +15,12 @@ import abstraction.fourni.Monde;
 
 public class Producteur2 implements IActeur, IVendeurCacaoAleatoire, IVendeurContratCadre<Feve> {
 	
+	private static int NB_PROD = 2;
+	private static final double PRIX_INIT = 1.500;
+	private static final double PRIX_MIN = 0.800;
+	private static final double PRIX_MAX = 2.500;
+	
+	
 	private Indicateur stockFeves;
 	private Indicateur soldeBancaire;
 	private Journal journal;
