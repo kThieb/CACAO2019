@@ -52,7 +52,6 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 		produits.add(Chocolat.MG_NE_HP);
 		produits.add(Chocolat.MG_NE_SHP);
 		
-		
 		//Choix quantité
 		
 		//Création Contrat
