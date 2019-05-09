@@ -1,6 +1,7 @@
 package abstraction.eq1Producteur1;
 
 import abstraction.eq7Romu.ventesContratCadre.ContratCadre;
+import abstraction.eq7Romu.ventesContratCadre.Echeancier;
 import abstraction.eq7Romu.ventesContratCadre.IVendeurContratCadre;
 import abstraction.eq7Romu.ventesContratCadre.StockEnVente;
 
@@ -21,8 +22,8 @@ public class VendeurContratCadre implements IVendeurContratCadre {
 
 	@Override
 	public void proposerEcheancierVendeur(ContratCadre cc) {
-		// TODO Auto-generated method stub
-		
+		// Nassim
+		cc.ajouterEcheancier(new Echeancier(cc.getEcheancier()));
 	}
 
 	@Override
