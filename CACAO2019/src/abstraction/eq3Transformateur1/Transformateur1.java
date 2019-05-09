@@ -51,7 +51,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		Monde.LE_MONDE.ajouterIndicateur(this.soldeBancaire);
 //		Monde.LE_MONDE.ajouterIndicateur(this.iStockChocolat);
 		
-		//begin sachaa
+		//begin sacha
 		this.contratsChocolatEnCours = new ArrayList<ContratCadre<Chocolat>>();
 		this.contratsFeveEnCours = new ArrayList<ContratCadre<Feve>>();
 		this.fevesAchetees = fevesAchetees;
