@@ -15,7 +15,9 @@ import abstraction.fourni.Monde;
 
 public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistributeurChocolat {
 	private Journal journal;
-	private List<Indicateur> stock;
+	private ArrayList<Indicateur> stock;
+	
+
 
 	public Distributeur1() {
 		this.journal = new Journal("jEq5");
@@ -32,6 +34,8 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 	public void next() {
 	}
 
+
+	
 // ------------------------------------------------------------------------------------------------------
 // ACHETEUR
 // ------------------------------------------------------------------------------------------------------ 
@@ -44,6 +48,10 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 		//Choix du produit
 		ArrayList<Chocolat> produits = new ArrayList<Chocolat>();
 		produits.add(Chocolat.HG_E_SHP);
+		produits.add(Chocolat.MG_E_SHP);
+		produits.add(Chocolat.MG_NE_HP);
+		produits.add(Chocolat.MG_NE_SHP);
+		
 		
 		//Choix quantité
 		
