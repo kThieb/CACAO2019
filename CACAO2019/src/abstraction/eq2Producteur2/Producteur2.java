@@ -1,9 +1,7 @@
 package abstraction.eq2Producteur2;
 
-<<<<<<< HEAD
 import java.util.ArrayList;
-=======
->>>>>>> branch 'master' of https://github.com/Clementmagnin/CACAO2019.git
+
 import java.util.List;
 
 import abstraction.eq1Producteur1.ventesCacaoAleatoires.IVendeurCacaoAleatoire;
