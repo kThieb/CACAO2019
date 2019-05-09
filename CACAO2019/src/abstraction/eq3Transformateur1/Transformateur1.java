@@ -22,9 +22,10 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	private Indicateur iStockChocolat;
 	private int nbNextAvantEchange;
 	private Journal journal;
-	
+	//begin sacha
 	private List<ContratCadre<Chocolat>> contratsChocolatEnCours;
 	private List<ContratCadre<Feve>> contratsFeveEnCours;
+	//end sacha
 	private HashMap<Chocolat,Stock> stockChocolat;
 	private HashMap<Feve,Stock> stockFeves;
 	
@@ -40,8 +41,10 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		Monde.LE_MONDE.ajouterIndicateur(this.soldeBancaire);
 		Monde.LE_MONDE.ajouterIndicateur(this.iStockChocolat);
 		
+		//begin sacha
 		this.contratsChocolatEnCours = new ArrayList<ContratCadre<Chocolat>>();
 		this.contratsFeveEnCours = new ArrayList<ContratCadre<Feve>>();
+		//end sacha
 		
 		this.nbNextAvantEchange = 0;
 
