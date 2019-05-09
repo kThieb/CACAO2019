@@ -25,6 +25,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	//begin sacha
 	private List<ContratCadre<Chocolat>> contratsChocolatEnCours;
 	private List<ContratCadre<Feve>> contratsFeveEnCours;
+	private Feve fevesAchetees;
 	//end sacha
 	private HashMap<Chocolat,Stock> stockChocolat;
 	private HashMap<Feve,Stock> stockFeves;
@@ -48,6 +49,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		//begin sachaa
 		this.contratsChocolatEnCours = new ArrayList<ContratCadre<Chocolat>>();
 		this.contratsFeveEnCours = new ArrayList<ContratCadre<Feve>>();
+		this.fevesAchetees = fevesAchetees;
 		//end sacha
 		
 		this.nbNextAvantEchange = 0;
@@ -119,7 +121,14 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 
 	@Override
 	public void receptionner(Feve produit, double quantite, ContratCadre<Feve> cc) {
-		// TODO Auto-generated method stub
+		// begin sacha
+		if (produit==null || !produit.equals(this.fevesAchetees)) {
+			throw new IllegalArgumentException("Appel de la methode receptionner de Transformateur1 avec un produit ne correspondant pas aux feves achetees par le transformateur");
+		}
+		if (quantite<=0.0) {
+			throw new IllegalArgumentException("Appel de la methode receptionner de Transformateur1 avec une quantite egale a "+quantite);
+		}
+		this.stockFeves.ajou;
 		
 	}
 
