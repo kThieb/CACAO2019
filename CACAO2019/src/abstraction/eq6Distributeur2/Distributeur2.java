@@ -1,5 +1,8 @@
 package abstraction.eq6Distributeur2;
 
+import java.util.HashMap;
+import java.util.List;
+
 import abstraction.eq7Romu.distributionChocolat.IDistributeurChocolat;
 import abstraction.eq7Romu.produits.Chocolat;
 import abstraction.eq7Romu.ventesContratCadre.ContratCadre;
@@ -12,12 +15,21 @@ import abstraction.fourni.Monde;
 
 public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, IDistributeurChocolat {
 
-	
+	private List<ContratCadre<Chocolat>> contratsEnCours;
 	private Journal journal;
-	
+	private HashMap prixParProduit;
+
 	public Distributeur2() {
 		this.journal = new Journal("jEq6");
 		Monde.LE_MONDE.ajouterJournal(this.journal);
+	}
+	
+	public List<ContratCadre<Chocolat>> getContratsEnCours() {
+		return this.contratsEnCours;
+	}
+	
+	public HashMap getPrixParProduit () {
+		return this.prixParProduit;
 	}
 	
 	public String getNom() {
@@ -66,9 +78,9 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 		Chocolat produit = cc.getProduit();
 		
 		double dernierprixpropose = cc.getPrixAuKilo();
-		double notreprix = this.getStockEnVente().get(produit);
+		double notreprix = this.getPrix(produit);
 		
-		if (notreprix/dernierprixpropose >= 1.05) {
+		if (notreprix/dernierprixpropose >= this.getMarge()) {
 			satisfait = true;
 		}else {
 			satisfait = false;
@@ -98,8 +110,9 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 
 	@Override
 	public void notifierAcheteur(ContratCadre<Chocolat> cc) {
-		// TODO Auto-generated method stub
-		
+		if (cc!=null) {
+			this.getContratsEnCours().add(cc);
+		}
 	}
 
 	@Override
