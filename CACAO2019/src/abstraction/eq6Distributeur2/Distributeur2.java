@@ -18,13 +18,23 @@ import abstraction.fourni.Monde;
 
 public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, IDistributeurChocolat {
 
+
 	private List<ContratCadre<Chocolat>> contratsEnCours;
 	private Indicateur stock;
+
 	private Indicateur soldeBancaire;
-	private Chocolat produit;
+	private Chocolat mG_E_SHP;
+	private Chocolat mG_NE_SHP;
+	private Chocolat mG_NE_HP;;
+	private Chocolat hG_E_SHP;
+	private Indicateur stockMG_E_SHP;
+	private Indicateur stockMG_NE_SHP;
+	private Indicateur stockMG_NE_HP;;
+	private Indicateur stockHG_E_SHP;
 	private Journal journal;
 	private HashMap prixParProduit;
-
+	private double marge;
+	private StockEnVente<Chocolat> stockEnVente; 
 
 	public Distributeur2() {
 	}
@@ -37,6 +47,38 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 		return this.prixParProduit;
 	}
 	
+	public Distributeur2(Chocolat mG_E_SHP, Chocolat mG_NE_SHP, Chocolat mG_NE_HP,
+			Chocolat hG_E_SHP, double stockMG_E_SHP, double stockMG_NE_SHP, double stockMG_NE_HP,
+			double stockHG_E_SHP, Indicateur soldeinitial, Journal journal, List<ContratCadre<Chocolat>> contratsEnCours, Double marge ) {
+		//NORDIN
+		this.soldeBancaire = soldeBancaire;
+		mG_E_SHP = mG_E_SHP;
+		mG_NE_SHP = mG_NE_SHP;
+		mG_NE_HP = mG_NE_HP;
+		hG_E_SHP = hG_E_SHP;
+		this.stockMG_E_SHP = new Indicateur(this.getNom()+" Stock de moyenne-gamme, équitable et sans huile de palme ", this, stockMG_E_SHP);
+		Monde.LE_MONDE.ajouterIndicateur(this.stockMG_E_SHP);
+		this.stockMG_NE_SHP = new Indicateur(this.getNom()+" Stock de moyenne-gamme et sans huile de palme ", this, stockMG_NE_SHP);
+		Monde.LE_MONDE.ajouterIndicateur(this.stockMG_NE_SHP);
+		this.stockMG_NE_HP = new Indicateur(this.getNom()+" Stock de moyenne-gamme  ", this, stockMG_NE_HP);
+		Monde.LE_MONDE.ajouterIndicateur(this.stockMG_NE_HP);
+		this.stockHG_E_SHP = new Indicateur(this.getNom()+" Stock de haute-gamme", this, stockHG_E_SHP);
+		Monde.LE_MONDE.ajouterIndicateur(this.stockHG_E_SHP);
+		this.journal = new Journal("Journal "+this.getNom());
+		Monde.LE_MONDE.ajouterJournal(this.journal);
+		this.contratsEnCours = new ArrayList<ContratCadre<Chocolat>>();
+		this.marge = marge; 
+
+	}
+
+	public double getMarge() {
+		return marge;
+	}
+
+	public void setMarge(double marge) {
+		this.marge = marge;
+	}
+
 	public String getNom() {
 		return "Walmart";
 	}
@@ -49,14 +91,31 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 
 	@Override
 	public StockEnVente<Chocolat> getStockEnVente() {
+		//NORDIN 
 		StockEnVente<Chocolat> stockEnVente = new StockEnVente<Chocolat>();
-		stockEnVente.ajouter(produit, this.stock.getValeur());
+		stockEnVente.ajouter(mG_E_SHP, this.stockMG_E_SHP.getValeur());
+		stockEnVente.ajouter(mG_NE_SHP, this.stockMG_NE_SHP.getValeur());
+		stockEnVente.ajouter(mG_NE_HP, this.stockMG_NE_HP.getValeur());
+		stockEnVente.ajouter(mG_E_SHP, this.stockMG_NE_SHP.getValeur());
 		return stockEnVente;		
 	}
 
 	@Override
 	public double getPrix(Chocolat c) {
-		// TODO Auto-generated method stub
+		//NORDIN
+		/*for (Chocolat chocolat : this.stockEnVente.getProduitsEnVente() ) {
+			
+		}
+		if (this.contratsEnCours.size()==0) {
+			return 40;
+		} else {
+			double prixMoyen = 0;
+			for (ContratCadre<Chocolat> cc : this.contratsEnCours) {
+				prixMoyen+=cc.getPrixAuKilo();
+			}
+			prixMoyen = prixMoyen/ this.contratsEnCours.size();
+			return prixMoyen *(1.0+this.marge);
+		}*/
 		return 0;
 	}
 
