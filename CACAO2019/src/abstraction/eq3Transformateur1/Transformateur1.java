@@ -111,7 +111,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 
 	@Override
 	public ContratCadre<Feve> getNouveauContrat() {
-	
+
 		return null;
 	}
 
