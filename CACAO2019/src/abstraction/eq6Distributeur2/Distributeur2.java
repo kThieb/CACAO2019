@@ -1,5 +1,7 @@
 package abstraction.eq6Distributeur2;
 
+
+import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,9 +17,13 @@ import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 
 public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, IDistributeurChocolat {
+
 	private static int NB_DIST = 2;
 
 	private int numero;
+	private List<ContratCadre<Chocolat>> contratsEnCours;
+	private Indicateur stock;
+
 	private Indicateur soldeBancaire;
 	private Chocolat mG_E_SHP;
 	private Chocolat mG_NE_SHP;
@@ -28,9 +34,20 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 	private Indicateur stockMG_NE_HP;;
 	private Indicateur stockHG_E_SHP;
 	private Journal journal;
-	private List<ContratCadre<Chocolat>> contratsEnCours;
+	private HashMap prixParProduit;
 	private double marge;
 	private StockEnVente<Chocolat> stockEnVente; 
+
+	public Distributeur2() {
+	}
+	
+	public List<ContratCadre<Chocolat>> getContratsEnCours() {
+		return this.contratsEnCours;
+	}
+	
+	public HashMap getPrixParProduit () {
+		return this.prixParProduit;
+	}
 	
 	public Distributeur2(Chocolat mG_E_SHP, Chocolat mG_NE_SHP, Chocolat mG_NE_HP,
 			Chocolat hG_E_SHP, double stockMG_E_SHP, double stockMG_NE_SHP, double stockMG_NE_HP,
@@ -53,6 +70,7 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 		Monde.LE_MONDE.ajouterJournal(this.journal);
 		this.contratsEnCours = new ArrayList<ContratCadre<Chocolat>>();
 		this.marge = marge; 
+
 	}
 
 	public double getMarge() {
@@ -112,9 +130,11 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 	@Override
 	public ContratCadre<Chocolat> getNouveauContrat() { //ILIAS
 		ContratCadre<Chocolat> res=null;
+
 		return null;
-		/*double solde = this.soldeBancaire.getValeur();
-		for (ContratCadre<Chocolat> cc : this.contratsEnCours) {
+		/*
+		double solde = this.soldeBancaire.getValeur();
+		for (ContratCadre<Chocolat> cc : this.getContratsEnCours()) {
 			solde = solde - cc.getMontantRestantARegler();
 		}
 		List<IVendeurContratCadre<Chocolat>> vendeurs = new ArrayList<IVendeurContratCadre<Chocolat>>();
@@ -144,17 +164,48 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 		// TODO Auto-generated method stub
 		
 	}
+	
+	//Caroline
+	public boolean satisfaitParPrixContratCadre (ContratCadre<Chocolat> cc) {
+		boolean satisfait = true;
+		Chocolat produit = cc.getProduit();
+		
+		double dernierprixpropose = cc.getPrixAuKilo();
+		double notreprix = this.getPrix(produit);
+		
+		if (notreprix/dernierprixpropose >= this.getMarge()) {
+			satisfait = true;
+		}else {
+			satisfait = false;
+		}
+		return satisfait;
+	}
 
 	@Override
+	//Caroline
 	public void proposerPrixAcheteur(ContratCadre<Chocolat> cc) {
-		// TODO Auto-generated method stub
+		//Si le dernier prix de la liste nous satisfait => proposer le même prix
+		//Sinon, le dernier prix nous satisfait pas :
+			//Si le vendeur propose 2 fois le même prix et pas satisfait => ne pas ajouter de prix
+			// Sinon proposer un nouveau prix 
+		
+		if (satisfaitParPrixContratCadre (cc)) {
+			cc.ajouterPrixAuKilo(cc.getPrixAuKilo());
+		} else {
+			if (cc.getListePrixAuKilo().get(cc.getListePrixAuKilo().size() -1)==cc.getListePrixAuKilo().get(cc.getListePrixAuKilo().size() -3)) {
+				cc.ajouterPrixAuKilo(null);
+			} else {
+				cc.ajouterPrixAuKilo(cc.getPrixAuKilo()*0.95);
+			}
+		}
 		
 	}
 
 	@Override
 	public void notifierAcheteur(ContratCadre<Chocolat> cc) {
-		// TODO Auto-generated method stub
-		
+		if (cc!=null) {
+			this.getContratsEnCours().add(cc);
+		}
 	}
 
 	@Override
