@@ -10,6 +10,7 @@ import abstraction.eq3Transformateur1.Transformateur1;
 import abstraction.eq4Transformateur2.Transformateur2;
 import abstraction.eq5Distributeur1.Distributeur1;
 import abstraction.eq6Distributeur2.Distributeur2;
+import abstraction.eq7Romu.acteurs.CreateurRomu;
 
 
 
@@ -50,6 +51,7 @@ public class Monde extends Observable {
 		this.journaux=new ArrayList<Journal>();
 	}
 	public void peupler() {
+		this.ajouterActeur(new CreateurRomu());
 		this.ajouterActeur(new Producteur1());
 		this.ajouterActeur(new Producteur2());
 		this.ajouterActeur(new Transformateur1());
@@ -162,8 +164,11 @@ public class Monde extends Observable {
 		this.setChanged();
 		this.notifyObservers("step");
 		for (IActeur a : this.acteurs) {
+			System.out.println("Step "+this.getStep()+" : "+a.getNom()+".next()");
 			a.next();
+			System.out.println("Step "+this.getStep()+" : "+a.getNom()+".next() termine");
 		}
+		System.out.println("Step "+this.getStep()+" : appels a next() effectues");
 		for (Journal j : journaux) {
 			j.notifyObservers("endNext");
 		}
