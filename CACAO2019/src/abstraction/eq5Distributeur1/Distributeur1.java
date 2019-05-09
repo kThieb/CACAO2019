@@ -1,5 +1,7 @@
 package abstraction.eq5Distributeur1;
 
+import java.util.ArrayList;
+
 import abstraction.eq7Romu.distributionChocolat.IDistributeurChocolat;
 import abstraction.eq7Romu.produits.Chocolat;
 import abstraction.eq7Romu.ventesContratCadre.ContratCadre;
@@ -34,7 +36,17 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 	
 	@Override
 	public ContratCadre getNouveauContrat() {
-		// TODO Auto-generated method stub
+		// On va créer un nouveau contrat cadre 
+		// Au préalable, il faut identifier produit, quantité, vendeur, acheteur
+		
+		//Choix du produit
+		ArrayList<Chocolat> produits = new ArrayList<Chocolat>();
+		produits.add(Chocolat.HG_E_SHP);
+
+		
+		//Choix quantité
+		
+		//Création Contrat
 		return null;
 	}
 
