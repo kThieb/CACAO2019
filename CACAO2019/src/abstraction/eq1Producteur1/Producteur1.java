@@ -1,11 +1,14 @@
 package abstraction.eq1Producteur1;
 
+import java.util.HashMap;
+
 import abstraction.eq1Producteur1.ventesCacaoAleatoires.IVendeurCacaoAleatoire;
 import abstraction.eq1Producteur1.ventesCacaoAleatoires.SuperviseurVentesCacaoAleatoires;
 import abstraction.fourni.IActeur;
 import abstraction.fourni.Indicateur;
 import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
+import abstraction.eq7Romu.produits.Feve;
 
 public class Producteur1 implements IActeur, IVendeurCacaoAleatoire {
 	
@@ -14,6 +17,9 @@ public class Producteur1 implements IActeur, IVendeurCacaoAleatoire {
 	// BEGIN Manon
 	private Journal journal1;
 	//END MANON
+	// BEGIN Pauline 
+	private HashMap<Feve, Double> prixAuKilo;
+	// END Pauline
 
 	public Producteur1() {
 		this.stockFeves=new Indicateur("EQ1 stock feves", this, 1000);
@@ -55,5 +61,10 @@ public class Producteur1 implements IActeur, IVendeurCacaoAleatoire {
 	public void notificationVente(double quantite, double prix) {
 		this.stockFeves.retirer(this, quantite);
 		this.soldeBancaire.ajouter(this, quantite*prix);
+	}
+	
+	public HashMap<Feve, Double> getPrixAuKilo() {
+		// Pauline 
+		// creer dico avec prix au kilo pour chaque feve que on vend 
 	}
 }
