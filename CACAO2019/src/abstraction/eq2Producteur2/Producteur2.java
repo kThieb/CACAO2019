@@ -48,13 +48,23 @@ public class Producteur2 implements IActeur, IVendeurCacaoAleatoire, IVendeurCon
 
 	@Override
 	public StockEnVente getStockEnVente() {
-		return null;
+		double stockrestant = this.stockFeves.getValeur();
+		for (ContratCadre<Feve> cc : this.contratsEnCours) {
+			if (Monde.LE_MONDE != null) {
+				stockRestant = stockRestant - cc.getQuantiteRestantALivrer();
+			}
+		}
+		StockEnVente<Feve> res = new StockEnVente<Feve>();
+		res.ajouter(this.fevesProduites, Math.max(0.0, stockRestant));
+		return res;
 	}
 
 	@Override
 	public double getPrix(Object produit, Double quantite) {
-		// TODO Auto-generated method stub
-		return 0;
+		if (produit==null || quantite<=0.0 || this.getStockEnVente().get(produit)<quantite) {
+			return Double.NaN;
+		}
+		return this.prixVente;
 	}
 
 	@Override
