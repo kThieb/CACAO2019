@@ -21,7 +21,7 @@ public class Transformateur2 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	
 	
 	private HashMap<Chocolat, Stock> stocksChocolat;
-	private Stock stockFeves;
+	private HashMap<Feve, Stock> stockFeves;
 	
 	public Transformateur2() {
 		this.iStockFeves=new Indicateur("EQ4 stock feves", this, 50);
@@ -61,7 +61,10 @@ public class Transformateur2 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	public ContratCadre<Feve> getNouveauContrat() {
 		// Choix du vendeur
 		for(IActeur a : Monde.LE_MONDE.getActeurs()) {
-		
+			if(a instanceof IVendeurContratCadre) {
+				StockEnVente sev = ((IVendeurContratCadre) a).getStockEnVente();
+				
+			}
 		}
 		
 		
