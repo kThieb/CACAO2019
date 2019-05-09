@@ -22,23 +22,34 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
     private Indicateur soldeBancaire;
 	private int nbNextAvantEchange;
 	private Journal journal;
+<<<<<<< HEAD
 	//Begin Kevin
 	private static final double PRIX_VENTE_PAR_DEFAUT = 40.0;
 	//End Kevin
 	
+=======
+	//begin sacha
+>>>>>>> branch 'master' of https://github.com/kThieb/CACAO2019.git
 	private List<ContratCadre<Chocolat>> contratsChocolatEnCours;
 	private List<ContratCadre<Feve>> contratsFeveEnCours;
+	private Feve fevesAchetees;
+	//end sacha
+	//begin Raphael
+	private Indicateur prixAchats;
+	//end Raphael
 	private HashMap<Chocolat,Stock> stockChocolat;
 	private HashMap<Feve,Stock> stockFeves;
 	
 	public Transformateur1() {
+		
+		// begin eve
 		this.stockFeves = new HashMap<Feve,Stock>();
 		this.stockChocolat = new HashMap<Chocolat,Stock>();
 //		int sommeFeves = 0;
 //		this.iStockFeves = new Indicateur("EQ3 stock feves", this, sommeFeves);
 //		int sommeChocolat = 0;
 //		this.iStockChocolat = new Indicateur("EQ3 stock chocolat", this, sommeChocolat);
-		
+		// end eve
 		this.soldeBancaire=new Indicateur("EQ3 solde bancaire", this, 100000);
 		this.journal = new Journal ("Vente aléatoire de cacao");
 		Monde.LE_MONDE.ajouterJournal(this.journal);
@@ -47,8 +58,15 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		Monde.LE_MONDE.ajouterIndicateur(this.soldeBancaire);
 //		Monde.LE_MONDE.ajouterIndicateur(this.iStockChocolat);
 		
+		//begin sacha
 		this.contratsChocolatEnCours = new ArrayList<ContratCadre<Chocolat>>();
 		this.contratsFeveEnCours = new ArrayList<ContratCadre<Feve>>();
+		this.fevesAchetees = fevesAchetees;
+		//end sacha
+		
+		//begin Raphael
+		this.prixAchats=new Indicateur("EQ3 prix achats", this);
+		//end Raphael
 		
 		this.nbNextAvantEchange = 0;
 
@@ -119,7 +137,14 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 
 	@Override
 	public void receptionner(Feve produit, double quantite, ContratCadre<Feve> cc) {
-		// TODO Auto-generated method stub
+		// begin sacha
+		if (produit==null || !produit.equals(this.fevesAchetees)) {
+			throw new IllegalArgumentException("Appel de la methode receptionner de Transformateur1 avec un produit ne correspondant pas aux feves achetees par le transformateur");
+		}
+		if (quantite<=0.0) {
+			throw new IllegalArgumentException("Appel de la methode receptionner de Transformateur1 avec une quantite egale a "+quantite);
+		}
+		this.stockFeves.ajou;
 		
 	}
 
