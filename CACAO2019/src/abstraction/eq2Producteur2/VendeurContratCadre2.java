@@ -4,7 +4,7 @@ import abstraction.eq7Romu.ventesContratCadre.ContratCadre;
 import abstraction.eq7Romu.ventesContratCadre.IVendeurContratCadre;
 import abstraction.eq7Romu.ventesContratCadre.StockEnVente;
 
-public class VendeurContratCadre implements IVendeurContratCadre {
+public class VendeurContratCadre2 implements IVendeurContratCadre {
 
 	@Override
 	public StockEnVente getStockEnVente() {
