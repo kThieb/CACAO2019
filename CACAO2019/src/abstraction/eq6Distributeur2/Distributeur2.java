@@ -20,42 +20,53 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 
 
 	private List<ContratCadre<Chocolat>> contratsEnCours;
-	private Indicateur stock;
-
+	private double marge;
 	private Indicateur soldeBancaire;
+	
 	private Chocolat mG_E_SHP;
 	private Chocolat mG_NE_SHP;
 	private Chocolat mG_NE_HP;;
 	private Chocolat hG_E_SHP;
+	
 	private Indicateur stockMG_E_SHP;
 	private Indicateur stockMG_NE_SHP;
 	private Indicateur stockMG_NE_HP;;
 	private Indicateur stockHG_E_SHP;
+	
+	private Indicateur prixMG_E_SHP;
+	private Indicateur prixMG_NE_SHP;
+	private Indicateur prixMG_NE_HP;;
+	private Indicateur prixHG_E_SHP;
+	
 	private Journal journal;
-	private HashMap prixParProduit;
-	private double marge;
+
+	private HashMap<Chocolat,Double> prixParProduit;
 	private StockEnVente<Chocolat> stockEnVente; 
 
 	public Distributeur2() {
 	}
 	
-	public List<ContratCadre<Chocolat>> getContratsEnCours() {
-		return this.contratsEnCours;
-	}
-	
-	public HashMap getPrixParProduit () {
-		return this.prixParProduit;
-	}
-	
 	public Distributeur2(Chocolat mG_E_SHP, Chocolat mG_NE_SHP, Chocolat mG_NE_HP,
 			Chocolat hG_E_SHP, double stockMG_E_SHP, double stockMG_NE_SHP, double stockMG_NE_HP,
-			double stockHG_E_SHP, Indicateur soldeinitial, Journal journal, List<ContratCadre<Chocolat>> contratsEnCours, Double marge ) {
-		//NORDIN
-		this.soldeBancaire = soldeBancaire;
-		mG_E_SHP = mG_E_SHP;
-		mG_NE_SHP = mG_NE_SHP;
-		mG_NE_HP = mG_NE_HP;
-		hG_E_SHP = hG_E_SHP;
+			double stockHG_E_SHP, double prixMG_E_SHP, double prixMG_NE_SHP, double prixMG_NE_HP,
+			double prixHG_E_SHP,Indicateur soldeinitial, Journal journal, List<ContratCadre<Chocolat>> contratsEnCours, Double marge ) {
+		
+		//NORDIN 
+		
+		this.soldeBancaire = soldeinitial;
+		
+		StockEnVente<Chocolat> stockEnVente = new StockEnVente<Chocolat>();
+		stockEnVente.ajouter(hG_E_SHP, stockHG_E_SHP);
+		stockEnVente.ajouter(mG_E_SHP, stockMG_E_SHP);
+		stockEnVente.ajouter(mG_NE_SHP,stockMG_NE_SHP);
+		stockEnVente.ajouter(mG_NE_HP, stockMG_NE_HP);
+		
+		HashMap<Chocolat,Double> prixParProduit = new HashMap<Chocolat,Double>();
+		prixParProduit.put(hG_E_SHP, prixHG_E_SHP);
+		prixParProduit.put(mG_E_SHP, prixMG_E_SHP);
+		prixParProduit.put(mG_NE_SHP,prixMG_NE_SHP);
+		prixParProduit.put(mG_NE_HP, prixMG_NE_HP);
+		
 		this.stockMG_E_SHP = new Indicateur(this.getNom()+" Stock de moyenne-gamme, équitable et sans huile de palme ", this, stockMG_E_SHP);
 		Monde.LE_MONDE.ajouterIndicateur(this.stockMG_E_SHP);
 		this.stockMG_NE_SHP = new Indicateur(this.getNom()+" Stock de moyenne-gamme et sans huile de palme ", this, stockMG_NE_SHP);
@@ -64,13 +75,33 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 		Monde.LE_MONDE.ajouterIndicateur(this.stockMG_NE_HP);
 		this.stockHG_E_SHP = new Indicateur(this.getNom()+" Stock de haute-gamme", this, stockHG_E_SHP);
 		Monde.LE_MONDE.ajouterIndicateur(this.stockHG_E_SHP);
+		
+		this.prixMG_E_SHP = new Indicateur(this.getNom()+" Prix de moyenne-gamme, équitable et sans huile de palme ", this, prixMG_E_SHP);
+		Monde.LE_MONDE.ajouterIndicateur(this.prixMG_E_SHP);
+		this.prixMG_NE_SHP = new Indicateur(this.getNom()+" Prix de moyenne-gamme et sans huile de palme ", this, prixMG_NE_SHP);
+		Monde.LE_MONDE.ajouterIndicateur(this.prixMG_NE_SHP);
+		this.prixMG_NE_HP = new Indicateur(this.getNom()+" Prix de moyenne-gamme  ", this, prixMG_NE_HP);
+		Monde.LE_MONDE.ajouterIndicateur(this.prixMG_NE_HP);
+		this.prixHG_E_SHP = new Indicateur(this.getNom()+" Prix de haute-gamme", this, prixHG_E_SHP);
+		Monde.LE_MONDE.ajouterIndicateur(this.prixHG_E_SHP);
+		
 		this.journal = new Journal("Journal "+this.getNom());
 		Monde.LE_MONDE.ajouterJournal(this.journal);
+	
 		this.contratsEnCours = new ArrayList<ContratCadre<Chocolat>>();
+		
 		this.marge = marge; 
 
 	}
 
+	public List<ContratCadre<Chocolat>> getContratsEnCours() {
+		return this.contratsEnCours;
+	}
+	
+	public HashMap<Chocolat,Double> getPrixParProduit () {
+		return this.prixParProduit;
+	}
+	
 	public double getMarge() {
 		return marge;
 	}
@@ -92,12 +123,7 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 	@Override
 	public StockEnVente<Chocolat> getStockEnVente() {
 		//NORDIN 
-		StockEnVente<Chocolat> stockEnVente = new StockEnVente<Chocolat>();
-		stockEnVente.ajouter(mG_E_SHP, this.stockMG_E_SHP.getValeur());
-		stockEnVente.ajouter(mG_NE_SHP, this.stockMG_NE_SHP.getValeur());
-		stockEnVente.ajouter(mG_NE_HP, this.stockMG_NE_HP.getValeur());
-		stockEnVente.ajouter(mG_E_SHP, this.stockMG_NE_SHP.getValeur());
-		return stockEnVente;		
+		return this.stockEnVente;		
 	}
 
 	@Override
@@ -184,34 +210,67 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 			//Si le vendeur propose 2 fois le même prix et pas satisfait => ne pas ajouter de prix
 			// Sinon proposer un nouveau prix 
 		
-		if (satisfaitParPrixContratCadre (cc)) {
-			cc.ajouterPrixAuKilo(cc.getPrixAuKilo());
-		} else {
-			if (cc.getListePrixAuKilo().get(cc.getListePrixAuKilo().size() -1)==cc.getListePrixAuKilo().get(cc.getListePrixAuKilo().size() -3)) {
-				cc.ajouterPrixAuKilo(null);
+		if (cc!=null) {
+			if (satisfaitParPrixContratCadre (cc)) {
+				cc.ajouterPrixAuKilo(cc.getPrixAuKilo());
 			} else {
-				cc.ajouterPrixAuKilo(cc.getPrixAuKilo()*0.95);
-			}
-		}
-		
-	}
+				if (cc.getListePrixAuKilo().get(cc.getListePrixAuKilo().size() -1)==cc.getListePrixAuKilo().get(cc.getListePrixAuKilo().size() -3)) {
+					cc=null;
+				} else {
+					if (cc.NB_MAX_ECHEANCIERS > cc.getListePrixAuKilo().size()) {
+						cc.ajouterPrixAuKilo(cc.getPrixAuKilo()*0.95);
+					}else {
+						cc=null;
+				}	}}}}
 
-	@Override
+	@Override//Caroline
 	public void notifierAcheteur(ContratCadre<Chocolat> cc) {
+		cc.signer();
 		if (cc!=null) {
 			this.getContratsEnCours().add(cc);
 		}
 	}
 
-	@Override
+	@Override//Caroline
 	public void receptionner(Chocolat produit, double quantite, ContratCadre<Chocolat> cc) {
-		// TODO Auto-generated method stub
+		boolean penality = false;
+		if (cc != null && quantite >0 && cc.getProduit()==produit) {
+			
+			if (quantite != cc.getQuantite()) {
+				penality = true;
+			}
 		
+			if (!penality) {
+				this.getStockEnVente().ajouter(produit, quantite);
+				cc.livrer(quantite);
+	
+			} else {
+				this.getStockEnVente().ajouter(produit, quantite);
+				cc.livrer(quantite);
+				cc.penaliteLivraison();
+			
+		}
+		}
 	}
 
-	@Override
+	@Override//Caroline
 	public double payer(double montant, ContratCadre<Chocolat> cc) {
-		// TODO Auto-generated method stub
-		return 0;
+		double montantpaye = 0;
+		if (montant<=0.0) {
+			throw new IllegalArgumentException("Appel de la methode payer de DistributeurRomu avec un montant negatif = "+montant);
+		}
+		if (cc!=null && this.soldeBancaire.getValeur() >montant + 100 ) {
+			this.soldeBancaire.retirer(this,montant);
+			cc.payer(montant);
+			montantpaye = montant;
+		} else {
+			if (montant-100>0) {
+				this.soldeBancaire.retirer(this,montant-100);
+				cc.payer(montant-100);
+				montantpaye = montant-100;
+			}
+				cc.penalitePaiement();
+		}
+		return montantpaye;
 	}
 }
