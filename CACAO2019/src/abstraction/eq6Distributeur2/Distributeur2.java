@@ -9,6 +9,7 @@ import abstraction.eq7Romu.distributionChocolat.IDistributeurChocolat;
 import abstraction.eq7Romu.produits.Chocolat;
 import abstraction.eq7Romu.produits.Gamme;
 import abstraction.eq7Romu.ventesContratCadre.ContratCadre;
+import abstraction.eq7Romu.ventesContratCadre.Echeancier;
 import abstraction.eq7Romu.ventesContratCadre.IAcheteurContratCadre;
 import abstraction.eq7Romu.ventesContratCadre.IVendeurContratCadre;
 import abstraction.eq7Romu.ventesContratCadre.StockEnVente;
@@ -20,16 +21,9 @@ import abstraction.fourni.Monde;
 
 public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, IDistributeurChocolat {
 
-
 	private List<ContratCadre<Chocolat>> contratsEnCours;
 	private double marge;
 	private Indicateur soldeBancaire;
-	
-	//Définir chocolat
-	private Chocolat mG_E_SHP;
-	private Chocolat mG_NE_SHP;
-	private Chocolat mG_NE_HP;
-	private Chocolat hG_E_SHP;
 	
 	private Indicateur stockMG_E_SHP;
 	private Indicateur stockMG_NE_SHP;
@@ -42,54 +36,36 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 	private Indicateur prixHG_E_SHP;
 	
 	private Journal journal;
-
+	
 	private HashMap<Chocolat,Double> prixParProduit;
 	private StockEnVente<Chocolat> stockEnVente; 
 
-	public Distributeur2() {
-	}
 	
-	public Distributeur2(Chocolat mG_E_SHP, Chocolat mG_NE_SHP, Chocolat mG_NE_HP,
-			Chocolat hG_E_SHP, double stockMG_E_SHP, double stockMG_NE_SHP, double stockMG_NE_HP,
+	public Distributeur2(double stockMG_E_SHP, double stockMG_NE_SHP, double stockMG_NE_HP,
 			double stockHG_E_SHP, double prixMG_E_SHP, double prixMG_NE_SHP, double prixMG_NE_HP,
 			double prixHG_E_SHP,Indicateur soldeinitial, Journal journal, List<ContratCadre<Chocolat>> contratsEnCours, Double marge ) {
 		
-		//NORDIN 
+		//NORDIN et Caroline
 		
 		this.soldeBancaire = soldeinitial;
-		this.mG_E_SHP = Chocolat.MG_E_SHP;
-		this.mG_NE_SHP = Chocolat.MG_NE_SHP;
-		this.mG_NE_HP = Chocolat.MG_NE_HP;
-		this.hG_E_SHP = Chocolat.HG_E_SHP;
 		
-		StockEnVente<Chocolat> stockEnVente = new StockEnVente<Chocolat>();
-		stockEnVente.ajouter(hG_E_SHP, stockHG_E_SHP);
-		stockEnVente.ajouter(mG_E_SHP, stockMG_E_SHP);
-		stockEnVente.ajouter(mG_NE_SHP,stockMG_NE_SHP);
-		stockEnVente.ajouter(mG_NE_HP, stockMG_NE_HP);
-		
-		HashMap<Chocolat,Double> prixParProduit = new HashMap<Chocolat,Double>();
-		prixParProduit.put(hG_E_SHP, prixHG_E_SHP);
-		prixParProduit.put(mG_E_SHP, prixMG_E_SHP);
-		prixParProduit.put(mG_NE_SHP,prixMG_NE_SHP);
-		prixParProduit.put(mG_NE_HP, prixMG_NE_HP);
-		
-		this.stockMG_E_SHP = new Indicateur(this.getNom()+" Stock de moyenne-gamme, équitable et sans huile de palme ", this, stockMG_E_SHP);
+		//Chnager par nom du chocolat pour que le getNom de indcateur renvoie le type chocolat
+		this.stockMG_E_SHP = new Indicateur(Chocolat.MG_E_SHP.toString(), this, stockMG_E_SHP);
 		Monde.LE_MONDE.ajouterIndicateur(this.stockMG_E_SHP);
-		this.stockMG_NE_SHP = new Indicateur(this.getNom()+" Stock de moyenne-gamme et sans huile de palme ", this, stockMG_NE_SHP);
+		this.stockMG_NE_SHP = new Indicateur(Chocolat.MG_NE_SHP.toString(), this, stockMG_NE_SHP);
 		Monde.LE_MONDE.ajouterIndicateur(this.stockMG_NE_SHP);
-		this.stockMG_NE_HP = new Indicateur(this.getNom()+" Stock de moyenne-gamme  ", this, stockMG_NE_HP);
+		this.stockMG_NE_HP = new Indicateur(Chocolat.MG_NE_HP.toString(), this, stockMG_NE_HP);
 		Monde.LE_MONDE.ajouterIndicateur(this.stockMG_NE_HP);
-		this.stockHG_E_SHP = new Indicateur(this.getNom()+" Stock de haute-gamme", this, stockHG_E_SHP);
+		this.stockHG_E_SHP = new Indicateur(Chocolat.HG_E_SHP.toString(), this, stockHG_E_SHP);
 		Monde.LE_MONDE.ajouterIndicateur(this.stockHG_E_SHP);
 		
-		this.prixMG_E_SHP = new Indicateur(this.getNom()+" Prix de moyenne-gamme, équitable et sans huile de palme ", this, prixMG_E_SHP);
+		this.prixMG_E_SHP = new Indicateur(Chocolat.MG_E_SHP.toString(), this, prixMG_E_SHP);
 		Monde.LE_MONDE.ajouterIndicateur(this.prixMG_E_SHP);
-		this.prixMG_NE_SHP = new Indicateur(this.getNom()+" Prix de moyenne-gamme et sans huile de palme ", this, prixMG_NE_SHP);
+		this.prixMG_NE_SHP = new Indicateur(Chocolat.MG_NE_SHP.toString(), this, prixMG_NE_SHP);
 		Monde.LE_MONDE.ajouterIndicateur(this.prixMG_NE_SHP);
-		this.prixMG_NE_HP = new Indicateur(this.getNom()+" Prix de moyenne-gamme  ", this, prixMG_NE_HP);
+		this.prixMG_NE_HP = new Indicateur(Chocolat.MG_NE_HP.toString(), this, prixMG_NE_HP);
 		Monde.LE_MONDE.ajouterIndicateur(this.prixMG_NE_HP);
-		this.prixHG_E_SHP = new Indicateur(this.getNom()+" Prix de haute-gamme", this, prixHG_E_SHP);
+		this.prixHG_E_SHP = new Indicateur(Chocolat.HG_E_SHP.toString(), this, prixHG_E_SHP);
 		Monde.LE_MONDE.ajouterIndicateur(this.prixHG_E_SHP);
 		
 		this.journal = new Journal("Journal "+this.getNom());
@@ -101,12 +77,125 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 
 	}
 
+	
+	/**
+	 * @return the prixMG_E_SHP
+	 */
+	public Indicateur getPrixMG_E_SHP() {
+		return prixMG_E_SHP;
+	}
+
+	/**
+	 * @return the prixMG_NE_SHP
+	 */
+	public Indicateur getPrixMG_NE_SHP() {
+		return prixMG_NE_SHP;
+	}
+
+	/**
+	 * @return the prixMG_NE_HP
+	 */
+	public Indicateur getPrixMG_NE_HP() {
+		return prixMG_NE_HP;
+	}
+
+	/**
+	 * @return the prixHG_E_SHP
+	 */
+	public Indicateur getPrixHG_E_SHP() {
+		return prixHG_E_SHP;
+	}
+
+	
+	/**
+	 * @return the stockMG_E_SHP
+	 */
+	public Indicateur getStockMG_E_SHP() {
+		return stockMG_E_SHP;
+	}
+
+	/**
+	 * @return the stockMG_NE_SHP
+	 */
+	public Indicateur getStockMG_NE_SHP() {
+		return stockMG_NE_SHP;
+	}
+
+	/**
+	 * @return the stockMG_NE_HP
+	 */
+	public Indicateur getStockMG_NE_HP() {
+		return stockMG_NE_HP;
+	}
+
+	/**
+	 * @return the stockHG_E_SHP
+	 */
+	public Indicateur getStockHG_E_SHP() {
+		return stockHG_E_SHP;
+	}
+
+	public Indicateur getIndicateurStock(Chocolat c) {
+		String nom = c.toString();
+		if (this.stockMG_E_SHP.getNom()==nom) {
+			return this.stockMG_E_SHP;
+		}
+		if (this.stockMG_NE_SHP.getNom()==nom) {
+			return this.stockMG_E_SHP;
+		}
+		if (this.stockMG_NE_HP.getNom()==nom){ 
+			return this.stockMG_E_SHP;
+		}
+		if (this.stockMG_E_SHP.getNom()==nom){
+			return this.stockHG_E_SHP;
+		}
+		else {
+			return null;
+		}
+	}
+	
+	public Indicateur getIndicateurPrix (Chocolat c) {
+		String nom = c.toString();
+		if (this.prixMG_E_SHP.getNom()==nom) {
+			return this.prixMG_E_SHP;
+		}
+		if (this.prixMG_NE_SHP.getNom()==nom) {
+			return this.prixMG_E_SHP;
+		}
+		if (this.prixMG_NE_HP.getNom()==nom){ 
+			return this.prixMG_E_SHP;
+		}
+		if (this.prixMG_E_SHP.getNom()==nom){
+			return this.prixHG_E_SHP;
+		}
+		else {
+			return null;
+		}
+	}
+	
 	public List<ContratCadre<Chocolat>> getContratsEnCours() {
 		return this.contratsEnCours;
 	}
 	
-	public HashMap<Chocolat,Double> getPrixParProduit () {
+	public HashMap<Chocolat,Double> getPrixParProduit () {	
+		//Caroline
+		this.prixParProduit =  new HashMap<Chocolat,Double>();
+		this.prixParProduit.put(Chocolat.HG_E_SHP, this.getPrixHG_E_SHP().getValeur());
+		this.prixParProduit.put(Chocolat.MG_E_SHP, this.getPrixMG_E_SHP().getValeur());
+		this.prixParProduit.put(Chocolat.MG_NE_SHP,this.getPrixMG_NE_SHP().getValeur());
+		this.prixParProduit.put(Chocolat.MG_NE_HP, this.getPrixMG_NE_HP().getValeur());
 		return this.prixParProduit;
+	}
+	
+	@Override
+	public StockEnVente<Chocolat> getStockEnVente() {
+		//NORDIN
+		this.stockEnVente = new StockEnVente<Chocolat>();
+		this.stockEnVente.ajouter(Chocolat.HG_E_SHP, this.getStockHG_E_SHP().getValeur());
+		this.stockEnVente.ajouter(Chocolat.MG_E_SHP, this.getStockMG_E_SHP().getValeur());
+		this.stockEnVente.ajouter(Chocolat.MG_NE_SHP,this.getStockMG_NE_SHP().getValeur());
+		this.stockEnVente.ajouter(Chocolat.MG_NE_HP, this.getStockMG_NE_HP().getValeur());
+		return this.stockEnVente;		
 	}
 	
 	public double getMarge() {
@@ -127,11 +216,6 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 	public void next() {
 	}
 
-	@Override
-	public StockEnVente<Chocolat> getStockEnVente() {
-		//NORDIN 
-		return this.stockEnVente;		
-	}
 
 	@Override
 	public double getPrix(Chocolat c) {
@@ -154,7 +238,7 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 
 	@Override
 	public double vendre(Chocolat c, double quantite) {
-		// TODO Auto-generated method stub
+		this.getStockEnVente();
 		return 0;
 	}
 
@@ -162,34 +246,48 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 	public ContratCadre<Chocolat> getNouveauContrat() { //ILIAS
 		ContratCadre<Chocolat> res=null;
 		double solde = this.soldeBancaire.getValeur();
+		
+		
 		for (ContratCadre<Chocolat> cc : this.getContratsEnCours()) {
 			solde = solde - cc.getMontantRestantARegler();
 		}
-		List<IVendeurContratCadre<Chocolat>> vendeurs = new ArrayList<IVendeurContratCadre<Chocolat>>();
-		for (IActeur acteur : Monde.LE_MONDE.getActeurs()) {
-			if (acteur instanceof IVendeurContratCadre) {
-				IVendeurContratCadre vacteur = (IVendeurContratCadre)acteur;
-				StockEnVente stock = vacteur.getStockEnVente();
-				vendeurs.add((IVendeurContratCadre<Chocolat>)vacteur);
+		
+		Chocolat produit = this.stockEnVente.getProduitsEnVente().get((int)(Math.random()*4));
+		
+		if (solde >1000) {
+			List<IVendeurContratCadre<Chocolat>> vendeurs = new ArrayList<IVendeurContratCadre<Chocolat>>();
+			for (IActeur acteur : Monde.LE_MONDE.getActeurs()) {
+				if (acteur instanceof IVendeurContratCadre) {
+					IVendeurContratCadre vacteur = (IVendeurContratCadre)acteur;
+					if (vacteur.getStockEnVente().get(produit) >=50) {
+						vendeurs.add((IVendeurContratCadre<Chocolat>)vacteur);
+					}
+					}
+				}
+ 
+			if (vendeurs.size()>=1) {
+				double quantite = 50;
+				IVendeurContratCadre<Chocolat> vendeur = vendeurs.get( (int)( Math.random()*vendeurs.size()));
+				double prix = vendeur.getPrix(produit, quantite);
+				
+				while (!Double.isNaN(prix)) {
+					quantite=quantite*1.1;
+					prix = vendeur.getPrix(produit,  quantite);
 			}
+				quantite = quantite/1.1;
+				res = new ContratCadre<Chocolat>(this, vendeur, produit, quantite);
 		}
-		if (vendeurs.size()>=1) {
-			double quantite = 50;
-			IVendeurContratCadre<Chocolat> vendeur = vendeurs.get( (int)( Math.random()*vendeurs.size()));
-			double prix = vendeur.getPrix(this.produit, quantite);
-			while (!Double.isNaN(prix)) {
-				quantite=quantite*1.1;
-				prix = vendeur.getPrix(this.produit,  quantite);
-			}
-			quantite = quantite/1.1;
-			res = new ContratCadre<Chocolat>(this, vendeur, this.produit, quantite);
 		}
 		return res;
 	}
 
 	@Override
 	public void proposerEcheancierAcheteur(ContratCadre<Chocolat> cc) {
-		// TODO Auto-generated method stub
+		if (cc.getEcheancier()==null) { // il n'y a pas encore eu de contre-proposition de la part du vendeur
+			cc.ajouterEcheancier(new Echeancier(Monde.LE_MONDE.getStep(), 10, cc.getQuantite()/10));
+		} else {
+			cc.ajouterEcheancier(new Echeancier(cc.getEcheancier())); // on accepte la contre-proposition du vendeur 
+		}
 		
 	}
 	
@@ -209,6 +307,8 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 		return satisfait;
 	}
 
+
+	
 	@Override
 	//Caroline
 	public void proposerPrixAcheteur(ContratCadre<Chocolat> cc) {
@@ -220,12 +320,14 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 		if (cc!=null) {
 			if (satisfaitParPrixContratCadre (cc)) {
 				cc.ajouterPrixAuKilo(cc.getPrixAuKilo());
+				this.getIndicateurPrix(cc.getProduit()).ajouter(this,cc.getPrixAuKilo());
+				this.journal.ajouter("Accord sur Prix sur contrat" + cc.toString());
 			} else {
-				if (cc.getListePrixAuKilo().get(cc.getListePrixAuKilo().size() -1)==cc.getListePrixAuKilo().get(cc.getListePrixAuKilo().size() -3)) {
+				if (cc.getPrixAuKilo()==cc.getListePrixAuKilo().get(cc.getListePrixAuKilo().size() -3)) {
 					cc=null;
 				} else {
-					if (cc.NB_MAX_ECHEANCIERS > cc.getListePrixAuKilo().size()) {
-						cc.ajouterPrixAuKilo(cc.getPrixAuKilo()*0.95);
+					if (10 > cc.getListePrixAuKilo().size()) {
+						cc.ajouterPrixAuKilo(cc.getListePrixAuKilo().get(cc.getListePrixAuKilo().size() -2)*0.95);
 					}else {
 						cc=null;
 				}	}}}}
@@ -233,6 +335,7 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 	@Override//Caroline
 	public void notifierAcheteur(ContratCadre<Chocolat> cc) {
 		cc.signer();
+		this.journal.ajouter("Nouveau Contrat" + cc.toString());
 		if (cc!=null) {
 			this.getContratsEnCours().add(cc);
 		}
@@ -241,30 +344,28 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 	@Override//Caroline
 	public void receptionner(Chocolat produit, double quantite, ContratCadre<Chocolat> cc) {
 		boolean penality = false;
+		this.journal.ajouter("Réception du produit" + produit.toString() + "en quantité" + quantite + "au sujet du contrat " + cc.toString());
 		if (cc != null && quantite >0 && cc.getProduit().equals(produit)) {
 			
 			if (quantite != cc.getQuantite()) {
 				penality = true;
 			}
 		
-			if (!penality) {
-				this.getStockEnVente().ajouter(produit, quantite);
-				cc.livrer(quantite);
-	
-			} else {
-				this.getStockEnVente().ajouter(produit, quantite);
-				cc.livrer(quantite);
-				cc.penaliteLivraison();
+			this.getIndicateurStock(cc.getProduit()).ajouter(this, quantite);
 			
-		}
+			cc.livrer(quantite);
+			
+			if (penality) {
+				cc.penaliteLivraison();
+			} 	
 		}
 	}
 
 	@Override//Caroline
 	public double payer(double montant, ContratCadre<Chocolat> cc) {
 		double montantpaye = 0;
-		if (montant<=0.0) {
-			throw new IllegalArgumentException("Appel de la methode payer de DistributeurRomu avec un montant negatif = "+montant);
+		if (montant<0.0) {
+			throw new IllegalArgumentException("Appel de la methode payer avec un montant negatif");
 		}
 		if (cc!=null && this.soldeBancaire.getValeur() >montant + 100 ) {
 			this.soldeBancaire.retirer(this,montant);
@@ -273,11 +374,12 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 		} else {
 			if (montant-100>0) {
 				this.soldeBancaire.retirer(this,montant-100);
-				cc.payer(montant-100);
+				cc.payer(  montant-100);
 				montantpaye = montant-100;
 			}
 				cc.penalitePaiement();
 		}
+		this.journal.ajouter(montantpaye + "sur le contrat" + cc.toString());
 		return montantpaye;
 	}
 }
