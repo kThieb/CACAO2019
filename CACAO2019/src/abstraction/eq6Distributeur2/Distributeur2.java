@@ -7,6 +7,7 @@ import java.util.List;
 
 import abstraction.eq7Romu.distributionChocolat.IDistributeurChocolat;
 import abstraction.eq7Romu.produits.Chocolat;
+import abstraction.eq7Romu.produits.Gamme;
 import abstraction.eq7Romu.ventesContratCadre.ContratCadre;
 import abstraction.eq7Romu.ventesContratCadre.IAcheteurContratCadre;
 import abstraction.eq7Romu.ventesContratCadre.IVendeurContratCadre;
@@ -16,6 +17,7 @@ import abstraction.fourni.Indicateur;
 import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 
+
 public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, IDistributeurChocolat {
 
 
@@ -23,9 +25,10 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 	private double marge;
 	private Indicateur soldeBancaire;
 	
+	//Définir chocolat
 	private Chocolat mG_E_SHP;
 	private Chocolat mG_NE_SHP;
-	private Chocolat mG_NE_HP;;
+	private Chocolat mG_NE_HP;
 	private Chocolat hG_E_SHP;
 	
 	private Indicateur stockMG_E_SHP;
@@ -54,6 +57,10 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 		//NORDIN 
 		
 		this.soldeBancaire = soldeinitial;
+		this.mG_E_SHP = Chocolat.MG_E_SHP;
+		this.mG_NE_SHP = Chocolat.MG_NE_SHP;
+		this.mG_NE_HP = Chocolat.MG_NE_HP;
+		this.hG_E_SHP = Chocolat.HG_E_SHP;
 		
 		StockEnVente<Chocolat> stockEnVente = new StockEnVente<Chocolat>();
 		stockEnVente.ajouter(hG_E_SHP, stockHG_E_SHP);
@@ -234,7 +241,7 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 	@Override//Caroline
 	public void receptionner(Chocolat produit, double quantite, ContratCadre<Chocolat> cc) {
 		boolean penality = false;
-		if (cc != null && quantite >0 && cc.getProduit()==produit) {
+		if (cc != null && quantite >0 && cc.getProduit().equals(produit)) {
 			
 			if (quantite != cc.getQuantite()) {
 				penality = true;
