@@ -6,6 +6,8 @@ import java.util.List;
 
 import abstraction.eq1Producteur1.ventesCacaoAleatoires.IVendeurCacaoAleatoire;
 import abstraction.eq7Romu.produits.Feve;
+import abstraction.eq7Romu.produits.Gamme;
+import abstraction.eq7Romu.produits.Variete;
 import abstraction.eq7Romu.ventesContratCadre.ContratCadre;
 import abstraction.eq7Romu.ventesContratCadre.Echeancier;
 import abstraction.eq7Romu.ventesContratCadre.IVendeurContratCadre;
@@ -36,9 +38,9 @@ public class Producteur2 implements IActeur, IVendeurCacaoAleatoire, IVendeurCon
 	
 	public Producteur2(Feve fevesProduites, int productionParStep, double stockInitial, double soldeInitial) {
 		NB_PROD++;
+		this.fevesProduites = fevesProduites;
 		this.numero = NB_PROD;
 		this.prixVente = PRIX_INIT;
-		this.fevesProduites = fevesProduites;
 		this.productionParStep = productionParStep;
 		this.stockFeves = new Indicateur(this.getNom()+" Stock", this, stockInitial);
 
@@ -48,6 +50,10 @@ public class Producteur2 implements IActeur, IVendeurCacaoAleatoire, IVendeurCon
 		this.contratsEnCours = new ArrayList<ContratCadre<Feve>>();
 		this.journal = new Journal("Journal "+this.getNom());
 		Monde.LE_MONDE.ajouterJournal(this.journal);
+	}
+	
+	public Producteur2() {
+		this(Feve.FORASTERO_MG_NEQ, 75000000, 220000000, 100000000);
 	}
 	
 	public String getNom() {
