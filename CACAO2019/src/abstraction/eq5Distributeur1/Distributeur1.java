@@ -6,6 +6,7 @@ import java.util.List;
 import abstraction.eq7Romu.distributionChocolat.IDistributeurChocolat;
 import abstraction.eq7Romu.produits.Chocolat;
 import abstraction.eq7Romu.ventesContratCadre.ContratCadre;
+import abstraction.eq7Romu.ventesContratCadre.Echeancier;
 import abstraction.eq7Romu.ventesContratCadre.IAcheteurContratCadre;
 import abstraction.eq7Romu.ventesContratCadre.StockEnVente;
 import abstraction.fourni.IActeur;
@@ -59,8 +60,14 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 	}
 
 	@Override
-	public void proposerEcheancierAcheteur(ContratCadre cc) {
+	public void proposerEcheancierAcheteur(ContratCadre C) {
 		// TODO Auto-generated method stub
+		if (C.getEcheancier()==null) {//pas de contre-proposition
+			C.ajouterEcheancier(new Echeancier(Monde.LE_MONDE.getStep(), 20, C.getQuantite()/20));
+		} else {
+			C.ajouterEcheancier(new Echeancier(C.getEcheancier())); // accepter la contre-proposition
+		}
+	}
 		
 	}
 
