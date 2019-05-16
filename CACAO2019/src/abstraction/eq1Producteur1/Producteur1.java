@@ -2,6 +2,7 @@ package abstraction.eq1Producteur1;
 
 import abstraction.eq1Producteur1.ventesCacaoAleatoires.IVendeurCacaoAleatoire;
 import abstraction.eq1Producteur1.ventesCacaoAleatoires.SuperviseurVentesCacaoAleatoires;
+import abstraction.eq7Romu.produits.Feve;
 import abstraction.fourni.IActeur;
 import abstraction.fourni.Indicateur;
 import abstraction.fourni.Journal;
@@ -12,7 +13,7 @@ public class Producteur1 implements IActeur, IVendeurCacaoAleatoire {
 	private Indicateur stockFeves;
 	private Indicateur soldeBancaire;
 	// BEGIN ANTI
-	private StockEnVente stockEnVente; 
+	private StockEnVente<Feve> stockEnVente; 
 	//END ANTI
 	// BEGIN Manon
 	private Journal journal1;

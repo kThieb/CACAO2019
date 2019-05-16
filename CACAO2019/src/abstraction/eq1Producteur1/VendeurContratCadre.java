@@ -13,16 +13,16 @@ import abstraction.eq1Producteur1.StockEnVente;
 
 
 
-	// ANTI
 
 
-public class VendeurContratCadre implements IVendeurContratCadre{
+
+public class VendeurContratCadre implements IVendeurContratCadre<Feve>{
 	//ANTI
 	private StockEnVente<Feve> stockEnVente;
 	
 
 	
-	public getStockEnVente() {
+	public StockEnVente<Feve> getStockEnVente() {
 		
 		return this.stockEnVente;
 	}
@@ -86,5 +86,8 @@ public class VendeurContratCadre implements IVendeurContratCadre{
 		// TODO Auto-generated method stub
 
 	}
+
+
+	
 
 }
