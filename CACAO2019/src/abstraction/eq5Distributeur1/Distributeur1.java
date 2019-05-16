@@ -35,7 +35,7 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 		produits.add(Chocolat.MG_NE_SHP);
 	}
 	
-	public Distributeur1(double marge, Double stockInitial, Double soldeInitial) {
+	public Distributeur1(double marge, ArrayList<Double> stockInitial, Double soldeInitial) {
 		this.numero =1 ;
 		this.produits = new ArrayList<Chocolat>();
 		produits.add(Chocolat.HG_E_SHP);
@@ -44,9 +44,9 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 		produits.add(Chocolat.MG_NE_SHP);
 		this.marge = marge;
 		this.stock= new ArrayList<Indicateur>();
-		for (Chocolat produit : produits) {
-			this.stock.add(new Indicateur(this.getNom()+" Stock", this, stockInitial));
-			Monde.LE_MONDE.ajouterIndicateur(this.stock.get(-1));
+		for (int i = 0 ; i <produits.size(); i++) {
+			this.stock.add(new Indicateur(this.getNom()+" Stock", this, stockInitial.get(i)));
+			Monde.LE_MONDE.ajouterIndicateur(this.stock.get(i));
 		}
 		this.soldeBancaire = new Indicateur(this.getNom()+" Solde", this, soldeInitial);
 		Monde.LE_MONDE.ajouterIndicateur(this.soldeBancaire);
@@ -54,7 +54,7 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 		Monde.LE_MONDE.ajouterJournal(this.journal);
 		this.contratsEnCours = new ArrayList<ContratCadre<Chocolat>>();
 	}
-	
+
 	public String getNom() {
 		return "EQ5";
 	}
@@ -105,8 +105,12 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 
 	@Override
 	public void proposerPrixAcheteur(ContratCadre cc) {
-		// TODO Auto-generated method stub
-		
+		double prixVendeur = cc.getPrixAuKilo();
+		if (Math.random()<0.25) { // probabilite de 25% d'accepter
+			cc.ajouterPrixAuKilo(cc.getPrixAuKilo());
+		} else {
+			cc.ajouterPrixAuKilo((prixVendeur*(0.9+Math.random()*0.1))); // Rabais de 10% max
+		}
 	}
 
 	@Override
@@ -134,13 +138,37 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 	@Override
 	public StockEnVente<Chocolat> getStockEnVente() {
 		StockEnVente<Chocolat> res = new StockEnVente<Chocolat>();
+		for (int i = 0 ; i< this.produits.size(); i++) {
+			res.ajouter(produits.get(i), stock.get(i).getValeur());
+		}
 		return res;
 	}
 
 	@Override
 	public double getPrix(Chocolat c) {
-		// TODO Auto-generated method stub
-		return 0;
+		boolean vendu = false;
+		for (int i=0; i<this.produits.size();i++) {
+			if (c.equals(this.produits.get(i))) {
+				vendu = true;
+			}
+		}
+		if (!vendu) {
+			return Double.NaN;
+		}
+		
+		if (this.contratsEnCours.size()==0) {
+			return 50;
+		} else {
+			
+			double prixMoyen = 0;
+			for (ContratCadre<Chocolat> cc : this.contratsEnCours) {
+				if (cc.getProduit()==c) {
+					prixMoyen+=cc.getPrixAuKilo();
+				}
+			}
+			prixMoyen = prixMoyen/ this.contratsEnCours.size();
+			return prixMoyen *(1.0+this.marge);
+		}
 	}
 
 	@Override
