@@ -197,7 +197,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 			}
 			prixMoyen = prixMoyen/ this.contratsFevesEnCours.size();
 			double prixProposé = 0 ;
-			prixProposé = prixMoyen + prixMoyen*0.05
+			prixProposé = prixMoyen + prixMoyen*0.05;
 		}
 		
 		//End Kevin
