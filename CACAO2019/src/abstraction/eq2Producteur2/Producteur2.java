@@ -61,6 +61,7 @@ public class Producteur2 implements IActeur, IVendeurCacaoAleatoire, IVendeurCon
 	}
 
 	public void initialiser() {
+		
 	}
 
 	public void next() {
