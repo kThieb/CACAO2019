@@ -124,10 +124,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	// -------------------------- begin eve
 	public double quantiteDesiree(double quantiteEnVente, double prix) {
 		double possible = Math.max(0.0, soldeBancaire.getValeur()/prix);
-		
 		double desiree= Math.min(possible,  quantiteEnVente); // achete le plus possible
-//		this.iStockFeves.ajouter(this, desiree);
-		this.soldeBancaire.retirer(this, desiree*prix);
 		return desiree;
 	}
 	// -------------------------- end eve
