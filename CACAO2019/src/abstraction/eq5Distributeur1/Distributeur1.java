@@ -87,6 +87,7 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 		// On ne cherche pas a établir d'autres contrats d'achat si le compte bancaire est trop bas
 		if (solde>10000.0) { 
 
+
 			//Choix du produit : on choisit un produit au hasard parmi tous les produits
 			ArrayList<Chocolat> produits = new ArrayList<Chocolat>();
 			produits.add(Chocolat.HG_E_SHP);
@@ -94,6 +95,7 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 			produits.add(Chocolat.MG_NE_HP);
 			produits.add(Chocolat.MG_NE_SHP);
 			Chocolat produit = produits.get((int) Math.random()*produits.size());
+
 
 			//Choix quantité : on choisit le vendeur ayant la plus grande quantité du produit
 			//Choix acteur
@@ -138,10 +140,9 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 				}
 			}
 
-
-
 			@Override
 			public void proposerPrixAcheteur(ContratCadre cc) {
+				// TODO Auto-generated method stub
 				double prixVendeur = cc.getPrixAuKilo();
 				if (Math.random()<0.25) { // probabilite de 25% d'accepter
 					cc.ajouterPrixAuKilo(cc.getPrixAuKilo());
