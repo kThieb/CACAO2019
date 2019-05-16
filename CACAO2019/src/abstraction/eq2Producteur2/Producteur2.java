@@ -1,7 +1,7 @@
 package abstraction.eq2Producteur2;
 
 import java.util.ArrayList;
-
+import java.util.HashMap;
 import java.util.List;
 
 import abstraction.eq1Producteur1.ventesCacaoAleatoires.IVendeurCacaoAleatoire;
@@ -26,12 +26,12 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	
 	
 	
-	private Indicateur stockFeves;
+	private HashMap<Feve,Indicateur> stockFeves;
 	private Indicateur soldeBancaire;
 	private Journal journal;
 
 	private int productionParStep; // kg
-	private Feve fevesProduites;
+	private HashMap<String,Feve> fevesProduites;
 	private int numero;
 	private List<ContratCadre<Feve>> contratsEnCours;
 	private double prixVente;
@@ -69,6 +69,7 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 		// production
 		double nouveauStock = this.stockFeves.getValeur() + productionParStep;
 		this.stockFeves.setValeur(this, nouveauStock);
+		
 	}
 	
 	
