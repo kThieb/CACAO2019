@@ -18,7 +18,7 @@ import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 
 public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
-	
+	  
 	private static int NB_PROD = 2;
 	private static final double PRIX_INIT = 1.500;
 	private static final double PRIX_MIN = 0.800;
@@ -35,6 +35,7 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	private int numero;
 	private List<ContratCadre<Feve>> contratsEnCours;
 	private double prixVente;
+	private int numStep;
 	
 	
 	public Producteur2(Feve fevesProduites, int productionParStep, double stockInitial, double soldeInitial) {
@@ -51,6 +52,7 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 		this.contratsEnCours = new ArrayList<ContratCadre<Feve>>();
 		this.journal = new Journal("Journal "+this.getNom());
 		Monde.LE_MONDE.ajouterJournal(this.journal);
+		this.numStep = 1;
 	}
 	
 	public Producteur2() {
@@ -66,12 +68,18 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	}
 
 	public void next() {
-		// production
-		double nouveauStock = this.stockFeves.getValeur() + productionParStep;
-		this.stockFeves.setValeur(this, nouveauStock);
-		
+
+		if (this.numStep <= 6 || this.numStep >= 21 || (this.numStep >= 9 && this.numStep <= 14)) {
+			double qualiteProduction = (Math.random() - 0.5)/2.5 + 1;
+			double nouveauStock = this.stockFeves.getValeur() + productionParStep * qualiteProduction;
+			this.stockFeves.setValeur(this, nouveauStock); }
+		if (this.numStep == 24) {
+			this.numStep = 1;
+		} else {
+		this.numStep++; }
+		this.journal.ajouter("Step "+Monde.LE_MONDE.getStep()+" : prix de vente = "+this.prixVente);
+
 	}
-	
 	
 	
 
