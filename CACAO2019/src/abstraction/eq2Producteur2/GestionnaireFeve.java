@@ -14,6 +14,4 @@ public class GestionnaireFeve extends HashMap<Feve, IndicateurFeve>{
 		this.put(Feve.MERCEDES_MG_EQ, new IndicateurFeve(acteur));
 		this.put(Feve.MERCEDES_MG_NEQ, new IndicateurFeve(acteur));
 	}
-	
-	
 }

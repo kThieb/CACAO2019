@@ -25,9 +25,6 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	private static final double PRIX_MAX = 2.500;
 	
 	
-	
-	private HashMap<Feve,Indicateur> stockFeves;
-	private HashMap<String,Feve> fevesProduites;
 	private Indicateur soldeBancaire;
 	private Journal journal;
 
@@ -42,7 +39,6 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	
 	public Producteur2(Feve fevesProduites, int productionParStep, double stockInitial, double soldeInitial) {
 		NB_PROD++;
-		this.fevesProduites = fevesProduites;
 		this.numero = NB_PROD;
 		this.prixVente = PRIX_INIT;
 		this.productionParStep = productionParStep;
