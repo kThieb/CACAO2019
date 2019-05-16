@@ -67,8 +67,8 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 
 	public void next() {
 		// production
-		double nouveauStock = this.stockFeves.getValeur() + productionParStep;
-		this.stockFeves.setValeur(this, nouveauStock);
+		this.stockFeves.ajouter(this, productionParStep);
+		this.journal.ajouter("Step "+Monde.LE_MONDE.getStep()+" : prix de vente = "+this.prixVente);
 	}
 
 
