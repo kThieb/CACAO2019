@@ -5,8 +5,9 @@ import java.util.HashMap;
 import abstraction.eq7Romu.produits.Feve;
 import abstraction.eq7Romu.ventesContratCadre.ContratCadre;
 import abstraction.eq7Romu.ventesContratCadre.IVendeurContratCadre;
-import abstraction.eq7Romu.ventesContratCadre.StockEnVente;
+
 import abstraction.fourni.Indicateur;
+import abstraction.eq1Producteur1.StockEnVente;
 
 
 
@@ -16,12 +17,14 @@ import abstraction.fourni.Indicateur;
 
 
 public class VendeurContratCadre implements IVendeurContratCadre{
+	//ANTI
+	private StockEnVente<Feve> stockEnVente;
 	
 
 	
-	public StockEnVente getStockEnVente() {
+	public getStockEnVente() {
 		
-		return null;
+		return this.stockEnVente;
 	}
 
 
