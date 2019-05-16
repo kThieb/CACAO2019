@@ -11,6 +11,9 @@ public class Producteur1 implements IActeur, IVendeurCacaoAleatoire {
 	
 	private Indicateur stockFeves;
 	private Indicateur soldeBancaire;
+	// BEGIN ANTI
+	private StockEnVente stockEnVente; 
+	//END ANTI
 	// BEGIN Manon
 	private Journal journal1;
 	//END MANON
@@ -56,4 +59,6 @@ public class Producteur1 implements IActeur, IVendeurCacaoAleatoire {
 		this.stockFeves.retirer(this, quantite);
 		this.soldeBancaire.ajouter(this, quantite*prix);
 	}
+
+	
 }
