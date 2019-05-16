@@ -121,8 +121,20 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 
 	@Override
 	public void proposerPrixAcheteur(ContratCadre<Feve> cc) {
-		// TODO Auto-generated method stub
-		
+		//begin raphael
+		double prixVendeur = cc.getListePrixAuKilo().get(0);
+		int nbAchatsMoyenne=Math.min(10,this.prixAchats.getHistorique().getTaille());//Nombre d'achats pris en compte pour le calcul de la moyenne (au plus 10)
+		double moyenneDerniersAchats=0;
+		for(int i=0;i<nbAchatsMoyenne;i++) {//Calcul de la moyenne des derniers prix d'achat
+			moyenneDerniersAchats+=this.prixAchats.getHistorique().get(i).getValeur();
+		}
+		moyenneDerniersAchats=moyenneDerniersAchats/nbAchatsMoyenne;
+		if (prixVendeur<moyenneDerniersAchats*1.1) { // On accepte les prix inférieurs à 110% du prix moyen des derniers achats
+			cc.ajouterPrixAuKilo(cc.getPrixAuKilo());
+		} else {
+			cc.ajouterPrixAuKilo(moyenneDerniersAchats); // Sinon on propose un achat au prix moyen d'achat des dernièrs achats
+		}
+		//end raphael
 	}
 
 	@Override
