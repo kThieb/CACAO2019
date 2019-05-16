@@ -121,7 +121,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	// 			ACHETEUR
 	// -------------------------------------------------------------------------------------------
 
-	// A MODIFIER
+	// -------------------------- begin eve
 	public double quantiteDesiree(double quantiteEnVente, double prix) {
 		double possible = Math.max(0.0, soldeBancaire.getValeur()/prix);
 		
@@ -130,6 +130,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		this.soldeBancaire.retirer(this, desiree*prix);
 		return desiree;
 	}
+	// -------------------------- end eve
 	
 	@Override
 	public ContratCadre<Feve> getNouveauContrat() {
