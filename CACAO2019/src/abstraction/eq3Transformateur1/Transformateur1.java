@@ -261,13 +261,22 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 
 	@Override
 	public double livrer(Chocolat produit, double quantite, ContratCadre<Chocolat> cc) {
-		// TODO Auto-generated method stub
-		return 0;
+		if (produit==null || !produit.equals(this.chocolatProduit)) {
+			throw new IllegalArgumentException("Appel de la methode livrer de TransformateurRomu avec un produit ne correspondant pas au chocolat produit");
+		}
+		double livraison = Math.min(quantite, this.stockChocolat.getValeur());
+		this.stockChocolat.retirer(this, livraison);
+		return livraison;
 	}
 
 	@Override
 	public void encaisser(double montant, ContratCadre<Chocolat> cc) {
-		// TODO Auto-generated method stub
+		//begin raph
+		if (montant<0.0) {
+			throw new IllegalArgumentException("Appel de la methode encaisser de TransformateurRomu avec un montant negatif");
+		}
+		this.soldeBancaire.ajouter(this,  montant);
+		//end raph
 		
 	}
 	
