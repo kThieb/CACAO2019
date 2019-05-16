@@ -164,8 +164,13 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 //end sachaa
 	@Override
 	public double payer(double montant, ContratCadre<Feve> cc) {
-		// TODO Auto-generated method stub
-		return 0;
+		// begin sacha
+		if (montant<=0.0) {
+			throw new IllegalArgumentException("Appel de la methode payer de Transformateur1 avec un montant negatif = "+montant);
+		}
+		double paiement = Math.min(montant,  this.soldeBancaire.getValeur());
+		this.soldeBancaire.retirer(this,  paiement);
+		return paiement;
 	}
 	
 	// -------------------------------------------------------------------------------------------
