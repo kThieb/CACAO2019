@@ -289,11 +289,20 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 
 	@Override
 	public void proposerEcheancierVendeur(ContratCadre<Chocolat> cc) {
+		//Begin Kevin
 		if (Math.random()<0.5) { // une chance sur deux d'accepter l'echeancier
 			cc.ajouterEcheancier(new Echeancier(cc.getEcheancier())); // on accepte la proposition de l'acheteur car on a la quantite en stock 
-		} else { // une chance sur deux de proposer un echeancier etalant sur un step de plus
-			cc.ajouterEcheancier(new Echeancier(cc.getEcheancier().getStepDebut(), cc.getEcheancier().getNbEcheances()+1, cc.getQuantite()/(cc.getEcheancier().getNbEcheances()+1)));
+		} else {
+			if ((Math.random() < 0.5) && (cc.getEcheancier().getNbEcheances() > 1)) {
+				cc.ajouterEcheancier(new Echeancier(cc.getEcheancier().getStepDebut(), cc.getEcheancier().getNbEcheances()-1, cc.getQuantite()/(cc.getEcheancier().getNbEcheances()-1)));
+			    // une chance sur deux de proposer  un echeancier etalant sur un step de moins quand c'est possible
+			}
+			else {
+				cc.ajouterEcheancier(new Echeancier(cc.getEcheancier().getStepDebut(), cc.getEcheancier().getNbEcheances()+1, cc.getQuantite()/(cc.getEcheancier().getNbEcheances()+1)));
+				// une chance sur deux de proposer un echeancier etalant sur un step de plus
+			}
 		}
+		//End Kevin
 	}
 
 	@Override
