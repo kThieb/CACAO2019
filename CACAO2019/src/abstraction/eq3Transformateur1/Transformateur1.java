@@ -7,6 +7,7 @@ import abstraction.eq3Transformateur1.Stock;
 import abstraction.eq7Romu.produits.Chocolat;
 import abstraction.eq7Romu.produits.Feve;
 import abstraction.eq7Romu.ventesContratCadre.ContratCadre;
+import abstraction.eq7Romu.ventesContratCadre.Echeancier;
 import abstraction.eq7Romu.ventesContratCadre.IAcheteurContratCadre;
 import abstraction.eq7Romu.ventesContratCadre.IVendeurContratCadre;
 import abstraction.eq7Romu.ventesContratCadre.StockEnVente;
@@ -22,10 +23,14 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
     private Indicateur soldeBancaire;
 	private int nbNextAvantEchange;
 	private Journal journal;
+
 	//Begin Kevin
 	private static final double PRIX_VENTE_PAR_DEFAUT = 40.0;
+	private double marge;
+	private static final double stockLim;
 	//End Kevin
 	
+
 	//begin sacha
 	private List<ContratCadre<Chocolat>> contratsChocolatEnCours;
 	private List<ContratCadre<Feve>> contratsFeveEnCours;
@@ -132,7 +137,16 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 
 	@Override
 	public void proposerEcheancierAcheteur(ContratCadre<Feve> cc) {
-		// TODO Auto-generated method stub
+		if (cc.getEcheancier()==null) { // il n'y a pas encore eu de contre-proposition de la part du vendeur
+			cc.ajouterEcheancier(new Echeancier(Monde.LE_MONDE.getStep(), 12, cc.getQuantite()/12));
+		} else {
+			if ((this.contratsFeveEnCours.isEmpty())&&(this.stockFeves.get(cc.getProduit()) < this.stockLim)) { // On accepte forcément la propostion si on a pas de contrat cadre en cours et que le stock est inférieur à une quantité arbitraire
+				cc.ajouterEcheancier(new Echeancier(cc.getEcheancier())); // on accepte la proposition de l'acheteur car on a la quantite en stock 
+			} 
+			else { // une chance sur deux de proposer un echeancier etalant sur un step de plus
+				cc.ajouterEcheancier(new Echeancier(cc.getEcheancier().getStepDebut(), cc.getEcheancier().getNbEcheances()+1, cc.getQuantite()/(cc.getEcheancier().getNbEcheances()+1)));
+			}
+		}
 		
 	}
 
@@ -173,11 +187,16 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		this.stockFeves.put(produit, new Stock(quantite));
 		
 	}
-//end sachaa
+//end sacha
 	@Override
 	public double payer(double montant, ContratCadre<Feve> cc) {
-		// TODO Auto-generated method stub
-		return 0;
+		// begin sacha
+		if (montant<=0.0) {
+			throw new IllegalArgumentException("Appel de la methode payer de Transformateur1 avec un montant negatif = "+montant);
+		}
+		double paiement = Math.min(montant,  this.soldeBancaire.getValeur());
+		this.soldeBancaire.retirer(this,  paiement);
+		return paiement;
 	}
 	
 	// -------------------------------------------------------------------------------------------
@@ -203,13 +222,18 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 			return PRIX_VENTE_PAR_DEFAUT;
 		}
 		else {
-			double prixMoyen = 0;
-			for (ContratCadre<Feve> cc : this.contratsFevesEnCours) {
+			double prixMoyen = 0.0;
+			for (ContratCadre<Feve> cc : this.contratsFeveEnCours) {
 				prixMoyen+=cc.getPrixAuKilo();
 			}
+<<<<<<< HEAD
+			prixMoyen = prixMoyen/ this.contratsFeveEnCours.size();
+			return prixMoyen *(1.0+this.marge);
+=======
 			prixMoyen = prixMoyen/ this.contratsFevesEnCours.size();
 			double prixProposé = 0 ;
 			prixProposé = prixMoyen + prixMoyen*0.05;
+>>>>>>> branch 'master' of https://github.com/kThieb/CACAO2019.git
 		}
 		
 		//End Kevin
