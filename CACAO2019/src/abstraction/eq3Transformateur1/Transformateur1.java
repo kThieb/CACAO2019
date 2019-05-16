@@ -22,14 +22,11 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
     private Indicateur soldeBancaire;
 	private int nbNextAvantEchange;
 	private Journal journal;
-<<<<<<< HEAD
 	//Begin Kevin
 	private static final double PRIX_VENTE_PAR_DEFAUT = 40.0;
 	//End Kevin
 	
-=======
 	//begin sacha
->>>>>>> branch 'master' of https://github.com/kThieb/CACAO2019.git
 	private List<ContratCadre<Chocolat>> contratsChocolatEnCours;
 	private List<ContratCadre<Feve>> contratsFeveEnCours;
 	private Feve fevesAchetees;
