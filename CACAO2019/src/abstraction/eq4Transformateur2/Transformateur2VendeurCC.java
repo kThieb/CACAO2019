@@ -74,13 +74,18 @@ public class Transformateur2VendeurCC implements IVendeurContratCadre<Chocolat> 
 	@Override
 	public void notifierVendeur(ContratCadre<Chocolat> cc) {
 		// TODO Auto-generated method stub
-		
+		t2.contratsChocolatEnCours.add(cc);
 	}
 
 	@Override
 	public double livrer(Chocolat produit, double quantite, ContratCadre<Chocolat> cc) {
-		// TODO Auto-generated method stub
-		return 0;
+		if (produit==null || !produit.equals(t2.chocolatProduit)) {
+			throw new IllegalArgumentException("Appel de la methode livrer de TransformateurRomu avec un produit ne correspondant pas au chocolat produit");
+		}
+		double livraison = Math.min(quantite, t2.iStockChocolat.getValeur());
+		t2.iStockChocolat.retirer(t2, livraison);
+		return livraison;
+
 	}
 
 	@Override

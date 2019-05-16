@@ -16,8 +16,8 @@ import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 
 public class Transformateur2 implements IActeur, IAcheteurContratCadre<Feve>, IVendeurContratCadre<Chocolat> {
-	private Indicateur iStockFeves;
-	private Indicateur iStockChocolat;
+	protected Indicateur iStockFeves;
+	protected Indicateur iStockChocolat;
 	
 	protected Indicateur soldeBancaire;
 
@@ -29,7 +29,7 @@ public class Transformateur2 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	
 	private Transformateur2AcheteurCC acheteurCC;
 	private Transformateur2VendeurCC vendeurCC;
-	
+	protected Chocolat chocolatProduit;
 	protected List<ContratCadre<Feve>> contratsFevesEnCours;
 	protected List<ContratCadre<Chocolat>> contratsChocolatEnCours;
 	protected HashMap<Chocolat,Double> stockEnVente;
