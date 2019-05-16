@@ -174,8 +174,9 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 
 	@Override
 	public StockEnVente<Chocolat> getStockEnVente() {
-		// TODO Auto-generated method stub
-		return null;
+		StockEnVente<Chocolat> stock = new StockEnVente<Chocolat>();
+		
+		return stock;
 	}
 	
 	@Override
