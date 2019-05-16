@@ -22,10 +22,13 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
     private Indicateur soldeBancaire;
 	private int nbNextAvantEchange;
 	private Journal journal;
+
 	//Begin Kevin
 	private static final double PRIX_VENTE_PAR_DEFAUT = 40.0;
+	private double marge;
 	//End Kevin
 	
+
 	//begin sacha
 	private List<ContratCadre<Chocolat>> contratsChocolatEnCours;
 	private List<ContratCadre<Feve>> contratsFeveEnCours;
@@ -171,13 +174,12 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 			return PRIX_VENTE_PAR_DEFAUT;
 		}
 		else {
-			double prixMoyen = 0;
-			for (ContratCadre<Feve> cc : this.contratsFevesEnCours) {
+			double prixMoyen = 0.0;
+			for (ContratCadre<Feve> cc : this.contratsFeveEnCours) {
 				prixMoyen+=cc.getPrixAuKilo();
 			}
-			prixMoyen = prixMoyen/ this.contratsFevesEnCours.size();
-			double prixProposé = 0 ;
-			prixProposé = prixMoyen + prixMoyen*0.05
+			prixMoyen = prixMoyen/ this.contratsFeveEnCours.size();
+			return prixMoyen *(1.0+this.marge);
 		}
 		
 		//End Kevin
