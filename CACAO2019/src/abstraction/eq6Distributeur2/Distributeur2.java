@@ -200,7 +200,6 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 		return this.prixParProduit;
 	}
 	
-	@Override
 	public StockEnVente<Chocolat> getStockEnVente() {
 		//NORDIN
 		this.stockEnVente = new StockEnVente<Chocolat>();
@@ -230,35 +229,33 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 	}
 
 
-	@Override
+	//Nordin
 	public double getPrix(Chocolat c) {
-		//NORDIN
-		/*for (Chocolat chocolat : this.stockEnVente.getProduitsEnVente() ) {
-			
-		}
-		if (this.contratsEnCours.size()==0) {
-			return 40;
-		} else {
-			double prixMoyen = 0;
-			for (ContratCadre<Chocolat> cc : this.contratsEnCours) {
-				prixMoyen+=cc.getPrixAuKilo();
-			}
-			prixMoyen = prixMoyen/ this.contratsEnCours.size();
-			return prixMoyen *(1.0+this.marge);
-		}*/
-		return 0;
+		return (this.prixParProduit.containsKey(c)? this.prixParProduit.get(c) : 0.0);
 	}
 
-	@Override
+	//Nordin
 	public double vendre(Chocolat c, double quantite) {
-		this.getStockEnVente();
-		return 0;
+		for (Chocolat chocolat : this.getStockEnVente().getProduitsEnVente()) {
+		if (!c.equals(chocolat)) {
+			this.journal.ajouter("vente de 0.0 (produit demande = "+c+ " vs produit dispo = "+chocolat+")");
+			return 0.0;
+		}
+		}
+		Double q = Math.min(this.getStockEnVente().get(c), quantite);
+		this.getIndicateurStock(c).retirer(this, q);
+		this.soldeBancaire.ajouter(this, this.getPrix(c));
+		this.journal.ajouter("Vente de "+q+" a "+this.getPrix(c));
+		return q;
+		
 	}
 
 	@Override
 	public ContratCadre<Chocolat> getNouveauContrat() { //ILIAS
 		ContratCadre<Chocolat> res=null;
-		double solde = this.soldeBancaire.getValeur();
+
+		
+		double solde = this.getSoldeBancaire().getValeur();
 		for (ContratCadre<Chocolat> cc : this.getContratsEnCours()) {
 			solde = solde - cc.getMontantRestantARegler();
 		}
