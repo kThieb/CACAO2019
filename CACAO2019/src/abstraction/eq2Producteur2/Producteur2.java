@@ -40,11 +40,11 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	
 	public Producteur2(Feve fevesProduites, int productionParStep, double stockInitial, double soldeInitial) {
 		NB_PROD++;
-		this.fevesProduites = fevesProduites;
+		gestionnaireFeve.getFevesProduites() = fevesProduites;
 		this.numero = NB_PROD;
 		this.prixVente = PRIX_INIT;
 		this.productionParStep = productionParStep;
-		this.stockFeves = new Indicateur(this.getNom()+" Stock", this, stockInitial);
+		gestionnaireFeve.getStockFeves() = new Indicateur(this.getNom()+" Stock", this, stockInitial);
 
 		Monde.LE_MONDE.ajouterIndicateur(this.stockFeves);
 		this.soldeBancaire = new Indicateur(this.getNom()+" Solde", this, soldeInitial);
