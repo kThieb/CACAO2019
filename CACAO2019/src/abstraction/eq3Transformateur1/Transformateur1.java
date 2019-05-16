@@ -20,8 +20,8 @@ import abstraction.fourni.Monde;
 
 public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IVendeurContratCadre<Chocolat>  {
 	
-//	private Indicateur iStockFeves;
-//	private Indicateur iStockChocolat;
+ 	private Indicateur iStockFeves;
+ 	private Indicateur iStockChocolat;
     private Indicateur soldeBancaire;
 	private int nbNextAvantEchange;
 	private Journal journal;
@@ -64,10 +64,8 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		this.stockChocolat.put(Chocolat.MG_NE_SHP, new Stock(0));
 		this.stockChocolat.put(Chocolat.MG_E_SHP, new Stock(0));
 		
-//		int sommeFeves = 0;
-//		this.iStockFeves = new Indicateur("EQ3 stock feves", this, sommeFeves);
-//		int sommeChocolat = 0;
-//		this.iStockChocolat = new Indicateur("EQ3 stock chocolat", this, sommeChocolat);
+ 		this.iStockFeves = new Indicateur("EQ3 stock feves", this, 0);
+ 		this.iStockChocolat = new Indicateur("EQ3 stock chocolat", this, 0);
 		// --------------------------------- end eve
 		
 		
