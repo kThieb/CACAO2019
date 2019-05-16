@@ -3,7 +3,7 @@ package abstraction.eq3Transformateur1;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
+import abstraction.eq3Transformateur1.Stock;
 import abstraction.eq7Romu.produits.Chocolat;
 import abstraction.eq7Romu.produits.Feve;
 import abstraction.eq7Romu.ventesContratCadre.ContratCadre;
@@ -39,14 +39,31 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	
 	public Transformateur1() {
 		
-		// begin eve
+		// --------------------------------- begin eve
+		
+		// stock de feves
 		this.stockFeves = new HashMap<Feve,Stock>();
+		this.stockFeves.put(Feve.CRIOLLO_HG_EQ, new Stock(0));
+		this.stockFeves.put(Feve.FORASTERO_MG_EQ, new Stock(0));
+		this.stockFeves.put(Feve.FORASTERO_MG_NEQ, new Stock(0));
+		this.stockFeves.put(Feve.MERCEDES_MG_EQ, new Stock(0));
+		this.stockFeves.put(Feve.MERCEDES_MG_NEQ, new Stock(0));
+		this.stockFeves.put(Feve.TRINITARIO_MG_EQ, new Stock(0));
+		this.stockFeves.put(Feve.TRINITARIO_MG_NEQ, new Stock(0));
+		
+		// stock de chocolat
 		this.stockChocolat = new HashMap<Chocolat,Stock>();
+		this.stockChocolat.put(Chocolat.MG_NE_HP, new Stock(0));
+		this.stockChocolat.put(Chocolat.MG_NE_SHP, new Stock(0));
+		this.stockChocolat.put(Chocolat.MG_E_SHP, new Stock(0));
+		
 //		int sommeFeves = 0;
 //		this.iStockFeves = new Indicateur("EQ3 stock feves", this, sommeFeves);
 //		int sommeChocolat = 0;
 //		this.iStockChocolat = new Indicateur("EQ3 stock chocolat", this, sommeChocolat);
-		// end eve
+		// --------------------------------- end eve
+		
+		
 		this.soldeBancaire=new Indicateur("EQ3 solde bancaire", this, 100000);
 		this.journal = new Journal ("Vente aléatoire de cacao");
 		Monde.LE_MONDE.ajouterJournal(this.journal);
@@ -153,10 +170,10 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		if (quantite<=0.0) {
 			throw new IllegalArgumentException("Appel de la methode receptionner de Transformateur1 avec une quantite egale a "+quantite);
 		}
-		this.stockFeves.ajou;
+		this.stockFeves.put(produit, new Stock(quantite));
 		
 	}
-
+//end sachaa
 	@Override
 	public double payer(double montant, ContratCadre<Feve> cc) {
 		// TODO Auto-generated method stub
@@ -169,8 +186,11 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 
 	@Override
 	public StockEnVente<Chocolat> getStockEnVente() {
-		// TODO Auto-generated method stub
-		return null;
+		StockEnVente<Chocolat> stock = new StockEnVente<Chocolat>();
+		this.stockChocolat.forEach((chocolat, s) -> {
+			System.out.println("test");
+		});
+		return stock;
 	}
 	
 	@Override
@@ -189,7 +209,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 			}
 			prixMoyen = prixMoyen/ this.contratsFevesEnCours.size();
 			double prixProposé = 0 ;
-			prixProposé = prixMoyen + prixMoyen*0.05
+			prixProposé = prixMoyen + prixMoyen*0.05;
 		}
 		
 		//End Kevin
