@@ -5,6 +5,7 @@ import java.util.HashMap;
 import abstraction.eq1Producteur1.ventesCacaoAleatoires.IVendeurCacaoAleatoire;
 import abstraction.eq1Producteur1.ventesCacaoAleatoires.SuperviseurVentesCacaoAleatoires;
 import abstraction.eq7Romu.produits.Feve;
+import abstraction.eq7Romu.ventesContratCadre.ContratCadre;
 import abstraction.fourni.IActeur;
 import abstraction.fourni.Indicateur;
 import abstraction.fourni.Journal;
@@ -23,6 +24,9 @@ public class Producteur1 implements IActeur, IVendeurCacaoAleatoire {
 	// BEGIN Pauline
 	private HashMap<Feve, Double> prixAuKilo;
 	// END Pauline
+	//BEGIN ANTI
+	private HashMap<Integer, ContratCadre<Feve>> historiqueContrats;
+	//END ANTI
 
 	public Producteur1() {
 		this.stockFeves = new Indicateur("EQ1 stock feves", this, 1000);
@@ -36,6 +40,9 @@ public class Producteur1 implements IActeur, IVendeurCacaoAleatoire {
 		System.out.println(" ajout du journal...");
 		// END Manon
 
+	}
+	public HashMap<Integer, ContratCadre<Feve>> getHistoriqueContrats() {
+		return this.historiqueContrats;
 	}
 
 	public String getNom() {
