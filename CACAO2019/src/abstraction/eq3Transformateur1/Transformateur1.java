@@ -142,7 +142,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		if (cc.getEcheancier()==null) { // il n'y a pas encore eu de contre-proposition de la part du vendeur
 			cc.ajouterEcheancier(new Echeancier(Monde.LE_MONDE.getStep(), 12, cc.getQuantite()/12));
 		} else {
-			if ((this.contratsFeveEnCours.isEmpty())&&(this.stockFeves.get(cc.getProduit()) < this.stockLim)) { // On accepte forcément la propostion si on a pas de contrat cadre en cours et que le stock est inférieur à une quantité arbitraire
+			if ((this.contratsFeveEnCours.isEmpty())&&(this.stockFeves.get(cc.getProduit()).getQuantiteEnStock() < this.stockLim)) { // On accepte forcément la propostion si on a pas de contrat cadre en cours et que le stock est inférieur à une quantité arbitraire
 				cc.ajouterEcheancier(new Echeancier(cc.getEcheancier())); // on accepte la proposition de l'acheteur car on a la quantite en stock 
 			} 
 			else { // une chance sur deux de proposer un echeancier etalant sur un step de plus
@@ -220,7 +220,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 			prixMoyen = prixMoyen/ this.contratsFeveEnCours.size();
 			return prixMoyen *(1.0+this.marge);
 
-			prixMoyen = prixMoyen/ this.contratsFevesEnCours.size();
+			prixMoyen = prixMoyen/ this.contratsFeveEnCours.size();
 			double prixProposé = 0 ;
 			prixProposé = prixMoyen + prixMoyen*0.05;
 
