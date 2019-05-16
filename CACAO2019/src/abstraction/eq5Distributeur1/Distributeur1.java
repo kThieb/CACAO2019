@@ -27,17 +27,26 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 	public Distributeur1() {
 		this.journal = new Journal("jEq5");
 		Monde.LE_MONDE.ajouterJournal(this.journal);
+		this.produits = new ArrayList<Chocolat>();
+		produits.add(Chocolat.HG_E_SHP);
+		produits.add(Chocolat.MG_E_SHP);
+		produits.add(Chocolat.MG_NE_HP);
+		produits.add(Chocolat.MG_NE_SHP);
 	}
 	
-	public Distributeur1(ArrayList<Chocolat> produits, double marge, Double stockInitial, Double soldeInitial) {
+	public Distributeur1(double marge, Double stockInitial, Double soldeInitial) {
 		this.numero =1 ;
-		this.produits = produits;
+		this.produits = new ArrayList<Chocolat>();
+		produits.add(Chocolat.HG_E_SHP);
+		produits.add(Chocolat.MG_E_SHP);
+		produits.add(Chocolat.MG_NE_HP);
+		produits.add(Chocolat.MG_NE_SHP);
 		this.marge = marge;
 		this.stock= new ArrayList<Indicateur>();
 		for (Chocolat produit : produits) {
 			this.stock.add(new Indicateur(this.getNom()+" Stock", this, stockInitial));
+			Monde.LE_MONDE.ajouterIndicateur(this.stock.get(-1));
 		}
-		Monde.LE_MONDE.getIndicateurs(this.stock);
 		this.soldeBancaire = new Indicateur(this.getNom()+" Solde", this, soldeInitial);
 		Monde.LE_MONDE.ajouterIndicateur(this.soldeBancaire);
 		this.journal = new Journal("Journal "+this.getNom());
