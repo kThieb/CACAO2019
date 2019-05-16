@@ -66,7 +66,7 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 		// On va créer un nouveau contrat cadre 
 		// Au préalable, il faut identifier produit, quantité, vendeur, acheteur
 		
-		//Choix du produit
+		//Choix du produit : on choisit un produit au hasard parmi tous les produits
 		ArrayList<Chocolat> produits = new ArrayList<Chocolat>();
 		produits.add(Chocolat.HG_E_SHP);
 		produits.add(Chocolat.MG_E_SHP);
@@ -75,6 +75,8 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 		Chocolat produit = produits.get((int) Math.random()*produits.size());
 		
 		//Choix quantité
+		
+		
 		//Création Contrat
 		return null;
 	}
