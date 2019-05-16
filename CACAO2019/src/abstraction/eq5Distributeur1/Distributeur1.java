@@ -106,14 +106,14 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 	@Override
 	public void proposerPrixAcheteur(ContratCadre cc) {
 		// TODO Auto-generated method stub
-		double prixVendeur = cc.getListePrixAuKilo().get(0);
+		double prixVendeur = cc.getPrixAuKilo().get(0);
 		if (Math.random()<0.25) { // probabilite de 25% d'accepter
 			cc.ajouterPrixAuKilo(cc.getPrixAuKilo());
 		} else {
 			cc.ajouterPrixAuKilo((prixVendeur*(0.9+Math.random()*0.1))); // rabais de 10% max
 		}
 	}
-	}
+	
 
 	@Override
 	public void notifierAcheteur(ContratCadre cc) {
