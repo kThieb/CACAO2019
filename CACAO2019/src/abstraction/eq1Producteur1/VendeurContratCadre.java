@@ -76,8 +76,7 @@ public class VendeurContratCadre extends Producteur1 implements IVendeurContratC
 	@Override
 	public double livrer(Feve produit, double quantite, ContratCadre<Feve> cc) {
 		//Manon
-		   @Override
-		   public double livrer(Object produit, double quantite, ContratCadre cc) {
+		   
 		      if (quantite<0.0) {
 		         throw new IllegalArgumentException("Appel de la methode livrer(produit,quantite,ContratCadre) de VendeurContratCadre avec quantite<0.0 ( "+quantite+" )");
 		      }
@@ -92,7 +91,7 @@ public class VendeurContratCadre extends Producteur1 implements IVendeurContratC
 		      else {
 		         return quantite;
 		      }
-		   }
+		   
 	}
 	
 
