@@ -6,14 +6,13 @@ import abstraction.eq7Romu.produits.Feve;
 import abstraction.fourni.IActeur;
 import abstraction.fourni.Indicateur;
 
-public class GestionnaireFeve {
-	private HashMap<Feve, Indicateur> feves=new HashMap<Feve,Indicateur>();
+public class GestionnaireFeve extends HashMap<Feve, IndicateurFeve>{
 	
 	public GestionnaireFeve(IActeur acteur) {
-		feves.put(Feve.FORASTERO_MG_NEQ, new Indicateur(Feve.FORASTERO_MG_NEQ.name(), acteur,0));
-		feves.put(Feve.FORASTERO_MG_EQ, new Indicateur(Feve.FORASTERO_MG_EQ.name(),acteur,0));
-		feves.put(Feve.MERCEDES_MG_EQ, new Indicateur(Feve.MERCEDES_MG_EQ.name(),acteur,0));
-		feves.put(Feve.MERCEDES_MG_NEQ, new Indicateur(Feve.MERCEDES_MG_NEQ.name(),acteur,0));
+		this.put(Feve.FORASTERO_MG_NEQ, new IndicateurFeve(acteur));
+		this.put(Feve.FORASTERO_MG_EQ, new IndicateurFeve(acteur));
+		this.put(Feve.MERCEDES_MG_EQ, new IndicateurFeve(acteur));
+		this.put(Feve.MERCEDES_MG_NEQ, new IndicateurFeve(acteur));
 	}
 	
 	

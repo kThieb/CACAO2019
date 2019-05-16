@@ -26,7 +26,9 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	
 	
 	
+
 	private GestionnaireFeve Feves;
+
 	private Indicateur soldeBancaire;
 	private Journal journal;
 
@@ -35,6 +37,8 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	private List<ContratCadre<Feve>> contratsEnCours;
 	private double prixVente;
 	private int numStep;
+	private GestionnaireFeve gestionnaireFeve;
+	
 	
 	
 	public Producteur2(Feve fevesProduites, int productionParStep, double stockInitial, double soldeInitial) {
