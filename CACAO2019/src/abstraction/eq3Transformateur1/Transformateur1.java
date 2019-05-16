@@ -29,7 +29,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	//Begin Kevin
 	private static final double PRIX_VENTE_PAR_DEFAUT = 40.0;
 	private double marge;
-	private static final double stockLim;
+	private static final double stockLim = 10000.0;
 	//End Kevin
 	
 
@@ -139,17 +139,22 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 
 	@Override
 	public void proposerEcheancierAcheteur(ContratCadre<Feve> cc) {
+		//Begin Kevin
 		if (cc.getEcheancier()==null) { // il n'y a pas encore eu de contre-proposition de la part du vendeur
 			cc.ajouterEcheancier(new Echeancier(Monde.LE_MONDE.getStep(), 12, cc.getQuantite()/12));
 		} else {
-			if ((this.contratsFeveEnCours.isEmpty())&&(this.stockFeves.get(cc.getProduit()).getQuantiteEnStock() < this.stockLim)) { // On accepte forcément la propostion si on a pas de contrat cadre en cours et que le stock est inférieur à une quantité arbitraire
-				cc.ajouterEcheancier(new Echeancier(cc.getEcheancier())); // on accepte la proposition de l'acheteur car on a la quantite en stock 
+			if ((this.contratsFeveEnCours.isEmpty())&&(this.stockFeves.get(cc.getProduit()).getQuantiteEnStock() < stockLim)) { // On accepte forcément la propostion si on a pas de contrat cadre en cours et que le stock est inférieur à une quantité arbitraire
+				cc.ajouterEcheancier(new Echeancier(cc.getEcheancier()));
 			} 
-			else { // une chance sur deux de proposer un echeancier etalant sur un step de plus
+			if (Math.random() < 0.33) {
+				cc.ajouterEcheancier(new Echeancier(cc.getEcheancier())); //1 chance sur 3 d'accepter l'échéancier (si la première condition n'est pas remplie)
+			}      
+			
+			else { // 2 chance sur 3 de proposer un echeancier etalant sur un step de plus
 				cc.ajouterEcheancier(new Echeancier(cc.getEcheancier().getStepDebut(), cc.getEcheancier().getNbEcheances()+1, cc.getQuantite()/(cc.getEcheancier().getNbEcheances()+1)));
 			}
 		}
-		
+		//End Kevin
 	}
 
 	@Override
