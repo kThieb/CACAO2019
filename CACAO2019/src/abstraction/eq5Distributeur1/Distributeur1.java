@@ -16,12 +16,33 @@ import abstraction.fourni.Monde;
 public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistributeurChocolat {
 	private Journal journal;
 	private ArrayList<Indicateur> stock;
+	private int numero;
+	private Indicateur soldeBancaire;
+	private ArrayList<Chocolat> produits;
+	private Double marge;
+	private List<ContratCadre<Chocolat>> contratsEnCours;
 	
 
 
 	public Distributeur1() {
 		this.journal = new Journal("jEq5");
 		Monde.LE_MONDE.ajouterJournal(this.journal);
+	}
+	
+	public Distributeur1(ArrayList<Chocolat> produits, double marge, Double stockInitial, Double soldeInitial) {
+		this.numero =1 ;
+		this.produits = produits;
+		this.marge = marge;
+		this.stock= new ArrayList<Indicateur>();
+		for (Chocolat produit : produits) {
+			this.stock.add(new Indicateur(this.getNom()+" Stock", this, stockInitial));
+		}
+		Monde.LE_MONDE.getIndicateurs(this.stock);
+		this.soldeBancaire = new Indicateur(this.getNom()+" Solde", this, soldeInitial);
+		Monde.LE_MONDE.ajouterIndicateur(this.soldeBancaire);
+		this.journal = new Journal("Journal "+this.getNom());
+		Monde.LE_MONDE.ajouterJournal(this.journal);
+		this.contratsEnCours = new ArrayList<ContratCadre<Chocolat>>();
 	}
 	
 	public String getNom() {
