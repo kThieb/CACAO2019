@@ -25,6 +25,7 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	private static final double PRIX_MAX = 2.500;
 	
 	
+	
 	private Indicateur stockFeves;
 	private Indicateur soldeBancaire;
 	private Journal journal;
@@ -63,6 +64,7 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	}
 
 	public void initialiser() {
+		
 	}
 
 	public void next() {
@@ -74,6 +76,8 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 			this.numStep = 1;
 		} else {
 		this.numStep++; }
+		this.journal.ajouter("Step "+Monde.LE_MONDE.getStep()+" : prix de vente = "+this.prixVente);
+
 	}
 
 
@@ -92,18 +96,30 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 
 
 
-	@Override
+	/** a modifier*/
 	public void proposerEcheancierVendeur(ContratCadre<Feve> cc) {
-		if (Math.random()<0.5) { // une chance sur deux d'accepter l'echeancier
-			cc.ajouterEcheancier(new Echeancier(cc.getEcheancier())); // on accepte la proposition de l'acheteur car on a la quantite en stock 
-		} else { // une chance sur deux de proposer un echeancier etalant sur un step de plus
-			cc.ajouterEcheancier(new Echeancier(cc.getEcheancier().getStepDebut(), cc.getEcheancier().getNbEcheances()+1, cc.getQuantite()/(cc.getEcheancier().getNbEcheances()+1)));
-		}
+		cc.ajouterEcheancier(new Echeancier(cc.getEcheancier())); // on accepte la proposition de l'acheteur car on a la quantite en stock 
 	}
 		
 
 	@Override
 	public void proposerPrixVendeur(ContratCadre<Feve> cc) {
+		if (cc.getListePrixAuKilo().size()==0) {
+			cc.ajouterPrixAuKilo(getPrix(cc.getProduit(), cc.getQuantite()));
+		} else {
+			double prixVendeur = cc.getListePrixAuKilo().get(0);
+			double prixAcheteur = cc.getPrixAuKilo();
+			cc.ajouterPrixAuKilo(prixVendeur);
+			
+			
+			/*if (prixAcheteur>=0.75*prixVendeur) { // on ne fait une proposition que si l'acheteur ne demande pas un prix trop bas.
+				if (Math.random()<0.25) { // probabilite de
+					cc.ajouterPrixAuKilo(cc.getPrixAuKilo());
+				} else {
+					cc.ajouterPrixAuKilo((prixVendeur*(0.9+Math.random()*0.1))); // rabais de 10% max
+				}
+			}*/
+		}
 	}
 
 	@Override
