@@ -84,7 +84,6 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 		Chocolat produit = produits.get((int) Math.random()*produits.size());
 		
 		//Choix quantité
-		
 		//Création Contrat
 		return null;
 	}
