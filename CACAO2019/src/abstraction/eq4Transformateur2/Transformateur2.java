@@ -24,7 +24,7 @@ public class Transformateur2 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	private Journal journal;
 	
 	protected HashMap<Chocolat, Stock> stocksChocolat;
-	protected HashMap<Feve, Stock> stockFeves;
+	protected HashMap<Feve, StockFeve> stockFeves;
 	
 	
 	private Transformateur2AcheteurCC acheteurCC;
@@ -62,11 +62,11 @@ public class Transformateur2 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		
 		// Initialisation des stocks
 		stocksChocolat = new HashMap<Chocolat, Stock>();
-		stockFeves = new HashMap<Feve, Stock>();
+		stockFeves = new HashMap<Feve, StockFeve>();
 		for(int i = 0; i < Chocolat.values().length; i++)
 			stocksChocolat.put(Chocolat.values()[i], new Stock());
 		for(int i = 0; i < Feve.values().length; i++)
-			stockFeves.put(Feve.values()[i], new Stock());
+			stockFeves.put(Feve.values()[i], new StockFeve());
 	}
 
 	public void next() {

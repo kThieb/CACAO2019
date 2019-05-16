@@ -2,16 +2,12 @@ package abstraction.eq4Transformateur2;
 
 import java.util.LinkedList;
 
-import abstraction.eq7Romu.produits.Feve;
-
 public class StockFeve {
 	/** Représente une pile de fèves */
 	
-	private Feve type;
 	private LinkedList<TasFeve> tas;
 	
-	public StockFeve(Feve type) {
-		this.type = type;
+	public StockFeve() {
 		this.tas = new LinkedList<TasFeve>();
 	}
 	
@@ -19,22 +15,22 @@ public class StockFeve {
 		this.tas.add(t);
 	}
 	
-	public int getQuantiteTotale() {
-		int qty = 0;
+	public double getQuantiteTotale() {
+		double qty = 0;
 		for(int i = 0; i < tas.size(); i++)
 			qty += tas.get(i).getQuantité();
 		return qty;
 	}
 	
-	public boolean prendreFeves(int qty) {
-		// TODO Renvoyer un boolean et le prix
+	/* Récupère les fèves demandées dans la file. Renvoie le prix total (ou 0 s'il n'y a pas assez de fèves) */
+	public double prendreFeves(double qty) {
 		if(tas.isEmpty() || qty > getQuantiteTotale())
-			return false;
+			return 0;
 		else {
 			double prix = 0;
 			while(qty > 0) {
 				TasFeve t = tas.peek(); // prochain tas à vider
-				int qteAPrendre = Math.min(qty, t.getQuantité());
+				double qteAPrendre = Math.min(qty, t.getQuantité());
 				t.prendre(qty);
 				qty -= qteAPrendre;
 				prix += qteAPrendre * t.getPrixUnitaire();
@@ -42,7 +38,7 @@ public class StockFeve {
 				if(t.getQuantité() == 0)
 					tas.pop();
 			}
-			return true;
+			return prix;
 		}
 	}
 }

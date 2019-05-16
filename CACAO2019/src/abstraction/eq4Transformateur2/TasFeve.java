@@ -1,26 +1,19 @@
 package abstraction.eq4Transformateur2;
 
-import abstraction.eq7Romu.produits.Feve;
-
 public class TasFeve {
 	/** Représente une livraison de fèves */
 	
-	private Feve type;
-	private int quantité; // kg
+	private double quantité; // kg
 	private double prixUnitaire;
 	private int datePeremption;
 	
-	public TasFeve(Feve type, int quantité, double prixUnitaire) {
-		this.type = type;
+	public TasFeve(double quantité, double prixUnitaire) {
 		this.quantité = quantité;
 		this.prixUnitaire = prixUnitaire;
 	}
 	
-	public Feve getType() {
-		return type;
-	}
 	
-	public int getQuantité() {
+	public double getQuantité() {
 		return quantité;
 	}
 	
@@ -28,9 +21,9 @@ public class TasFeve {
 		return prixUnitaire;
 	}
 	
-	public boolean prendre(int qté) {
-		if(qté <= this.quantité) {
-			this.quantité -= qté;
+	public boolean prendre(double qte) {
+		if(qte <= this.quantité) {
+			this.quantité -= qte;
 			return true;
 		}
 		return false;
