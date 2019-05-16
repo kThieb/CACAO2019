@@ -68,6 +68,9 @@ public class Producteur2 implements IActeur, IVendeurCacaoAleatoire, IVendeurCon
 		double nouveauStock = this.stockFeves.getValeur() + productionParStep;
 		this.stockFeves.setValeur(this, nouveauStock);
 	}
+	
+	
+	
 
 	public double quantiteEnVente(double prix) {
 		return this.stockFeves.getValeur();
