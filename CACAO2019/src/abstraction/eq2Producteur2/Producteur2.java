@@ -65,7 +65,7 @@ public class Producteur2 implements IActeur, IVendeurCacaoAleatoire, IVendeurCon
 
 	public void next() {
 		// production
-		double nouveauStock = this.stockFeves.getValeur() + Math.random()*300;
+		double nouveauStock = this.stockFeves.getValeur() + productionParStep;
 		this.stockFeves.setValeur(this, nouveauStock);
 	}
 
@@ -78,7 +78,7 @@ public class Producteur2 implements IActeur, IVendeurCacaoAleatoire, IVendeurCon
 	}
 
 	@Override
-	public StockEnVente getStockEnVente() {
+	public StockEnVente<Feve> getStockEnVente() {
 		double stockRestant = this.stockFeves.getValeur();
 		for (ContratCadre<Feve> cc : this.contratsEnCours) {
 			if (Monde.LE_MONDE != null) {
@@ -93,7 +93,7 @@ public class Producteur2 implements IActeur, IVendeurCacaoAleatoire, IVendeurCon
 
 
 	@Override
-	public void proposerEcheancierVendeur(ContratCadre cc) {
+	public void proposerEcheancierVendeur(ContratCadre<Feve> cc) {
 		if (Math.random()<0.5) { // une chance sur deux d'accepter l'echeancier
 			cc.ajouterEcheancier(new Echeancier(cc.getEcheancier())); // on accepte la proposition de l'acheteur car on a la quantite en stock 
 		} else { // une chance sur deux de proposer un echeancier etalant sur un step de plus
@@ -103,20 +103,20 @@ public class Producteur2 implements IActeur, IVendeurCacaoAleatoire, IVendeurCon
 		
 
 	@Override
-	public void proposerPrixVendeur(ContratCadre cc) {
+	public void proposerPrixVendeur(ContratCadre<Feve> cc) {
 	}
 
 	@Override
-	public void notifierVendeur(ContratCadre cc) {
+	public void notifierVendeur(ContratCadre<Feve> cc) {
 		this.contratsEnCours.add(cc);
 	}
 
 
 
 	@Override
-	public void encaisser(double montant, ContratCadre cc) {
+	public void encaisser(double montant, ContratCadre<Feve> cc) {
 		if (montant<0.0) {
-			throw new IllegalArgumentException("Appel de la methode encaisser de ProducteurRomu avec un montant negatif");
+			throw new IllegalArgumentException("Appel de la methode encaisser de Producteur2 avec un montant negatif");
 		}
 		this.soldeBancaire.ajouter(this,  montant);
 	}
