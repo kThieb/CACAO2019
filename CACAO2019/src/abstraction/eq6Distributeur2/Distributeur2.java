@@ -49,7 +49,7 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 		
 		//NORDIN et Caroline
 		
-		this.soldeBancaire = new Indicateur("SoldeBancaire", this, 0);
+		this.soldeBancaire = new Indicateur("SoldeBancaire", this, 1000);
 		Monde.LE_MONDE.ajouterIndicateur(this.soldeBancaire);
 		
 		//Chnager par nom du chocolat pour que le getNom de indcateur renvoie le type chocolat
@@ -253,11 +253,27 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 		return 0;
 	}
 
+	/** 
+	 * Retire de la liste des contrats en cours les contrats pour lesquels la quantite a livrer 
+	 * est nulle et le montant a regler est egalement nul (toutes les livraisons et tous les paiements
+	 * ont ete effectues).
+	 */
+	public void retireVieuxContrats() {
+		List<ContratCadre<Chocolat>> aEnlever = new ArrayList<ContratCadre<Chocolat>>();
+		for (ContratCadre<Chocolat> c : this.contratsEnCours) {
+			if (c.getQuantiteRestantALivrer()<=0.0 && c.getMontantRestantARegler()<=0.0) {
+				aEnlever.add(c);
+			}
+		}
+		for (ContratCadre<Chocolat> c : aEnlever) {
+			this.contratsEnCours.remove(c);
+		}
+	}
+
+	
 	@Override
 	public ContratCadre<Chocolat> getNouveauContrat() { //ILIAS
 		ContratCadre<Chocolat> res=null;
-
-		return null;
 		
 		double solde = this.getSoldeBancaire().getValeur();
 		
@@ -296,9 +312,10 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 	}
 
 	@Override
+	//Caroline 
 	public void proposerEcheancierAcheteur(ContratCadre<Chocolat> cc) {
 		if (cc.getEcheancier()==null) { // il n'y a pas encore eu de contre-proposition de la part du vendeur
-			cc.ajouterEcheancier(new Echeancier(Monde.LE_MONDE.getStep(), 10, cc.getQuantite()/10));
+			cc.ajouterEcheancier(new Echeancier(Monde.LE_MONDE.getStep(), 5, cc.getQuantite()/5));
 		} else {
 			cc.ajouterEcheancier(new Echeancier(cc.getEcheancier())); // on accepte la contre-proposition du vendeur 
 		}
@@ -331,20 +348,17 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 			//Si le vendeur propose 2 fois le même prix et pas satisfait => ne pas ajouter de prix
 			// Sinon proposer un nouveau prix 
 		
-		if (cc!=null) {
+		if (cc!=null && 10 > cc.getListePrixAuKilo().size()) {
 			if (satisfaitParPrixContratCadre (cc)) {
 				cc.ajouterPrixAuKilo(cc.getPrixAuKilo());
-				this.getIndicateurPrix(cc.getProduit()).ajouter(this,cc.getPrixAuKilo());
+				this.getIndicateurPrix(cc.getProduit()).ajouter(this,cc.getPrixAuKilo()*this.getMarge());
 				this.journal.ajouter("Accord sur Prix sur contrat" + cc.toString());
 			} else {
-				if (cc.getPrixAuKilo()==cc.getListePrixAuKilo().get(cc.getListePrixAuKilo().size() -3)) {
-					cc=null;
-				} else {
-					if (10 > cc.getListePrixAuKilo().size()) {
+					if (cc.getListePrixAuKilo().size() >= 3 ) {
 						cc.ajouterPrixAuKilo(cc.getListePrixAuKilo().get(cc.getListePrixAuKilo().size() -2)*0.95);
 					}else {
-						cc=null;
-				}	}}}}
+						cc.ajouterPrixAuKilo(this.getIndicateurPrix(cc.getProduit()).getValeur());
+				}	}}}
 
 	@Override//Caroline
 	public void notifierAcheteur(ContratCadre<Chocolat> cc) {
@@ -361,7 +375,7 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 		this.journal.ajouter("Réception du produit" + produit.toString() + "en quantité" + quantite + "au sujet du contrat " + cc.toString());
 		if (cc != null && quantite >0 && cc.getProduit().equals(produit)) {
 			
-			if (quantite != cc.getQuantite()) {
+			if (quantite != cc.getEcheancier().getQuantite(Monde.LE_MONDE.getStep())) {
 				penality = true;
 			}
 		
@@ -378,20 +392,26 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 	@Override//Caroline
 	public double payer(double montant, ContratCadre<Chocolat> cc) {
 		double montantpaye = 0;
+		
 		if (montant<0.0) {
 			throw new IllegalArgumentException("Appel de la methode payer avec un montant negatif");
 		}
+		
 		if (cc!=null && this.soldeBancaire.getValeur() >montant + 100 ) {
 			this.soldeBancaire.retirer(this,montant);
 			cc.payer(montant);
 			montantpaye = montant;
-		} else {
+		} 
+		else {
 			if (montant-100>0) {
 				this.soldeBancaire.retirer(this,montant-100);
 				cc.payer(  montant-100);
 				montantpaye = montant-100;
+			} else {
+				cc.payer(0.0);
 			}
-				cc.penalitePaiement();
+			
+			cc.penalitePaiement();
 		}
 		this.journal.ajouter(montantpaye + "sur le contrat" + cc.toString());
 		return montantpaye;
