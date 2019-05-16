@@ -62,12 +62,12 @@ public class VendeurContratCadre extends Producteur1 implements IVendeurContratC
 			}
 		}
 	}
-
+//ANTI
 	public void notifierVendeur(ContratCadre<Feve> cc) {
-		// TODO Auto-generated method stub
+		super.getHistoriqueContrats().put(cc.getNumero(), cc);
 
 	}
-
+//ANTI
 	public void encaisser(double montant, ContratCadre<Feve> cc) {
 		// TODO Auto-generated method stub
 
