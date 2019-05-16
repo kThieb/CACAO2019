@@ -312,11 +312,14 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 
 	@Override
 	public double livrer(Chocolat produit, double quantite, ContratCadre<Chocolat> cc) {
-		if (produit==null || !produit.equals(this.chocolatProduit)) {
-			throw new IllegalArgumentException("Appel de la methode livrer de TransformateurRomu avec un produit ne correspondant pas au chocolat produit");
+		if (produit==null || !this.stockChocolat.keySet().contains(produit)) {
+			throw new IllegalArgumentException("Appel de la methode livrer de Transformateur1 avec un produit ne correspondant pas au chocolat produit");
 		}
-		double livraison = Math.min(quantite, this.stockChocolat.getValeur());
-		this.stockChocolat.retirer(this, livraison);
+		if (this.stockChocolat.keySet().contains(produit) && this.stockChocolat.get(produit).getQuantiteEnStock()<quantite) {
+			throw new IllegalArgumentException("Appel de la methode livrer de Transformateur1 avec un quantite superieure au stock");
+		}
+		double livraison = this.stockChocolat.get(produit).getQuantiteEnStock();
+		//this.stockChocolat.retirer(this, livraison);
 		return livraison;
 	}
 
@@ -324,7 +327,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	public void encaisser(double montant, ContratCadre<Chocolat> cc) {
 		//begin raph
 		if (montant<0.0) {
-			throw new IllegalArgumentException("Appel de la methode encaisser de TransformateurRomu avec un montant negatif");
+			throw new IllegalArgumentException("Appel de la methode encaisser de Transformateur1 avec un montant negatif");
 		}
 		this.soldeBancaire.ajouter(this,  montant);
 		//end raph
