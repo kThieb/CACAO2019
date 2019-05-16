@@ -24,10 +24,7 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	private static final double PRIX_MIN = 0.800;
 	private static final double PRIX_MAX = 2.500;
 	
-	
-	
 
-	private GestionnaireFeve Feves;
 
 	private Indicateur soldeBancaire;
 	private Journal journal;
