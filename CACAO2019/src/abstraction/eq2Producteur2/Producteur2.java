@@ -17,7 +17,7 @@ import abstraction.fourni.Indicateur;
 import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 
-public class Producteur2 implements IActeur, IVendeurCacaoAleatoire, IVendeurContratCadre<Feve> {
+public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	
 	private static int NB_PROD = 2;
 	private static final double PRIX_INIT = 1.500;
