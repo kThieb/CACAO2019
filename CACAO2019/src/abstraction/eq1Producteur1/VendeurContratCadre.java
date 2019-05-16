@@ -1,56 +1,41 @@
 package abstraction.eq1Producteur1;
 
-import java.util.HashMap;
-
 import abstraction.eq7Romu.produits.Feve;
+//ContratCadre;
 import abstraction.eq7Romu.ventesContratCadre.ContratCadre;
 import abstraction.eq7Romu.ventesContratCadre.IVendeurContratCadre;
+import abstraction.eq7Romu.ventesContratCadre.StockEnVente;
 
-import abstraction.fourni.Indicateur;
-import abstraction.eq1Producteur1.StockEnVente;
-
-
-
-
-
-
-
-
-public class VendeurContratCadre implements IVendeurContratCadre<Feve>{
-	//ANTI
+public class VendeurContratCadre implements IVendeurContratCadre<Feve> {
+	// ANTI
 	private StockEnVente<Feve> stockEnVente;
-	
 
-	
 	public StockEnVente<Feve> getStockEnVente() {
-		
-		return this.stockEnVente;
+
+		return stockEnVente;
 	}
 
-
-	public double getPrix(Object produit, Double quantite) {
+	public double getPrix(Feve produit, Double quantite) {
 		// BEGIN Pauline
-		if (produit== null || quantite<=0.0) {
+		if (produit == null || quantite <= 0.0) {
 			return Double.NaN;
 		} else if (quantite > this.getStockEnVente().get(produit)) {
 			return Double.NaN;
 		} else {
-			// utiliser Producteur1.getPrixAuKilo() pour savoir prix en fct du produit 
+			// utiliser Producteur1.getPrixAuKilo() pour savoir prix en fct du produit
 			Producteur1 prod = new Producteur1();
 			return prod.getPrixAuKilo().get(produit);
 		}
 	}
 
-	
-	public void proposerEcheancierVendeur(ContratCadre cc) {
+	public void proposerEcheancierVendeur(ContratCadre<Feve> cc) {
 		// TODO Auto-generated method stub
-		
-	}
 
+	}
 
 //Manon
 
-	public void proposerPrixVendeur(ContratCadre cc) {
+	public void proposerPrixVendeur(ContratCadre<Feve> cc) {
 
 		/* Si la liste est nulle on ajoute le prix initialement proposé */
 		if (cc.getListePrixAuKilo() == null) {
@@ -77,25 +62,20 @@ public class VendeurContratCadre implements IVendeurContratCadre<Feve>{
 		}
 	}
 
-
-	public void notifierVendeur(ContratCadre cc) {
+	public void notifierVendeur(ContratCadre<Feve> cc) {
 		// TODO Auto-generated method stub
 
 	}
 
-	
-	public double livrer(Object produit, double quantite, ContratCadre cc) {
+	public void encaisser(double montant, ContratCadre<Feve> cc) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public double livrer(Feve produit, double quantite, ContratCadre<Feve> cc) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-
-	
-	public void encaisser(double montant, ContratCadre cc) {
-		// TODO Auto-generated method stub
-
-	}
-
-
-	
 
 }
