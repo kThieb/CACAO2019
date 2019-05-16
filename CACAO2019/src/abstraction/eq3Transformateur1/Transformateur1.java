@@ -193,7 +193,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	// 			VENDEUR
 	// -------------------------------------------------------------------------------------------
 
-	@Override
+
 	public StockEnVente<Chocolat> getStockEnVente() {
 		StockEnVente<Chocolat> stock = new StockEnVente<Chocolat>();
 		for (Entry<Chocolat, Stock> choco : this.stockChocolat.entrySet()) {
