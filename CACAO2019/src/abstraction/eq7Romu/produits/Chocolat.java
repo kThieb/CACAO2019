@@ -29,5 +29,20 @@ public enum Chocolat {
 			System.out.println(c);
 		}
 	}
+	public int Notequalite() {
+		int N = 0;
+		if (isEquitable()) {
+			N = N+1 ;
+		}
+		if (isSansHuileDePalme()) {
+			N = N+1 ;
+		}
+		if (getGamme() = HAUTE) {
+			N= N+2 ;
+		} else if (getGamme() = MOYEN) {
+			N = N+1 ;
+		}
+		return 10*N/4;
+	}
 
 }
