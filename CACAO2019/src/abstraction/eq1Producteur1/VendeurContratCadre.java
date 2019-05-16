@@ -70,6 +70,7 @@ public class VendeurContratCadre extends Producteur1 implements IVendeurContratC
 
 	public void encaisser(double montant, ContratCadre<Feve> cc) {
 		super.soldeBancaire.ajouter(this ,  montant);
+		cc.payer(montant);
 	}
 
 	@Override
