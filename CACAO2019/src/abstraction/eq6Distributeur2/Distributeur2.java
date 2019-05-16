@@ -21,11 +21,14 @@ import abstraction.fourni.Monde;
 
 public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, IDistributeurChocolat {
 
-	private static int NB_DIST = 2;
+
+	private List<ContratCadre<Chocolat>> contratsEnCours;
+	private Indicateur stock;
 
 	private int numero;
 
-	private List<ContratCadre<Chocolat>> contratsEnCours;
+	
+	private HashMap<Chocolat,Double> margeParProduit;
 	private double marge;
 	private Indicateur soldeBancaire;
 	
@@ -48,30 +51,36 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 	public Distributeur2() {
 		
 		//NORDIN et Caroline
+
 		
 		this.soldeBancaire = new Indicateur("SoldeBancaire", this, 1000);
+
+		// Partie se référant au journal
+		this.journal = new Journal ("Marché du Chocolat");
+		this.soldeBancaire = new Indicateur("SoldeBancaire EQ6", this, 10000);
+
 		Monde.LE_MONDE.ajouterIndicateur(this.soldeBancaire);
 		
 		//Chnager par nom du chocolat pour que le getNom de indcateur renvoie le type chocolat
-		this.stockMG_E_SHP = new Indicateur(Chocolat.MG_E_SHP.toString(), this, 0);
+		this.stockMG_E_SHP = new Indicateur(Chocolat.MG_E_SHP.toString()+ " Distributeur 2", this, 0);
 		Monde.LE_MONDE.ajouterIndicateur(this.stockMG_E_SHP);
-		this.stockMG_NE_SHP = new Indicateur(Chocolat.MG_NE_SHP.toString(), this, 0);
+		this.stockMG_NE_SHP = new Indicateur(Chocolat.MG_NE_SHP.toString()+ " Distributeur 2", this, 0);
 		Monde.LE_MONDE.ajouterIndicateur(this.stockMG_NE_SHP);
-		this.stockMG_NE_HP = new Indicateur(Chocolat.MG_NE_HP.toString(), this, 0);
+		this.stockMG_NE_HP = new Indicateur(Chocolat.MG_NE_HP.toString()+ " Distributeur 2", this, 0);
 		Monde.LE_MONDE.ajouterIndicateur(this.stockMG_NE_HP);
-		this.stockHG_E_SHP = new Indicateur(Chocolat.HG_E_SHP.toString(), this, 0);
+		this.stockHG_E_SHP = new Indicateur(Chocolat.HG_E_SHP.toString()+ " Distributeur 2", this, 0);
 		Monde.LE_MONDE.ajouterIndicateur(this.stockHG_E_SHP);
 		
-		this.prixMG_E_SHP = new Indicateur(Chocolat.MG_E_SHP.toString(), this, 0);
+		this.prixMG_E_SHP = new Indicateur("Prix "+ " "+ Chocolat.MG_E_SHP.toString()+ " Distributeur 2", this, 0);
 		Monde.LE_MONDE.ajouterIndicateur(this.prixMG_E_SHP);
-		this.prixMG_NE_SHP = new Indicateur(Chocolat.MG_NE_SHP.toString(), this, 0);
+		this.prixMG_NE_SHP = new Indicateur("Prix "+ " "+ Chocolat.MG_NE_SHP.toString()+ " Distributeur 2", this, 0);
 		Monde.LE_MONDE.ajouterIndicateur(this.prixMG_NE_SHP);
-		this.prixMG_NE_HP = new Indicateur(Chocolat.MG_NE_HP.toString(), this, 0);
+		this.prixMG_NE_HP = new Indicateur("Prix "+ " "+ Chocolat.MG_NE_HP.toString()+ " Distributeur 2", this, 0);
 		Monde.LE_MONDE.ajouterIndicateur(this.prixMG_NE_HP);
-		this.prixHG_E_SHP = new Indicateur(Chocolat.HG_E_SHP.toString(), this, 0);
+		this.prixHG_E_SHP = new Indicateur("Prix "+ " "+ Chocolat.HG_E_SHP.toString()+ " Distributeur 2", this, 0);
 		Monde.LE_MONDE.ajouterIndicateur(this.prixHG_E_SHP);
 		
-		this.journal = new Journal("Journal "+this.getNom());
+		this.journal = new Journal("Journal Equipe 6");
 		Monde.LE_MONDE.ajouterJournal(this.journal);
 	
 		this.contratsEnCours = new ArrayList<ContratCadre<Chocolat>>();
@@ -198,7 +207,6 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 		return this.prixParProduit;
 	}
 	
-	@Override
 	public StockEnVente<Chocolat> getStockEnVente() {
 		//NORDIN
 		this.stockEnVente = new StockEnVente<Chocolat>();
@@ -218,7 +226,8 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 	}
 
 	public String getNom() {
-		return "DI"+this.numero+"Romu";
+		return "Walmart";
+
 	}
 
 	public void initialiser() {
@@ -228,30 +237,31 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 	}
 
 
-	@Override
+
+	
+	
+
+	//Nordin
 	public double getPrix(Chocolat c) {
-		//NORDIN
-		/*for (Chocolat chocolat : this.stockEnVente.getProduitsEnVente() ) {
-			
-		}
-		if (this.contratsEnCours.size()==0) {
-			return 40;
-		} else {
-			double prixMoyen = 0;
-			for (ContratCadre<Chocolat> cc : this.contratsEnCours) {
-				prixMoyen+=cc.getPrixAuKilo();
-			}
-			prixMoyen = prixMoyen/ this.contratsEnCours.size();
-			return prixMoyen *(1.0+this.marge);
-		}*/
-		return 0;
+		return (this.getPrixParProduit().containsKey(c)? this.prixParProduit.get(c) : 0.0);
 	}
 
-	@Override
+	//Nordin
 	public double vendre(Chocolat c, double quantite) {
-		this.getStockEnVente();
-		return 0;
+		for (Chocolat chocolat : this.getStockEnVente().getProduitsEnVente()) {
+		if (!c.equals(chocolat)) {
+			this.journal.ajouter("vente de 0.0 (produit demande = "+c+ " vs produit dispo = "+chocolat+")");
+			return 0.0;
+		}
+		}
+		Double q = Math.min(this.getStockEnVente().get(c), quantite);
+		this.getIndicateurStock(c).retirer(this, q);
+		this.soldeBancaire.ajouter(this, this.getPrix(c));
+		this.journal.ajouter("Vente de "+q+" a "+this.getPrix(c));
+		return q;
+		
 	}
+
 
 	/** 
 	 * Retire de la liste des contrats en cours les contrats pour lesquels la quantite a livrer 
@@ -272,17 +282,21 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 
 	
 	@Override
+
+	
+
 	public ContratCadre<Chocolat> getNouveauContrat() { //ILIAS
 		ContratCadre<Chocolat> res=null;
+
+
+
 		
 		double solde = this.getSoldeBancaire().getValeur();
-		
-		
 		for (ContratCadre<Chocolat> cc : this.getContratsEnCours()) {
 			solde = solde - cc.getMontantRestantARegler();
 		}
 		
-		Chocolat produit = this.stockEnVente.getProduitsEnVente().get((int)(Math.random()*4));
+		Chocolat produit = getStockEnVente().getProduitsEnVente().get((int)(Math.random()*4));
 		
 		if (solde >1000) {
 			List<IVendeurContratCadre<Chocolat>> vendeurs = new ArrayList<IVendeurContratCadre<Chocolat>>();
@@ -308,7 +322,7 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 				res = new ContratCadre<Chocolat>(this, vendeur, produit, quantite);
 		}
 		}
-		return res;
+		return res; 
 	}
 
 	@Override
@@ -416,4 +430,16 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 		this.journal.ajouter(montantpaye + "sur le contrat" + cc.toString());
 		return montantpaye;
 	}
+	
+	
+	public ArrayList<Double> evaluation_produit (Chocolat c) {
+		ArrayList<Double> L = new ArrayList<Double>(); 
+		L.add(this.getPrix(c));
+		L.add(this.getStockEnVente().get(c));
+		L.add(c.getQualite());
+		return L;
+		
+	}
+	
+	
 }
