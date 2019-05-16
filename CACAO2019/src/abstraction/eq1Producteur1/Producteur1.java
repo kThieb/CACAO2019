@@ -9,6 +9,7 @@ import abstraction.fourni.Indicateur;
 import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 import abstraction.eq7Romu.produits.Feve;
+import abstraction.eq7Romu.produits.Feve.*;
 
 public class Producteur1 implements IActeur, IVendeurCacaoAleatoire {
 	
@@ -64,7 +65,14 @@ public class Producteur1 implements IActeur, IVendeurCacaoAleatoire {
 	}
 	
 	public HashMap<Feve, Double> getPrixAuKilo() {
-		// Pauline 
-		// creer dico avec prix au kilo pour chaque feve que on vend 
+		// BEGIN Pauline 
+		HashMap<Feve, Double> mapPrix= new HashMap<Feve, Double>();
+		mapPrix.put(Feve.CRIOLLO_HG_EQ, 3.5);
+		mapPrix.put(Feve.FORASTERO_MG_EQ, 2.5);
+		mapPrix.put(Feve.FORASTERO_MG_NEQ, 2.0);
+		mapPrix.put(Feve.TRINITARIO_MG_EQ, 2.2);
+		mapPrix.put(Feve.TRINITARIO_MG_NEQ, 1.5);
+		return mapPrix;
+		//END Pauline
 	}
 }

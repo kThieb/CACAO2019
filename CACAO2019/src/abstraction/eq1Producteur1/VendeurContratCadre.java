@@ -22,7 +22,8 @@ public class VendeurContratCadre implements IVendeurContratCadre {
 			return Double.NaN;
 		} else {
 			// utiliser Producteur1.getPrixAuKilo() pour savoir prix en fct du produit 
-			return 5.0; // jaime pa les croix rouges 
+			Producteur1 prod = new Producteur1();
+			return prod.getPrixAuKilo().get(produit);
 		}
 	}
 
