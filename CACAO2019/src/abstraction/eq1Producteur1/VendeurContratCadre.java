@@ -7,7 +7,7 @@ import abstraction.eq7Romu.ventesContratCadre.Echeancier;
 import abstraction.eq7Romu.ventesContratCadre.IVendeurContratCadre;
 import abstraction.eq7Romu.ventesContratCadre.StockEnVente;
 
-public class VendeurContratCadre implements IVendeurContratCadre<Feve> {
+public class VendeurContratCadre extends Producteur1 implements IVendeurContratCadre<Feve> {
 	// ANTI
 	private StockEnVente<Feve> stockEnVente;
 
