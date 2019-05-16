@@ -5,23 +5,26 @@ import java.util.HashMap;
 import abstraction.eq7Romu.produits.Feve;
 import abstraction.eq7Romu.ventesContratCadre.ContratCadre;
 import abstraction.eq7Romu.ventesContratCadre.IVendeurContratCadre;
-import abstraction.eq7Romu.ventesContratCadre.StockEnVente;
+
 import abstraction.fourni.Indicateur;
+import abstraction.eq1Producteur1.StockEnVente;
 
 
 
 
 
-	// ANTI
 
 
-public class VendeurContratCadre implements IVendeurContratCadre{
+
+public class VendeurContratCadre implements IVendeurContratCadre<Feve>{
+	//ANTI
+	private StockEnVente<Feve> stockEnVente;
 	
 
 	
-	public StockEnVente getStockEnVente() {
+	public StockEnVente<Feve> getStockEnVente() {
 		
-		return null;
+		return this.stockEnVente;
 	}
 
 
@@ -91,5 +94,8 @@ public class VendeurContratCadre implements IVendeurContratCadre{
 		// TODO Auto-generated method stub
 
 	}
+
+
+	
 
 }

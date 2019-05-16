@@ -7,7 +7,7 @@ import java.util.List;
 
 import abstraction.eq7Romu.produits.Feve;
 
-public class StockEnVente {
+public class StockEnVente<I> {
 	private HashMap<Feve, Double> stockEnVente;
 	
 	public StockEnVente() {
