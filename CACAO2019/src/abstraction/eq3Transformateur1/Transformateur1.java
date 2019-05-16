@@ -179,8 +179,11 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 
 	@Override
 	public StockEnVente<Chocolat> getStockEnVente() {
-		// TODO Auto-generated method stub
-		return null;
+		StockEnVente<Chocolat> stock = new StockEnVente<Chocolat>();
+		this.stockChocolat.forEach((chocolat, s) -> {
+			System.out.println("test");
+		});
+		return stock;
 	}
 	
 	@Override
@@ -199,7 +202,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 			}
 			prixMoyen = prixMoyen/ this.contratsFevesEnCours.size();
 			double prixProposé = 0 ;
-			prixProposé = prixMoyen + prixMoyen*0.05
+			prixProposé = prixMoyen + prixMoyen*0.05;
 		}
 		
 		//End Kevin
