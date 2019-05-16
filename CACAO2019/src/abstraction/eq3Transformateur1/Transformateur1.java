@@ -3,7 +3,7 @@ package abstraction.eq3Transformateur1;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
+import abstraction.eq3Transformateur1.Stock;
 import abstraction.eq7Romu.produits.Chocolat;
 import abstraction.eq7Romu.produits.Feve;
 import abstraction.eq7Romu.ventesContratCadre.ContratCadre;
@@ -150,7 +150,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		if (quantite<=0.0) {
 			throw new IllegalArgumentException("Appel de la methode receptionner de Transformateur1 avec une quantite egale a "+quantite);
 		}
-		this.stockFeves.put(Feve produit, double quantite);
+		this.stockFeves.put(produit, new Stock(quantite));
 		
 	}
 
