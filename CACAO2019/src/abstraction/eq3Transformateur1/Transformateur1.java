@@ -161,7 +161,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		this.stockFeves.put(produit, new Stock(quantite));
 		
 	}
-//end sacha
+//end sachaa
 	@Override
 	public double payer(double montant, ContratCadre<Feve> cc) {
 		// TODO Auto-generated method stub
