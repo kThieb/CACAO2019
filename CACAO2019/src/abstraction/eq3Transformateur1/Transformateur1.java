@@ -41,8 +41,11 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	//begin Raphael
 	private Indicateur prixAchats;
 	//end Raphael
+	
+	// begin eve : A MODIFIER
 	private HashMap<Chocolat,Stock> stockChocolat;
 	private HashMap<Feve,Stock> stockFeves;
+	// end eve
 	
 	public Transformateur1() {
 		
