@@ -27,7 +27,8 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 
 	private int numero;
 
-
+	
+	private HashMap<Chocolat,Double> margeParProduit;
 	private double marge;
 	private Indicateur soldeBancaire;
 	
@@ -233,7 +234,6 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 
 	//Nordin
 	public double getPrix(Chocolat c) {
-		
 		return (this.getPrixParProduit().containsKey(c)? this.prixParProduit.get(c) : 0.0);
 	}
 
@@ -253,7 +253,7 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 		
 	}
 
-	@Override
+	
 	public ContratCadre<Chocolat> getNouveauContrat() { //ILIAS
 		ContratCadre<Chocolat> res=null;
 
