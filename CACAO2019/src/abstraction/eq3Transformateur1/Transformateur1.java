@@ -3,6 +3,8 @@ package abstraction.eq3Transformateur1;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
+
 import abstraction.eq3Transformateur1.Stock;
 import abstraction.eq7Romu.produits.Chocolat;
 import abstraction.eq7Romu.produits.Feve;
@@ -203,12 +205,12 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	// 			VENDEUR
 	// -------------------------------------------------------------------------------------------
 
-	@Override
+
 	public StockEnVente<Chocolat> getStockEnVente() {
 		StockEnVente<Chocolat> stock = new StockEnVente<Chocolat>();
-		this.stockChocolat.forEach((chocolat, s) -> {
-			System.out.println("test");
-		});
+		for (Entry<Chocolat, Stock> choco : this.stockChocolat.entrySet()) {
+			stock.ajouter(choco.getKey(), choco.getValue().getQuantiteEnStock());
+		};
 		return stock;
 	}
 	
@@ -226,14 +228,14 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 			for (ContratCadre<Feve> cc : this.contratsFeveEnCours) {
 				prixMoyen+=cc.getPrixAuKilo();
 			}
-<<<<<<< HEAD
+
 			prixMoyen = prixMoyen/ this.contratsFeveEnCours.size();
 			return prixMoyen *(1.0+this.marge);
-=======
-			prixMoyen = prixMoyen/ this.contratsFevesEnCours.size();
+
+			prixMoyen = prixMoyen/ this.contratsFeveEnCours.size();
 			double prixProposé = 0 ;
 			prixProposé = prixMoyen + prixMoyen*0.05;
->>>>>>> branch 'master' of https://github.com/kThieb/CACAO2019.git
+
 		}
 		
 		//End Kevin
