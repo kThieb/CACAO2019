@@ -62,12 +62,12 @@ public class VendeurContratCadre extends Producteur1 implements IVendeurContratC
 			}
 		}
 	}
-//ANTI
+
 	public void notifierVendeur(ContratCadre<Feve> cc) {
-		super.getHistoriqueContrats().put(cc.getNumero(), cc);
+		// TODO Auto-generated method stub
 
 	}
-//ANTI
+
 	public void encaisser(double montant, ContratCadre<Feve> cc) {
 		// TODO Auto-generated method stub
 
@@ -75,8 +75,25 @@ public class VendeurContratCadre extends Producteur1 implements IVendeurContratC
 
 	@Override
 	public double livrer(Feve produit, double quantite, ContratCadre<Feve> cc) {
-		// TODO Auto-generated method stub
-		return 0;
+		//Manon
+		   @Override
+		   public double livrer(Object produit, double quantite, ContratCadre cc) {
+		      if (quantite<0.0) {
+		         throw new IllegalArgumentException("Appel de la methode livrer(produit,quantite,ContratCadre) de VendeurContratCadre avec quantite<0.0 ( "+quantite+" )");
+		      }
+		      if (produit==null) {throw new IllegalArgumentException("Appel de la methode livrer(produit,quantite,ContratCadre) de VendeurContratCadre avec produit null ");
+		      }
+		      if (cc==null) {throw new IllegalArgumentException("Appel de la methode livrer(produit,quantite,ContratCadre) de VendeurContratCadre avec ContratCadre null ");
+		      }
+		      if (quantite>this.getStockEnVente().get(produit)) {
+		         
+		         return this.getStockEnVente().get(produit);
+		      }
+		      else {
+		         return quantite;
+		      }
+		   }
 	}
+	
 
 }
