@@ -82,6 +82,14 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 
 	
 	/**
+	 * @return the soldeBancaire
+	 */
+	public Indicateur getSoldeBancaire() {
+		return soldeBancaire;
+	}
+
+
+	/**
 	 * @return the prixMG_E_SHP
 	 */
 	public Indicateur getPrixMG_E_SHP() {
@@ -250,8 +258,8 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 		ContratCadre<Chocolat> res=null;
 
 		return null;
-		/*
-		double solde = this.soldeBancaire.getValeur();
+		
+		double solde = this.getSoldeBancaire().getValeur();
 		
 		
 		for (ContratCadre<Chocolat> cc : this.getContratsEnCours()) {
@@ -284,7 +292,7 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 				res = new ContratCadre<Chocolat>(this, vendeur, produit, quantite);
 		}
 		}
-		return res;*/
+		return res;
 	}
 
 	@Override
