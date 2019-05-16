@@ -90,8 +90,9 @@ public class Transformateur2VendeurCC implements IVendeurContratCadre<Chocolat> 
 
 	@Override
 	public void encaisser(double montant, ContratCadre<Chocolat> cc) {
-		// TODO Auto-generated method stub
-		
+		if (montant<0.0) {
+			throw new IllegalArgumentException("Appel de la methode encaisser de TransformateurRomu avec un montant negatif");
+		}
+		t2.soldeBancaire.ajouter(t2,  montant);
 	}
-
 }
