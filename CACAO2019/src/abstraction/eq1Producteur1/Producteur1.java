@@ -69,7 +69,7 @@ public class Producteur1 implements IActeur, IVendeurCacaoAleatoire {
 	}
 
 	public HashMap<Feve, Double> getPrixAuKilo() {
-		// BEGIN Pauline 
+		// BEGIN Pauline   
 		HashMap<Feve, Double> mapPrix= new HashMap<Feve, Double>();
 		mapPrix.put(Feve.CRIOLLO_HG_EQ, 3.5);
 		mapPrix.put(Feve.FORASTERO_MG_EQ, 2.5);
