@@ -11,6 +11,7 @@ public class VendeurContratCadre extends Producteur1 implements IVendeurContratC
 	// ANTI
 	private StockEnVente<Feve> stockEnVente;
 
+
 	public StockEnVente<Feve> getStockEnVente() {
 
 		return stockEnVente;
@@ -64,13 +65,11 @@ public class VendeurContratCadre extends Producteur1 implements IVendeurContratC
 	}
 
 	public void notifierVendeur(ContratCadre<Feve> cc) {
-		// TODO Auto-generated method stub
-
+		cc.signer();
 	}
 
 	public void encaisser(double montant, ContratCadre<Feve> cc) {
-		// TODO Auto-generated method stub
-
+		super.soldeBancaire.ajouter(this ,  montant);
 	}
 
 	@Override
@@ -85,10 +84,13 @@ public class VendeurContratCadre extends Producteur1 implements IVendeurContratC
 		      if (cc==null) {throw new IllegalArgumentException("Appel de la methode livrer(produit,quantite,ContratCadre) de VendeurContratCadre avec ContratCadre null ");
 		      }
 		      if (quantite>this.getStockEnVente().get(produit)) {
-		         
+		    	  super.stockFeves.retirer(this, this.getStockEnVente().get(produit));
+		    	  cc.livrer(this.getStockEnVente().get(produit));
 		         return this.getStockEnVente().get(produit);
 		      }
 		      else {
+		    	  cc.livrer(quantite);
+		    	  super.stockFeves.retirer(this, quantite);
 		         return quantite;
 		      }
 		   
