@@ -348,14 +348,14 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 			//Si le vendeur propose 2 fois le même prix et pas satisfait => ne pas ajouter de prix
 			// Sinon proposer un nouveau prix 
 		
-		if (cc!=null && 10 > cc.getListePrixAuKilo().size()) {
+		if (cc!=null && 25 > cc.getListePrixAuKilo().size()) {
 			if (satisfaitParPrixContratCadre (cc)) {
 				cc.ajouterPrixAuKilo(cc.getPrixAuKilo());
 				this.getIndicateurPrix(cc.getProduit()).ajouter(this,cc.getPrixAuKilo()*this.getMarge());
 				this.journal.ajouter("Accord sur Prix sur contrat" + cc.toString());
 			} else {
 					if (cc.getListePrixAuKilo().size() >= 3 ) {
-						cc.ajouterPrixAuKilo(cc.getListePrixAuKilo().get(cc.getListePrixAuKilo().size() -2)*0.95);
+						cc.ajouterPrixAuKilo(cc.getListePrixAuKilo().get(cc.getListePrixAuKilo().size() -2)*1.05);
 					}else {
 						cc.ajouterPrixAuKilo(this.getIndicateurPrix(cc.getProduit()).getValeur());
 				}	}}}
