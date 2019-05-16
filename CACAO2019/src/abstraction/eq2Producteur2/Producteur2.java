@@ -70,13 +70,6 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 		this.stockFeves.setValeur(this, nouveauStock);
 	}
 
-	public double quantiteEnVente(double prix) {
-		return this.stockFeves.getValeur();
-	}
-	public void notificationVente(double quantite, double prix) {
-		this.stockFeves.retirer(this, quantite);
-		this.soldeBancaire.ajouter(this, quantite*prix);
-	}
 
 	@Override
 	public StockEnVente<Feve> getStockEnVente() {
@@ -145,9 +138,10 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	@Override
 	public double livrer(Feve produit, double quantite, ContratCadre<Feve> cc) {
 		if (produit==null || !produit.equals(this.fevesProduites)) {
-			throw new IllegalArgumentException("Appel de la methode livrer de ProducteurRomu avec un produit ne correspondant pas aux feves produites");
+			throw new IllegalArgumentException("Appel de la methode livrer de Producteur2 avec un produit ne correspondant pas aux feves produites");
 		}
 		double livraison = Math.min(quantite, this.stockFeves.getValeur());
+		this.stockFeves.retirer(this, livraison);
 		return livraison;
 	}
 
