@@ -135,6 +135,7 @@ public class Producteur2 implements IActeur, IVendeurCacaoAleatoire, IVendeurCon
 			throw new IllegalArgumentException("Appel de la methode livrer de ProducteurRomu avec un produit ne correspondant pas aux feves produites");
 		}
 		double livraison = Math.min(quantite, this.stockFeves.getValeur());
+		this.stockFeves.retirer(this, livraison);
 		return livraison;
 	}
 
