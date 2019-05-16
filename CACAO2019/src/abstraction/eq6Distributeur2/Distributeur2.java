@@ -81,6 +81,9 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 		stockEnVente.ajouter(mG_E_SHP, this.stockMG_NE_SHP.getValeur());
 		return stockEnVente;		
 	}
+	
+	
+	public 
 
 	@Override
 	public double getPrix(Chocolat c) {
@@ -165,4 +168,16 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 		// TODO Auto-generated method stub
 		return 0;
 	}
+	
+	
+	public ArrayList<Double> evaluation_produit (Chocolat c) {
+		ArrayList<Double> L = new ArrayList<Double>(); 
+		L.add(this.getPrix(c));
+		L.add(this.getStockEnVente().get(c));
+		L.add(c.getQualite());
+		return L;
+		
+	}
+	
+	
 }
