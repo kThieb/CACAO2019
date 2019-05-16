@@ -15,6 +15,9 @@ public class Producteur1 implements IActeur, IVendeurCacaoAleatoire {
 	
 	private Indicateur stockFeves;
 	private Indicateur soldeBancaire;
+	// BEGIN ANTI
+	private StockEnVente stockEnVente; 
+	//END ANTI
 	// BEGIN Manon
 	private Journal journal1;
 	//END MANON
@@ -63,7 +66,7 @@ public class Producteur1 implements IActeur, IVendeurCacaoAleatoire {
 		this.stockFeves.retirer(this, quantite);
 		this.soldeBancaire.ajouter(this, quantite*prix);
 	}
-	
+
 	public HashMap<Feve, Double> getPrixAuKilo() {
 		// BEGIN Pauline 
 		HashMap<Feve, Double> mapPrix= new HashMap<Feve, Double>();
@@ -75,4 +78,5 @@ public class Producteur1 implements IActeur, IVendeurCacaoAleatoire {
 		return mapPrix;
 		//END Pauline
 	}
+   
 }
