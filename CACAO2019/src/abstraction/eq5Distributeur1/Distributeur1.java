@@ -69,7 +69,7 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 		}
 	}
 		
-	}
+
 
 	@Override
 	public void proposerPrixAcheteur(ContratCadre cc) {
