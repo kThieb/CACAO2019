@@ -214,14 +214,14 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 			for (ContratCadre<Feve> cc : this.contratsFeveEnCours) {
 				prixMoyen+=cc.getPrixAuKilo();
 			}
-<<<<<<< HEAD
+
 			prixMoyen = prixMoyen/ this.contratsFeveEnCours.size();
 			return prixMoyen *(1.0+this.marge);
-=======
+
 			prixMoyen = prixMoyen/ this.contratsFevesEnCours.size();
 			double prixProposé = 0 ;
 			prixProposé = prixMoyen + prixMoyen*0.05;
->>>>>>> branch 'master' of https://github.com/kThieb/CACAO2019.git
+
 		}
 		
 		//End Kevin
