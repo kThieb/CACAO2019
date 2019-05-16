@@ -42,8 +42,22 @@ public class Transformateur2VendeurCC implements IVendeurContratCadre<Chocolat> 
 
 	@Override
 	public void proposerPrixVendeur(ContratCadre<Chocolat> cc) {
-		// TODO Auto-generated method stub
-		
+		if (cc.getListePrixAuKilo().size()==0) {
+			cc.ajouterPrixAuKilo(getPrix(cc.getProduit(), cc.getQuantite()));
+		} else {
+			double prixVendeur = cc.getListePrixAuKilo().get(0);
+			double prixAcheteur = cc.getPrixAuKilo();
+			if (prixAcheteur>=0.75*prixVendeur) { // on ne fait une proposition que si l'acheteur ne demande pas un prix trop bas.
+				if (Math.random()<0.25) { // probabilite de 25% d'accepter
+					cc.ajouterPrixAuKilo(cc.getPrixAuKilo());
+				} if (prixAcheteur>=0.9*prixVendeur) { // si l'acheteur propose 90% de notre prix on accepte
+					cc.ajouterPrixAuKilo(cc.getPrixAuKilo());
+				} else {
+					final double RABAIS_MAX = 0.1;
+					cc.ajouterPrixAuKilo((prixVendeur-prixVendeur*Math.random()*RABAIS_MAX)); // rabais de 10% max
+				}
+			}
+		}
 	}
 
 	@Override
