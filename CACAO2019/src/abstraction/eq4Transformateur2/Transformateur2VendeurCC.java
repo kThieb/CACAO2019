@@ -73,7 +73,6 @@ public class Transformateur2VendeurCC implements IVendeurContratCadre<Chocolat> 
 
 	@Override
 	public void notifierVendeur(ContratCadre<Chocolat> cc) {
-		// TODO Auto-generated method stub
 		t2.contratsChocolatEnCours.add(cc);
 	}
 

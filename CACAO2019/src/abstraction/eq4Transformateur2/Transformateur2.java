@@ -77,6 +77,14 @@ public class Transformateur2 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		this.soldeBancaire.retirer(this, quantiteTransformee*1.0234); // sucre, main d'oeuvre, autres frais
 	}
 
+	public double calculerPrixProdReel(Chocolat c, double qte) {
+		// TODO
+		// Trouver la recette produisant ce chocolat
+		// Obtenir le prix des matieres premieres en remontant au bon stock de feves (renvoyer infini si pas assez)
+		
+		return 0;
+	}
+	
 	/** Fonctions relatives à IAcheteurContratCadre<Feve> */
 	public ContratCadre<Feve> getNouveauContrat() {return acheteurCC.getNouveauContrat();}
 	public void proposerEcheancierAcheteur(ContratCadre<Feve> cc) {acheteurCC.proposerEcheancierAcheteur(cc);}

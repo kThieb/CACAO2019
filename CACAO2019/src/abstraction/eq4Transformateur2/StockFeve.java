@@ -22,7 +22,25 @@ public class StockFeve {
 		return qty;
 	}
 	
-	/* Récupère les fèves demandées dans la file. Renvoie le prix total (ou 0 s'il n'y a pas assez de fèves) */
+	/** Renvoie le prix que l'on a payé pour acheter la quantité de fèves demandée (ou 0 si l'on n'a pas cette quantité) */
+	public double getPrixAchat(double qty) {
+		if(tas.isEmpty() || qty > getQuantiteTotale())
+			return 0;
+		else {
+			double prix = 0;
+			int i = 0;
+			while(qty > 0) {
+				TasFeve t = tas.get(i); // prochain tas à vider
+				double qteAPrendre = Math.min(qty, t.getQuantité());
+				qty -= qteAPrendre;
+				prix += qteAPrendre * t.getPrixUnitaire();
+				i++;
+			}
+			return prix;
+		}
+	}
+	
+	/** Récupère les fèves demandées dans la file. Renvoie le prix total (ou 0 s'il n'y a pas assez de fèves) */
 	public double prendreFeves(double qty) {
 		if(tas.isEmpty() || qty > getQuantiteTotale())
 			return 0;
