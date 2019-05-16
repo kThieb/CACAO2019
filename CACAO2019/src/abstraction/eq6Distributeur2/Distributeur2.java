@@ -232,6 +232,10 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 	}
 
 
+
+	
+	
+
 	//Nordin
 	public double getPrix(Chocolat c) {
 		return (this.getPrixParProduit().containsKey(c)? this.prixParProduit.get(c) : 0.0);
@@ -393,4 +397,16 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 		this.journal.ajouter(montantpaye + "sur le contrat" + cc.toString());
 		return montantpaye;
 	}
+	
+	
+	public ArrayList<Double> evaluation_produit (Chocolat c) {
+		ArrayList<Double> L = new ArrayList<Double>(); 
+		L.add(this.getPrix(c));
+		L.add(this.getStockEnVente().get(c));
+		L.add(c.getQualite());
+		return L;
+		
+	}
+	
+	
 }
