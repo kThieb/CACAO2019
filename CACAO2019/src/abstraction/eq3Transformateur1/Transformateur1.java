@@ -20,8 +20,8 @@ import abstraction.fourni.Monde;
 
 public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IVendeurContratCadre<Chocolat>  {
 	
-//	private Indicateur iStockFeves;
-//	private Indicateur iStockChocolat;
+ 	private Indicateur iStockFeves;
+ 	private Indicateur iStockChocolat;
     private Indicateur soldeBancaire;
 	private int nbNextAvantEchange;
 	private Journal journal;
@@ -41,8 +41,11 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	//begin Raphael
 	private Indicateur prixAchats;
 	//end Raphael
+	
+	// begin eve : A MODIFIER
 	private HashMap<Chocolat,Stock> stockChocolat;
 	private HashMap<Feve,Stock> stockFeves;
+	// end eve
 	
 	public Transformateur1() {
 		
@@ -64,10 +67,8 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		this.stockChocolat.put(Chocolat.MG_NE_SHP, new Stock(0));
 		this.stockChocolat.put(Chocolat.MG_E_SHP, new Stock(0));
 		
-//		int sommeFeves = 0;
-//		this.iStockFeves = new Indicateur("EQ3 stock feves", this, sommeFeves);
-//		int sommeChocolat = 0;
-//		this.iStockChocolat = new Indicateur("EQ3 stock chocolat", this, sommeChocolat);
+ 		this.iStockFeves = new Indicateur("EQ3 stock feves", this, 0);
+ 		this.iStockChocolat = new Indicateur("EQ3 stock chocolat", this, 0);
 		// --------------------------------- end eve
 		
 		
@@ -121,15 +122,13 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	// 			ACHETEUR
 	// -------------------------------------------------------------------------------------------
 
-	// A MODIFIER
+	// -------------------------- begin eve
 	public double quantiteDesiree(double quantiteEnVente, double prix) {
 		double possible = Math.max(0.0, soldeBancaire.getValeur()/prix);
-		
 		double desiree= Math.min(possible,  quantiteEnVente); // achete le plus possible
-//		this.iStockFeves.ajouter(this, desiree);
-		this.soldeBancaire.retirer(this, desiree*prix);
 		return desiree;
 	}
+	// -------------------------- end eve
 	
 	@Override
 	public ContratCadre<Feve> getNouveauContrat() {
@@ -282,11 +281,6 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 
 			prixMoyen = prixMoyen/ this.contratsFeveEnCours.size();
 			return prixMoyen *(1.0+this.marge);
-
-			prixMoyen = prixMoyen/ this.contratsFeveEnCours.size();
-			double prixProposé = 0 ;
-			prixProposé = prixMoyen + prixMoyen*0.05;
-
 		}
 		
 		//End Kevin
@@ -294,8 +288,11 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 
 	@Override
 	public void proposerEcheancierVendeur(ContratCadre<Chocolat> cc) {
-		// TODO Auto-generated method stub
-		
+		if (Math.random()<0.5) { // une chance sur deux d'accepter l'echeancier
+			cc.ajouterEcheancier(new Echeancier(cc.getEcheancier())); // on accepte la proposition de l'acheteur car on a la quantite en stock 
+		} else { // une chance sur deux de proposer un echeancier etalant sur un step de plus
+			cc.ajouterEcheancier(new Echeancier(cc.getEcheancier().getStepDebut(), cc.getEcheancier().getNbEcheances()+1, cc.getQuantite()/(cc.getEcheancier().getNbEcheances()+1)));
+		}
 	}
 
 	@Override
