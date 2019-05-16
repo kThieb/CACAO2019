@@ -27,15 +27,17 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	
 	
 	private HashMap<Feve,Indicateur> stockFeves;
+	private HashMap<String,Feve> fevesProduites;
 	private Indicateur soldeBancaire;
 	private Journal journal;
 
 	private int productionParStep; // kg
-	private HashMap<String,Feve> fevesProduites;
 	private int numero;
 	private List<ContratCadre<Feve>> contratsEnCours;
 	private double prixVente;
 	private int numStep;
+	private GestionnaireFeve gestionnaireFeve;
+	
 	
 	
 	public Producteur2(Feve fevesProduites, int productionParStep, double stockInitial, double soldeInitial) {
