@@ -30,7 +30,6 @@ public class Transformateur2AcheteurCC implements IAcheteurContratCadre<Feve> {
 		for(ContratCadre<Chocolat> cc : t2.contratsChocolatEnCours)
 			solde += cc.getMontantRestantARegler();
 
-
 		List<IVendeurContratCadre> vendeurs = new ArrayList<IVendeurContratCadre>();
 		
 		// Liste des fèves que l'on souhaite acheter 
@@ -78,14 +77,15 @@ public class Transformateur2AcheteurCC implements IAcheteurContratCadre<Feve> {
 			
 			double qté = Math.min(20e3, vendeur.getStockEnVente().get(minProduit)); // on achete au maximum 20 tonnes
 			double prix = vendeur.getPrix(minProduit, qté);			
+			
 			// On réduit la quantité achetée tant que le prix est supérieur à 60% de notre solde
 			while(qté * prix > solde * 0.60) {
 				qté *= 0.8;
 				prix = vendeur.getPrix(minProduit, qté);
 			}
-			qté /= 0.8;
 
-			return new ContratCadre<Feve>(this, vendeur, minProduit, qté);	
+			System.out.println("Nouveau contrat cadre - " + vendeur.toString() + " " + minProduit.name() + " " + qté);
+			return new ContratCadre<Feve>(t2, vendeur, minProduit, qté);	
 		}
 		else
 			return null;
@@ -128,7 +128,7 @@ public class Transformateur2AcheteurCC implements IAcheteurContratCadre<Feve> {
 	}
 
 	@Override
-	public void notifierAcheteur(ContratCadre<Feve> cc) {
+	public void notifierAcheteur(ContratCadre<Feve> cc) { 
 		t2.contratsFevesEnCours.add(cc);
 	}
 
