@@ -1,5 +1,9 @@
 package abstraction.eq7Romu.acteurs;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import abstraction.eq7Romu.produits.Chocolat;
 import abstraction.fourni.Journal;
 
 public abstract class Client2 {
@@ -26,6 +30,15 @@ public abstract class Client2 {
 	public void initialiser() {	
 	}
 	
+	public double getNotequalite(Chocolat c) {
+		return c.NoteQualite();
+	}
 	
-
+	public List<String> getListeChocolat() {
+		return null;
+	}
+	
+	public double getNoteprix() {
+		return 0 ;
+	}
 }

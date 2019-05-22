@@ -176,4 +176,11 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
+	
+	// ajout Erwann
+	@Override
+	public double getNoteQualite(Chocolat c) {
+		return c.NoteQualite();
+	}
 }
