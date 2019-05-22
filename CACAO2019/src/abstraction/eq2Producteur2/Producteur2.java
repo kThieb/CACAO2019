@@ -1,7 +1,7 @@
 package abstraction.eq2Producteur2;
 
 import java.util.ArrayList;
-
+import java.util.HashMap;
 import java.util.List;
 
 import abstraction.eq1Producteur1.ventesCacaoAleatoires.IVendeurCacaoAleatoire;
@@ -18,33 +18,33 @@ import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 
 public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
-	
+	  
 	private static int NB_PROD = 2;
 	private static final double PRIX_INIT = 1.500;
 	private static final double PRIX_MIN = 0.800;
 	private static final double PRIX_MAX = 2.500;
 	
-	
-	
-	private Indicateur stockFeves;
+
+
 	private Indicateur soldeBancaire;
 	private Journal journal;
 
 	private int productionParStep; // kg
-	private Feve fevesProduites;
 	private int numero;
 	private List<ContratCadre<Feve>> contratsEnCours;
 	private double prixVente;
 	private int numStep;
+	private GestionnaireFeve gestionnaireFeve;
+	
 	
 	
 	public Producteur2(Feve fevesProduites, int productionParStep, double stockInitial, double soldeInitial) {
 		NB_PROD++;
-		this.fevesProduites = fevesProduites;
+		gestionnaireFeve.getFevesProduites() = fevesProduites;
 		this.numero = NB_PROD;
 		this.prixVente = PRIX_INIT;
 		this.productionParStep = productionParStep;
-		this.stockFeves = new Indicateur(this.getNom()+" Stock", this, stockInitial);
+		gestionnaireFeve.getStockFeves() = new Indicateur(this.getNom()+" Stock", this, stockInitial);
 
 		Monde.LE_MONDE.ajouterIndicateur(this.stockFeves);
 		this.soldeBancaire = new Indicateur(this.getNom()+" Solde", this, soldeInitial);
@@ -68,6 +68,7 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	}
 
 	public void next() {
+
 		if (this.numStep <= 6 || this.numStep >= 21 || (this.numStep >= 9 && this.numStep <= 14)) {
 			double qualiteProduction = (Math.random() - 0.5)/2.5 + 1; //entre 0.8 et 1.2
 			double nouveauStock = this.stockFeves.getValeur() + productionParStep * qualiteProduction;
@@ -79,6 +80,8 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 		this.journal.ajouter("Step "+Monde.LE_MONDE.getStep()+" : prix de vente = "+this.prixVente);
 
 	}
+	
+	
 
 
 	@Override
