@@ -184,6 +184,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		return res;
 	}
 	//end sacha
+	
 
 	@Override
 	public void proposerEcheancierAcheteur(ContratCadre<Feve> cc) {
@@ -191,7 +192,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		if (cc.getEcheancier()==null) { // il n'y a pas encore eu de contre-proposition de la part du vendeur
 			cc.ajouterEcheancier(new Echeancier(Monde.LE_MONDE.getStep(), 12, cc.getQuantite()/12));
 		} else {
-			if ((this.contratsFeveEnCours.isEmpty())&&(this.stockFeves.get(cc.getProduit()).getQuantiteEnStock() < stockLim)) { // On accepte forcément la proposition si on a pas de contrat cadre en cours et que le stock est inférieur à une quantité arbitraire
+			if ((this.contratsFeveEnCours.isEmpty())&&(this.stockFeves.getQuantiteEnStock(cc.getProduit()) < stockLim)) { // On accepte forcément la proposition si on a pas de contrat cadre en cours et que le stock est inférieur à une quantité arbitraire
 				cc.ajouterEcheancier(new Echeancier(cc.getEcheancier()));
 			} 
 			if (Math.random() < 0.33) {
