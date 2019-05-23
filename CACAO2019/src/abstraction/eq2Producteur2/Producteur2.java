@@ -42,8 +42,6 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	public Producteur2(Feve fevesProduites, int productionParStep, double stockInitial, double soldeInitial) {
 		NB_PROD++;
 
-		gestionnaireFeve.getFevesProduites() = fevesProduites;
-
 
 		this.numero = NB_PROD;
 		this.prixVente = PRIX_INIT;
