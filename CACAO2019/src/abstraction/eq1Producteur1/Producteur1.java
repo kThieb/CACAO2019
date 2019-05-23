@@ -125,6 +125,10 @@ public class Producteur1 implements IActeur, IVendeurCacaoAleatoire {
 		stockForastero.put(0, recolteForastero);
 		stockTrinitario.put(0, recolteTrinitario);
 		
+		stockCriolloI.setValeur(this, 0);
+		stockForasteroI.setValeur(this, 0);
+		stockTrinitarioI.setValeur(this, 0);
+		
 		for (int next = 0; next < DUREE_DE_VIE ; next++) {
 			stockCriolloI.ajouter(this, stockCriollo.get(next));;
 			stockForasteroI.ajouter(this, stockForastero.get(next));;
