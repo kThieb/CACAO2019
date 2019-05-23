@@ -29,17 +29,38 @@ public class VendeurContratCadre extends Producteur1 implements IVendeurContratC
 			return prod.getPrixAuKilo().get(produit);
 		}
 	}
-
+//Begin MANON ET PAULINE
 	public void proposerEcheancierVendeur(ContratCadre<Feve> cc) {
 		Echeancier e= cc.getEcheancier();
 		Feve feve= cc.getProduit();
+		Echeancier newEcheancier= new Echeancier();
+		int reste= 0; //quantite qu'on ne pourrait pas livrer à un mois et qu'on livrerai plus tard si possible//
+		double stock= this.getStockEnVente().get(feve);
 		for (int i=e.getStepDebut(); i<=e.getStepFin();i++) {
 			double qtt= e.getQuantite(i);
+			stock+= this.getRecolte(feve);
+			if (qtt>=stock) {
+				newEcheancier.ajouter(stock);
+				stock= 0;
+				reste+=qtt-stock;}
+			else if(qtt+reste>=stock){
+				newEcheancier.ajouter(stock);
+			stock=0;
+					reste-=stock-qtt;
+			}
+			else {
+				newEcheancier.ajouter(qtt+reste);
+				reste= 0;
+				stock-= reste+qtt;}
 		}
-		double stockActuel= this.getStockEnVente().get(feve);
+				
+				cc.ajouterEcheancier(newEcheancier);
+			}
+		
+		
 		
 
-	}
+	
 
 //Manon
 
