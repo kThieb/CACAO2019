@@ -106,21 +106,27 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 
 	@Override
 	public void proposerPrixVendeur(ContratCadre<Feve> cc) {
-		if (cc.getListePrixAuKilo().size()==0) {
+		if (cc.getListePrixAuKilo().size()==0) { //On vérifie qu'on a un prix à proposer
 			cc.ajouterPrixAuKilo(getPrix(cc.getProduit(), cc.getQuantite()));
 		} else {
-			double prixVendeur = cc.getListePrixAuKilo().get(0);
+			double prixVendeur = cc.getListePrixAuKilo().get(cc.getListePrixAuKilo().size()-1);
 			double prixAcheteur = cc.getPrixAuKilo();
-			cc.ajouterPrixAuKilo(prixVendeur);
+			cc.ajouterPrixAuKilo(prixVendeur); //Le premier prix proposé est la prix au kilo initial
 			
-			
-			/*if (prixAcheteur>=0.75*prixVendeur) { // on ne fait une proposition que si l'acheteur ne demande pas un prix trop bas.
-				if (Math.random()<0.25) { // probabilite de
-					cc.ajouterPrixAuKilo(cc.getPrixAuKilo());
+			if ((prixVendeur - prixAcheteur) < 0.05 * prixVendeur) { //On arrête la négociation si la différence de prix est suffisamment faible (5% du prixVendeur)
+				prixVendeur = prixAcheteur;
+				cc.getListePrixAuKilo().add(prixVendeur);
+			} else {
+				
+				if (prixAcheteur>=0.75*prixVendeur) { // on ne fait une proposition que si l'acheteur ne demande pas un prix trop bas.
+				prixVendeur = prixAcheteur * 1.1; // on augmente le prix proposé par l'acheteur de 10%
+				cc.getListePrixAuKilo().add(prixVendeur);
+				
 				} else {
-					cc.ajouterPrixAuKilo((prixVendeur*(0.9+Math.random()*0.1))); // rabais de 10% max
+				prixVendeur *= 0.90; //On diminue le prix proposé de 10%
+				cc.getListePrixAuKilo().add(prixVendeur);
 				}
-			}*/
+			}
 		}
 	}
 
@@ -155,10 +161,10 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 		if (this.contratsEnCours.size() >= 1) {
 			ContratCadre<Feve> cc = this.contratsEnCours.get(this.contratsEnCours.size()-1);
 			double dernierPrix = cc.getPrixAuKilo();
-			if (dernierPrix > prixVente * 0.9) {
+			if (dernierPrix > prixVente * 0.9 && prixVente * 1.05 < PRIX_MAX) {
 				this.prixVente *= 1.05;
 			}
-			else if (dernierPrix < prixVente*0.8) {
+			else if (dernierPrix < prixVente * 0.8 && prixVente * 0.95 > PRIX_MIN) {
 				this.prixVente *= 0.95;
 			}
 			
