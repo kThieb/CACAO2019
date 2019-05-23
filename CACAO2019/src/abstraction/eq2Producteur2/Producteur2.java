@@ -151,6 +151,7 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 			return Double.NaN;
 		} 
 		return this.prixVente;
+		
 	}
 
 	@Override
