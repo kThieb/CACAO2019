@@ -123,7 +123,10 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		
 		// les quantites de cacao utilisees sont celles specifiees dans le cahier des charges v2
 		ArrayList<Double> quantitesTransformees = new ArrayList<Double>();
-		//for ()
+		ArrayList<Chocolat> aProduire = this.stockChocolat.getProduitsEnStock();
+		for (Chocolat p: aProduire) {
+			quantitesTransformees.add(this.stockChocolat.getCoutEnFeves(p)*100);
+		}
 		
 		double quantiteTransformee = Math.random()*Math.min(100, this.iStockFeves.getValeur()); // on suppose qu'on a un stock infini de sucre
 		this.iStockFeves.retirer(this, quantiteTransformee);

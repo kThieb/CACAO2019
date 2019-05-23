@@ -3,6 +3,7 @@ package abstraction.eq3Transformateur1;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import abstraction.eq7Romu.produits.Chocolat;
 import abstraction.eq7Romu.produits.Feve;
 
 public class Stock<T> {
@@ -13,13 +14,15 @@ public class Stock<T> {
 		for (T p: produits) { 
 			this.stock.put(p, new HashMap<String, Double>()); 
 			this.stock.get(p).put("quantite", 0.);
-			this.stock.get(p).put("cout en feves", 0.);
+			if (p instanceof Chocolat) {
+				this.stock.get(p).put("cout en feves", 0.);
+			}
 		}
 	}
 	public Stock() { }
 	
 	// -----------------------------------------------------------
-	//          GETTERS & SETTERS
+	//          GETTERS
 	// -----------------------------------------------------------
 	
 	public double getQuantiteEnStock(T produit) {
@@ -37,6 +40,9 @@ public class Stock<T> {
 		}
 		return resultat;
 	}
+	
+	// ----------------- methodes specifiques aux chocolats (a retirer plus tard)
+	
 	public double getCoutEnFeves(T produit) throws IllegalArgumentException {
 		if (produit instanceof Feve) {
 			if (estEnStock(produit)) {
@@ -47,6 +53,15 @@ public class Stock<T> {
 		}
 		else { throw new IllegalArgumentException("Le produit passe en argument n'est pas une feve"); }
 	}
+	public ArrayList<Feve> getFevesUtilisees(T produit) {
+		// TODO Eve
+		return new ArrayList<Feve>();
+	}
+	
+	
+	// -----------------------------------------------------------
+	//          SETTERS
+	// -----------------------------------------------------------
 	
 	public void setQuantiteEnStock(T produit, double quantite) {
 		if (quantite >= 0.) { this.stock.get(produit).put("quantite", quantite); }
