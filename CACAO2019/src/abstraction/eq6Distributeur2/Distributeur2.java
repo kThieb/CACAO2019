@@ -60,13 +60,13 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 		Monde.LE_MONDE.ajouterIndicateur(this.soldeBancaire);
 		
 		//Chnager par nom du chocolat pour que le getNom de indcateur renvoie le type chocolat
-		this.stockMG_E_SHP = new Indicateur("EQ6 " + Chocolat.MG_E_SHP.toString(), this, 5000);
+		this.stockMG_E_SHP = new Indicateur("EQ6 stcok" + Chocolat.MG_E_SHP.toString(), this, 5000);
 		Monde.LE_MONDE.ajouterIndicateur(this.stockMG_E_SHP);
-		this.stockMG_NE_SHP = new Indicateur("EQ6 " + Chocolat.MG_NE_SHP.toString(), this,5000);
+		this.stockMG_NE_SHP = new Indicateur("EQ6 stock " + Chocolat.MG_NE_SHP.toString(), this,5000);
 		Monde.LE_MONDE.ajouterIndicateur(this.stockMG_NE_SHP);
-		this.stockMG_NE_HP = new Indicateur("EQ6 " + Chocolat.MG_NE_HP.toString(), this, 5000);
+		this.stockMG_NE_HP = new Indicateur("EQ6 stock " + Chocolat.MG_NE_HP.toString(), this, 5000);
 		Monde.LE_MONDE.ajouterIndicateur(this.stockMG_NE_HP);
-		this.stockHG_E_SHP = new Indicateur("EQ6 "+ Chocolat.HG_E_SHP.toString(), this, 5000);
+		this.stockHG_E_SHP = new Indicateur("EQ6 stock "+ Chocolat.HG_E_SHP.toString(), this, 5000);
 		Monde.LE_MONDE.ajouterIndicateur(this.stockHG_E_SHP);
 		
 		this.prixMG_E_SHP = new Indicateur("EQ6 " + Chocolat.MG_E_SHP.toString(), this, 5);
@@ -80,6 +80,11 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 		
 		this.journal = new Journal("Journal EQ6");
 		Monde.LE_MONDE.ajouterJournal(this.journal);
+		this.stockEnVente = new StockEnVente<Chocolat>();
+		this.stockEnVente.ajouter(Chocolat.HG_E_SHP, this.getStockHG_E_SHP().getValeur());
+		this.stockEnVente.ajouter(Chocolat.MG_E_SHP, this.getStockMG_E_SHP().getValeur());
+		this.stockEnVente.ajouter(Chocolat.MG_NE_SHP,this.getStockMG_NE_SHP().getValeur());
+		this.stockEnVente.ajouter(Chocolat.MG_NE_HP, this.getStockMG_NE_HP().getValeur());
 	
 		this.contratsEnCours = new ArrayList<ContratCadre<Chocolat>>();
 		this.margeParProduit = new HashMap<Chocolat, Double>();
@@ -210,11 +215,6 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 	
 	public StockEnVente<Chocolat> getStockEnVente() {
 		//NORDIN
-		this.stockEnVente = new StockEnVente<Chocolat>();
-		this.stockEnVente.ajouter(Chocolat.HG_E_SHP, this.getStockHG_E_SHP().getValeur());
-		this.stockEnVente.ajouter(Chocolat.MG_E_SHP, this.getStockMG_E_SHP().getValeur());
-		this.stockEnVente.ajouter(Chocolat.MG_NE_SHP,this.getStockMG_NE_SHP().getValeur());
-		this.stockEnVente.ajouter(Chocolat.MG_NE_HP, this.getStockMG_NE_HP().getValeur());
 		return this.stockEnVente;
 	}
 	
@@ -444,10 +444,7 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 	public void receptionner(Chocolat produit, double quantite, ContratCadre<Chocolat> cc) {
 		this.journal.ajouter("Réception du produit" + produit.toString() + "en quantité" + quantite + "au sujet du contrat " + cc.toString());
 		if (cc != null && quantite >0 && cc.getProduit().equals(produit)) {
-			
-			if (quantite != cc.getEcheancier().getQuantite(Monde.LE_MONDE.getStep())) {
-			}
-		
+			this.getStockEnVente().ajouter(produit, quantite);
 			this.getIndicateurStock(cc.getProduit()).ajouter(this, quantite);
 			
 				
