@@ -119,7 +119,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		// updater les indicateurs, stocks et solde bancaire
 		
 		// les quantites de cacao utilisees sont celles specifiees dans le cahier des charges v2
-		ArrayList<Double> quantitesTransformees = new ArrayList<Double>();
+		ArrayList<Double> quantitesTransformees = new ArrayList<Double>(); 
 		ArrayList<Chocolat> aProduire = this.stockChocolat.getProduitsEnStock();
 		for (Chocolat p: aProduire) {
 			quantitesTransformees.add(this.stockChocolat.getCoutEnFeves(p)*100);
