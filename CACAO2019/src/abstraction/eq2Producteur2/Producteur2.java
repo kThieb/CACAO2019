@@ -32,11 +32,8 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 
 	
 	private Feve fevesProduites;
-	private double productionParStep; // kg
 	private int numero;
 	private List<ContratCadre<Feve>> contratsEnCours;
-	private double prixVente;
-	private Indicateur stockFeves;
 	private int numStep;
 	private GestionnaireFeve gestionnaireFeve;
 	
@@ -44,16 +41,11 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	
 	public Producteur2(Feve fevesProduites, int productionParStep, double stockInitial, double soldeInitial) {
 		NB_PROD++;
-		this.productionParStep=gestionnaireFeve.getProductionParStep(Feve.FORASTERO_MG_NEQ);
-
 
 
 		this.numero = NB_PROD;
-		this.prixVente = gestionnaireFeve.getPrixVente(Feve.FORASTERO_MG_NEQ);
-		this.stockFeves=gestionnaireFeve.get(Feve.FORASTERO_MG_NEQ).getStockIndicateur();
 		this.fevesProduites=fevesProduites;
 
-		Monde.LE_MONDE.ajouterIndicateur(gestionnaireFeve.getStock());
 		this.soldeBancaire = new Indicateur(this.getNom()+" Solde", this, soldeInitial);
 		Monde.LE_MONDE.ajouterIndicateur(this.soldeBancaire);
 		this.contratsEnCours = new ArrayList<ContratCadre<Feve>>();
@@ -68,6 +60,7 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	
 	public String getNom() {
 		return "EQ2";
+		
 	}
 
 	public void initialiser() {
@@ -84,7 +77,7 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 			this.numStep = 1;
 		} else {
 		this.numStep++; }
-		this.journal.ajouter("Step "+Monde.LE_MONDE.getStep()+" : prix de vente = "+this.prixVente);
+		this.journal.ajouter("Step "+Monde.LE_MONDE.getStep()+" : prix de vente = "+this.gestionnaireFeve.getPrixVente(Feve.FORASTERO_MG_NEQ));
 
 	}
 	
@@ -93,7 +86,7 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 
 	@Override
 	public StockEnVente<Feve> getStockEnVente() {
-		double stockRestant = this.stockFeves.getValeur();
+		double stockRestant = this.gestionnaireFeve.getStock(Feve.FORASTERO_MG_NEQ);
 		for (ContratCadre<Feve> cc : this.contratsEnCours) {
 			if (Monde.LE_MONDE != null) {
 				stockRestant = stockRestant - cc.getQuantiteRestantALivrer();
@@ -156,15 +149,19 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 		double prixAPayer = 0;
 		if (produit==null || quantite<=0.0 || produit.getStock()<quantite) {
 			return Double.NaN;    // s'il n'y a aucun produit en vente, que les quantités sont négatives ou que la quatité demandée est supérieure à nos stocks
+
 		} 
+
 		
 		else
 		{
 			if (quantite > 10000000 && quantite < 20000000) {
 			prixAPayer = prixVente * 0.95;   // on réduit le prix de 5% si l'on commande plus de 10 000 T
+
 		}
 		else if (quantite > 20000000) {
 			prixAPayer = prixVente * 0.9;   // on réduit le prix de 10% si l'on commande plus de 20 000 T
+
 		}
 		else { prixAPayer = prixVente; }
 		if (this.contratsEnCours.size() >= 1) {
@@ -172,9 +169,12 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 			double dernierPrix = cc.getPrixAuKilo();     //  on recherche le prix auquel on a vendu la dernière fois
 			if (dernierPrix > prixVente * 0.9 && prixVente * 1.05 < PRIX_MAX) {
 				this.prixVente *= 1.05;      // si l'on a vendu à plus de 90% du prix maximal, on augmente ce prix de 5%
+
 			}
+
 			else if (dernierPrix < prixVente * 0.8 && prixVente * 0.95 > PRIX_MIN) {
 				this.prixVente *= 0.95;     // si l'on a vendu à moins de 80% du prix maximal, on diminue ce prix de 5%
+
 			}
 		}
 		return prixAPayer; }

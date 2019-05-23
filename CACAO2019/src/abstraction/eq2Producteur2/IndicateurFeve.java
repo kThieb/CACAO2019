@@ -20,4 +20,11 @@ public class IndicateurFeve extends HashMap<String,Indicateur>{
 	public Indicateur getStockIndicateur(){		return this.get("Stock");	}
 	public Indicateur getPrixIndicateur() {		return this.get("PrixVente");	}
 	public Indicateur getProductionIndicateur() {		return this.get("ProductionParStep");	}
+	
+	public void setStockIndicateur(Indicateur stockIndicateur) {	this.replace("Stock", stockIndicateur);	}
+	public void setPrixIndicateur(Indicateur prixIndicateur) {	this.replace("prixVente", prixIndicateur);	}
+	public void setproductionIndicateur(Indicateur productionIndicateur) {	this.replace("ProductionParStep", productionIndicateur);	}
+	public void setStock(IActeur acteur, double stock) {	this.getStockIndicateur().setValeur(acteur, stock);	}
+	public void setPrix(IActeur acteur, double prix) {	this.getPrixIndicateur().setValeur(acteur, prix);	}
+	public void setProduction(IActeur acteur, double production) {	this.getProductionIndicateur().setValeur(acteur, production);	}
 }
