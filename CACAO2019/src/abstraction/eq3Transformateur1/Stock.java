@@ -19,6 +19,9 @@ public class Stock<T> {
 	public double getQuantiteEnStock(T produit) {
 		return this.stock.get(produit);
 	}
+	public HashMap<T, Double> getToutStock() {
+		return this.stock;
+	}
 	public void setQuantiteEnStock(T produit, double quantite) {
 		if (quantite >= 0.) { this.stock.put(produit, quantite); }
 		else { this.stock.put(produit, 0.); }
