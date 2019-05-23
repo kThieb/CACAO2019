@@ -114,6 +114,9 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	public void next() {
 		// -------------------------- begin eve
 		// transformation
+		// TODO pas fini encore
+		// transformer les differents produits
+		// updater les indicateurs, stocks et solde bancaire
 		double quantiteTransformee = Math.random()*Math.min(100, this.iStockFeves.getValeur()); // on suppose qu'on a un stock infini de sucre
 		this.iStockFeves.retirer(this, quantiteTransformee);
 		this.iStockChocolat.ajouter(this, (2*quantiteTransformee));// 50% cacao, 50% sucre
@@ -184,6 +187,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		return res;
 	}
 	//end sacha
+	
 
 	@Override
 	public void proposerEcheancierAcheteur(ContratCadre<Feve> cc) {
@@ -207,7 +211,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 
 	@Override
 	public void proposerPrixAcheteur(ContratCadre<Feve> cc) {
-		//begin raphael
+		//begin raphaelle
 		double prixVendeur = cc.getListePrixAuKilo().get(0);
 		int nbAchatsMoyenne=Math.min(10,this.prixAchats.getHistorique().getTaille());//Nombre d'achats pris en compte pour le calcul de la moyenne (au plus 10)
 		double moyenneDerniersAchats=0;
@@ -322,15 +326,36 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 
 	@Override
 	public void proposerPrixVendeur(ContratCadre<Chocolat> cc) {
-		// TODO Auto-generated method stub
-		
+		// begin sacha
+		if (cc.getListePrixAuKilo().size()==0) {
+			cc.ajouterPrixAuKilo(getPrix(cc.getProduit(), cc.getQuantite()));
+		} else {
+			double prixVendeur = cc.getListePrixAuKilo().get(0);
+			double prixAcheteur = cc.getPrixAuKilo();
+			if (prixAcheteur>=0.75*prixVendeur) { // on ne fait une proposition que si l'acheteur ne demande pas un prix trop bas.
+				if (Math.random()<0.25) { // probabilite de 25% d'accepter
+					cc.ajouterPrixAuKilo(cc.getPrixAuKilo());
+				} else {
+					cc.ajouterPrixAuKilo((prixVendeur*(0.9+Math.random()*0.1))); // rabais de 10% max
+				}
+			}
+		}
 	}
+		
+	
 
 	
 	public void notifierVendeur(ContratCadre<Chocolat> cc) {
+<<<<<<< HEAD
+		this.contratsChocolatEnCours.add(cc);
+		// end sach
+		
+		
+=======
 		//Begin Kevin
 		this.contratsChocolatEnCours.add(cc);
 		//End Kevin
+>>>>>>> branch 'master' of https://github.com/kThieb/CACAO2019.git
 	}
 
 	
