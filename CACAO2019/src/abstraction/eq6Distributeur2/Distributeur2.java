@@ -253,10 +253,7 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 			this.journal.ajouter("Vente de "+q+" a "+this.getPrix(c));
 			return q;
 			}
-		else {
-			chocolatsdisponibles.add(""+chocolat);
-			
-		}
+		else {chocolatsdisponibles.add(""+chocolat);}
 		}
 		for (String i : chocolatsdisponibles) {
 			this.journal.ajouter("vente de 0.0 (produit demande = "+c+ " vs produit dispo = "+i+")");
