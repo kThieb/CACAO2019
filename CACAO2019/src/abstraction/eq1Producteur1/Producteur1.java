@@ -15,7 +15,7 @@ public class Producteur1 implements IActeur, IVendeurCacaoAleatoire {
 
 	public static int COUT_FIXE_STOCK = 1000;
 	public static int COUT_VARIABLE_STOCK = 5;
-	public static int DUREE_DE_VIE = 40 * 52; // durée de vie en nexts
+	public static int DUREE_DE_VIE_FEVE = 1 * 52; // durée de vie en nexts
 	protected Indicateur stockFeves;
 	protected Indicateur stockCriolloI;
 	protected Indicateur stockForasteroI;
@@ -116,7 +116,7 @@ public class Producteur1 implements IActeur, IVendeurCacaoAleatoire {
 		HashMap<Integer, Integer> stockCriolloOld = stockCriollo;
 		HashMap<Integer, Integer> stockForasteroOld = stockForastero;
 		HashMap<Integer, Integer> stockTrinitarioOld = stockTrinitario;
-		for (int next = 0; next < DUREE_DE_VIE - 1; next++) {
+		for (int next = 0; next < DUREE_DE_VIE_FEVE - 1; next++) {
 			stockCriollo.put(next + 1, stockCriolloOld.get(next));
 			stockForastero.put(next + 1, stockForasteroOld.get(next));
 			stockTrinitario.put(next + 1, stockTrinitarioOld.get(next));
@@ -129,7 +129,7 @@ public class Producteur1 implements IActeur, IVendeurCacaoAleatoire {
 		stockForasteroI.setValeur(this, 0);
 		stockTrinitarioI.setValeur(this, 0);
 		
-		for (int next = 0; next < DUREE_DE_VIE ; next++) {
+		for (int next = 0; next < DUREE_DE_VIE_FEVE ; next++) {
 			stockCriolloI.ajouter(this, stockCriollo.get(next));;
 			stockForasteroI.ajouter(this, stockForastero.get(next));;
 			stockTrinitarioI.ajouter(this,stockTrinitario.get(next));
