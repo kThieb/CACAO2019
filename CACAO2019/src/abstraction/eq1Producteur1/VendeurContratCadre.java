@@ -54,6 +54,7 @@ public class VendeurContratCadre extends Producteur1 implements IVendeurContratC
 				reste= 0;
 				stock-= reste+qtt;}
 		}
+		if(reste!=0) { newEcheancier.ajouter(reste);}
 				
 				cc.ajouterEcheancier(newEcheancier);
 			}
