@@ -298,13 +298,29 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 
 	@Override
 	public void proposerPrixVendeur(ContratCadre<Chocolat> cc) {
-		// TODO Auto-generated method stub
-		
+		// begin sacha
+		if (cc.getListePrixAuKilo().size()==0) {
+			cc.ajouterPrixAuKilo(getPrix(cc.getProduit(), cc.getQuantite()));
+		} else {
+			double prixVendeur = cc.getListePrixAuKilo().get(0);
+			double prixAcheteur = cc.getPrixAuKilo();
+			if (prixAcheteur>=0.75*prixVendeur) { // on ne fait une proposition que si l'acheteur ne demande pas un prix trop bas.
+				if (Math.random()<0.25) { // probabilite de 25% d'accepter
+					cc.ajouterPrixAuKilo(cc.getPrixAuKilo());
+				} else {
+					cc.ajouterPrixAuKilo((prixVendeur*(0.9+Math.random()*0.1))); // rabais de 10% max
+				}
+			}
+		}
 	}
+		
+	
 
 	@Override
 	public void notifierVendeur(ContratCadre<Chocolat> cc) {
-		// TODO Auto-generated method stub
+		this.contratsChocolatEnCours.add(cc);
+		// end sacha
+		
 		
 	}
 
