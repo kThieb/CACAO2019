@@ -24,16 +24,11 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	private static final double PRIX_MIN = 0.800;
 	private static final double PRIX_MAX = 2.500;
 	
-
-
-
 	private Indicateur soldeBancaire;
 	private Journal journal;
-
-	private int productionParStep; // kg
+	
 	private int numero;
 	private List<ContratCadre<Feve>> contratsEnCours;
-	private double prixVente;
 	private int numStep;
 	private GestionnaireFeve gestionnaireFeve;
 	
@@ -41,12 +36,11 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	
 	public Producteur2(Feve fevesProduites, int productionParStep, double stockInitial, double soldeInitial) {
 		NB_PROD++;
-
-
+		this.productionParStep=gestionnaireFeve.getProductionParStep(Feve.FORASTERO_MG_NEQ);
 		this.numero = NB_PROD;
-		this.prixVente = PRIX_INIT;
-		this.productionParStep = gestionnaireFeve.get(Feve).getProductionParStep();
-		gestionnaireFeve.get(Feve).getStock() = new Indicateur(this.getNom()+" Stock", this, stockInitial);
+		this.prixVente = gestionnaireFeve.getPrixVente(Feve.FORASTERO_MG_NEQ);
+		this.stockFeves=gestionnaireFeve.get(Feve.FORASTERO_MG_NEQ).getStockIndicateur();
+		this.fevesProduites=fevesProduites;
 
 		Monde.LE_MONDE.ajouterIndicateur(gestionnaireFeve.getStock());
 		this.soldeBancaire = new Indicateur(this.getNom()+" Solde", this, soldeInitial);
@@ -56,6 +50,35 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 		Monde.LE_MONDE.ajouterJournal(this.journal);
 		this.numStep = 1;
 	}
+	
+	// Constructeur avec hmaps
+	
+	public Producteur2( Feve fevesProduites, int productionParStep, double stockInitial, double soldeInitial) {
+		NB_PROD++;
+		this.numero = NB_PROD;
+		this.gestionnaireFeve = new GestionnaireFeve(this);
+
+		Monde.LE_MONDE.ajouterIndicateur(gestionnaireFeve.getStock());
+		this.soldeBancaire = new Indicateur(this.getNom()+" Solde", this, soldeInitial);
+		Monde.LE_MONDE.ajouterIndicateur(this.soldeBancaire);
+		this.contratsEnCours = new ArrayList<ContratCadre<Feve>>();
+		this.journal = new Journal("Journal "+this.getNom());
+		Monde.LE_MONDE.ajouterJournal(this.journal);
+		this.numStep = 1;
+	}
+	
+	
+	public void initstock(List<int> stockinitial) {
+		Indicateur newindic = 
+		
+		
+
+		
+	}
+	
+	
+	
+	
 	
 	public Producteur2() {
 		this(Feve.FORASTERO_MG_NEQ, 75000000, 220000000, 100000000);
@@ -133,7 +156,6 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	}
 
 
-
 	@Override
 	public void encaisser(double montant, ContratCadre<Feve> cc) {
 		if (montant<0.0) {
@@ -146,9 +168,28 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	@Override
 	public double getPrix(Feve produit, Double quantite) {
 		if (produit==null || quantite<=0.0 || this.getStockEnVente().get(produit)<quantite) {
-			return Double.NaN;
-		}
+
+		
 		return this.prixVente;
+		} 
+	
+		if (quantite > 10000000 && quantite < 20000000) {
+			return this.prixVente * 0.95;
+		}
+		if (quantite > 20000000) {
+			return this.prixVente * 0.9;
+		}
+		if (this.contratsEnCours.size() >= 1) {
+			ContratCadre<Feve> cc = this.contratsEnCours.get(this.contratsEnCours.size()-1);
+			double dernierPrix = cc.getPrixAuKilo();
+			if (dernierPrix > prixVente * 0.9) {
+				this.prixVente *= 1.05;
+			}
+			else if (dernierPrix < prixVente*0.8) {
+				this.prixVente *= 0.95;
+			}
+			
+		}
 	}
 
 	@Override
