@@ -171,6 +171,7 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 			
 		}
 	}
+	
 
 	@Override
 	public double livrer(Feve produit, double quantite, ContratCadre<Feve> cc) {
