@@ -115,8 +115,10 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		// -------------------------- begin eve
 		// nouvelles feves
 		// TODO
-		// receptionner
-		// payer
+		// receptionner et payer
+		for (ContratCadre<Feve> cf: this.contratsFeveEnCours) {
+			this.receptionner(cf.getProduit(), cf.getQuantiteALivrerAuStep(), cf);
+		}
 		
 		// transformation
 		// TODO
