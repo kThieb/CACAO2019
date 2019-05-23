@@ -1,4 +1,8 @@
-package abstraction.eq7Romu.acteurs;
+/**
+ * @author Erwann DEFOY
+ */
+
+package abstraction.eq5Distributeur1;
 
 import abstraction.eq7Romu.distributionChocolat.IDistributeurChocolat;
 import abstraction.eq7Romu.produits.Chocolat;
@@ -7,13 +11,16 @@ import abstraction.fourni.IActeur;
 import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 
-public class ClientEuropeen extends Client2 {
-
+public class ClientEuropeen {
 	private int numero;
 	private Journal journal;
 	private Chocolat uniqueProduit;
 	private Double quantiteParStep;
-	
+	private int noteprix ;
+	private int notequalite ;
+	private int notefidelite ;
+	private int temporalite ;
+
 
 	public String getNom() {
 		return "CL"+this.numero;
@@ -23,8 +30,11 @@ public class ClientEuropeen extends Client2 {
 	}
 
 	public ClientEuropeen(int numero, int noteprix, int notequalite, int notequantite, int notefidelite) {
-		super(numero, noteprix, notequalite, notequantite, notefidelite) ;
-		// TODO Auto-generated constructor stub
+		this.journal = new Journal("Journal" + this.getNom()) ;
+		this.numero = numero ;
+		this.noteprix = noteprix ;
+		this.notequalite = notequalite ;
+		this.notefidelite = notefidelite ;
 	}
 
 
@@ -70,4 +80,5 @@ public class ClientEuropeen extends Client2 {
 			}
 		} while (quantiteAchetee<this.quantiteParStep && distributeurDeQualite!=null);
 	}
+
 }

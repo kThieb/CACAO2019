@@ -3,7 +3,6 @@ package abstraction.eq5Distributeur1;
 import java.util.ArrayList;
 import java.util.List;
 
-import abstraction.eq7Romu.acteurs.ClientEuropeen;
 import abstraction.eq7Romu.distributionChocolat.IDistributeurChocolat;
 import abstraction.eq7Romu.produits.Chocolat;
 import abstraction.eq7Romu.ventesContratCadre.ContratCadre;
@@ -198,8 +197,11 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 
 	@Override
 	public double payer(double montant, ContratCadre cc) {
-		// TODO Auto-generated method stub
-		return 0;
+		if (montant<=0.0) {
+			throw new IllegalArgumentException("Appel de la methode payer de Distributeur1 avec un montant negatif = "+montant);
+		}
+		double nouveausolde = soldeBancaire.getCompteBancaire() - montant;
+		return nouveausolde;
 	}
 
 	// ---------------------------------------------------------------------------------------------------------
