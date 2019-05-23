@@ -20,6 +20,9 @@ public class Producteur1 implements IActeur, IVendeurCacaoAleatoire {
 	protected HashMap<Integer, Integer> stockCriollo;
 	protected HashMap<Integer, Integer> stockForastero;
 	protected HashMap<Integer, Integer> stockTrinitario;
+	protected int recolteCriollo = 33;
+	protected int recolteForastero = 33;
+	protected int recolteTrinitario = 33;
 
 	protected Indicateur soldeBancaire;
 	// BEGIN ANTI
@@ -113,9 +116,9 @@ public class Producteur1 implements IActeur, IVendeurCacaoAleatoire {
 			stockForastero.put(next + 1, stockForasteroOld.get(next));
 			stockTrinitario.put(next + 1, stockTrinitarioOld.get(next));
 		}
-		stockCriollo.put(0, 1);
-		stockForastero.put(0, 1);
-		stockTrinitario.put(0, 1);
+		stockCriollo.put(0, recolteCriollo);
+		stockForastero.put(0, recolteForastero);
+		stockTrinitario.put(0, recolteTrinitario);
 
 	}
 	// END Nas
