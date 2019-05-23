@@ -311,7 +311,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		
 	}
 
-	@Override
+	
 	public void notifierVendeur(ContratCadre<Chocolat> cc) {
 		//Begin Kevin
 		this.contratsChocolatEnCours.add(cc);
