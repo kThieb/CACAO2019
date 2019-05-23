@@ -14,8 +14,11 @@ public class GestionnaireFeve extends HashMap<Feve, IndicateurFeve>{
 		this.put(Feve.MERCEDES_MG_EQ, new IndicateurFeve(acteur));
 		this.put(Feve.MERCEDES_MG_NEQ, new IndicateurFeve(acteur));
 	}
+<<<<<<< HEAD
+=======
 	
 	
 	
 	
+>>>>>>> branch 'master' of https://github.com/Clementmagnin/CACAO2019.git
 }

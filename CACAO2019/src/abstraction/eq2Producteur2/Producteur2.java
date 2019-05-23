@@ -26,6 +26,7 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	
 
 
+
 	private Indicateur soldeBancaire;
 	private Journal journal;
 
@@ -40,13 +41,16 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	
 	public Producteur2(Feve fevesProduites, int productionParStep, double stockInitial, double soldeInitial) {
 		NB_PROD++;
+
 		gestionnaireFeve.getFevesProduites() = fevesProduites;
+
+
 		this.numero = NB_PROD;
 		this.prixVente = PRIX_INIT;
-		this.productionParStep = productionParStep;
-		gestionnaireFeve.getStockFeves() = new Indicateur(this.getNom()+" Stock", this, stockInitial);
+		this.productionParStep = gestionnaireFeve.get(Feve).getProductionParStep();
+		gestionnaireFeve.get(Feve).getStock() = new Indicateur(this.getNom()+" Stock", this, stockInitial);
 
-		Monde.LE_MONDE.ajouterIndicateur(this.stockFeves);
+		Monde.LE_MONDE.ajouterIndicateur(gestionnaireFeve.getStock());
 		this.soldeBancaire = new Indicateur(this.getNom()+" Solde", this, soldeInitial);
 		Monde.LE_MONDE.ajouterIndicateur(this.soldeBancaire);
 		this.contratsEnCours = new ArrayList<ContratCadre<Feve>>();
@@ -150,7 +154,22 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 		if (produit==null || quantite<=0.0 || this.getStockEnVente().get(produit)<quantite) {
 			return Double.NaN;
 		}
-		return this.prixVente;
+		if (quantite > 10000000 && quantite < 20000000) {
+			return this.prixVente * 0.95;
+		}
+		if (quantite > 20000000) {
+			return this.prixVente * 0.9;
+		}
+		if (this.contratsEnCours.size() >= 1) {
+			ContratCadre<Feve> cc = this.contratsEnCours.get(this.contratsEnCours.size()-1);
+			double dernierPrix = cc.getPrixAuKilo();
+			if (dernierPrix > prixVente * 0.9) {
+				this.prixVente *= 1.05;
+			}
+			else if (dernierPrix < prixVente*0.8) {
+				this.prixVente *= 0.95;
+			}
+		}
 	}
 
 	@Override
