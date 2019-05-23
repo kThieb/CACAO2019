@@ -3,6 +3,7 @@ package abstraction.eq5Distributeur1;
 import java.util.ArrayList;
 import java.util.List;
 
+import abstraction.eq7Romu.acteurs.ClientEuropeen;
 import abstraction.eq7Romu.distributionChocolat.IDistributeurChocolat;
 import abstraction.eq7Romu.produits.Chocolat;
 import abstraction.eq7Romu.ventesContratCadre.ContratCadre;
@@ -10,6 +11,7 @@ import abstraction.eq7Romu.ventesContratCadre.Echeancier;
 import abstraction.eq7Romu.ventesContratCadre.IAcheteurContratCadre;
 import abstraction.eq7Romu.ventesContratCadre.IVendeurContratCadre;
 import abstraction.eq7Romu.ventesContratCadre.StockEnVente;
+import abstraction.eq7Romu.ventesContratCadre.SuperviseurVentesContratCadre;
 import abstraction.fourni.IActeur;
 import abstraction.fourni.Indicateur;
 import abstraction.fourni.Journal;
