@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import abstraction.eq1Producteur1.ventesCacaoAleatoires.SuperviseurVentesCacaoAleatoires;
 import abstraction.eq7Romu.produits.Feve;
+import abstraction.eq7Romu.produits.Variete;
 import abstraction.eq7Romu.ventesContratCadre.ContratCadre;
 import abstraction.fourni.IActeur;
 import abstraction.fourni.Indicateur;
@@ -64,16 +65,15 @@ public class Producteur1 implements IActeur /* , IVendeurCacaoAleatoire */ {
 		return this.historiqueContrats;
 	}
 
-	public int getRecolteCriollo() {
-		return recolteCriollo;
-	}
-
-	public int getRecolteForastero() {
-		return recolteForastero;
-	}
-
-	public int getRecolteTrinitario() {
-		return recolteTrinitario;
+	public int getRecolte(Feve feve) {
+		if (feve.getVariete() == Variete.CRIOLLO) {
+			return recolteCriollo;
+		} else if (feve.getVariete() == Variete.FORASTERO) {
+			return recolteForastero;
+		} else if (feve.getVariete() == Variete.TRINITARIO) {
+			return recolteTrinitario;
+		}
+		return 0;
 	}
 
 	public Indicateur getSoldeBancaire() {
