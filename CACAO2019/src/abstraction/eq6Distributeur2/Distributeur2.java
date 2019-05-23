@@ -34,7 +34,7 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 	
 	private Indicateur stockMG_E_SHP;
 	private Indicateur stockMG_NE_SHP;
-	private Indicateur stockMG_NE_HP;;
+	private Indicateur stockMG_NE_HP;
 	private Indicateur stockHG_E_SHP;
 	
 	private Indicateur prixMG_E_SHP;
