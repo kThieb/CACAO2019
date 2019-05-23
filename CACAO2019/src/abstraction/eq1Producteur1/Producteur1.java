@@ -15,11 +15,12 @@ public class Producteur1 implements IActeur, IVendeurCacaoAleatoire {
 
 	public static int COUT_FIXE_STOCK = 1000;
 	public static int COUT_VARIABLE_STOCK = 5;
+	public static int DUREE_DE_VIE = 40 * 52; // durée de vie en nexts
 	protected Indicateur stockFeves;
 	protected HashMap<Integer, Integer> stockCriollo;
-	protected HashMap <Integer, Integer > stockForastero ; 
-	protected HashMap <Integer, Integer> stockTrinitario ; 
-	
+	protected HashMap<Integer, Integer> stockForastero;
+	protected HashMap<Integer, Integer> stockTrinitario;
+
 	protected Indicateur soldeBancaire;
 	// BEGIN ANTI
 	// private StockEnVente<Feve> stockEnVente;
@@ -101,5 +102,22 @@ public class Producteur1 implements IActeur, IVendeurCacaoAleatoire {
 		return mapPrix;
 		// END Pauline
 	}
+
+	// BEGIN Nas
+	private void update() {
+		HashMap<Integer, Integer> stockCriolloOld = stockCriollo;
+		HashMap<Integer, Integer> stockForasteroOld = stockForastero;
+		HashMap<Integer, Integer> stockTrinitarioOld = stockTrinitario;
+		for (int next = 0; next < DUREE_DE_VIE - 1; next++) {
+			stockCriollo.put(next + 1, stockCriolloOld.get(next));
+			stockForastero.put(next + 1, stockForasteroOld.get(next));
+			stockTrinitario.put(next + 1, stockTrinitarioOld.get(next));
+		}
+		stockCriollo.put(0, 1);
+		stockForastero.put(0, 1);
+		stockTrinitario.put(0, 1);
+
+	}
+	// END Nas
 
 }
