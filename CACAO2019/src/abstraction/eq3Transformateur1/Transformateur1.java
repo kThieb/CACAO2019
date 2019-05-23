@@ -69,6 +69,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		
  		this.iStockFeves = new Indicateur("EQ3 stock feves", this, 0);
  		this.iStockChocolat = new Indicateur("EQ3 stock chocolat", this, 0);
+ 		
 		// --------------------------------- end eve
 		
 		
