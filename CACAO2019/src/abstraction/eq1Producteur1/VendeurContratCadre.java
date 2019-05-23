@@ -13,7 +13,6 @@ public class VendeurContratCadre extends Producteur1 implements IVendeurContratC
 
 
 	public StockEnVente<Feve> getStockEnVente() {
-
 		return stockEnVente;
 	}
 
