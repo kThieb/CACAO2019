@@ -278,9 +278,6 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 
 	
 	@Override
-
-	
-
 	public ContratCadre<Chocolat> getNouveauContrat() { //ILIAS
 		ContratCadre<Chocolat> res=null;
 
@@ -312,40 +309,48 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 	    
 		for (ContratCadre c  : this.getContratsEnCours()) {
 			Chocolat ch = (Chocolat) c.getProduit();
-			double d = c.getEcheancier().getQuantite(Monde.LE_MONDE.getStep());
+			//10 steps pour le contrat 
+			double d = c.getEcheancier().getQuantiteTotale()/10;
 			variations_produit.put(ch, d);
 		}
 		
-		double min;
-		for (double stock : variations_produit.values()) {
-			
-			
+		double min = 5000000;
+		Chocolat produit = null;
+		for (Chocolat c : variations_produit.keySet()) {
+			if (variations_produit.get(c) < min) {
+				min = variations_produit.get(c);
+				produit = c;
+			}
+		}
+		if (variations_produit.get(produit) > 500) {
+			return null;
 		}
 		
-		Chocolat produit = getStockEnVente().getProduitsEnVente().get((int)(Math.random()*4));
+		double quantite = 500 - this.getStockEnVente().get(produit) - variations_produit.get(produit);
 		
 		if (solde >1000) {
 			List<IVendeurContratCadre<Chocolat>> vendeurs = new ArrayList<IVendeurContratCadre<Chocolat>>();
 			for (IActeur acteur : Monde.LE_MONDE.getActeurs()) {
 				if (acteur instanceof IVendeurContratCadre) {
 					IVendeurContratCadre vacteur = (IVendeurContratCadre)acteur;
-					if (vacteur.getStockEnVente().get(produit) >=50) {
+					if (vacteur.getStockEnVente().get(produit) >= quantite) {
 						vendeurs.add((IVendeurContratCadre<Chocolat>)vacteur);
 					}
 					}
 				}
  
-			if (vendeurs.size()>=1) {
-				double quantite = 50;
-				IVendeurContratCadre<Chocolat> vendeur = vendeurs.get( (int)( Math.random()*vendeurs.size()));
-				double prix = vendeur.getPrix(produit, quantite);
-				while (!Double.isNaN(prix)) {
-					quantite=quantite*1.1;
-					prix = vendeur.getPrix(produit,  quantite);
+			double meilleurprix = 500000;
+			IVendeurContratCadre<Chocolat> vendeur = null;
+			for (IVendeurContratCadre<Chocolat> v : vendeurs) {
+				if (v.getPrix(produit, quantite) < meilleurprix) {
+					vendeur = v;
+				}
 			}
-				quantite = quantite/1.1;
-				res = new ContratCadre<Chocolat>(this, vendeur, produit, quantite);
-		}
+            if (vendeur != null & produit != null && quantite != 0) {
+            	res = new ContratCadre<Chocolat>(this, vendeur, produit, quantite);
+            }
+            else { res = null;}
+		
 		}
 		return res; 
 	}
@@ -353,12 +358,13 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 	@Override
 	//Caroline 
 	public void proposerEcheancierAcheteur(ContratCadre<Chocolat> cc) {
-		if (cc.getEcheancier()==null) { // il n'y a pas encore eu de contre-proposition de la part du vendeur
-			cc.ajouterEcheancier(new Echeancier(Monde.LE_MONDE.getStep(), 5, cc.getQuantite()/5));
-		} else {
-			cc.ajouterEcheancier(new Echeancier(cc.getEcheancier())); // on accepte la contre-proposition du vendeur 
+		if (cc!=null) {
+			if (cc.getEcheancier()==null) { // il n'y a pas encore eu de contre-proposition de la part du vendeur
+				cc.ajouterEcheancier(new Echeancier(Monde.LE_MONDE.getStep(), 5, cc.getQuantite()/5));
+		}   else {
+				cc.ajouterEcheancier(new Echeancier(cc.getEcheancier())); // on accepte la contre-proposition du vendeur 
+				}
 		}
-		
 	}
 	
 	//Caroline
