@@ -80,8 +80,9 @@ public class Transformateur2VendeurCC implements IVendeurContratCadre<Chocolat> 
 
 	@Override
 	public double livrer(Chocolat produit, double quantite, ContratCadre<Chocolat> cc) {
-		if (produit==null || !produit.equals(t2.chocolatProduit)) {
-			throw new IllegalArgumentException("Appel de la methode livrer de TransformateurRomu avec un produit ne correspondant pas au chocolat produit");
+		if (produit==null || t2.getStockEnVente().get(produit) == 0) {
+			System.out.println(cc.getAcheteur());
+			throw new IllegalArgumentException("Appel de la methode livrer de Transformateur2 avec un produit ne correspondant pas au chocolat produit");
 		}
 		double livraison = Math.min(quantite, t2.iStockChocolat.getValeur());
 		t2.iStockChocolat.retirer(t2, livraison);
@@ -92,7 +93,7 @@ public class Transformateur2VendeurCC implements IVendeurContratCadre<Chocolat> 
 	@Override
 	public void encaisser(double montant, ContratCadre<Chocolat> cc) {
 		if (montant<0.0) {
-			throw new IllegalArgumentException("Appel de la methode encaisser de TransformateurRomu avec un montant negatif");
+			throw new IllegalArgumentException("Appel de la methode encaisser de Transformateur2 avec un montant negatif");
 		}
 		t2.soldeBancaire.ajouter(t2,  montant);
 	}
