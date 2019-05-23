@@ -31,7 +31,13 @@ public class VendeurContratCadre extends Producteur1 implements IVendeurContratC
 	}
 
 	public void proposerEcheancierVendeur(ContratCadre<Feve> cc) {
-		cc.ajouterEcheancier(new Echeancier(cc.getEcheancier()));
+		Echeancier e= cc.getEcheancier();
+		Feve feve= cc.getProduit();
+		for (int i=e.getStepDebut(); i<=e.getStepFin();i++) {
+			double qtt= e.getQuantite(i);
+		}
+		double stockActuel= this.getStockEnVente().get(feve);
+		
 
 	}
 
