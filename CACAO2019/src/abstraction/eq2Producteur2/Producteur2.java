@@ -169,6 +169,7 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 			else if (dernierPrix < prixVente*0.8) {
 				this.prixVente *= 0.95;
 			}
+			
 		}
 	}
 
