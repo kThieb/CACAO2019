@@ -40,13 +40,13 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	
 	public Producteur2(Feve fevesProduites, int productionParStep, double stockInitial, double soldeInitial) {
 		NB_PROD++;
-		gestionnaireFeve.getFevesProduites() = fevesProduites;
+		gestionnaireFeve.get(Feve).getFevesProduites() = fevesProduites;
 		this.numero = NB_PROD;
 		this.prixVente = PRIX_INIT;
-		this.productionParStep = productionParStep;
-		gestionnaireFeve.getStockFeves() = new Indicateur(this.getNom()+" Stock", this, stockInitial);
+		this.productionParStep = gestionnaireFeve.get(Feve).getProductionParStep();
+		gestionnaireFeve.get(Feve).getStock() = new Indicateur(this.getNom()+" Stock", this, stockInitial);
 
-		Monde.LE_MONDE.ajouterIndicateur(this.stockFeves);
+		Monde.LE_MONDE.ajouterIndicateur(gestionnaireFeve.getStock());
 		this.soldeBancaire = new Indicateur(this.getNom()+" Solde", this, soldeInitial);
 		Monde.LE_MONDE.ajouterIndicateur(this.soldeBancaire);
 		this.contratsEnCours = new ArrayList<ContratCadre<Feve>>();
