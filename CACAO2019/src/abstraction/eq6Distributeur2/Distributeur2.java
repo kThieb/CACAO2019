@@ -34,7 +34,7 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 	
 	private Indicateur stockMG_E_SHP;
 	private Indicateur stockMG_NE_SHP;
-	private Indicateur stockMG_NE_HP;;
+	private Indicateur stockMG_NE_HP;
 	private Indicateur stockHG_E_SHP;
 	
 	private Indicateur prixMG_E_SHP;
@@ -285,45 +285,79 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 
 	
 	@Override
-
-	
-
 	public ContratCadre<Chocolat> getNouveauContrat() { //ILIAS
 		ContratCadre<Chocolat> res=null;
 
-
-
-		
 		double solde = this.getSoldeBancaire().getValeur();
 		for (ContratCadre<Chocolat> cc : this.getContratsEnCours()) {
 			solde = solde - cc.getMontantRestantARegler();
 		}
 		
-		Chocolat produit = getStockEnVente().getProduitsEnVente().get((int)(Math.random()*4));
+		//Choix du produit 
+		HashMap<Chocolat, Double> variations_produit= new HashMap<Chocolat, Double>();
+		
+		if ( stockMG_E_SHP.getHistorique().getTaille() -2 > 0 ) {
+			double variation_stockMG_E_SHP = stockMG_E_SHP.getHistorique().get(stockMG_E_SHP.getHistorique().getTaille() -2).getValeur() - stockMG_E_SHP.getValeur();
+		    variations_produit.put(Chocolat.MG_E_SHP, -1*variation_stockMG_E_SHP);
+		}
+		
+		if ( stockMG_NE_SHP.getHistorique().getTaille() -2 > 0 ) {
+			double variation_stockMG_NE_SHP = stockMG_NE_SHP.getHistorique().get(stockMG_NE_SHP.getHistorique().getTaille() -2).getValeur() - stockMG_NE_SHP.getValeur();
+			variations_produit.put(Chocolat.MG_NE_SHP, -1*variation_stockMG_NE_SHP);
+		}
+		if ( stockMG_NE_HP.getHistorique().getTaille() -2 > 0 ) {
+			double variation_stockMG_NE_HP = stockMG_NE_HP.getHistorique().get(stockMG_NE_HP.getHistorique().getTaille() -2).getValeur() - stockMG_NE_HP.getValeur();
+			variations_produit.put(Chocolat.MG_NE_HP, -1*variation_stockMG_NE_HP);
+		}
+		if ( stockHG_E_SHP.getHistorique().getTaille() -2 > 0 ) {
+			double variation_stockHG_E_SHP = stockHG_E_SHP.getHistorique().get(stockHG_E_SHP.getHistorique().getTaille() -2).getValeur() - stockHG_E_SHP.getValeur();
+			variations_produit.put(Chocolat.HG_E_SHP, -1*variation_stockHG_E_SHP);	
+		}
+	    
+		for (ContratCadre c  : this.getContratsEnCours()) {
+			Chocolat ch = (Chocolat) c.getProduit();
+			//10 steps pour le contrat 
+			double d = c.getEcheancier().getQuantiteTotale()/10;
+			variations_produit.put(ch, d);
+		}
+		
+		double min = 5000000;
+		Chocolat produit = null;
+		for (Chocolat c : variations_produit.keySet()) {
+			if (variations_produit.get(c) < min) {
+				min = variations_produit.get(c);
+				produit = c;
+			}
+		}
+		if (variations_produit.get(produit) > 500) {
+			return null;
+		}
+		
+		double quantite = 500 - this.getStockEnVente().get(produit) - variations_produit.get(produit);
 		
 		if (solde >1000) {
 			List<IVendeurContratCadre<Chocolat>> vendeurs = new ArrayList<IVendeurContratCadre<Chocolat>>();
 			for (IActeur acteur : Monde.LE_MONDE.getActeurs()) {
 				if (acteur instanceof IVendeurContratCadre) {
 					IVendeurContratCadre vacteur = (IVendeurContratCadre)acteur;
-					if (vacteur.getStockEnVente().get(produit) >=50) {
+					if (vacteur.getStockEnVente().get(produit) >= quantite) {
 						vendeurs.add((IVendeurContratCadre<Chocolat>)vacteur);
 					}
 					}
 				}
  
-			if (vendeurs.size()>=1) {
-				double quantite = 50;
-				IVendeurContratCadre<Chocolat> vendeur = vendeurs.get( (int)( Math.random()*vendeurs.size()));
-				double prix = vendeur.getPrix(produit, quantite);
-				
-				while (!Double.isNaN(prix)) {
-					quantite=quantite*1.1;
-					prix = vendeur.getPrix(produit,  quantite);
+			double meilleurprix = 500000;
+			IVendeurContratCadre<Chocolat> vendeur = null;
+			for (IVendeurContratCadre<Chocolat> v : vendeurs) {
+				if (v.getPrix(produit, quantite) < meilleurprix) {
+					vendeur = v;
+				}
 			}
-				quantite = quantite/1.1;
-				res = new ContratCadre<Chocolat>(this, vendeur, produit, quantite);
-		}
+            if (vendeur != null & produit != null && quantite != 0) {
+            	res = new ContratCadre<Chocolat>(this, vendeur, produit, quantite);
+            }
+            else { res = null;}
+		
 		}
 		return res; 
 	}
@@ -331,12 +365,13 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 	@Override
 	//Caroline 
 	public void proposerEcheancierAcheteur(ContratCadre<Chocolat> cc) {
-		if (cc.getEcheancier()==null) { // il n'y a pas encore eu de contre-proposition de la part du vendeur
-			cc.ajouterEcheancier(new Echeancier(Monde.LE_MONDE.getStep(), 5, cc.getQuantite()/5));
-		} else {
-			cc.ajouterEcheancier(new Echeancier(cc.getEcheancier())); // on accepte la contre-proposition du vendeur 
+		if (cc!=null) {
+			if (cc.getEcheancier()==null) { // il n'y a pas encore eu de contre-proposition de la part du vendeur
+				cc.ajouterEcheancier(new Echeancier(Monde.LE_MONDE.getStep(), 5, cc.getQuantite()/5));
+		}   else {
+				cc.ajouterEcheancier(new Echeancier(cc.getEcheancier())); // on accepte la contre-proposition du vendeur 
+				}
 		}
-		
 	}
 	
 	//Caroline
