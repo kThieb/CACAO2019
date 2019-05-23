@@ -60,6 +60,7 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	
 	public String getNom() {
 		return "EQ2";
+		
 	}
 
 	public void initialiser() {
