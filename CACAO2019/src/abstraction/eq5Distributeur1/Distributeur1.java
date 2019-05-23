@@ -20,10 +20,8 @@ import abstraction.fourni.Monde;
 public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistributeurChocolat {
 	private Journal journal;
 	private Stock stock;
-	//private ArrayList<Indicateur> stock;
 	private int numero;
 	private CompteBancaire soldeBancaire;
-	private ArrayList<Chocolat> produits;
 	private Double marge;
 	private List<ContratCadre<Chocolat>> contratsEnCours;
 
@@ -38,11 +36,6 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 	 */
 	public Distributeur1(double marge, double soldeInitial) {
 		this.numero =1 ;
-		this.produits = new ArrayList<Chocolat>();
-		produits.add(Chocolat.HG_E_SHP);
-		produits.add(Chocolat.MG_E_SHP);
-		produits.add(Chocolat.MG_NE_HP);
-		produits.add(Chocolat.MG_NE_SHP);
 		this.marge = marge;
 		this.stock = new Stock();
 		stock.ajouter(Chocolat.HG_E_SHP, 0.0);
@@ -219,11 +212,15 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 		return res;
 	}
 
+	/**
+	 * @author estel
+	 */
 	@Override
 	public double getPrix(Chocolat c) {
 		boolean vendu = false;
-		for (int i=0; i<this.produits.size();i++) {
-			if (c.equals(this.produits.get(i))) {
+		List<Chocolat> produits =this.stock.getProduitsEnVente();
+		for (int i=0; i<produits.size();i++) {
+			if (c.equals(produits.get(i))) {
 				vendu = true;
 			}
 		}
