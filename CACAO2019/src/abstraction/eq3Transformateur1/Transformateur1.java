@@ -114,7 +114,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	public void next() {
 		// -------------------------- begin eve
 		// transformation
-		// TODO pas fini
+		// TODO pas fini encore
 		// transformer les differents produits
 		// updater les indicateurs, stocks et solde bancaire
 		double quantiteTransformee = Math.random()*Math.min(100, this.iStockFeves.getValeur()); // on suppose qu'on a un stock infini de sucre
