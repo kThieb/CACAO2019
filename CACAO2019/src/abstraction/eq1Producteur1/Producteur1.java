@@ -17,6 +17,9 @@ public class Producteur1 implements IActeur, IVendeurCacaoAleatoire {
 	public static int COUT_VARIABLE_STOCK = 5;
 	public static int DUREE_DE_VIE = 40 * 52; // durée de vie en nexts
 	protected Indicateur stockFeves;
+	protected Indicateur stockCriolloI;
+	protected Indicateur stockForasteroI;
+	protected Indicateur stockTrinitarioI;
 	protected HashMap<Integer, Integer> stockCriollo;
 	protected HashMap<Integer, Integer> stockForastero;
 	protected HashMap<Integer, Integer> stockTrinitario;
@@ -70,10 +73,12 @@ public class Producteur1 implements IActeur, IVendeurCacaoAleatoire {
 
 	public void next() {
 		// production
-		double nouveauStock = this.stockFeves.getValeur() + Math.random() * 200;
+		// double nouveauStock = this.stockFeves.getValeur() + Math.random() * 200;
 
-		this.stockFeves.setValeur(this, nouveauStock);
+		// this.stockFeves.setValeur(this, nouveauStock);
+
 		// BEGIN Nas
+		update();
 		this.soldeBancaire.ajouter(this, COUT_FIXE_STOCK + COUT_VARIABLE_STOCK * stockFeves.getValeur());
 		// END Nas
 
@@ -119,6 +124,14 @@ public class Producteur1 implements IActeur, IVendeurCacaoAleatoire {
 		stockCriollo.put(0, recolteCriollo);
 		stockForastero.put(0, recolteForastero);
 		stockTrinitario.put(0, recolteTrinitario);
+		
+		for (int next = 0; next < DUREE_DE_VIE ; next++) {
+			stockCriolloI.ajouter(this, stockCriollo.get(next));;
+			stockForasteroI.ajouter(this, stockForastero.get(next));;
+			stockTrinitarioI.ajouter(this,stockTrinitario.get(next));
+		}
+		
+		stockFeves.setValeur(this, stockCriolloI.getValeur()+stockForasteroI.getValeur()+stockTrinitarioI.getValeur());
 
 	}
 	// END Nas
