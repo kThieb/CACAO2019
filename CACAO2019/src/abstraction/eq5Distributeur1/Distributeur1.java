@@ -85,8 +85,7 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 		}
 
 		// On ne cherche pas a établir d'autres contrats d'achat si le compte bancaire est trop bas
-		if (solde>10000.0) { 
-
+		if (solde>5000.0) { 
 
 			//Choix du produit : on choisit un produit au hasard parmi tous les produits
 			ArrayList<Chocolat> produits = new ArrayList<Chocolat>();
@@ -102,29 +101,30 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 			List<IVendeurContratCadre<Chocolat>> vendeurs = new ArrayList<IVendeurContratCadre<Chocolat>>();
 			for (IActeur acteur : Monde.LE_MONDE.getActeurs()) {
 				if (acteur instanceof IVendeurContratCadre) {
-					IVendeurContratCadre vacteur = (IVendeurContratCadre)acteur;
-					StockEnVente stock = vacteur.getStockEnVente();
+					IVendeurContratCadre vacteur = (IVendeurContratCadre) acteur;
+					StockEnVente<Chocolat> stock = vacteur.getStockEnVente();
 					if (stock.get(produit)>100.0) { // on souhaite faire des contrats d'au moins 100kg
 						vendeurs.add((IVendeurContratCadre<Chocolat>)vacteur);
 					}
 				}
-				if (vendeurs.size()>=1) {
-					IVendeurContratCadre<Chocolat> vendeur = vendeurs.get( (int)( Math.random()*vendeurs.size())); // ici tire au hasard plutot que de tenir compte des stocks en vente et des prix
-					// On détermine la quantité qu'on peut espérer avec le tiers du reste de notre solde bancaire
-					double quantite = 100.0; // on souhaite faire des contrats d'au moins 100 kg
-					double prix = vendeur.getPrix(produit, quantite);
-					while (!Double.isNaN(prix) && prix<solde/3.0 ) {
-						quantite=quantite*1.5;
-						prix = vendeur.getPrix(produit,  quantite);
-					}
-					quantite = quantite/1.5;
-					ncc = new ContratCadre<Chocolat>(this, vendeur, produit, quantite);
-
-				} else {
-					this.journal.ajouter("   Il ne reste que "+solde+" une fois tous les contrats payes donc nous ne souhaitons pas en creer d'autres pour l'instant");
-				}
-
 			}
+			if (vendeurs.size()>1) { // On choisit le vendeur ayant le plus gros stock de produit
+				IVendeurContratCadre<Chocolat> vendeur_choisi = vendeurs.get(0); 
+				for (IVendeurContratCadre<Chocolat> vendeur : vendeurs) {
+					double stock = vendeur_choisi.getStockEnVente().get(produit);
+					if (vendeur.getStockEnVente().get(produit) > stock) {
+						stock = vendeur.getStockEnVente().get(produit);
+						vendeur_choisi = vendeur;
+					}
+				}
+				double quantite = vendeur_choisi.getStockEnVente().get(produit)*0.65; // On prend 65% de sa production
+				ncc = new ContratCadre<Chocolat>(this, vendeur_choisi, produit, quantite);
+
+			} else {
+				this.journal.ajouter("   Il ne reste que "+solde+" une fois tous les contrats payes donc nous ne souhaitons pas en creer d'autres pour l'instant");
+			}
+
+
 		}
 		//Création Contrat
 		return ncc;
