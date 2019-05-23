@@ -68,7 +68,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		this.stockChocolat.setQuantiteEnStock(Chocolat.MG_NE_SHP, 0.);
 		this.stockChocolat.setCoutEnFeves(Chocolat.MG_NE_SHP, 0.075);
 		this.stockChocolat.setQuantiteEnStock(Chocolat.MG_E_SHP, 0.);
-		this.stockChocolat.setCoutEnFeves(Chocolat.MG_E_SHP, 0.120);
+		this.stockChocolat.setCoutEnFeves(Chocolat.MG_E_SHP, 0.120); 
 		
  		this.iStockFeves = new Indicateur("EQ3 stock feves", this, 0);
  		this.iStockChocolat = new Indicateur("EQ3 stock chocolat", this, 0);
