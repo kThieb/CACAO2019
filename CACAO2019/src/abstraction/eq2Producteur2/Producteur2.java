@@ -145,7 +145,7 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 		this.soldeBancaire.ajouter(this,  montant);
 	}
 
-	public double getPrix(IndicateurFeve produit, Double quantite) {
+	public double getPrixversionbis(IndicateurFeve produit, Double quantite) {
 		double prixAPayer = 0;
 		if (produit==null || quantite<=0.0 || produit.getStock()<quantite) {
 			return Double.NaN;    // s'il n'y a aucun produit en vente, que les quantités sont négatives ou que la quatité demandée est supérieure à nos stocks
