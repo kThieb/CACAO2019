@@ -17,9 +17,7 @@ public class Producteur1 implements IActeur, IVendeurCacaoAleatoire {
 	public static int COUT_VARIABLE_STOCK = 5;
 	protected Indicateur stockFeves;
 	protected Indicateur soldeBancaire;
-	// BEGIN ANTI
-	// private StockEnVente<Feve> stockEnVente;
-	// END ANTI
+	
 	// BEGIN Manon
 	private Journal journal1;
 	// END MANON
@@ -28,9 +26,14 @@ public class Producteur1 implements IActeur, IVendeurCacaoAleatoire {
 	// END Pauline
 	//BEGIN ANTI
 	protected HashMap<Integer, ContratCadre<Feve>> historiqueContrats;
+	protected int compteurSemaines;
+	protected int quantiteRecoltee = 100; 
 	//END ANTI
 
 	public Producteur1() {
+		//BEGIN ANTI 
+		this.compteurSemaines = 0;
+		//END ANTI
 		this.stockFeves = new Indicateur("EQ1 stock feves", this, 1000);
 		this.soldeBancaire = new Indicateur("EQ1 solde bancaire", this, 100000);
 		Monde.LE_MONDE.ajouterIndicateur(this.stockFeves);
@@ -54,14 +57,19 @@ public class Producteur1 implements IActeur, IVendeurCacaoAleatoire {
 	public String getNom() {
 		return "EQ1";
 	}
-
+	// BEGIN ANTI
+	public int getQuantiteRecoltee() {
+		return this.quantiteRecoltee;
+	}
+	//END ANTI
 	public void initialiser() {
 	}
 
 	public void next() {
-		// production
-		double nouveauStock = this.stockFeves.getValeur() + Math.random() * 200;
-		
+		// BEGIN Anti
+		double nouveauStock = this.stockFeves.getValeur() + this.getQuantiteRecoltee();
+		this.compteurSemaines += 1 ; 
+		//END ANTI 
 		this.stockFeves.setValeur(this, nouveauStock);
 		//BEGIN Nas
 		this.soldeBancaire.ajouter(this, COUT_FIXE_STOCK+COUT_VARIABLE_STOCK*stockFeves.getValeur());
