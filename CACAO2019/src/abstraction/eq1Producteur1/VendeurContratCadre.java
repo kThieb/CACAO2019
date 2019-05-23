@@ -1,6 +1,7 @@
 package abstraction.eq1Producteur1;
 
 import abstraction.eq7Romu.produits.Feve;
+import abstraction.eq7Romu.produits.Variete;
 //ContratCadre;
 import abstraction.eq7Romu.ventesContratCadre.ContratCadre;
 import abstraction.eq7Romu.ventesContratCadre.Echeancier;
@@ -143,6 +144,25 @@ public class VendeurContratCadre extends Producteur1 implements IVendeurContratC
 		      }
 		   
 	}
+	
+	//BEGIN NAS
+	public void retirer(Feve feve, double quantite) {
+		super.stockFeves.retirer(this, quantite);
+		this.getStockEnVente();
+		if (feve.getVariete() == Variete.CRIOLLO) {
+			super.stockCriolloI.retirer(this, quantite);
+			
+			
+		} else if (feve.getVariete() == Variete.FORASTERO) {
+			super.stockForasteroI.retirer(this, quantite);
+			
+		} else if (feve.getVariete() == Variete.TRINITARIO) {
+			super.stockTrinitarioI.retirer(this, quantite);
+			
+		}
+		
+	}
+	//END NAS
 	
 
 }

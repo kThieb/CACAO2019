@@ -153,6 +153,6 @@ public class Producteur1 implements IActeur /* , IVendeurCacaoAleatoire */ {
 				stockCriolloI.getValeur() + stockForasteroI.getValeur() + stockTrinitarioI.getValeur());
 
 	}
-	// END Nas
+	// END Nass
 
 }
