@@ -136,7 +136,6 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	}
 
 
-
 	@Override
 	public void encaisser(double montant, ContratCadre<Feve> cc) {
 		if (montant<0.0) {
