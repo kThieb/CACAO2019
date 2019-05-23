@@ -149,7 +149,7 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	public double getPrix(Feve produit, Double quantite) {
 		if (produit==null || quantite<=0.0 || this.getStockEnVente().get(produit)<quantite) {
 			return Double.NaN;
-		}
+		} 
 		return this.prixVente;
 	}
 
