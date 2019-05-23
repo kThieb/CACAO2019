@@ -46,6 +46,10 @@ public class Producteur1 implements IActeur, IVendeurCacaoAleatoire {
 	public HashMap<Integer, ContratCadre<Feve>> getHistoriqueContrats() {
 		return this.historiqueContrats;
 	}
+	public Indicateur getSoldeBancaire() {
+		return this.soldeBancaire;
+	
+	}
 
 	public String getNom() {
 		return "EQ1";
