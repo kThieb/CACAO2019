@@ -16,7 +16,7 @@ public class ClientEuropeen extends Client2 {
 	
 
 	public String getNom() {
-		return "CL"+this.numero+"Romu";
+		return "CL"+this.numero;
 	}
 
 	public void initialiser() {
@@ -33,23 +33,30 @@ public class ClientEuropeen extends Client2 {
 		double quantiteAchetee = 0.0;
 		IDistributeurChocolat distributeurDeQualite = null;
 		double meilleureQualite = 0.0;
+		double meilleurPrix = Double.MAX_VALUE;
 		double quantiteEnVente = 0.0;
 		double quantiteEnVenteMeilleur = 0.0;
 		do {
 			distributeurDeQualite = null;
 			quantiteEnVenteMeilleur = 0.0;
-			for (IActeur acteur : Monde.LE_MONDE.getActeurs()) {
-				if (acteur instanceof IDistributeurChocolat) {
+			for (IActeur acteur : Monde.LE_MONDE.getActeurs()) { // recherche des distributeurs avec la meilleur qualité de chocolat
+				if (acteur instanceof IDistributeurChocolat) { // recherche des distributeurs
 					IDistributeurChocolat dist = (IDistributeurChocolat)acteur;
 					StockEnVente<Chocolat> s = dist.getStockEnVente();
-					if (s.getProduitsEnVente().contains(this.uniqueProduit)) {
+					if (s.getProduitsEnVente().contains(this.uniqueProduit)) { // recherche si le produit est dans le stock du distributeur sélectionné
 						quantiteEnVente = s.get(this.uniqueProduit);
 						this.journal.ajouter("Step "+Monde.LE_MONDE.getStep()+" : "+((IActeur)dist).getNom()+" vend la quantite de "+quantiteEnVente+" a "+dist.getPrix(this.uniqueProduit));
 						if (quantiteEnVente>0.0) { // dist vend le chocolat recherche
-							if (distributeurDeQualite==null || dist.getNoteQualite(this.uniqueProduit)<meilleureQualite) {
+							if (distributeurDeQualite==null || dist.getNoteQualite(this.uniqueProduit)>meilleureQualite) { // recherche si le produit est de meilleur qualité
 								distributeurDeQualite = dist;
 								quantiteEnVenteMeilleur = quantiteEnVente;
 								meilleureQualite = dist.getNoteQualite(this.uniqueProduit);
+								meilleurPrix = dist.getPrix(this.uniqueProduit);
+							} else if (distributeurDeQualite==null || (dist.getNoteQualite(this.uniqueProduit) == meilleureQualite && dist.getPrix(this.uniqueProduit)<meilleurPrix)) { // prend le meilleur prix si qualité identique
+								distributeurDeQualite = dist;
+								quantiteEnVenteMeilleur = quantiteEnVente;
+								meilleureQualite = dist.getNoteQualite(this.uniqueProduit);
+								meilleurPrix = dist.getPrix(this.uniqueProduit);
 							}
 						}
 					}
@@ -59,7 +66,7 @@ public class ClientEuropeen extends Client2 {
 				double quantiteCommandee = Math.min(this.quantiteParStep-quantiteAchetee, quantiteEnVenteMeilleur);
 				double quantiteVendue = distributeurDeQualite.vendre(this.uniqueProduit, quantiteCommandee);
 				quantiteAchetee+=quantiteVendue;
-				this.journal.ajouter("Step "+Monde.LE_MONDE.getStep()+" : Achat de "+quantiteVendue+" chez "+((IActeur)distributeurDeQualite).getNom()+" au prix de "+meilleureQualite);
+				this.journal.ajouter("Step "+Monde.LE_MONDE.getStep()+" : Achat de "+quantiteVendue+" chez "+((IActeur)distributeurDeQualite).getNom()+" au prix de "+meilleurPrix);
 			}
 		} while (quantiteAchetee<this.quantiteParStep && distributeurDeQualite!=null);
 	}
