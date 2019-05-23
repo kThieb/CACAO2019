@@ -349,7 +349,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 			}
 		}
 	}
-		
+	//sacha	
 	
 
 	
@@ -380,7 +380,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 			throw new IllegalArgumentException("Appel de la methode encaisser de Transformateur1 avec un montant negatif");
 		}
 		this.soldeBancaire.ajouter(this,  montant);
-		//End Kevin/Raph
+		//End Kevin/Raphh
 
 		
 		
