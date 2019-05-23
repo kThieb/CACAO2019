@@ -113,25 +113,14 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 
 	public void next() {
 		// -------------------------- begin eve
-		// nouvelles feves
-		// TODO
-		// receptionner et payer
-		for (ContratCadre<Feve> cf: this.contratsFeveEnCours) {
-			this.receptionner(cf.getProduit(), cf.getQuantiteALivrerAuStep(), cf);
-		}
-		
 		// transformation
-		// TODO
-		// transformer en fonction du chocolat a produire pour les livraisons de ce mois-ci
+		// TODO pas fini
+		// transformer les differents produits
 		// updater les indicateurs, stocks et solde bancaire
 		double quantiteTransformee = Math.random()*Math.min(100, this.iStockFeves.getValeur()); // on suppose qu'on a un stock infini de sucre
 		this.iStockFeves.retirer(this, quantiteTransformee);
 		this.iStockChocolat.ajouter(this, (2*quantiteTransformee));// 50% cacao, 50% sucre
 		this.soldeBancaire.retirer(this, quantiteTransformee*1.0234); // sucre, main d'oeuvre, autres frais
-		
-		// livraison
-		// TODO
-		// pour chaque echeance de contrat cadre, livrer la quantite correspondante
 		// -------------------------- end eve
 	}
 	
