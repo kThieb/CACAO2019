@@ -129,6 +129,7 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 			} else {
 				prixVendeur *= 0.90; //On diminue le prix proposé de 10%
 				cc.getListePrixAuKilo().add(prixVendeur);
+				
 			}
 			}
 		}
