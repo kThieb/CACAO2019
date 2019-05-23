@@ -112,11 +112,13 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	}
 
 	public void next() {
+		// -------------------------- begin eve
 		// transformation
 		double quantiteTransformee = Math.random()*Math.min(100, this.iStockFeves.getValeur()); // on suppose qu'on a un stock infini de sucre
 		this.iStockFeves.retirer(this, quantiteTransformee);
 		this.iStockChocolat.ajouter(this, (2*quantiteTransformee));// 50% cacao, 50% sucre
 		this.soldeBancaire.retirer(this, quantiteTransformee*1.0234); // sucre, main d'oeuvre, autres frais
+		// -------------------------- end eve
 	}
 	
 	// -------------------------------------------------------------------------------------------
