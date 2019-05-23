@@ -19,7 +19,8 @@ import abstraction.fourni.Monde;
 
 public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistributeurChocolat {
 	private Journal journal;
-	private ArrayList<Indicateur> stock;
+	private Stock stock;
+	//private ArrayList<Indicateur> stock;
 	private int numero;
 	private CompteBancaire soldeBancaire;
 	private ArrayList<Chocolat> produits;
@@ -30,25 +31,12 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 
 	public Distributeur1() {
 		this(5.0, 100000.0);
-		/*this.journal = new Journal("jEq5");
-		Monde.LE_MONDE.ajouterJournal(this.journal);
-		this.produits = new ArrayList<Chocolat>();
-		produits.add(Chocolat.HG_E_SHP);
-		produits.add(Chocolat.MG_E_SHP);
-		produits.add(Chocolat.MG_NE_HP);
-		produits.add(Chocolat.MG_NE_SHP);
-		*/
 	}
 
 	/**
 	 * @author Estelle Bonnet
 	 */
 	public Distributeur1(double marge, double soldeInitial) {
-		ArrayList<Double> stockInitial = new ArrayList<>();
-		stockInitial.add(0.0);
-		stockInitial.add(0.0);
-		stockInitial.add(0.0);
-		stockInitial.add(0.0);
 		this.numero =1 ;
 		this.produits = new ArrayList<Chocolat>();
 		produits.add(Chocolat.HG_E_SHP);
@@ -56,11 +44,11 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 		produits.add(Chocolat.MG_NE_HP);
 		produits.add(Chocolat.MG_NE_SHP);
 		this.marge = marge;
-		this.stock= new ArrayList<Indicateur>();
-		for (int i = 0 ; i <produits.size(); i++) {
-			this.stock.add(new Indicateur(this.getNom()+" Stock", this, stockInitial.get(i)));
-			Monde.LE_MONDE.ajouterIndicateur(this.stock.get(i));
-		}
+		this.stock = new Stock();
+		stock.ajouter(Chocolat.HG_E_SHP, 0.0);
+		stock.ajouter(Chocolat.MG_E_SHP, 0.0);
+		stock.ajouter(Chocolat.MG_NE_HP, 0.0);
+		stock.ajouter(Chocolat.MG_NE_SHP, 0.0);
 		this.soldeBancaire = new CompteBancaire(this.getNom(), this, soldeInitial);
 		Monde.LE_MONDE.ajouterIndicateur(this.soldeBancaire);
 		this.journal = new Journal("Journal "+this.getNom());
@@ -221,9 +209,11 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 	@Override
 	public StockEnVente<Chocolat> getStockEnVente() {
 		StockEnVente<Chocolat> res = new StockEnVente<Chocolat>();
+		/*
 		for (int i = 0 ; i< this.produits.size(); i++) {
 			res.ajouter(produits.get(i), stock.get(i).getValeur());
 		}
+		*/
 		return res;
 	}
 
