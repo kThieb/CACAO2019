@@ -142,6 +142,7 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 		this.soldeBancaire.ajouter(this,  montant);
 	}
 
+	
 	@Override
 	public double getPrix(Feve produit, Double quantite) {
 		if (produit==null || quantite<=0.0 || this.getStockEnVente().get(produit)<quantite) {
@@ -161,3 +162,5 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	}
 
 }
+
+
