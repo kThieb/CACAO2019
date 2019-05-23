@@ -328,21 +328,15 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 			}
 		}
 	}
-		
+	//sacha	
 	
 
 	
 	public void notifierVendeur(ContratCadre<Chocolat> cc) {
-<<<<<<< HEAD
-		this.contratsChocolatEnCours.add(cc);
-		// end sach
-		
-		
-=======
 		//Begin Kevin
 		this.contratsChocolatEnCours.add(cc);
 		//End Kevin
->>>>>>> branch 'master' of https://github.com/kThieb/CACAO2019.git
+
 	}
 
 	
