@@ -11,6 +11,7 @@ public class VendeurContratCadre extends Producteur1 implements IVendeurContratC
 	// ANTI
 	private StockEnVente<Feve> stockEnVente;
 
+
 	public StockEnVente<Feve> getStockEnVente() {
 
 		return stockEnVente;
@@ -62,11 +63,19 @@ public class VendeurContratCadre extends Producteur1 implements IVendeurContratC
 			}
 		}
 	}
+
 //BEGIN ANTI
+
+
+
 	public void notifierVendeur(ContratCadre<Feve> cc) {
+
 		super.getHistoriqueContrats().put(cc.getNumero(), cc);
 //END ANTI
+
+
 	}
+
 	/**
 	 * Methode invoquee par le superviseur afin que l'acheteur encaisse le montant indique. Le montant est du
 	 * au contrat cc mais peut etre inferieur a la somme qui devrait etre encaissee au step courant (l'acheteur
@@ -78,15 +87,35 @@ public class VendeurContratCadre extends Producteur1 implements IVendeurContratC
 	 * @param cc
 	 */
 
+
 	public void encaisser(double montant, ContratCadre<Feve> cc) {
-
-
+		super.soldeBancaire.ajouter(this ,  montant);
+		cc.payer(montant);
 	}
 //
 
 	public double livrer(Feve produit, double quantite, ContratCadre<Feve> cc) {
-		// TODO Auto-generated method stub
-		return 0;
+		//Manon
+		   
+		      if (quantite<0.0) {
+		         throw new IllegalArgumentException("Appel de la methode livrer(produit,quantite,ContratCadre) de VendeurContratCadre avec quantite<0.0 ( "+quantite+" )");
+		      }
+		      if (produit==null) {throw new IllegalArgumentException("Appel de la methode livrer(produit,quantite,ContratCadre) de VendeurContratCadre avec produit null ");
+		      }
+		      if (cc==null) {throw new IllegalArgumentException("Appel de la methode livrer(produit,quantite,ContratCadre) de VendeurContratCadre avec ContratCadre null ");
+		      }
+		      if (quantite>this.getStockEnVente().get(produit)) {
+		    	  super.stockFeves.retirer(this, this.getStockEnVente().get(produit));
+		    	  cc.livrer(this.getStockEnVente().get(produit));
+		         return this.getStockEnVente().get(produit);
+		      }
+		      else {
+		    	  cc.livrer(quantite);
+		    	  super.stockFeves.retirer(this, quantite);
+		         return quantite;
+		      }
+		   
 	}
+	
 
 }

@@ -13,8 +13,8 @@ import abstraction.fourni.Monde;
 
 public class Producteur1 implements IActeur, IVendeurCacaoAleatoire {
 
-	private Indicateur stockFeves;
-	private Indicateur soldeBancaire;
+	protected Indicateur stockFeves;
+	protected Indicateur soldeBancaire;
 	// BEGIN ANTI
 	// private StockEnVente<Feve> stockEnVente;
 	// END ANTI
@@ -22,10 +22,10 @@ public class Producteur1 implements IActeur, IVendeurCacaoAleatoire {
 	private Journal journal1;
 	// END MANON
 	// BEGIN Pauline
-	private HashMap<Feve, Double> prixAuKilo;
+	protected HashMap<Feve, Double> prixAuKilo;
 	// END Pauline
 	//BEGIN ANTI
-	private HashMap<Integer, ContratCadre<Feve>> historiqueContrats;
+	protected HashMap<Integer, ContratCadre<Feve>> historiqueContrats;
 	//END ANTI
 
 	public Producteur1() {
