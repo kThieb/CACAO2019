@@ -32,11 +32,8 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 
 	
 	private Feve fevesProduites;
-	private double productionParStep; // kg
 	private int numero;
 	private List<ContratCadre<Feve>> contratsEnCours;
-	private double prixVente;
-	private Indicateur stockFeves;
 	private int numStep;
 	private GestionnaireFeve gestionnaireFeve;
 	
@@ -44,16 +41,11 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	
 	public Producteur2(Feve fevesProduites, int productionParStep, double stockInitial, double soldeInitial) {
 		NB_PROD++;
-		this.productionParStep=gestionnaireFeve.getProductionParStep(Feve.FORASTERO_MG_NEQ);
-
 
 
 		this.numero = NB_PROD;
-		this.prixVente = gestionnaireFeve.getPrixVente(Feve.FORASTERO_MG_NEQ);
-		this.stockFeves=gestionnaireFeve.get(Feve.FORASTERO_MG_NEQ).getStockIndicateur();
 		this.fevesProduites=fevesProduites;
 
-		Monde.LE_MONDE.ajouterIndicateur(gestionnaireFeve.getStock());
 		this.soldeBancaire = new Indicateur(this.getNom()+" Solde", this, soldeInitial);
 		Monde.LE_MONDE.ajouterIndicateur(this.soldeBancaire);
 		this.contratsEnCours = new ArrayList<ContratCadre<Feve>>();
@@ -78,13 +70,13 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 
 		if (this.numStep <= 6 || this.numStep >= 21 || (this.numStep >= 9 && this.numStep <= 14)) {
 			double qualiteProduction = (Math.random() - 0.5)/2.5 + 1; //entre 0.8 et 1.2
-			double nouveauStock = this.stockFeves.getValeur() + productionParStep * qualiteProduction;
-			this.stockFeves.setValeur(this, nouveauStock); }
+			double nouveauStock = this.gestionnaireFeve.getStock(Feve.FORASTERO_MG_NEQ)+ this.gestionnaireFeve.getProductionParStep(Feve.FORASTERO_MG_NEQ)* qualiteProduction;
+			this.gestionnaireFeve.setStock(this, Feve.FORASTERO_MG_NEQ, nouveauStock); }
 		if (this.numStep == 24) {
 			this.numStep = 1;
 		} else {
 		this.numStep++; }
-		this.journal.ajouter("Step "+Monde.LE_MONDE.getStep()+" : prix de vente = "+this.prixVente);
+		this.journal.ajouter("Step "+Monde.LE_MONDE.getStep()+" : prix de vente = "+this.gestionnaireFeve.getPrixVente(Feve.FORASTERO_MG_NEQ));
 
 	}
 	
@@ -93,7 +85,7 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 
 	@Override
 	public StockEnVente<Feve> getStockEnVente() {
-		double stockRestant = this.stockFeves.getValeur();
+		double stockRestant = this.gestionnaireFeve.getStock(Feve.FORASTERO_MG_NEQ);
 		for (ContratCadre<Feve> cc : this.contratsEnCours) {
 			if (Monde.LE_MONDE != null) {
 				stockRestant = stockRestant - cc.getQuantiteRestantALivrer();
