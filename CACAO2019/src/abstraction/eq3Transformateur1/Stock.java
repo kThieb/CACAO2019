@@ -25,9 +25,11 @@ public class Stock<T> {
 	public double getQuantiteEnStock(T produit) {
 		return this.stock.get(produit).get("quantite");
 	}
+	
 	public boolean estEnStock(T produit) {
 		return this.stock.containsKey(produit) && (this.stock.get(produit).get("quantite") > 0.);
 	}
+	
 	public ArrayList<T> getProduitsEnStock() {
 		ArrayList<T> resultat = new ArrayList<T>();
 		for (T p: this.stock.keySet()) {
@@ -46,7 +48,6 @@ public class Stock<T> {
 		else { throw new IllegalArgumentException("Le produit passe en argument n'est pas une feve"); }
 	}
 	
-	
 	public void setQuantiteEnStock(T produit, double quantite) {
 		if (quantite >= 0.) { this.stock.get(produit).put("quantite", quantite); }
 		else { this.stock.get(produit).put("quantite", 0.); }
@@ -55,5 +56,7 @@ public class Stock<T> {
 		if (cout >= 0.) { this.stock.get(produit).put("cout en feves", cout); }
 		else { this.stock.get(produit).put("cout en feves", 0.); }
 	}
+	
+	
 	
 }

@@ -195,6 +195,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		return res;
 	}
 	//end sacha
+	
 
 	@Override
 	public void proposerEcheancierAcheteur(ContratCadre<Feve> cc) {
@@ -202,7 +203,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		if (cc.getEcheancier()==null) { // il n'y a pas encore eu de contre-proposition de la part du vendeur
 			cc.ajouterEcheancier(new Echeancier(Monde.LE_MONDE.getStep(), 12, cc.getQuantite()/12));
 		} else {
-			if ((this.contratsFeveEnCours.isEmpty())&&(this.stockFeves.get(cc.getProduit()).getQuantiteEnStock() < stockLim)) { // On accepte forcément la proposition si on a pas de contrat cadre en cours et que le stock est inférieur à une quantité arbitraire
+			if ((this.contratsFeveEnCours.isEmpty())&&(this.stockFeves.getQuantiteEnStock(cc.getProduit()) < stockLim)) { // On accepte forcément la proposition si on a pas de contrat cadre en cours et que le stock est inférieur à une quantité arbitraire
 				cc.ajouterEcheancier(new Echeancier(cc.getEcheancier()));
 			} 
 			if (Math.random() < 0.33) {
@@ -218,7 +219,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 
 	@Override
 	public void proposerPrixAcheteur(ContratCadre<Feve> cc) {
-		//begin raphael
+		//begin raphaelle
 		double prixVendeur = cc.getListePrixAuKilo().get(0);
 		int nbAchatsMoyenne=Math.min(10,this.prixAchats.getHistorique().getTaille());//Nombre d'achats pris en compte pour le calcul de la moyenne (au plus 10)
 		double moyenneDerniersAchats=0;
@@ -250,7 +251,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		if (quantite<=0.0) {
 			throw new IllegalArgumentException("Appel de la methode receptionner de Transformateur1 avec une quantite egale a "+quantite);
 		}
-		this.stockFeves.put(produit, new Stock(quantite));
+		this.stockFeves.setQuantiteEnStock(produit, this.stockFeves.getQuantiteEnStock(produit) + quantite);
 		
 	}
 //end sacha
@@ -270,12 +271,25 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	// -------------------------------------------------------------------------------------------
 
 
+	//public StockEnVente<Chocolat> getStockEnVente() {
+	//	StockEnVente<Chocolat> stock = new StockEnVente<Chocolat>();
+	//	for (Entry<Chocolat, > choco : this.stockChocolat.getProduitsEnStock()) {
+	//		stock.ajouter(choco.getKey(), choco.getValue().getQuantiteEnStock());
+	//	};
+	//	return stock;
+	//}
+	
 	public StockEnVente<Chocolat> getStockEnVente() {
-		StockEnVente<Chocolat> stock = new StockEnVente<Chocolat>();
-		for (Entry<Chocolat, Stock> choco : this.stockChocolat.entrySet()) {
-			stock.ajouter(choco.getKey(), choco.getValue().getQuantiteEnStock());
-		};
-		return stock;
+		double stockRestant = 0 ;
+		Chocolat choco = Chocolat.MG_NE_HP ;
+		StockEnVente<Chocolat> res = new StockEnVente<Chocolat>();
+		for (ContratCadre<Chocolat> cc : this.contratsChocolatEnCours) {
+			choco = cc.getProduit();
+			stockRestant = stockChocolat.getQuantiteEnStock(choco);
+			stockRestant = stockRestant - cc.getQuantiteRestantALivrer();
+			res.ajouter(choco, stockRestant);
+		}
+		return res;
 	}
 	
 	@Override
@@ -320,9 +334,23 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 
 	@Override
 	public void proposerPrixVendeur(ContratCadre<Chocolat> cc) {
-		// TODO Auto-generated method stub
-		
+		// begin sacha
+		if (cc.getListePrixAuKilo().size()==0) {
+			cc.ajouterPrixAuKilo(getPrix(cc.getProduit(), cc.getQuantite()));
+		} else {
+			double prixVendeur = cc.getListePrixAuKilo().get(0);
+			double prixAcheteur = cc.getPrixAuKilo();
+			if (prixAcheteur>=0.75*prixVendeur) { // on ne fait une proposition que si l'acheteur ne demande pas un prix trop bas.
+				if (Math.random()<0.25) { // probabilite de 25% d'accepter
+					cc.ajouterPrixAuKilo(cc.getPrixAuKilo());
+				} else {
+					cc.ajouterPrixAuKilo((prixVendeur*(0.9+Math.random()*0.1))); // rabais de 10% max
+				}
+			}
+		}
 	}
+		
+	
 
 	
 	public void notifierVendeur(ContratCadre<Chocolat> cc) {
@@ -332,28 +360,19 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	}
 
 	
+	
 	public double livrer(Chocolat produit, double quantite, ContratCadre<Chocolat> cc) {
 		//Begin Kevin
-		if (produit==null || stockChocolat.containsKey(produit)) {
+		if (produit==null || !stockChocolat.getProduitsEnStock().contains(produit)) {
 			throw new IllegalArgumentException("Appel de la methode livrer de Transformateur1 avec un produit ne correspondant pas à un des chocolats produits");
 		}
-		double livraison = Math.min(quantite, this.stockChocolat.get(produit).getQuantiteEnStock());
-		this.stockChocolat.get(produit).setQuantiteEnStock(this.stockChocolat.get(produit).getQuantiteEnStock() - livraison);
+		double livraison = Math.min(quantite, this.stockChocolat.getQuantiteEnStock(produit));
+		this.stockChocolat.setQuantiteEnStock(produit, this.stockChocolat.getQuantiteEnStock(produit) - livraison);;
 		return livraison;
 		//End Kevin
-		
-		//if (produit==null || !this.stockChocolat.keySet().contains(produit)) {
-		//	throw new IllegalArgumentException("Appel de la methode livrer de Transformateur1 avec un produit ne correspondant pas au chocolat produit");
-		//}
-		//if (this.stockChocolat.keySet().contains(produit) && this.stockChocolat.get(produit).getQuantiteEnStock()<quantite) {
-		//	throw new IllegalArgumentException("Appel de la methode livrer de Transformateur1 avec un quantite superieure au stock");
-		//}
-		//double livraison = this.stockChocolat.get(produit).getQuantiteEnStock();
-		//this.stockChocolat.retirer(this, livraison);
-		//return livraison;
 	}
 
-	@Override
+	
 	public void encaisser(double montant, ContratCadre<Chocolat> cc) {
 
 		//Begin Kevin/Raph
