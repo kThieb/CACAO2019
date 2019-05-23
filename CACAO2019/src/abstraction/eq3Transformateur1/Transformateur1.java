@@ -321,7 +321,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	
 	public double livrer(Chocolat produit, double quantite, ContratCadre<Chocolat> cc) {
 		//Begin Kevin
-		if (produit==null || stockChocolat.containsKey(produit)) {
+		if (produit==null || stockChocolat.) {
 			throw new IllegalArgumentException("Appel de la methode livrer de Transformateur1 avec un produit ne correspondant pas à un des chocolats produits");
 		}
 		double livraison = Math.min(quantite, this.stockChocolat.get(produit).getQuantiteEnStock());
