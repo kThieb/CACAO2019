@@ -19,7 +19,7 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 	private Journal journal;
 	private ArrayList<Indicateur> stock;
 	private int numero;
-	private Indicateur soldeBancaire;
+	private CompteBancaire soldeBancaire;
 	private ArrayList<Chocolat> produits;
 	private Double marge;
 	private List<ContratCadre<Chocolat>> contratsEnCours;
@@ -27,19 +27,26 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 
 
 	public Distributeur1() {
-		this.journal = new Journal("jEq5");
+		this(5.0, 100000.0);
+		/*this.journal = new Journal("jEq5");
 		Monde.LE_MONDE.ajouterJournal(this.journal);
 		this.produits = new ArrayList<Chocolat>();
 		produits.add(Chocolat.HG_E_SHP);
 		produits.add(Chocolat.MG_E_SHP);
 		produits.add(Chocolat.MG_NE_HP);
 		produits.add(Chocolat.MG_NE_SHP);
+		*/
 	}
 
 	/**
 	 * @author Estelle Bonnet
 	 */
-	public Distributeur1(double marge, ArrayList<Double> stockInitial, Double soldeInitial) {
+	public Distributeur1(double marge, double soldeInitial) {
+		ArrayList<Double> stockInitial = new ArrayList<>();
+		stockInitial.add(0.0);
+		stockInitial.add(0.0);
+		stockInitial.add(0.0);
+		stockInitial.add(0.0);
 		this.numero =1 ;
 		this.produits = new ArrayList<Chocolat>();
 		produits.add(Chocolat.HG_E_SHP);
@@ -52,7 +59,7 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 			this.stock.add(new Indicateur(this.getNom()+" Stock", this, stockInitial.get(i)));
 			Monde.LE_MONDE.ajouterIndicateur(this.stock.get(i));
 		}
-		this.soldeBancaire = new Indicateur(this.getNom()+" Solde", this, soldeInitial);
+		this.soldeBancaire = new CompteBancaire(this.getNom(), this, soldeInitial);
 		Monde.LE_MONDE.ajouterIndicateur(this.soldeBancaire);
 		this.journal = new Journal("Journal "+this.getNom());
 		Monde.LE_MONDE.ajouterJournal(this.journal);
@@ -69,8 +76,6 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 	public void next() {
 	}
 
-
-
 	// ------------------------------------------------------------------------------------------------------
 	// ACHETEUR
 	// ------------------------------------------------------------------------------------------------------ 
@@ -85,7 +90,7 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 		// Au préalable, il faut identifier produit, quantité, vendeur, acheteur
 
 		// On détermine combien il resterait sur le compte si on soldait tous les contrats en cours.
-		double solde = this.soldeBancaire.getValeur();
+		double solde = this.soldeBancaire.getCompteBancaire();
 		for (ContratCadre<Chocolat> cc : this.contratsEnCours) {
 			solde = solde - cc.getMontantRestantARegler();
 		}
@@ -155,7 +160,9 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 	}
 
 
-	// ajout Erwann
+	/**
+	 * Erwann DEFOY
+	 */
 	@Override
 	public double getNoteQualite(Chocolat c) {
 		return c.NoteQualite();

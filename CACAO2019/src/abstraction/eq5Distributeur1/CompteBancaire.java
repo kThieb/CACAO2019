@@ -1,42 +1,46 @@
 package abstraction.eq5Distributeur1;
 
-public class CompteBancaire {
-	private float compte;
+import abstraction.fourni.IActeur;
+import abstraction.fourni.Indicateur;
+
+public class CompteBancaire extends Indicateur {
+	private double compte;
 	
 	//Cette classe sert à gérer notre compte bancaire pour y imposer des règles propres au compte
 	
-	public CompteBancaire() {
-		this.compte = 0;
+	public CompteBancaire(String nom , IActeur createur, double compte) {
+		super(nom, createur, compte);
 	}
 	
-	public CompteBancaire(float compte) {
-		this.compte=compte;
+	public CompteBancaire(String nom, IActeur createur) {
+		super(nom, createur);
 	}
 	
-	public float getCompteBancaire() {
-		return this.compte;
+	public double getCompteBancaire() {
+		return this.getValeur();
 	}
 	
-	
-	public float Payer (float compte, float paiement) {
-		float nouveausolde = compte-paiement;
+	/**
+	 * @author Erine DUPONT, Estelle BONNET
+	 */
+	public void Payer (IActeur auteur, double paiement) {
+		double nouveausolde = this.getValeur() - paiement;
 		if (paiement<0.0){
 			throw new IllegalArgumentException("Appel de Payer(compte, paiement) de CompteBancaire avec paiement<0.0 (=="+paiement+")");
-		}
-		if (compte-paiement <0.0) {
+		}	else if (nouveausolde <0.0) {
 			throw new IllegalArgumentException("Appel de Payer(compte, paiement) de CompteBancaire avec compte-paiement<0.0 (=="+nouveausolde+")");
 		}
 		else {
-			return nouveausolde;
+			this.setValeur(auteur, nouveausolde);
 		}
 	}
 	
-	public float RecevoirPaiement (float compte, float paiement) {
+	public void RecevoirPaiement (IActeur auteur, double paiement) {
+		double nouveausolde = this.getValeur() - paiement;
 		if (paiement <0.0) {
 			throw new IllegalArgumentException("Appel de RecevoirPaiement(compte, paiement) de CompteBancaire avec paiement<0.0 (=="+paiement+")");
-		}
-		else {
-			return compte + paiement;
+		} else {
+			this.setValeur(auteur, nouveausolde);
 		}
 	}
 
