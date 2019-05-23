@@ -19,6 +19,18 @@ public class Stock<T> {
 	public double getQuantiteEnStock(T produit) {
 		return this.stock.get(produit);
 	}
+	public boolean estEnStock(T produit) {
+		return this.stock.containsKey(produit);
+	}
+	public ArrayList<T> getProduitsEnStock() {
+		ArrayList<T> resultat = new ArrayList<T>();
+		for (T p: this.stock.keySet()) {
+			resultat.add(p);
+		}
+		return resultat;
+	}
+	
+	
 	public void setQuantiteEnStock(T produit, double quantite) {
 		if (quantite >= 0.) { this.stock.put(produit, quantite); }
 		else { this.stock.put(produit, 0.); }
