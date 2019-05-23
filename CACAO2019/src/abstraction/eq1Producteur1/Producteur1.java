@@ -13,6 +13,8 @@ import abstraction.fourni.Monde;
 
 public class Producteur1 implements IActeur, IVendeurCacaoAleatoire {
 
+	public static int COUT_FIXE_STOCK = 1000;
+	public static int COUT_VARIABLE_STOCK = 5;
 	protected Indicateur stockFeves;
 	protected Indicateur soldeBancaire;
 	// BEGIN ANTI
@@ -55,7 +57,10 @@ public class Producteur1 implements IActeur, IVendeurCacaoAleatoire {
 	public void next() {
 		// production
 		double nouveauStock = this.stockFeves.getValeur() + Math.random() * 200;
+		//BEGIN Nas
 		this.stockFeves.setValeur(this, nouveauStock);
+		this.soldeBancaire.ajouter(this, COUT_FIXE_STOCK+COUT_VARIABLE_STOCK*stockFeves.getValeur());
+		//END Nas
 	}
 
 	public double quantiteEnVente(double prix) {
