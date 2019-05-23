@@ -38,6 +38,8 @@ public class Transformateur2VendeurCC implements IVendeurContratCadre<Chocolat> 
 	//Minh Tri
 	@Override
 	public double getPrix(Chocolat produit, Double quantite) {
+		if(!catalogueChocolat.containsKey(produit))
+			return Double.MAX_VALUE;
 		return catalogueChocolat.get(produit)*quantite;
 	}
 
