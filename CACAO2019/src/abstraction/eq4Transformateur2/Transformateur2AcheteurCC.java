@@ -68,7 +68,7 @@ public class Transformateur2AcheteurCC implements IAcheteurContratCadre<Feve> {
 			double minStock = 0;
 			Feve minProduit = produitsInteressants.get(0);
 			for(Feve f : produitsInteressants) {
-				double stock = t2.stockFeves.get(f).getQuantiteTotale();
+				double stock = t2.stockFeves.getQuantiteTotale(f);
 				if(stock < minStock) {
 					minStock = stock;
 					minProduit = f;
@@ -137,7 +137,7 @@ public class Transformateur2AcheteurCC implements IAcheteurContratCadre<Feve> {
 		if(quantite <= 0.0)
 			throw new IllegalArgumentException("Appel de la méthode réceptionner de Transformateur2 avec une quantité égale à " + quantite);
 		
-		t2.stockFeves.get(produit).ajouterTas(new TasFeve(quantite, cc.getPrixAuKilo()));		
+		t2.stockFeves.ajouterTas(produit, new TasProduit<Feve>(quantite, cc.getPrixAuKilo()));		
 	}
 
 	@Override

@@ -23,9 +23,11 @@ public class Transformateur2 implements IActeur, IAcheteurContratCadre<Feve>, IV
 
 	private Journal journal;
 	
-	protected HashMap<Chocolat, Stock> stocksChocolat;
-	protected HashMap<Feve, StockFeve> stockFeves;
+	private List<Chocolat> CHOCOLATS_VENTE;
+	private List<Feve> FEVES_ACHAT;
 	
+	protected StockProduit<Chocolat> stocksChocolat;
+	protected StockProduit<Feve> stockFeves;
 	
 	private Transformateur2AcheteurCC acheteurCC;
 	private Transformateur2VendeurCC vendeurCC;
@@ -53,6 +55,20 @@ public class Transformateur2 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		this.journal.ajouter("Initialisation du transformateur 2 (Eq4).");
 		System.out.println("Ajout du journal...");
 		
+		CHOCOLATS_VENTE = new ArrayList<Chocolat>();
+		CHOCOLATS_VENTE.add(Chocolat.HG_E_SHP);
+		CHOCOLATS_VENTE.add(Chocolat.MG_E_SHP);
+		CHOCOLATS_VENTE.add(Chocolat.MG_NE_SHP);
+		
+		FEVES_ACHAT = new ArrayList<Feve>();
+		FEVES_ACHAT.add(Feve.CRIOLLO_HG_EQ);
+		FEVES_ACHAT.add(Feve.FORASTERO_MG_EQ);
+		FEVES_ACHAT.add(Feve.FORASTERO_MG_NEQ);
+		FEVES_ACHAT.add(Feve.MERCEDES_MG_EQ);
+		FEVES_ACHAT.add(Feve.MERCEDES_MG_NEQ);
+		FEVES_ACHAT.add(Feve.TRINITARIO_MG_EQ);
+		FEVES_ACHAT.add(Feve.TRINITARIO_MG_NEQ);
+		
 		contratsFevesEnCours = new ArrayList<ContratCadre<Feve>>();
 		contratsChocolatEnCours = new ArrayList<ContratCadre<Chocolat>>();
 		
@@ -60,12 +76,8 @@ public class Transformateur2 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		vendeurCC = new Transformateur2VendeurCC(this);
 		
 		// Initialisation des stocks
-		stocksChocolat = new HashMap<Chocolat, Stock>();
-		stockFeves = new HashMap<Feve, StockFeve>();
-		for(int i = 0; i < Chocolat.values().length; i++)
-			stocksChocolat.put(Chocolat.values()[i], new Stock());
-		for(int i = 0; i < Feve.values().length; i++)
-			stockFeves.put(Feve.values()[i], new StockFeve());
+		stocksChocolat = new StockProduit<Chocolat>(CHOCOLATS_VENTE);
+		stockFeves = new StockProduit<Feve>(FEVES_ACHAT);
 	}
 
 	public void next() {
