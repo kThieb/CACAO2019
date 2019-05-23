@@ -20,8 +20,8 @@ import abstraction.fourni.Monde;
 
 public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IVendeurContratCadre<Chocolat>  {
 	
-//	private Indicateur iStockFeves;
-//	private Indicateur iStockChocolat;
+ 	private Indicateur iStockFeves;
+ 	private Indicateur iStockChocolat;
     private Indicateur soldeBancaire;
 	private int nbNextAvantEchange;
 	private Journal journal;
@@ -41,33 +41,35 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	//begin Raphael
 	private Indicateur prixAchats;
 	//end Raphael
-	private HashMap<Chocolat,Stock> stockChocolat;
-	private HashMap<Feve,Stock> stockFeves;
+	
+	// begin eve : A MODIFIER
+	private Stock<Chocolat> stockChocolat;
+	private Stock<Feve> stockFeves;
+	// end eve
 	
 	public Transformateur1() {
 		
 		// --------------------------------- begin eve
 		
 		// stock de feves
-		this.stockFeves = new HashMap<Feve,Stock>();
-		this.stockFeves.put(Feve.CRIOLLO_HG_EQ, new Stock(0));
-		this.stockFeves.put(Feve.FORASTERO_MG_EQ, new Stock(0));
-		this.stockFeves.put(Feve.FORASTERO_MG_NEQ, new Stock(0));
-		this.stockFeves.put(Feve.MERCEDES_MG_EQ, new Stock(0));
-		this.stockFeves.put(Feve.MERCEDES_MG_NEQ, new Stock(0));
-		this.stockFeves.put(Feve.TRINITARIO_MG_EQ, new Stock(0));
-		this.stockFeves.put(Feve.TRINITARIO_MG_NEQ, new Stock(0));
+		this.stockFeves = new Stock<Feve>();
+		this.stockFeves.setQuantiteEnStock(Feve.CRIOLLO_HG_EQ, 0.);
+		this.stockFeves.setQuantiteEnStock(Feve.FORASTERO_MG_EQ, 0.);
+		this.stockFeves.setQuantiteEnStock(Feve.FORASTERO_MG_NEQ, 0.);
+		this.stockFeves.setQuantiteEnStock(Feve.MERCEDES_MG_EQ, 0.);
+		this.stockFeves.setQuantiteEnStock(Feve.MERCEDES_MG_NEQ, 0.);
+		this.stockFeves.setQuantiteEnStock(Feve.TRINITARIO_MG_EQ, 0.);
+		this.stockFeves.setQuantiteEnStock(Feve.TRINITARIO_MG_NEQ, 0.);
 		
 		// stock de chocolat
-		this.stockChocolat = new HashMap<Chocolat,Stock>();
-		this.stockChocolat.put(Chocolat.MG_NE_HP, new Stock(0));
-		this.stockChocolat.put(Chocolat.MG_NE_SHP, new Stock(0));
-		this.stockChocolat.put(Chocolat.MG_E_SHP, new Stock(0));
+		this.stockChocolat = new Stock<Chocolat>();
+		this.stockChocolat.setQuantiteEnStock(Chocolat.MG_NE_HP, 0.);
+		this.stockChocolat.setQuantiteEnStock(Chocolat.MG_NE_SHP, 0.);
+		this.stockChocolat.setQuantiteEnStock(Chocolat.MG_E_SHP, 0.);
 		
-//		int sommeFeves = 0;
-//		this.iStockFeves = new Indicateur("EQ3 stock feves", this, sommeFeves);
-//		int sommeChocolat = 0;
-//		this.iStockChocolat = new Indicateur("EQ3 stock chocolat", this, sommeChocolat);
+ 		this.iStockFeves = new Indicateur("EQ3 stock feves", this, 0);
+ 		this.iStockChocolat = new Indicateur("EQ3 stock chocolat", this, 0);
+ 		
 		// --------------------------------- end eve
 		
 		
@@ -327,16 +329,35 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		return livraison;
 		//End Kevin
 		
+		//if (produit==null || !this.stockChocolat.keySet().contains(produit)) {
+		//	throw new IllegalArgumentException("Appel de la methode livrer de Transformateur1 avec un produit ne correspondant pas au chocolat produit");
+		//}
+		//if (this.stockChocolat.keySet().contains(produit) && this.stockChocolat.get(produit).getQuantiteEnStock()<quantite) {
+		//	throw new IllegalArgumentException("Appel de la methode livrer de Transformateur1 avec un quantite superieure au stock");
+		//}
+		//double livraison = this.stockChocolat.get(produit).getQuantiteEnStock();
+		//this.stockChocolat.retirer(this, livraison);
+		//return livraison;
 	}
 
 	@Override
 	public void encaisser(double montant, ContratCadre<Chocolat> cc) {
+<<<<<<< HEAD
 		//Begin Kevin
 		if (montant<0.0) {
 			throw new IllegalArgumentException("Appel de la methode encaisser de Transformateur1 avec un montant negatif");
 		}
 		this.soldeBancaire.ajouter(this,  montant);
 		//End Kevin
+=======
+		//begin raph
+		if (montant<0.0) {
+			throw new IllegalArgumentException("Appel de la methode encaisser de Transformateur1 avec un montant negatif");
+		}
+		this.soldeBancaire.ajouter(this,  montant);
+		//end raph
+		
+>>>>>>> branch 'master' of https://github.com/kThieb/CACAO2019.git
 	}
 	
 	
