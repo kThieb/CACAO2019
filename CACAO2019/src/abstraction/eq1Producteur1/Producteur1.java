@@ -85,7 +85,7 @@ public class Producteur1 implements IActeur, IVendeurCacaoAleatoire {
 		
 	}
 	
-	public 
+	
 
 	public double quantiteEnVente(double prix) {
 		if (prix > 2.0) {
