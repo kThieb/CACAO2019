@@ -1,10 +1,11 @@
 package abstraction.eq2Producteur2;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 import abstraction.eq7Romu.produits.Feve;
 import abstraction.fourni.IActeur;
-import abstraction.fourni.Indicateur;
 
 public class GestionnaireFeve extends HashMap<Feve, IndicateurFeve>{
 	
@@ -13,7 +14,8 @@ public class GestionnaireFeve extends HashMap<Feve, IndicateurFeve>{
 		this.put(Feve.FORASTERO_MG_EQ, new IndicateurFeve(acteur));
 		this.put(Feve.MERCEDES_MG_EQ, new IndicateurFeve(acteur));
 		this.put(Feve.MERCEDES_MG_NEQ, new IndicateurFeve(acteur));
-
+	}	
+	
 
 	
 	public double getStock(Feve feve){	return this.get(feve).getStock();	}
@@ -24,5 +26,13 @@ public class GestionnaireFeve extends HashMap<Feve, IndicateurFeve>{
 	public void setStock(IActeur acteur,Feve feve, double stock) {	this.get(feve).setStock(acteur, stock);	}
 	public void setPrix(IActeur acteur,Feve feve, double prix) { this.get(feve).setPrix(acteur, prix);	}
 	public void setProduction(IActeur acteur,Feve feve, double production) {	this.get(feve).setProduction(acteur, production);	}
+	
+	public List<Feve> getFeves(){
+		List<Feve> list=new LinkedList<Feve>();
+		list.add(Feve.FORASTERO_MG_EQ);
+		list.add(Feve.FORASTERO_MG_NEQ);
+		list.add(Feve.MERCEDES_MG_EQ);
+		list.add(Feve.MERCEDES_MG_NEQ);
+		return list;
+	}
 }
->>>>>>> branch 'master' of https://github.com/Clementmagnin/CACAO2019.git
