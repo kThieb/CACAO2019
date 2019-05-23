@@ -46,6 +46,7 @@ public class Producteur1 implements IActeur, IVendeurCacaoAleatoire {
 	}
 	public Indicateur getSoldeBancaire() {
 		return this.soldeBancaire;
+	
 	}
 
 	public String getNom() {

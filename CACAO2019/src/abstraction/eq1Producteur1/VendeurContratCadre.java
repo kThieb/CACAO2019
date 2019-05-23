@@ -62,18 +62,28 @@ public class VendeurContratCadre extends Producteur1 implements IVendeurContratC
 			}
 		}
 	}
-//ANTI
+//BEGIN ANTI
 	public void notifierVendeur(ContratCadre<Feve> cc) {
 		super.getHistoriqueContrats().put(cc.getNumero(), cc);
-
+//END ANTI
 	}
-//ANTI
+	/**
+	 * Methode invoquee par le superviseur afin que l'acheteur encaisse le montant indique. Le montant est du
+	 * au contrat cc mais peut etre inferieur a la somme qui devrait etre encaissee au step courant (l'acheteur
+	 * peut avoir un probleme de tresorerie l'empechant de payer l'integralite de la somme due). Si le montant 
+	 * est inferieur au montant qui devrait etre paye au step courant d'apres le contrat cc, l'acheteur aura une
+	 * penalite de ContratCadre.PENALITE_PAIEMENT% sur la somme qui n'a pas ete percue qu'il devra regler
+	 * lors des prochains steps.
+	 * @param montant
+	 * @param cc
+	 */
+
 	public void encaisser(double montant, ContratCadre<Feve> cc) {
-		// TODO Auto-generated method stub
+
 
 	}
+//
 
-	@Override
 	public double livrer(Feve produit, double quantite, ContratCadre<Feve> cc) {
 		// TODO Auto-generated method stub
 		return 0;
