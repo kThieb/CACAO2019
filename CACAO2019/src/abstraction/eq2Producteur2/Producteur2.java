@@ -114,14 +114,19 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 			double prixAcheteur = cc.getPrixAuKilo();
 			cc.ajouterPrixAuKilo(prixVendeur);
 			
-			
-			/*if (prixAcheteur>=0.75*prixVendeur) { // on ne fait une proposition que si l'acheteur ne demande pas un prix trop bas.
-				if (Math.random()<0.25) { // probabilite de
-					cc.ajouterPrixAuKilo(cc.getPrixAuKilo());
-				} else {
-					cc.ajouterPrixAuKilo((prixVendeur*(0.9+Math.random()*0.1))); // rabais de 10% max
-				}
-			}*/
+			if ((prixVendeur - prixAcheteur) < 0.05 * prixVendeur) { //On arrête la négociation si la différence de prix est suffisamment faible (5% du prixVendeur)
+				prixVendeur = prixAcheteur;
+				cc.getListePrixAuKilo().add(prixVendeur);
+			} else {
+				
+			if (prixAcheteur>=0.75*prixVendeur) { // on ne fait une proposition que si l'acheteur ne demande pas un prix trop bas.
+				prixVendeur = prixAcheteur * 1.1; // on augmente le prix proposé par l'acheteur de 10%
+				cc.getListePrixAuKilo().add(prixVendeur);
+			} else {
+				prixVendeur *= 0.90; //On diminue le prix proposé de 10%
+				cc.getListePrixAuKilo().add(prixVendeur);
+			}
+			}
 		}
 	}
 
