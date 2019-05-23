@@ -318,7 +318,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		//End Kevin
 	}
 
-	@Override
+	
 	public double livrer(Chocolat produit, double quantite, ContratCadre<Chocolat> cc) {
 		//Begin Kevin
 		if (produit==null || stockChocolat.containsKey(produit)) {
