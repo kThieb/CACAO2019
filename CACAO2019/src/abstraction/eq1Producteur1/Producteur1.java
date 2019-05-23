@@ -2,7 +2,6 @@ package abstraction.eq1Producteur1;
 
 import java.util.HashMap;
 
-import abstraction.eq1Producteur1.ventesCacaoAleatoires.IVendeurCacaoAleatoire;
 import abstraction.eq1Producteur1.ventesCacaoAleatoires.SuperviseurVentesCacaoAleatoires;
 import abstraction.eq7Romu.produits.Feve;
 import abstraction.eq7Romu.ventesContratCadre.ContratCadre;
@@ -11,11 +10,11 @@ import abstraction.fourni.Indicateur;
 import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 
-public class Producteur1 implements IActeur /*, IVendeurCacaoAleatoire*/ {
+public class Producteur1 implements IActeur /* , IVendeurCacaoAleatoire */ {
 
 	public static int COUT_FIXE_STOCK = 1000;
 	public static int COUT_VARIABLE_STOCK = 5;
-	public static int DUREE_DE_VIE_FEVE = 1 * 52*2; // durée de vie en nexts
+	public static int DUREE_DE_VIE_FEVE = 1 * 52 * 2; // durée de vie en nexts
 	protected Indicateur stockFeves;
 	protected Indicateur stockCriolloI;
 	protected Indicateur stockForasteroI;
@@ -42,7 +41,10 @@ public class Producteur1 implements IActeur /*, IVendeurCacaoAleatoire*/ {
 	// END ANTI
 
 	public Producteur1() {
-		this.stockFeves = new Indicateur("EQ1 stock feves", this, 1000);
+		this.stockFeves = new Indicateur("EQ1 stock feves", this, 3000);
+		this.stockCriolloI = new Indicateur("EQ1 stock criollo", this, 1000);
+		this.stockForasteroI = new Indicateur("EQ1 stock forastero", this, 1000);
+		this.stockTrinitarioI = new Indicateur("EQ1 stock trinitario", this, 1000);
 		this.soldeBancaire = new Indicateur("EQ1 solde bancaire", this, 100000);
 		Monde.LE_MONDE.ajouterIndicateur(this.stockFeves);
 		Monde.LE_MONDE.ajouterIndicateur(this.stockCriolloI);
@@ -87,20 +89,15 @@ public class Producteur1 implements IActeur /*, IVendeurCacaoAleatoire*/ {
 
 	}
 
-	/*public double quantiteEnVente(double prix) {
-		if (prix > 2.0) {
-			return this.stockFeves.getValeur();
-		} else if (prix < 1.9) {
-			return 0;
-		} else {
-			return this.stockFeves.getValeur() / 2.0;
-		}
-	}
-
-	public void notificationVente(double quantite, double prix) {
-		this.stockFeves.retirer(this, quantite);
-		this.soldeBancaire.ajouter(this, quantite * prix);
-	}*/
+	/*
+	 * public double quantiteEnVente(double prix) { if (prix > 2.0) { return
+	 * this.stockFeves.getValeur(); } else if (prix < 1.9) { return 0; } else {
+	 * return this.stockFeves.getValeur() / 2.0; } }
+	 * 
+	 * public void notificationVente(double quantite, double prix) {
+	 * this.stockFeves.retirer(this, quantite); this.soldeBancaire.ajouter(this,
+	 * quantite * prix); }
+	 */
 
 	public HashMap<Feve, Double> getPrixAuKilo() {
 		// BEGIN Pauline
@@ -127,18 +124,21 @@ public class Producteur1 implements IActeur /*, IVendeurCacaoAleatoire*/ {
 		stockCriollo.put(0, recolteCriollo);
 		stockForastero.put(0, recolteForastero);
 		stockTrinitario.put(0, recolteTrinitario);
-		
+
 		stockCriolloI.setValeur(this, 0);
 		stockForasteroI.setValeur(this, 0);
 		stockTrinitarioI.setValeur(this, 0);
-		
-		for (int next = 0; next < DUREE_DE_VIE_FEVE ; next++) {
-			stockCriolloI.ajouter(this, stockCriollo.get(next));;
-			stockForasteroI.ajouter(this, stockForastero.get(next));;
-			stockTrinitarioI.ajouter(this,stockTrinitario.get(next));
+
+		for (int next = 0; next < DUREE_DE_VIE_FEVE; next++) {
+			stockCriolloI.ajouter(this, stockCriollo.get(next));
+			;
+			stockForasteroI.ajouter(this, stockForastero.get(next));
+			;
+			stockTrinitarioI.ajouter(this, stockTrinitario.get(next));
 		}
-		
-		stockFeves.setValeur(this, stockCriolloI.getValeur()+stockForasteroI.getValeur()+stockTrinitarioI.getValeur());
+
+		stockFeves.setValeur(this,
+				stockCriolloI.getValeur() + stockForasteroI.getValeur() + stockTrinitarioI.getValeur());
 
 	}
 	// END Nas
