@@ -377,11 +377,9 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 			throw new IllegalArgumentException("Appel de la methode encaisser de Transformateur1 avec un montant negatif");
 		}
 		this.soldeBancaire.ajouter(this,  montant);
-<<<<<<< HEAD
+		
 		//End Raph
-=======
-		//End Kevin/Raphh
->>>>>>> branch 'master' of https://github.com/kThieb/CACAO2019.git
+
 
 		
 		
