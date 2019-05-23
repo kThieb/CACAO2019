@@ -16,6 +16,10 @@ public class Producteur1 implements IActeur, IVendeurCacaoAleatoire {
 	public static int COUT_FIXE_STOCK = 1000;
 	public static int COUT_VARIABLE_STOCK = 5;
 	protected Indicateur stockFeves;
+	protected HashMap<Integer, Integer> stockCriollo;
+	protected HashMap <Integer, Integer > stockForastero ; 
+	protected HashMap <Integer, Integer> stockTrinitario ; 
+	
 	protected Indicateur soldeBancaire;
 	// BEGIN ANTI
 	// private StockEnVente<Feve> stockEnVente;
