@@ -66,18 +66,18 @@
             <classpath refid="CACAO2019.classpath"/>
         </java>
     </target>
-    <target name="FenetrePrincipaleTest" haltonfailure="true">
+    <target name="FenetrePrincipaleTest">
         <mkdir dir="${junit.output.dir}"/>
-        <junit fork="yes" printsummary="withOutAndErr">
+        <junit fork="yes" printsummary="withOutAndErr" haltonfailure="true">
             <formatter type="xml"/>
             <test name="presentation.FenetrePrincipaleTest" todir="${junit.output.dir}"/>
             <jvmarg line="-ea"/>
             <classpath refid="CACAO2019.classpath"/>
         </junit>
     </target>
-    <target name="MondeV1Test" haltonfailure="true">
+    <target name="MondeV1Test">
         <mkdir dir="${junit.output.dir}"/>
-        <junit fork="yes" printsummary="withOutAndErr">
+        <junit fork="yes" printsummary="withOutAndErr" haltonfailure="true">
             <formatter type="xml"/>
             <test name="abstraction.MondeV1Test" todir="${junit.output.dir}"/>
             <jvmarg line="-ea"/>
