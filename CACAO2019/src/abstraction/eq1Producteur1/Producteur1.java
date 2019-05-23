@@ -57,10 +57,12 @@ public class Producteur1 implements IActeur, IVendeurCacaoAleatoire {
 	public void next() {
 		// production
 		double nouveauStock = this.stockFeves.getValeur() + Math.random() * 200;
-		//BEGIN Nas
+		
 		this.stockFeves.setValeur(this, nouveauStock);
+		//BEGIN Nas
 		this.soldeBancaire.ajouter(this, COUT_FIXE_STOCK+COUT_VARIABLE_STOCK*stockFeves.getValeur());
 		//END Nas
+		
 	}
 
 	public double quantiteEnVente(double prix) {
