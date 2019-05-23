@@ -24,7 +24,7 @@ public class ClientEuropeen extends Client2 {
 		this.journal.ajouter("Step "+Monde.LE_MONDE.getStep()+" : tentative d'achat de "+quantiteParStep+" de "+this.uniqueProduit+" ____________");
 		double quantiteAchetee = 0.0;
 		IDistributeurChocolat distributeurDeQualite = null;
-		double meilleureQualite = Double.MAX_VALUE;
+		double meilleureQualite = 0.0;
 		double quantiteEnVente = 0.0;
 		double quantiteEnVenteMeilleur = 0.0;
 		do {
