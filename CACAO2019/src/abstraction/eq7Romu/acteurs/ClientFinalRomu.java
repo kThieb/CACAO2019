@@ -33,6 +33,7 @@ public class ClientFinalRomu implements IActeur {
 	}
 
 	public void next() {
+		System.out.println("dddddd");
 		this.journal.ajouter("Step "+Monde.LE_MONDE.getStep()+" : tentative d'achat de "+quantiteParStep+" de "+this.uniqueProduit+" ____________");
 		double quantiteAchetee = 0.0;
 		IDistributeurChocolat distributeurLeMoinsCher = null;
