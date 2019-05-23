@@ -187,7 +187,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		if (cc.getEcheancier()==null) { // il n'y a pas encore eu de contre-proposition de la part du vendeur
 			cc.ajouterEcheancier(new Echeancier(Monde.LE_MONDE.getStep(), 12, cc.getQuantite()/12));
 		} else {
-			if ((this.contratsFeveEnCours.isEmpty())&&(this.stockFeves.get(cc.getProduit()).getQuantiteEnStock() < stockLim)) { // On accepte forcément la propostion si on a pas de contrat cadre en cours et que le stock est inférieur à une quantité arbitraire
+			if ((this.contratsFeveEnCours.isEmpty())&&(this.stockFeves.get(cc.getProduit()).getQuantiteEnStock() < stockLim)) { // On accepte forcément la proposition si on a pas de contrat cadre en cours et que le stock est inférieur à une quantité arbitraire
 				cc.ajouterEcheancier(new Echeancier(cc.getEcheancier()));
 			} 
 			if (Math.random() < 0.33) {
@@ -311,20 +311,32 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 
 	@Override
 	public void notifierVendeur(ContratCadre<Chocolat> cc) {
-		// TODO Auto-generated method stub
-		
+		//Begin Kevin
+		this.contratsChocolatEnCours.add(cc);
+		//End Kevin
 	}
 
 	@Override
 	public double livrer(Chocolat produit, double quantite, ContratCadre<Chocolat> cc) {
-		// TODO Auto-generated method stub
-		return 0;
+		//Begin Kevin
+		if (produit==null || stockChocolat.containsKey(produit)) {
+			throw new IllegalArgumentException("Appel de la methode livrer de Transformateur1 avec un produit ne correspondant pas à un des chocolats produits");
+		}
+		double livraison = Math.min(quantite, this.stockChocolat.get(produit).getQuantiteEnStock());
+		this.stockChocolat.get(produit).setQuantiteEnStock(this.stockChocolat.get(produit).getQuantiteEnStock() - livraison);
+		return livraison;
+		//End Kevin
+		
 	}
 
 	@Override
 	public void encaisser(double montant, ContratCadre<Chocolat> cc) {
-		// TODO Auto-generated method stub
-		
+		//Begin Kevin
+		if (montant<0.0) {
+			throw new IllegalArgumentException("Appel de la methode encaisser de Transformateur1 avec un montant negatif");
+		}
+		this.soldeBancaire.ajouter(this,  montant);
+		//End Kevin
 	}
 	
 	
