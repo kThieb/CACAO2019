@@ -289,10 +289,6 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 
 	public ContratCadre<Chocolat> getNouveauContrat() { //ILIAS
 		ContratCadre<Chocolat> res=null;
-
-
-
-		
 		double solde = this.getSoldeBancaire().getValeur();
 		for (ContratCadre<Chocolat> cc : this.getContratsEnCours()) {
 			solde = solde - cc.getMontantRestantARegler();
