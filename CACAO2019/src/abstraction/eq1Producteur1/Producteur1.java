@@ -64,6 +64,18 @@ public class Producteur1 implements IActeur /* , IVendeurCacaoAleatoire */ {
 		return this.historiqueContrats;
 	}
 
+	public int getRecolteCriollo() {
+		return recolteCriollo;
+	}
+
+	public int getRecolteForastero() {
+		return recolteForastero;
+	}
+
+	public int getRecolteTrinitario() {
+		return recolteTrinitario;
+	}
+
 	public Indicateur getSoldeBancaire() {
 		return this.soldeBancaire;
 
