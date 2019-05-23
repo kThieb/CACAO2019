@@ -19,10 +19,8 @@ import abstraction.fourni.Monde;
 public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistributeurChocolat {
 	private Journal journal;
 	private Stock stock;
-	//private ArrayList<Indicateur> stock;
 	private int numero;
 	private CompteBancaire soldeBancaire;
-	private ArrayList<Chocolat> produits;
 	private Double marge;
 	private List<ContratCadre<Chocolat>> contratsEnCours;
 
@@ -37,11 +35,6 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 	 */
 	public Distributeur1(double marge, double soldeInitial) {
 		this.numero =1 ;
-		this.produits = new ArrayList<Chocolat>();
-		produits.add(Chocolat.HG_E_SHP);
-		produits.add(Chocolat.MG_E_SHP);
-		produits.add(Chocolat.MG_NE_HP);
-		produits.add(Chocolat.MG_NE_SHP);
 		this.marge = marge;
 		this.stock = new Stock();
 		stock.ajouter(Chocolat.HG_E_SHP, 0.0);
@@ -142,15 +135,27 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 		}
 	}
 
+	/**
+	 * @author Erine DUPONT 
+	 */
 	@Override
-	public double vendre(Chocolat c, double quantite) {
-		// TODO Auto-generated method stub
-		return 0;
+	public double vendre(Chocolat chocolat, double quantite) {
+		double stock = this.getStockEnVente().get(chocolat);
+		if (quantite < 0.0) {
+			throw new IllegalArgumentException("Appel de vendre(chocolat, quantité) de "
+					+ "Distributeur1 avec quantité<0.0 (=="+quantite+")");
+		} else if (stock < quantite) {
+			throw new IllegalArgumentException("Appel de vendre(chocolat, quantité) de "
+					+ "Distributeur1 avec stock ( ==" + stock +") < quantité (=="+quantite+")");
+		} else {
+			this.stock.enlever(chocolat, quantite);;
+			return this.stock.get(chocolat);
+		}
 	}
 
 
 	/**
-	 * Erwann DEFOY
+	 * @author Erwann DEFOY
 	 */
 	@Override
 	public double getNoteQualite(Chocolat c) {
@@ -201,22 +206,28 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 	// VENDEUR CLIENT
 	// ---------------------------------------------------------------------------------------------------------
 
+	/**
+	 * @author estelle
+	 */
 	@Override
 	public StockEnVente<Chocolat> getStockEnVente() {
 		StockEnVente<Chocolat> res = new StockEnVente<Chocolat>();
-		/*
-		for (int i = 0 ; i< this.produits.size(); i++) {
-			res.ajouter(produits.get(i), stock.get(i).getValeur());
+		List<Chocolat> produits = this.stock.getProduitsEnVente();
+		for (int i =0; i< produits.size(); i++) {
+			res.ajouter(produits.get(i), stock.get(produits.get(i)));
 		}
-		*/
 		return res;
 	}
 
+	/**
+	 * @author estel
+	 */
 	@Override
 	public double getPrix(Chocolat c) {
 		boolean vendu = false;
-		for (int i=0; i<this.produits.size();i++) {
-			if (c.equals(this.produits.get(i))) {
+		List<Chocolat> produits =this.stock.getProduitsEnVente();
+		for (int i=0; i<produits.size();i++) {
+			if (c.equals(produits.get(i))) {
 				vendu = true;
 			}
 		}
