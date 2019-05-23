@@ -39,7 +39,7 @@ public class ClientFinalRomu implements IActeur {
 		double meilleurPrix = Double.MAX_VALUE;
 		double quantiteEnVente = 0.0;
 		double quantiteEnVenteMeilleur = 0.0;
-		do {  
+		do {
 			distributeurLeMoinsCher = null;
 			quantiteEnVenteMeilleur = 0.0;
 			for (IActeur acteur : Monde.LE_MONDE.getActeurs()) {
