@@ -30,10 +30,13 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	private Indicateur soldeBancaire;
 	private Journal journal;
 
-	private int productionParStep; // kg
+	
+	private Feve fevesProduites;
+	private double productionParStep; // kg
 	private int numero;
 	private List<ContratCadre<Feve>> contratsEnCours;
 	private double prixVente;
+	private Indicateur stockFeves;
 	private int numStep;
 	private GestionnaireFeve gestionnaireFeve;
 	
@@ -41,12 +44,12 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	
 	public Producteur2(Feve fevesProduites, int productionParStep, double stockInitial, double soldeInitial) {
 		NB_PROD++;
-		gestionnaireFeve.getFevesProduites() = fevesProduites;
+		this.productionParStep=gestionnaireFeve.getProductionParStep(Feve.FORASTERO_MG_NEQ);
 
 		this.numero = NB_PROD;
-		this.prixVente = PRIX_INIT;
-		this.productionParStep = productionParStep;
-		gestionnaireFeve.getStockFeves() = new Indicateur(this.getNom()+" Stock", this, stockInitial);
+		this.prixVente = gestionnaireFeve.getPrixVente(Feve.FORASTERO_MG_NEQ);
+		this.stockFeves=gestionnaireFeve.get(Feve.FORASTERO_MG_NEQ).getStockIndicateur();
+		this.fevesProduites=fevesProduites;
 
 		Monde.LE_MONDE.ajouterIndicateur(this.stockFeves);
 		this.soldeBancaire = new Indicateur(this.getNom()+" Solde", this, soldeInitial);
