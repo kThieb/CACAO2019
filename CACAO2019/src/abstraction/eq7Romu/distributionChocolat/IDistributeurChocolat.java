@@ -17,8 +17,6 @@ public interface IDistributeurChocolat {
 	 */
 	public double getPrix(Chocolat c);
 
-	// ajout Erwann
-	public double getNoteQualite(Chocolat c);
 	
 	/**
 	 * @param c
