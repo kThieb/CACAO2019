@@ -155,15 +155,27 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 		}
 	}
 
+	/**
+	 * @author Erine DUPONT 
+	 */
 	@Override
-	public double vendre(Chocolat c, double quantite) {
-		// TODO Auto-generated method stub
-		return 0;
+	public double vendre(Chocolat chocolat, double quantite) {
+		double stock = this.getStockEnVente().get(chocolat);
+		if (quantite < 0.0) {
+			throw new IllegalArgumentException("Appel de vendre(chocolat, quantité) de "
+					+ "Distributeur1 avec quantité<0.0 (=="+quantite+")");
+		} else if (stock < quantite) {
+			throw new IllegalArgumentException("Appel de vendre(chocolat, quantité) de "
+					+ "Distributeur1 avec stock ( ==" + stock +") < quantité (=="+quantite+")");
+		} else {
+			this.getStockEnVente().set(chocolat, stock - quantite);
+			return stock - quantite;
+		}
 	}
 
 
 	/**
-	 * Erwann DEFOY
+	 * @author Erwann DEFOY
 	 */
 	@Override
 	public double getNoteQualite(Chocolat c) {
