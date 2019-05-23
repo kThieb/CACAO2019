@@ -66,7 +66,7 @@
             <classpath refid="CACAO2019.classpath"/>
         </java>
     </target>
-    <target name="FenetrePrincipaleTest">
+    <target name="FenetrePrincipaleTest" haltonfailure="true">
         <mkdir dir="${junit.output.dir}"/>
         <junit fork="yes" printsummary="withOutAndErr">
             <formatter type="xml"/>
@@ -75,7 +75,7 @@
             <classpath refid="CACAO2019.classpath"/>
         </junit>
     </target>
-    <target name="MondeV1Test">
+    <target name="MondeV1Test" haltonfailure="true">
         <mkdir dir="${junit.output.dir}"/>
         <junit fork="yes" printsummary="withOutAndErr">
             <formatter type="xml"/>
