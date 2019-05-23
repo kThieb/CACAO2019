@@ -342,14 +342,14 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 
 	@Override
 	public void encaisser(double montant, ContratCadre<Chocolat> cc) {
-<<<<<<< HEAD
+
 		//Begin Kevin
 		if (montant<0.0) {
 			throw new IllegalArgumentException("Appel de la methode encaisser de Transformateur1 avec un montant negatif");
 		}
 		this.soldeBancaire.ajouter(this,  montant);
 		//End Kevin
-=======
+
 		//begin raph
 		if (montant<0.0) {
 			throw new IllegalArgumentException("Appel de la methode encaisser de Transformateur1 avec un montant negatif");
