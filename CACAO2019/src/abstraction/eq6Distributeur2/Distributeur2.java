@@ -237,12 +237,6 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 		
 	}
 	
-
-
-
-	
-	
-
 	//Nordin
 	public double getPrix(Chocolat c) {
 		return (this.getPrixParProduit().containsKey(c)? this.prixParProduit.get(c) : 0.0);
@@ -290,12 +284,42 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 	public ContratCadre<Chocolat> getNouveauContrat() { //ILIAS
 		ContratCadre<Chocolat> res=null;
 
-
-
-		
 		double solde = this.getSoldeBancaire().getValeur();
 		for (ContratCadre<Chocolat> cc : this.getContratsEnCours()) {
 			solde = solde - cc.getMontantRestantARegler();
+		}
+		
+		//Choix du produit 
+		HashMap<Chocolat, Double> variations_produit= new HashMap<Chocolat, Double>();
+		
+		if ( stockMG_E_SHP.getHistorique().getTaille() -2 > 0 ) {
+			double variation_stockMG_E_SHP = stockMG_E_SHP.getHistorique().get(stockMG_E_SHP.getHistorique().getTaille() -2).getValeur() - stockMG_E_SHP.getValeur();
+		    variations_produit.put(Chocolat.MG_E_SHP, -1*variation_stockMG_E_SHP);
+		}
+		
+		if ( stockMG_NE_SHP.getHistorique().getTaille() -2 > 0 ) {
+			double variation_stockMG_NE_SHP = stockMG_NE_SHP.getHistorique().get(stockMG_NE_SHP.getHistorique().getTaille() -2).getValeur() - stockMG_NE_SHP.getValeur();
+			variations_produit.put(Chocolat.MG_NE_SHP, -1*variation_stockMG_NE_SHP);
+		}
+		if ( stockMG_NE_HP.getHistorique().getTaille() -2 > 0 ) {
+			double variation_stockMG_NE_HP = stockMG_NE_HP.getHistorique().get(stockMG_NE_HP.getHistorique().getTaille() -2).getValeur() - stockMG_NE_HP.getValeur();
+			variations_produit.put(Chocolat.MG_NE_HP, -1*variation_stockMG_NE_HP);
+		}
+		if ( stockHG_E_SHP.getHistorique().getTaille() -2 > 0 ) {
+			double variation_stockHG_E_SHP = stockHG_E_SHP.getHistorique().get(stockHG_E_SHP.getHistorique().getTaille() -2).getValeur() - stockHG_E_SHP.getValeur();
+			variations_produit.put(Chocolat.HG_E_SHP, -1*variation_stockHG_E_SHP);	
+		}
+	    
+		for (ContratCadre c  : this.getContratsEnCours()) {
+			Chocolat ch = (Chocolat) c.getProduit();
+			double d = c.getEcheancier().getQuantite(Monde.LE_MONDE.getStep());
+			variations_produit.put(ch, d);
+		}
+		
+		double min;
+		for (double stock : variations_produit.values()) {
+			
+			
 		}
 		
 		Chocolat produit = getStockEnVente().getProduitsEnVente().get((int)(Math.random()*4));
@@ -315,7 +339,6 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 				double quantite = 50;
 				IVendeurContratCadre<Chocolat> vendeur = vendeurs.get( (int)( Math.random()*vendeurs.size()));
 				double prix = vendeur.getPrix(produit, quantite);
-				
 				while (!Double.isNaN(prix)) {
 					quantite=quantite*1.1;
 					prix = vendeur.getPrix(produit,  quantite);
