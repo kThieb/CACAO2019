@@ -57,30 +57,30 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 
 		// Partie se référant au journal
 		this.journal = new Journal ("Marché du Chocolat");
-		this.soldeBancaire = new Indicateur("SoldeBancaire EQ6", this, 10000);
+		this.soldeBancaire = new Indicateur("EQ6 Solde Bancaire", this, 10000);
 
 		Monde.LE_MONDE.ajouterIndicateur(this.soldeBancaire);
 		
 		//Chnager par nom du chocolat pour que le getNom de indcateur renvoie le type chocolat
-		this.stockMG_E_SHP = new Indicateur(Chocolat.MG_E_SHP.toString()+ " Distributeur 2", this, 0);
+		this.stockMG_E_SHP = new Indicateur("EQ6 " + Chocolat.MG_E_SHP.toString(), this, 10);
 		Monde.LE_MONDE.ajouterIndicateur(this.stockMG_E_SHP);
-		this.stockMG_NE_SHP = new Indicateur(Chocolat.MG_NE_SHP.toString()+ " Distributeur 2", this, 0);
+		this.stockMG_NE_SHP = new Indicateur("EQ6 " + Chocolat.MG_NE_SHP.toString(), this,10);
 		Monde.LE_MONDE.ajouterIndicateur(this.stockMG_NE_SHP);
-		this.stockMG_NE_HP = new Indicateur(Chocolat.MG_NE_HP.toString()+ " Distributeur 2", this, 0);
+		this.stockMG_NE_HP = new Indicateur("EQ6 " + Chocolat.MG_NE_HP.toString(), this, 10);
 		Monde.LE_MONDE.ajouterIndicateur(this.stockMG_NE_HP);
-		this.stockHG_E_SHP = new Indicateur(Chocolat.HG_E_SHP.toString()+ " Distributeur 2", this, 0);
+		this.stockHG_E_SHP = new Indicateur("EQ6 "+ Chocolat.HG_E_SHP.toString(), this, 10);
 		Monde.LE_MONDE.ajouterIndicateur(this.stockHG_E_SHP);
 		
-		this.prixMG_E_SHP = new Indicateur("Prix "+ " "+ Chocolat.MG_E_SHP.toString()+ " Distributeur 2", this, 0);
+		this.prixMG_E_SHP = new Indicateur("EQ6 " + Chocolat.MG_E_SHP.toString(), this, 10);
 		Monde.LE_MONDE.ajouterIndicateur(this.prixMG_E_SHP);
-		this.prixMG_NE_SHP = new Indicateur("Prix "+ " "+ Chocolat.MG_NE_SHP.toString()+ " Distributeur 2", this, 0);
+		this.prixMG_NE_SHP = new Indicateur("EQ6 " + Chocolat.MG_NE_SHP.toString(), this, 10);
 		Monde.LE_MONDE.ajouterIndicateur(this.prixMG_NE_SHP);
-		this.prixMG_NE_HP = new Indicateur("Prix "+ " "+ Chocolat.MG_NE_HP.toString()+ " Distributeur 2", this, 0);
+		this.prixMG_NE_HP = new Indicateur("EQ6 "+ Chocolat.MG_NE_HP.toString(), this, 10);
 		Monde.LE_MONDE.ajouterIndicateur(this.prixMG_NE_HP);
-		this.prixHG_E_SHP = new Indicateur("Prix "+ " "+ Chocolat.HG_E_SHP.toString()+ " Distributeur 2", this, 0);
+		this.prixHG_E_SHP = new Indicateur("EQ6 " + Chocolat.HG_E_SHP.toString(), this, 10);
 		Monde.LE_MONDE.ajouterIndicateur(this.prixHG_E_SHP);
 		
-		this.journal = new Journal("Journal Equipe 6");
+		this.journal = new Journal("Journal EQ6");
 		Monde.LE_MONDE.ajouterJournal(this.journal);
 	
 		this.contratsEnCours = new ArrayList<ContratCadre<Chocolat>>();
@@ -154,43 +154,43 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 	public Indicateur getStockHG_E_SHP() {
 		return stockHG_E_SHP;
 	}
-
+	//Nordin et Caro
 	public Indicateur getIndicateurStock(Chocolat c) {
-		String nom = c.toString();
-		if (this.stockMG_E_SHP.getNom()==nom) {
+		if (c.getGamme()==Gamme.MOYENNE && (c.isEquitable()) && (c.isSansHuileDePalme())) {
 			return this.stockMG_E_SHP;
 		}
-		if (this.stockMG_NE_SHP.getNom()==nom) {
-			return this.stockMG_E_SHP;
+		if (c.getGamme()==Gamme.MOYENNE && !(c.isEquitable()) && (c.isSansHuileDePalme())) {
+			return this.stockMG_NE_SHP;
 		}
-		if (this.stockMG_NE_HP.getNom()==nom){ 
-			return this.stockMG_E_SHP;
+		if (c.getGamme()==Gamme.MOYENNE && !(c.isEquitable()) && !(c.isSansHuileDePalme())){ 
+			return this.stockMG_NE_HP;
 		}
-		if (this.stockMG_E_SHP.getNom()==nom){
+		if (c.getGamme()==Gamme.HAUTE && (c.isEquitable()) && (c.isSansHuileDePalme())){
 			return this.stockHG_E_SHP;
 		}
 		else {
 			return null;
 		}
 	}
-	
+	//Nordin et Caro
 	public Indicateur getIndicateurPrix (Chocolat c) {
-		String nom = c.toString();
-		if (this.prixMG_E_SHP.getNom()==nom) {
+		
+		if (c.getGamme()==Gamme.MOYENNE && (c.isEquitable()) && (c.isSansHuileDePalme())) {
 			return this.prixMG_E_SHP;
 		}
-		if (this.prixMG_NE_SHP.getNom()==nom) {
-			return this.prixMG_E_SHP;
+		if (c.getGamme()==Gamme.MOYENNE && !(c.isEquitable()) && (c.isSansHuileDePalme())) {
+			return this.prixMG_NE_SHP;
 		}
-		if (this.prixMG_NE_HP.getNom()==nom){ 
-			return this.prixMG_E_SHP;
+		if (c.getGamme()==Gamme.MOYENNE && !(c.isEquitable()) && !(c.isSansHuileDePalme())){ 
+			return this.prixMG_NE_HP;
 		}
-		if (this.prixMG_E_SHP.getNom()==nom){
+		if (c.getGamme()==Gamme.HAUTE && (c.isEquitable()) && (c.isSansHuileDePalme())){
 			return this.prixHG_E_SHP;
 		}
 		else {
 			return null;
 		}
+		
 	}
 	
 	public List<ContratCadre<Chocolat>> getContratsEnCours() {
@@ -214,7 +214,7 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 		this.stockEnVente.ajouter(Chocolat.MG_E_SHP, this.getStockMG_E_SHP().getValeur());
 		this.stockEnVente.ajouter(Chocolat.MG_NE_SHP,this.getStockMG_NE_SHP().getValeur());
 		this.stockEnVente.ajouter(Chocolat.MG_NE_HP, this.getStockMG_NE_HP().getValeur());
-		return this.stockEnVente;		
+		return this.stockEnVente;
 	}
 	
 	public double getMarge() {
