@@ -43,5 +43,4 @@ public class CompteBancaire extends Indicateur {
 			this.setValeur(auteur, nouveausolde);
 		}
 	}
-
 }

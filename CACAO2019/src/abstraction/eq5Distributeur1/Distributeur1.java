@@ -183,12 +183,17 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 
 	}
 
+	
+	/**
+	 * @author Erwann DEFOY
+	 */
 	@Override
 	public double payer(double montant, ContratCadre cc) {
 		if (montant<=0.0) {
 			throw new IllegalArgumentException("Appel de la methode payer de Distributeur1 avec un montant negatif = "+montant);
 		}
 		double nouveausolde = soldeBancaire.getCompteBancaire() - montant;
+		soldeBancaire.Payer((IActeur)(cc.getVendeur()), montant);
 		return nouveausolde;
 	}
 
