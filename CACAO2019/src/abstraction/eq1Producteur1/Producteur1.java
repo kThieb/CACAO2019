@@ -12,28 +12,25 @@ import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 
 public class Producteur1 implements IActeur, IVendeurCacaoAleatoire {
-	
+
 	public static int COUT_FIXE_STOCK = 1000;
 	public static int COUT_VARIABLE_STOCK = 5;
 	protected Indicateur stockFeves;
 	protected Indicateur soldeBancaire;
-	
+	// BEGIN ANTI
+	// private StockEnVente<Feve> stockEnVente;
+	// END ANTI
 	// BEGIN Manon
 	private Journal journal1;
 	// END MANON
 	// BEGIN Pauline
 	protected HashMap<Feve, Double> prixAuKilo;
 	// END Pauline
-	//BEGIN ANTI
+	// BEGIN ANTI
 	protected HashMap<Integer, ContratCadre<Feve>> historiqueContrats;
-	protected int compteurSemaines;
-	protected int quantiteRecoltee = 100; 
-	//END ANTI
+	// END ANTI
 
 	public Producteur1() {
-		//BEGIN ANTI 
-		this.compteurSemaines = 0;
-		//END ANTI
 		this.stockFeves = new Indicateur("EQ1 stock feves", this, 1000);
 		this.soldeBancaire = new Indicateur("EQ1 solde bancaire", this, 100000);
 		Monde.LE_MONDE.ajouterIndicateur(this.stockFeves);
@@ -46,35 +43,32 @@ public class Producteur1 implements IActeur, IVendeurCacaoAleatoire {
 		// END Manon
 
 	}
+
 	public HashMap<Integer, ContratCadre<Feve>> getHistoriqueContrats() {
 		return this.historiqueContrats;
 	}
+
 	public Indicateur getSoldeBancaire() {
 		return this.soldeBancaire;
-	
+
 	}
 
 	public String getNom() {
 		return "EQ1";
 	}
-	// BEGIN ANTI
-	public int getQuantiteRecoltee() {
-		return this.quantiteRecoltee;
-	}
-	//END ANTI
+
 	public void initialiser() {
 	}
 
 	public void next() {
-		// BEGIN Anti
-		double nouveauStock = this.stockFeves.getValeur() + this.getQuantiteRecoltee();
-		this.compteurSemaines += 1 ; 
-		//END ANTI 
+		// production
+		double nouveauStock = this.stockFeves.getValeur() + Math.random() * 200;
+
 		this.stockFeves.setValeur(this, nouveauStock);
-		//BEGIN Nas
-		this.soldeBancaire.ajouter(this, COUT_FIXE_STOCK+COUT_VARIABLE_STOCK*stockFeves.getValeur());
-		//END Nas
-		
+		// BEGIN Nas
+		this.soldeBancaire.ajouter(this, COUT_FIXE_STOCK + COUT_VARIABLE_STOCK * stockFeves.getValeur());
+		// END Nas
+
 	}
 
 	public double quantiteEnVente(double prix) {
