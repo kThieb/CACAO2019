@@ -43,8 +43,8 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	//end Raphael
 	
 	// begin eve : A MODIFIER
-	private HashMap<Chocolat,Stock> stockChocolat;
-	private HashMap<Feve,Stock> stockFeves;
+	private Stock<Chocolat> stockChocolat;
+	private Stock<Feve> stockFeves;
 	// end eve
 	
 	public Transformateur1() {
@@ -52,23 +52,24 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		// --------------------------------- begin eve
 		
 		// stock de feves
-		this.stockFeves = new HashMap<Feve,Stock>();
-		this.stockFeves.put(Feve.CRIOLLO_HG_EQ, new Stock(0));
-		this.stockFeves.put(Feve.FORASTERO_MG_EQ, new Stock(0));
-		this.stockFeves.put(Feve.FORASTERO_MG_NEQ, new Stock(0));
-		this.stockFeves.put(Feve.MERCEDES_MG_EQ, new Stock(0));
-		this.stockFeves.put(Feve.MERCEDES_MG_NEQ, new Stock(0));
-		this.stockFeves.put(Feve.TRINITARIO_MG_EQ, new Stock(0));
-		this.stockFeves.put(Feve.TRINITARIO_MG_NEQ, new Stock(0));
+		this.stockFeves = new Stock<Feve>();
+		this.stockFeves.setQuantiteEnStock(Feve.CRIOLLO_HG_EQ, 0.);
+		this.stockFeves.setQuantiteEnStock(Feve.FORASTERO_MG_EQ, 0.);
+		this.stockFeves.setQuantiteEnStock(Feve.FORASTERO_MG_NEQ, 0.);
+		this.stockFeves.setQuantiteEnStock(Feve.MERCEDES_MG_EQ, 0.);
+		this.stockFeves.setQuantiteEnStock(Feve.MERCEDES_MG_NEQ, 0.);
+		this.stockFeves.setQuantiteEnStock(Feve.TRINITARIO_MG_EQ, 0.);
+		this.stockFeves.setQuantiteEnStock(Feve.TRINITARIO_MG_NEQ, 0.);
 		
 		// stock de chocolat
-		this.stockChocolat = new HashMap<Chocolat,Stock>();
-		this.stockChocolat.put(Chocolat.MG_NE_HP, new Stock(0));
-		this.stockChocolat.put(Chocolat.MG_NE_SHP, new Stock(0));
-		this.stockChocolat.put(Chocolat.MG_E_SHP, new Stock(0));
+		this.stockChocolat = new Stock<Chocolat>();
+		this.stockChocolat.setQuantiteEnStock(Chocolat.MG_NE_HP, 0.);
+		this.stockChocolat.setQuantiteEnStock(Chocolat.MG_NE_SHP, 0.);
+		this.stockChocolat.setQuantiteEnStock(Chocolat.MG_E_SHP, 0.);
 		
  		this.iStockFeves = new Indicateur("EQ3 stock feves", this, 0);
  		this.iStockChocolat = new Indicateur("EQ3 stock chocolat", this, 0);
+ 		
 		// --------------------------------- end eve
 		
 		
