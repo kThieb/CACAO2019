@@ -92,27 +92,29 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	}
 
 	public void next() {
+		List<Feve>feves = gestionnaireFeve.getFeves();
+		String newLine = System.getProperty("line.separator");
+		String text = "";
 
 		if (this.numStep <= 6 || this.numStep >= 21 || (this.numStep >= 9 && this.numStep <= 14)) {
 			double qualiteProduction = (Math.random() - 0.5)/2.5 + 1; //entre 0.8 et 1.2
 			
-			List<Feve>feves = gestionnaireFeve.getFeves();
-			
 			for(Feve feve :feves) {
-				double nouveauStock = gestionnaireFeve.getStock(feve).getValeur() + productionParStep * qualiteProduction;  //fait varier la production entre 80% et 120% de la production "normale"
-				this.stockFeves.setValeur(this, nouveauStock); }
+			double nouveauStock = this.gestionnaireFeve.getStock(feve)+ this.gestionnaireFeve.getProductionParStep(feve)* qualiteProduction;
+			this.gestionnaireFeve.setStock(this, feve, nouveauStock);
+			text += ( "prix de vente  "+ feve.toString() + ":" + this.gestionnaireFeve.getPrixVente(feve) + newLine );
 			}
+		}
 			
 		if (this.numStep == 24) {
 			this.numStep = 1;
 		} else {
 		this.numStep++; }
-		this.journal.ajouter("Step "+Monde.LE_MONDE.getStep()+" : prix de vente = "+this.gestionnaireFeve.getPrixVente(Feve.FORASTERO_MG_NEQ));
-
+		
+		this.journal.ajouter("Step "+Monde.LE_MONDE.getStep()+ text);
 	}
 	
 	
-
 
 	@Override
 	public StockEnVente<Feve> getStockEnVente() {
@@ -160,6 +162,33 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 			}
 		}
 	}
+	
+	public double getPrix(Feve produit, Double quantite) {
+		if (produit==null || quantite<=0.0 || this.getStockEnVente().get(produit)<quantite) {
+
+
+		
+		return this.gestionnaireFeve.getPrixVente(fevesProduites);
+		} 
+	
+		if (quantite > 10000000 && quantite < 20000000) {
+			return this.gestionnaireFeve.getPrixVente(fevesProduites) * 0.95;
+		}
+		if (quantite > 20000000) {
+			return this.gestionnaireFeve.getPrixVente(fevesProduites) * 0.9;
+		}
+		if (this.contratsEnCours.size() >= 1) {
+			ContratCadre<Feve> cc = this.contratsEnCours.get(this.contratsEnCours.size()-1);
+			double dernierPrix = cc.getPrixAuKilo();
+			if (dernierPrix > this.gestionnaireFeve.getPrixVente(fevesProduites) * 0.9 && this.gestionnaireFeve.getPrixVente(fevesProduites) * 1.05 < PRIX_MAX) {
+				this.gestionnaireFeve.get(fevesProduites).setPrix(this, this.gestionnaireFeve.getPrixVente(fevesProduites)*1.05);
+			}
+			else if (dernierPrix < this.gestionnaireFeve.getPrixVente(fevesProduites) * 0.8 && this.gestionnaireFeve.getPrixVente(fevesProduites) * 0.95 > PRIX_MIN) {
+				this.gestionnaireFeve.get(fevesProduites).setPrix(this, this.gestionnaireFeve.getPrixVente(fevesProduites)*0.95);
+			}
+			
+		}
+	}
 
 	@Override
 	public void notifierVendeur(ContratCadre<Feve> cc) {
@@ -175,50 +204,18 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 		this.soldeBancaire.ajouter(this,  montant);
 	}
 
-
 	
-	@Override
-	public double getPrix(Feve produit, Double quantite) {
-		if (produit==null || quantite<=0.0 || this.getStockEnVente().get(produit)<quantite) {
-
-
-		
-		else
-		{
-			if (quantite > 10000000 && quantite < 20000000) {
-			prixAPayer = prixVente * 0.95;   // on réduit le prix de 5% si l'on commande plus de 10 000 T
-
-		}
-		else if (quantite > 20000000) {
-			prixAPayer = prixVente * 0.9;   // on réduit le prix de 10% si l'on commande plus de 20 000 T
-
-		}
-		else { prixAPayer = prixVente; }
-		if (this.contratsEnCours.size() >= 1) {
-			ContratCadre<Feve> cc = this.contratsEnCours.get(this.contratsEnCours.size()-1);
-			double dernierPrix = cc.getPrixAuKilo();     //  on recherche le prix auquel on a vendu la dernière fois
-			if (dernierPrix > prixVente * 0.9 && prixVente * 1.05 < PRIX_MAX) {
-				this.prixVente *= 1.05;      // si l'on a vendu à plus de 90% du prix maximal, on augmente ce prix de 5%
-
-			}
-			else if (dernierPrix < prixVente * 0.8 && prixVente * 0.95 > PRIX_MIN) {
-				this.prixVente *= 0.95;     // si l'on a vendu à moins de 80% du prix maximal, on diminue ce prix de 5%
-
-			}
-		}
-		return prixAPayer; }
-	}
+	
 
 	@Override
 	public double livrer(Feve produit, double quantite, ContratCadre<Feve> cc) {
 		if (produit==null || !produit.equals(this.fevesProduites)) {
 			throw new IllegalArgumentException("Appel de la methode livrer de Producteur2 avec un produit ne correspondant pas aux feves produites");
 		}
-		double livraison = Math.min(quantite, this.stockFeves.getValeur());
-		this.stockFeves.retirer(this, livraison);
+		double livraison = Math.min(quantite, this.gestionnaireFeve.getStock(fevesProduites));
+		this.gestionnaireFeve.setStock(this, fevesProduites, this.gestionnaireFeve.getStock(fevesProduites)-livraison);  
 		return livraison;
 	}
-
 }
 
 
