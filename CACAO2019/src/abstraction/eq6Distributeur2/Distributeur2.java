@@ -236,12 +236,6 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 	public void next() {
 		
 	}
-	
-
-
-
-	
-	
 
 	//Nordin
 	public double getPrix(Chocolat c) {
@@ -250,17 +244,24 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 
 	//Nordin
 	public double vendre(Chocolat c, double quantite) {
+		List<String> chocolatsdisponibles = new ArrayList<String>();
 		for (Chocolat chocolat : this.getStockEnVente().getProduitsEnVente()) {
-		if (!c.equals(chocolat)) {
-			this.journal.ajouter("vente de 0.0 (produit demande = "+c+ " vs produit dispo = "+chocolat+")");
-			return 0.0;
+		if (c.equals(chocolat)) {
+			Double q = Math.min(this.getStockEnVente().get(c), quantite);
+			this.getIndicateurStock(c).retirer(this, q);
+			this.soldeBancaire.ajouter(this, this.getPrix(c));
+			this.journal.ajouter("Vente de "+q+" a "+this.getPrix(c));
+			return q;
+			}
+		else {
+			chocolatsdisponibles.add(""+chocolat);
+			
 		}
 		}
-		Double q = Math.min(this.getStockEnVente().get(c), quantite);
-		this.getIndicateurStock(c).retirer(this, q);
-		this.soldeBancaire.ajouter(this, this.getPrix(c));
-		this.journal.ajouter("Vente de "+q+" a "+this.getPrix(c));
-		return q;
+		for (String i : chocolatsdisponibles) {
+			this.journal.ajouter("vente de 0.0 (produit demande = "+c+ " vs produit dispo = "+i+")");
+		}
+		return 0.0;
 		
 	}
 
