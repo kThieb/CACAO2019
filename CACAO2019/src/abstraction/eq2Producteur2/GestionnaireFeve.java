@@ -14,11 +14,8 @@ public class GestionnaireFeve extends HashMap<Feve, IndicateurFeve>{
 		this.put(Feve.MERCEDES_MG_EQ, new IndicateurFeve(acteur));
 		this.put(Feve.MERCEDES_MG_NEQ, new IndicateurFeve(acteur));
 	}
-<<<<<<< HEAD
-=======
 	
-	
-	
-	
->>>>>>> branch 'master' of https://github.com/Clementmagnin/CACAO2019.git
+	public double getStock(Feve feve){	return this.get(feve).getStock();	}
+	public double getPrixVente(Feve feve) {	return this.get(feve).getPrixVente();	}
+	public double getProductionParStep(Feve feve) {	return this.get("feve").getProductionParStep();	}
 }

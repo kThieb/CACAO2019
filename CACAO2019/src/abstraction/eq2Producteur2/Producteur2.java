@@ -30,10 +30,13 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	private Indicateur soldeBancaire;
 	private Journal journal;
 
-	private int productionParStep; // kg
+	
+	private Feve fevesProduites;
+	private double productionParStep; // kg
 	private int numero;
 	private List<ContratCadre<Feve>> contratsEnCours;
 	private double prixVente;
+	private Indicateur stockFeves;
 	private int numStep;
 	private GestionnaireFeve gestionnaireFeve;
 	
@@ -41,14 +44,14 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	
 	public Producteur2(Feve fevesProduites, int productionParStep, double stockInitial, double soldeInitial) {
 		NB_PROD++;
+		this.productionParStep=gestionnaireFeve.getProductionParStep(Feve.FORASTERO_MG_NEQ);
 
-		gestionnaireFeve.getFevesProduites() = fevesProduites;
 
 
 		this.numero = NB_PROD;
-		this.prixVente = PRIX_INIT;
-		this.productionParStep = gestionnaireFeve.get(Feve).getProductionParStep();
-		gestionnaireFeve.get(Feve).getStock() = new Indicateur(this.getNom()+" Stock", this, stockInitial);
+		this.prixVente = gestionnaireFeve.getPrixVente(Feve.FORASTERO_MG_NEQ);
+		this.stockFeves=gestionnaireFeve.get(Feve.FORASTERO_MG_NEQ).getStockIndicateur();
+		this.fevesProduites=fevesProduites;
 
 		Monde.LE_MONDE.ajouterIndicateur(gestionnaireFeve.getStock());
 		this.soldeBancaire = new Indicateur(this.getNom()+" Solde", this, soldeInitial);
@@ -140,7 +143,6 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	}
 
 
-
 	@Override
 	public void encaisser(double montant, ContratCadre<Feve> cc) {
 		if (montant<0.0) {
@@ -152,8 +154,11 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	@Override
 	public double getPrix(Feve produit, Double quantite) {
 		if (produit==null || quantite<=0.0 || this.getStockEnVente().get(produit)<quantite) {
-			return Double.NaN;
-		}
+
+		
+		return this.prixVente;
+		} 
+	
 		if (quantite > 10000000 && quantite < 20000000) {
 			return this.prixVente * 0.95;
 		}
@@ -169,6 +174,7 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 			else if (dernierPrix < prixVente*0.8) {
 				this.prixVente *= 0.95;
 			}
+			
 		}
 	}
 
