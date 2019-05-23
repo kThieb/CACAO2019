@@ -36,6 +36,9 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 		produits.add(Chocolat.MG_NE_SHP);
 	}
 
+	/**
+	 * @author Estelle Bonnet
+	 */
 	public Distributeur1(double marge, ArrayList<Double> stockInitial, Double soldeInitial) {
 		this.numero =1 ;
 		this.produits = new ArrayList<Chocolat>();
@@ -73,6 +76,9 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 	// ------------------------------------------------------------------------------------------------------ 
 
 	@Override
+	/**
+	 * @author Erine DUPONT
+	 */
 	public ContratCadre<Chocolat> getNouveauContrat() {
 		// On va créer un nouveau contrat cadre 
 		ContratCadre<Chocolat> ncc = null;
@@ -130,9 +136,11 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 		return ncc;
 	}
 
+	/**
+	 * @author Imane ZRIAA
+	 */
 	@Override
 	public void proposerEcheancierAcheteur(ContratCadre C) {
-		// TODO Auto-generated method stub
 		if (C.getEcheancier()==null) {//pas de contre-proposition
 			C.ajouterEcheancier(new Echeancier(Monde.LE_MONDE.getStep(), 20, C.getQuantite()/20));
 		} else {
@@ -154,6 +162,9 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 	}
 
 	@Override
+	/**
+	 * @author Imane ZRIAA
+	 */
 	public void proposerPrixAcheteur(ContratCadre cc) {
 		// TODO Auto-generated method stub
 		double prixVendeur = cc.getPrixAuKilo();
