@@ -21,7 +21,7 @@ public class ClientFinalRomu implements IActeur {
 		this.numero = NB_CLIENT;
 		this.uniqueProduit = uniqueProduit;
 		this.quantiteParStep = quantiteParStep;
-		this.journal = new Journal("Journal "+this.getNom());
+		this.journal = new Journal("Journal"+this.getNom());
 		Monde.LE_MONDE.ajouterJournal(this.journal);
 	}
 
@@ -55,7 +55,7 @@ public class ClientFinalRomu implements IActeur {
 								quantiteEnVenteMeilleur = quantiteEnVente;
 								meilleurPrix = dist.getPrix(this.uniqueProduit);
 							}
-						} 
+						}
 					}
 				}
 			}

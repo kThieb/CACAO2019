@@ -123,95 +123,103 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 				} else {
 					this.journal.ajouter("   Il ne reste que "+solde+" une fois tous les contrats payes donc nous ne souhaitons pas en creer d'autres pour l'instant");
 				}
-				
+
 			}
 		}
 		//Création Contrat
 		return ncc;
 	}
 
-			@Override
-			public void proposerEcheancierAcheteur(ContratCadre C) {
-				// TODO Auto-generated method stub
-				if (C.getEcheancier()==null) {//pas de contre-proposition
-					C.ajouterEcheancier(new Echeancier(Monde.LE_MONDE.getStep(), 20, C.getQuantite()/20));
-				} else {
-					C.ajouterEcheancier(new Echeancier(C.getEcheancier())); // accepter la contre-proposition
-				}
-			}
+	@Override
+	public void proposerEcheancierAcheteur(ContratCadre C) {
+		// TODO Auto-generated method stub
+		if (C.getEcheancier()==null) {//pas de contre-proposition
+			C.ajouterEcheancier(new Echeancier(Monde.LE_MONDE.getStep(), 20, C.getQuantite()/20));
+		} else {
+			C.ajouterEcheancier(new Echeancier(C.getEcheancier())); // accepter la contre-proposition
+		}
+	}
 
-			@Override
-			public void proposerPrixAcheteur(ContratCadre cc) {
-				// TODO Auto-generated method stub
-				double prixVendeur = cc.getPrixAuKilo();
-				if (Math.random()<0.25) { // probabilite de 25% d'accepter
-					cc.ajouterPrixAuKilo(cc.getPrixAuKilo());
-				} else {
-					cc.ajouterPrixAuKilo((prixVendeur*(0.9+Math.random()*0.1))); // Rabais de 10% max
-				}
-			}
+	@Override
+	public double vendre(Chocolat c, double quantite) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
-			@Override
-			public void notifierAcheteur(ContratCadre cc) {
-				// TODO Auto-generated method stub
 
-			}
+	// ajout Erwann
+	@Override
+	public double getNoteQualite(Chocolat c) {
+		return c.NoteQualite();
+	}
 
-			@Override
-			public void receptionner(Object produit, double quantite, ContratCadre cc) {
-				// TODO Auto-generated method stub
+	@Override
+	public void proposerPrixAcheteur(ContratCadre cc) {
+		// TODO Auto-generated method stub
+		double prixVendeur = cc.getPrixAuKilo();
+		if (Math.random()<0.25) { // probabilite de 25% d'accepter
+			cc.ajouterPrixAuKilo(cc.getPrixAuKilo());
+		} else {
+			cc.ajouterPrixAuKilo((prixVendeur*(0.9+Math.random()*0.1))); // Rabais de 10% max
+		}
+	}
 
-			}
+	@Override
+	public void notifierAcheteur(ContratCadre cc) {
+		// TODO Auto-generated method stub
 
-			@Override
-			public double payer(double montant, ContratCadre cc) {
-				// TODO Auto-generated method stub
-				return 0;
-			}
+	}
 
-			// ---------------------------------------------------------------------------------------------------------
-			// VENDEUR CLIENT
-			// ---------------------------------------------------------------------------------------------------------
+	@Override
+	public void receptionner(Object produit, double quantite, ContratCadre cc) {
+		// TODO Auto-generated method stub
 
-			@Override
-			public StockEnVente<Chocolat> getStockEnVente() {
-				StockEnVente<Chocolat> res = new StockEnVente<Chocolat>();
-				for (int i = 0 ; i< this.produits.size(); i++) {
-					res.ajouter(produits.get(i), stock.get(i).getValeur());
-				}
-				return res;
-			}
+	}
 
-			@Override
-			public double getPrix(Chocolat c) {
-				boolean vendu = false;
-				for (int i=0; i<this.produits.size();i++) {
-					if (c.equals(this.produits.get(i))) {
-						vendu = true;
-					}
-				}
-				if (!vendu) {
-					return Double.NaN;
-				}
+	@Override
+	public double payer(double montant, ContratCadre cc) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
-				if (this.contratsEnCours.size()==0) {
-					return 50;
-				} else {
+	// ---------------------------------------------------------------------------------------------------------
+	// VENDEUR CLIENT
+	// ---------------------------------------------------------------------------------------------------------
 
-					double prixMoyen = 0;
-					for (ContratCadre<Chocolat> cc : this.contratsEnCours) {
-						if (cc.getProduit()==c) {
-							prixMoyen+=cc.getPrixAuKilo();
-						}
-					}
-					prixMoyen = prixMoyen/ this.contratsEnCours.size();
-					return prixMoyen *(1.0+this.marge);
-				}
-			}
+	@Override
+	public StockEnVente<Chocolat> getStockEnVente() {
+		StockEnVente<Chocolat> res = new StockEnVente<Chocolat>();
+		for (int i = 0 ; i< this.produits.size(); i++) {
+			res.ajouter(produits.get(i), stock.get(i).getValeur());
+		}
+		return res;
+	}
 
-			@Override
-			public double vendre(Chocolat c, double quantite) {
-				// TODO Auto-generated method stub
-				return 0;
+	@Override
+	public double getPrix(Chocolat c) {
+		boolean vendu = false;
+		for (int i=0; i<this.produits.size();i++) {
+			if (c.equals(this.produits.get(i))) {
+				vendu = true;
 			}
 		}
+		if (!vendu) {
+			return Double.NaN;
+		}
+
+		if (this.contratsEnCours.size()==0) {
+			return 50;
+		} else {
+
+			double prixMoyen = 0;
+			for (ContratCadre<Chocolat> cc : this.contratsEnCours) {
+				if (cc.getProduit()==c) {
+					prixMoyen+=cc.getPrixAuKilo();
+				}
+			}
+			prixMoyen = prixMoyen/ this.contratsEnCours.size();
+			return prixMoyen *(1.0+this.marge);
+		}
+	}
+
+}
