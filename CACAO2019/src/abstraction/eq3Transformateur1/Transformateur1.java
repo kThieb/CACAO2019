@@ -113,6 +113,9 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 
 	public void next() {
 		// -------------------------- begin eve
+		// nouvelles feves
+		// TODO
+		
 		// transformation
 		double quantiteTransformee = Math.random()*Math.min(100, this.iStockFeves.getValeur()); // on suppose qu'on a un stock infini de sucre
 		this.iStockFeves.retirer(this, quantiteTransformee);
