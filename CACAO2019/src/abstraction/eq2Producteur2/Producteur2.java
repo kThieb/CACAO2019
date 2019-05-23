@@ -26,6 +26,7 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	
 
 
+
 	private Indicateur soldeBancaire;
 	private Journal journal;
 
@@ -40,7 +41,10 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	
 	public Producteur2(Feve fevesProduites, int productionParStep, double stockInitial, double soldeInitial) {
 		NB_PROD++;
-		gestionnaireFeve.get(Feve).getFevesProduites() = fevesProduites;
+
+		gestionnaireFeve.getFevesProduites() = fevesProduites;
+
+
 		this.numero = NB_PROD;
 		this.prixVente = PRIX_INIT;
 		this.productionParStep = gestionnaireFeve.get(Feve).getProductionParStep();
@@ -70,7 +74,7 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	public void next() {
 
 		if (this.numStep <= 6 || this.numStep >= 21 || (this.numStep >= 9 && this.numStep <= 14)) {
-			double qualiteProduction = (Math.random() - 0.5)/2.5 + 1;
+			double qualiteProduction = (Math.random() - 0.5)/2.5 + 1; //entre 0.8 et 1.2
 			double nouveauStock = this.stockFeves.getValeur() + productionParStep * qualiteProduction;
 			this.stockFeves.setValeur(this, nouveauStock); }
 		if (this.numStep == 24) {
