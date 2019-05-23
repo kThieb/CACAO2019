@@ -201,11 +201,10 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 		if (produit==null || !produit.equals(this.fevesProduites)) {
 			throw new IllegalArgumentException("Appel de la methode livrer de Producteur2 avec un produit ne correspondant pas aux feves produites");
 		}
-		double livraison = Math.min(quantite, this.stockFeves.getValeur());
-		this.stockFeves.retirer(this, livraison);
+		double livraison = Math.min(quantite, this.gestionnaireFeve.getStock(fevesProduites));
+		this.gestionnaireFeve.setStock(this, fevesProduites, this.gestionnaireFeve.getStock(fevesProduites)-livraison);
 		return livraison;
 	}
-
 }
 
 
