@@ -286,7 +286,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 			return prixMoyen *(1.0+this.marge);
 		}
 		
-		//End Kevinn
+		//End Kevin
 	}
 
 	@Override
