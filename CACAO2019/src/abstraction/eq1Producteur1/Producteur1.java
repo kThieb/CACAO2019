@@ -19,6 +19,10 @@ public class Producteur1 implements IActeur, IVendeurCacaoAleatoire {
 	protected HashMap<Integer, Integer> stockCriollo;
 	protected HashMap <Integer, Integer > stockForastero ; 
 	protected HashMap <Integer, Integer> stockTrinitario ; 
+	protected int recolteCriollo = 33 ; 
+	protected int recolteForastero = 33 ; 
+	protected int recolteTrinitarion = 33 ; 
+	
 	
 	protected Indicateur soldeBancaire;
 	
@@ -80,6 +84,8 @@ public class Producteur1 implements IActeur, IVendeurCacaoAleatoire {
 		//END Nas
 		
 	}
+	
+	public 
 
 	public double quantiteEnVente(double prix) {
 		if (prix > 2.0) {
