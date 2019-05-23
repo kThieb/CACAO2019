@@ -309,13 +309,25 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 
 	@Override
 	public double livrer(Chocolat produit, double quantite, ContratCadre<Chocolat> cc) {
-		// TODO Auto-generated method stub
-		return 0;
+		if (produit==null || !this.stockChocolat.keySet().contains(produit)) {
+			throw new IllegalArgumentException("Appel de la methode livrer de Transformateur1 avec un produit ne correspondant pas au chocolat produit");
+		}
+		if (this.stockChocolat.keySet().contains(produit) && this.stockChocolat.get(produit).getQuantiteEnStock()<quantite) {
+			throw new IllegalArgumentException("Appel de la methode livrer de Transformateur1 avec un quantite superieure au stock");
+		}
+		double livraison = this.stockChocolat.get(produit).getQuantiteEnStock();
+		//this.stockChocolat.retirer(this, livraison);
+		return livraison;
 	}
 
 	@Override
 	public void encaisser(double montant, ContratCadre<Chocolat> cc) {
-		// TODO Auto-generated method stub
+		//begin raph
+		if (montant<0.0) {
+			throw new IllegalArgumentException("Appel de la methode encaisser de Transformateur1 avec un montant negatif");
+		}
+		this.soldeBancaire.ajouter(this,  montant);
+		//end raph
 		
 	}
 	
