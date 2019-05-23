@@ -27,6 +27,8 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	private Indicateur soldeBancaire;
 	private Journal journal;
 	
+	private Feve fevesProduites;
+
 	private int numero;
 	private List<ContratCadre<Feve>> contratsEnCours;
 	private int numStep;
@@ -34,31 +36,32 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	
 	
 	
-	public Producteur2(Feve fevesProduites, int productionParStep, double stockInitial, double soldeInitial) {
-		NB_PROD++;
-		this.productionParStep=gestionnaireFeve.getProductionParStep(Feve.FORASTERO_MG_NEQ);
-		this.numero = NB_PROD;
-		this.prixVente = gestionnaireFeve.getPrixVente(Feve.FORASTERO_MG_NEQ);
-		this.stockFeves=gestionnaireFeve.get(Feve.FORASTERO_MG_NEQ).getStockIndicateur();
-		this.fevesProduites=fevesProduites;
-
-		Monde.LE_MONDE.ajouterIndicateur(gestionnaireFeve.getStock());
-		this.soldeBancaire = new Indicateur(this.getNom()+" Solde", this, soldeInitial);
-		Monde.LE_MONDE.ajouterIndicateur(this.soldeBancaire);
-		this.contratsEnCours = new ArrayList<ContratCadre<Feve>>();
-		this.journal = new Journal("Journal "+this.getNom());
-		Monde.LE_MONDE.ajouterJournal(this.journal);
-		this.numStep = 1;
-	}
+//	public Producteur2(Feve fevesProduites, int productionParStep, double stockInitial, double soldeInitial) {
+//		NB_PROD++;
+//		
+//		this.numero = NB_PROD;
+//		this.fevesProduites=fevesProduites;
+//
+//		this.soldeBancaire = new Indicateur(this.getNom()+" Solde", this, soldeInitial);
+//		Monde.LE_MONDE.ajouterIndicateur(this.soldeBancaire);
+//		this.contratsEnCours = new ArrayList<ContratCadre<Feve>>();
+//		this.journal = new Journal("Journal "+this.getNom());
+//		Monde.LE_MONDE.ajouterJournal(this.journal);
+//		this.numStep = 1;
+//	}
+	
+	
 	
 	// Constructeur avec hmaps
 	
 	public Producteur2( Feve fevesProduites, int productionParStep, double stockInitial, double soldeInitial) {
 		NB_PROD++;
 		this.numero = NB_PROD;
+		this.fevesProduites = fevesProduites;
 		this.gestionnaireFeve = new GestionnaireFeve(this);
-
-		Monde.LE_MONDE.ajouterIndicateur(gestionnaireFeve.getStock());
+		this.initstock(fevesProduites, stockInitial);
+		
+		Monde.LE_MONDE.ajouterIndicateur(gestionnaireFeve.get(fevesProduites).getStockIndicateur());
 		this.soldeBancaire = new Indicateur(this.getNom()+" Solde", this, soldeInitial);
 		Monde.LE_MONDE.ajouterIndicateur(this.soldeBancaire);
 		this.contratsEnCours = new ArrayList<ContratCadre<Feve>>();
@@ -67,16 +70,10 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 		this.numStep = 1;
 	}
 	
-	
-	public void initstock(List<int> stockinitial) {
-		Indicateur newindic = 
-		
-		
-
+	public void initstock(Feve fevesProduites, double stockInitial) {
+		gestionnaireFeve.setStock(this,fevesProduites, stockInitial);
 		
 	}
-	
-	
 	
 	
 	
@@ -86,6 +83,7 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	
 	public String getNom() {
 		return "EQ2";
+		
 	}
 
 	public void initialiser() {
@@ -96,13 +94,13 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 
 		if (this.numStep <= 6 || this.numStep >= 21 || (this.numStep >= 9 && this.numStep <= 14)) {
 			double qualiteProduction = (Math.random() - 0.5)/2.5 + 1; //entre 0.8 et 1.2
-			double nouveauStock = this.stockFeves.getValeur() + productionParStep * qualiteProduction;
-			this.stockFeves.setValeur(this, nouveauStock); }
+			double nouveauStock = this.gestionnaireFeve.getStock(Feve.FORASTERO_MG_NEQ)+ this.gestionnaireFeve.getProductionParStep(Feve.FORASTERO_MG_NEQ)* qualiteProduction;
+			this.gestionnaireFeve.setStock(this, Feve.FORASTERO_MG_NEQ, nouveauStock); }
 		if (this.numStep == 24) {
 			this.numStep = 1;
 		} else {
 		this.numStep++; }
-		this.journal.ajouter("Step "+Monde.LE_MONDE.getStep()+" : prix de vente = "+this.prixVente);
+		this.journal.ajouter("Step "+Monde.LE_MONDE.getStep()+" : prix de vente = "+this.gestionnaireFeve.getPrixVente(Feve.FORASTERO_MG_NEQ));
 
 	}
 	
@@ -111,7 +109,7 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 
 	@Override
 	public StockEnVente<Feve> getStockEnVente() {
-		double stockRestant = this.stockFeves.getValeur();
+		double stockRestant = this.gestionnaireFeve.getStock(Feve.FORASTERO_MG_NEQ);
 		for (ContratCadre<Feve> cc : this.contratsEnCours) {
 			if (Monde.LE_MONDE != null) {
 				stockRestant = stockRestant - cc.getQuantiteRestantALivrer();
@@ -132,21 +130,27 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 
 	@Override
 	public void proposerPrixVendeur(ContratCadre<Feve> cc) {
-		if (cc.getListePrixAuKilo().size()==0) {
+		if (cc.getListePrixAuKilo().size()==0) { //On vérifie qu'on a un prix à proposer
 			cc.ajouterPrixAuKilo(getPrix(cc.getProduit(), cc.getQuantite()));
 		} else {
-			double prixVendeur = cc.getListePrixAuKilo().get(0);
+			double prixVendeur = cc.getListePrixAuKilo().get(cc.getListePrixAuKilo().size()-1);
 			double prixAcheteur = cc.getPrixAuKilo();
-			cc.ajouterPrixAuKilo(prixVendeur);
+			cc.ajouterPrixAuKilo(prixVendeur); //Le premier prix proposé est la prix au kilo initial
 			
-			
-			/*if (prixAcheteur>=0.75*prixVendeur) { // on ne fait une proposition que si l'acheteur ne demande pas un prix trop bas.
-				if (Math.random()<0.25) { // probabilite de
-					cc.ajouterPrixAuKilo(cc.getPrixAuKilo());
+			if ((prixVendeur - prixAcheteur) < 0.05 * prixVendeur) { //On arrête la négociation si la différence de prix est suffisamment faible (5% du prixVendeur)
+				prixVendeur = prixAcheteur;
+				cc.getListePrixAuKilo().add(prixVendeur);
+			} else {
+				
+				if (prixAcheteur>=0.75*prixVendeur) { // on ne fait une proposition que si l'acheteur ne demande pas un prix trop bas.
+				prixVendeur = prixAcheteur * 1.1; // on augmente le prix proposé par l'acheteur de 10%
+				cc.getListePrixAuKilo().add(prixVendeur);
+				
 				} else {
-					cc.ajouterPrixAuKilo((prixVendeur*(0.9+Math.random()*0.1))); // rabais de 10% max
+				prixVendeur *= 0.90; //On diminue le prix proposé de 10%
+				cc.getListePrixAuKilo().add(prixVendeur);
 				}
-			}*/
+			}
 		}
 	}
 
@@ -170,23 +174,23 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 		if (produit==null || quantite<=0.0 || this.getStockEnVente().get(produit)<quantite) {
 
 		
-		return this.prixVente;
+		return this.gestionnaireFeve.getPrixVente(fevesProduites);
 		} 
 	
 		if (quantite > 10000000 && quantite < 20000000) {
-			return this.prixVente * 0.95;
+			return this.gestionnaireFeve.getPrixVente(fevesProduites) * 0.95;
 		}
 		if (quantite > 20000000) {
-			return this.prixVente * 0.9;
+			return this.gestionnaireFeve.getPrixVente(fevesProduites) * 0.9;
 		}
 		if (this.contratsEnCours.size() >= 1) {
 			ContratCadre<Feve> cc = this.contratsEnCours.get(this.contratsEnCours.size()-1);
 			double dernierPrix = cc.getPrixAuKilo();
-			if (dernierPrix > prixVente * 0.9) {
-				this.prixVente *= 1.05;
+			if (dernierPrix > this.gestionnaireFeve.getPrixVente(fevesProduites) * 0.9 && this.gestionnaireFeve.getPrixVente(fevesProduites) * 1.05 < PRIX_MAX) {
+				this.gestionnaireFeve.get(fevesProduites).setPrix(this, this.gestionnaireFeve.getPrixVente(fevesProduites)*1.05);
 			}
-			else if (dernierPrix < prixVente*0.8) {
-				this.prixVente *= 0.95;
+			else if (dernierPrix < this.gestionnaireFeve.getPrixVente(fevesProduites) * 0.8 && this.gestionnaireFeve.getPrixVente(fevesProduites) * 0.95 > PRIX_MIN) {
+				this.gestionnaireFeve.get(fevesProduites).setPrix(this, this.gestionnaireFeve.getPrixVente(fevesProduites)*0.95);
 			}
 			
 		}

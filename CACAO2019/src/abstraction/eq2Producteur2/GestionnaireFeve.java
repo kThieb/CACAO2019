@@ -20,6 +20,9 @@ public class GestionnaireFeve extends HashMap<Feve, IndicateurFeve>{
 	public double getPrixVente(Feve feve) {	return this.get(feve).getPrixVente();	}
 	public double getProductionParStep(Feve feve) {	return this.get("feve").getProductionParStep();	}
 	
-	
-	
 
+	public void setStock(IActeur acteur,Feve feve, double stock) {	this.get(feve).setStock(acteur, stock);	}
+	public void setPrix(IActeur acteur,Feve feve, double prix) { this.get(feve).setPrix(acteur, prix);	}
+	public void setProduction(IActeur acteur,Feve feve, double production) {	this.get(feve).setProduction(acteur, production);	}
+}
+>>>>>>> branch 'master' of https://github.com/Clementmagnin/CACAO2019.git
