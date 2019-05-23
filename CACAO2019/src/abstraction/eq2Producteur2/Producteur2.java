@@ -168,10 +168,10 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 		if (this.contratsEnCours.size() >= 1) {
 			ContratCadre<Feve> cc = this.contratsEnCours.get(this.contratsEnCours.size()-1);
 			double dernierPrix = cc.getPrixAuKilo();
-			if (dernierPrix > prixVente * 0.9) {
+			if (dernierPrix > prixVente * 0.9 && prixVente * 1.05 < PRIX_MAX) {
 				this.prixVente *= 1.05;
 			}
-			else if (dernierPrix < prixVente*0.8) {
+			else if (dernierPrix < prixVente * 0.8 && prixVente * 0.95 > PRIX_MIN) {
 				this.prixVente *= 0.95;
 			}
 			
