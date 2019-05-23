@@ -194,14 +194,16 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 	// VENDEUR CLIENT
 	// ---------------------------------------------------------------------------------------------------------
 
+	/**
+	 * @author estelle
+	 */
 	@Override
 	public StockEnVente<Chocolat> getStockEnVente() {
 		StockEnVente<Chocolat> res = new StockEnVente<Chocolat>();
-		/*
-		for (int i = 0 ; i< this.produits.size(); i++) {
-			res.ajouter(produits.get(i), stock.get(i).getValeur());
+		List<Chocolat> produits = this.stock.getProduitsEnVente();
+		for (int i =0; i< produits.size(); i++) {
+			res.ajouter(produits.get(i), stock.get(produits.get(i)));
 		}
-		*/
 		return res;
 	}
 
