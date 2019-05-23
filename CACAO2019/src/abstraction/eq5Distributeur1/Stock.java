@@ -18,24 +18,28 @@ public class Stock {
 	 * Si produit figure deja dans le stock en vente, actualise la quantite du produit a stock.
 	 * Sinon, ajoute qu'il y a une quantite stock de produit dans le stock en vente
 	 * @param produit
-	 * @param stock, quantite mise en vente du produit
+	 * @param quantite mise en vente du produit
 	 */
-	public void ajouter(Chocolat produit, Double stock) {
-		if (stock<0.0) {
-			throw new IllegalArgumentException("Appel de ajouter(produit, stock) de Stock avec stock<0.0 (=="+stock+")");
+	public void ajouter(Chocolat produit, Double quantite) {
+		if (quantite<0.0) {
+			throw new IllegalArgumentException("Appel de ajouter(produit, quantite) de Stock avec quantite<0.0 (=="+quantite+")");
 		} else {
-			this.stock.put(produit, stock);
+			this.stock.put(produit, this.get(produit) + quantite);
 		}
 	}
-	/*
-	public void enlever(Chocolat produit, Double stock) {
-		if (stock<0.0) {
-			throw new IllegalArgumentException("Appel de ajouter(produit, stock) de Stock avec stock<0.0 (=="+stock+")");
+	
+	public void enlever(Chocolat produit, Double quantite) {
+		if (quantite<0.0) {
+			throw new IllegalArgumentException("Appel de enlever(produit, quantite) de Stock "
+					+ "avec quantite<0.0 (=="+quantite+")");
+		} else if (this.get(produit) < quantite) {
+			throw new IllegalArgumentException("Appel de enlever(produit, quantite) de Stock "
+					+ "avec stock (=="+ this.get(produit) + ") < quantite (==" + quantite + ")");
 		} else {
-			//this.stock.put(produit, stock);
+			this.stock.put(produit, this.get(produit)- quantite);
 		}
 	}
-	*/
+	
 
 	public List<Chocolat> getProduitsEnVente() {
 		ArrayList<Chocolat> produits=new ArrayList<Chocolat>();

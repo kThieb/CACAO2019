@@ -156,8 +156,8 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 			throw new IllegalArgumentException("Appel de vendre(chocolat, quantité) de "
 					+ "Distributeur1 avec stock ( ==" + stock +") < quantité (=="+quantite+")");
 		} else {
-			this.getStockEnVente().set(chocolat, stock - quantite);
-			return stock - quantite;
+			this.stock.enlever(chocolat, quantite);;
+			return this.stock.get(chocolat);
 		}
 	}
 
