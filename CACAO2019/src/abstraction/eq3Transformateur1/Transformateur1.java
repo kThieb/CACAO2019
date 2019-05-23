@@ -1,10 +1,7 @@
 package abstraction.eq3Transformateur1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map.Entry;
-
 import abstraction.eq3Transformateur1.Stock;
 import abstraction.eq7Romu.produits.Chocolat;
 import abstraction.eq7Romu.produits.Feve;
@@ -365,25 +362,27 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	
 	
 	public double livrer(Chocolat produit, double quantite, ContratCadre<Chocolat> cc) {
-		//Begin Kevin
+		//Begin Raph/Kevin
 		if (produit==null || !stockChocolat.getProduitsEnStock().contains(produit)) {
 			throw new IllegalArgumentException("Appel de la methode livrer de Transformateur1 avec un produit ne correspondant pas à un des chocolats produits");
 		}
 		double livraison = Math.min(quantite, this.stockChocolat.getQuantiteEnStock(produit));
 		this.stockChocolat.setQuantiteEnStock(produit, this.stockChocolat.getQuantiteEnStock(produit) - livraison);;
 		return livraison;
-		//End Kevin
+		//End Raph/Kevin
 	}
 
 	
 	public void encaisser(double montant, ContratCadre<Chocolat> cc) {
 
-		//Begin Kevin/Raph
+		//Begin Raph
 		if (montant<0.0) {
 			throw new IllegalArgumentException("Appel de la methode encaisser de Transformateur1 avec un montant negatif");
 		}
 		this.soldeBancaire.ajouter(this,  montant);
-		//End Kevin/Raphh
+		
+		//End Raph
+
 
 		
 		
