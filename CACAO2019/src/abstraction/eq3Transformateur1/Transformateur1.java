@@ -64,8 +64,11 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		// stock de chocolat
 		this.stockChocolat = new Stock<Chocolat>();
 		this.stockChocolat.setQuantiteEnStock(Chocolat.MG_NE_HP, 0.);
+		this.stockChocolat.setCoutEnFeves(Chocolat.MG_NE_HP, 0.1);
 		this.stockChocolat.setQuantiteEnStock(Chocolat.MG_NE_SHP, 0.);
+		this.stockChocolat.setCoutEnFeves(Chocolat.MG_NE_SHP, 0.075);
 		this.stockChocolat.setQuantiteEnStock(Chocolat.MG_E_SHP, 0.);
+		this.stockChocolat.setCoutEnFeves(Chocolat.MG_E_SHP, 0.120);
 		
  		this.iStockFeves = new Indicateur("EQ3 stock feves", this, 0);
  		this.iStockChocolat = new Indicateur("EQ3 stock chocolat", this, 0);
@@ -117,6 +120,11 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		// TODO pas fini encore
 		// transformer les differents produits
 		// updater les indicateurs, stocks et solde bancaire
+		
+		// les quantites de cacao utilisees sont celles specifiees dans le cahier des charges v2
+		ArrayList<Double> quantitesTransformees = new ArrayList<Double>();
+		//for ()
+		
 		double quantiteTransformee = Math.random()*Math.min(100, this.iStockFeves.getValeur()); // on suppose qu'on a un stock infini de sucre
 		this.iStockFeves.retirer(this, quantiteTransformee);
 		this.iStockChocolat.ajouter(this, (2*quantiteTransformee));// 50% cacao, 50% sucre
