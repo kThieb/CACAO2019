@@ -211,7 +211,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 
 	@Override
 	public void proposerPrixAcheteur(ContratCadre<Feve> cc) {
-		//begin raphael
+		//begin raphaelle
 		double prixVendeur = cc.getListePrixAuKilo().get(0);
 		int nbAchatsMoyenne=Math.min(10,this.prixAchats.getHistorique().getTaille());//Nombre d'achats pris en compte pour le calcul de la moyenne (au plus 10)
 		double moyenneDerniersAchats=0;
