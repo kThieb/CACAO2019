@@ -54,6 +54,8 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 		this.numStep = 1;
 	}
 	
+	
+	
 	public Producteur2() {
 		this(Feve.FORASTERO_MG_NEQ, 75000000, 220000000, 100000000);
 	}
