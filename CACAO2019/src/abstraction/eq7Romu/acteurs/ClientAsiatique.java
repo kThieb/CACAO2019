@@ -7,36 +7,34 @@ import abstraction.fourni.IActeur;
 import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 
-public class ClientEuropeen extends Client2 {
-
+public class ClientAsiatique extends Client2 {
+	
 	private int numero;
 	private Journal journal;
 	private Chocolat uniqueProduit;
 	private Double quantiteParStep;
 	
-
 	public String getNom() {
 		return "CL"+this.numero+"Romu";
 	}
 
 	public void initialiser() {
 	}
-
-	public ClientEuropeen(int numero, int noteprix, int notequalite, int notequantite, int notefidelite) {
+	
+	public ClientAsiatique(int numero, int noteprix, int notequalite, int notequantite, int notefidelite) {
 		super(numero, noteprix, notequalite, notequantite, notefidelite) ;
 		// TODO Auto-generated constructor stub
 	}
 
-
 	public void next() {
 		this.journal.ajouter("Step "+Monde.LE_MONDE.getStep()+" : tentative d'achat de "+quantiteParStep+" de "+this.uniqueProduit+" ____________");
 		double quantiteAchetee = 0.0;
-		IDistributeurChocolat distributeurDeQualite = null;
-		double meilleureQualite = 0.0;
+		IDistributeurChocolat distributeurLeMoinsCher = null;
+		double meilleurPrix = Double.MAX_VALUE;
 		double quantiteEnVente = 0.0;
 		double quantiteEnVenteMeilleur = 0.0;
 		do {
-			distributeurDeQualite = null;
+			distributeurLeMoinsCher = null;
 			quantiteEnVenteMeilleur = 0.0;
 			for (IActeur acteur : Monde.LE_MONDE.getActeurs()) {
 				if (acteur instanceof IDistributeurChocolat) {
@@ -46,21 +44,28 @@ public class ClientEuropeen extends Client2 {
 						quantiteEnVente = s.get(this.uniqueProduit);
 						this.journal.ajouter("Step "+Monde.LE_MONDE.getStep()+" : "+((IActeur)dist).getNom()+" vend la quantite de "+quantiteEnVente+" a "+dist.getPrix(this.uniqueProduit));
 						if (quantiteEnVente>0.0) { // dist vend le chocolat recherche
-							if (distributeurDeQualite==null || dist.getNoteQualite(this.uniqueProduit)<meilleureQualite) {
-								distributeurDeQualite = dist;
+							if (distributeurLeMoinsCher==null || dist.getPrix(this.uniqueProduit)<meilleurPrix) {
+								distributeurLeMoinsCher = dist;
 								quantiteEnVenteMeilleur = quantiteEnVente;
-								meilleureQualite = dist.getNoteQualite(this.uniqueProduit);
+								meilleurPrix = dist.getPrix(this.uniqueProduit);
 							}
 						}
 					}
 				}
 			}
-			if (quantiteAchetee<this.quantiteParStep && distributeurDeQualite!=null) {
+			//			if (distributeurLeMoinsCher==null) {
+			//				System.out.println("for termine. Meilleur=null");
+			//			} else {
+			//			    System.out.println("for termine. Meilleur="+((IActeur)distributeurLeMoinsCher).getNom()+" quantite="+quantiteEnVente+" dejaAchetee="+quantiteAchetee);
+			//			}
+			if (quantiteAchetee<this.quantiteParStep && distributeurLeMoinsCher!=null) {
 				double quantiteCommandee = Math.min(this.quantiteParStep-quantiteAchetee, quantiteEnVenteMeilleur);
-				double quantiteVendue = distributeurDeQualite.vendre(this.uniqueProduit, quantiteCommandee);
+				double quantiteVendue = distributeurLeMoinsCher.vendre(this.uniqueProduit, quantiteCommandee);
 				quantiteAchetee+=quantiteVendue;
-				this.journal.ajouter("Step "+Monde.LE_MONDE.getStep()+" : Achat de "+quantiteVendue+" chez "+((IActeur)distributeurDeQualite).getNom()+" au prix de "+meilleureQualite);
+				this.journal.ajouter("Step "+Monde.LE_MONDE.getStep()+" : Achat de "+quantiteVendue+" chez "+((IActeur)distributeurLeMoinsCher).getNom()+" au prix de "+meilleurPrix);
 			}
-		} while (quantiteAchetee<this.quantiteParStep && distributeurDeQualite!=null);
+			//			Clavier.lireString();
+		} while (quantiteAchetee<this.quantiteParStep && distributeurLeMoinsCher!=null);
 	}
+
 }
