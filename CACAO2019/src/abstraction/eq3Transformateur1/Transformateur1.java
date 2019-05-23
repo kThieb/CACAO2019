@@ -151,7 +151,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 				if (acteur instanceof IVendeurContratCadre) {
 					IVendeurContratCadre vacteur = (IVendeurContratCadre)acteur;
 					StockEnVente stock = vacteur.getStockEnVente();
-					if (stock.get(this.fevesAchetees)>=100.0) {// on souhaite faire des contrats d'au moins 100kg
+					if (stock.get(this.fevesAchetees)>=1000000.0) {// on souhaite faire des contrats d'au moins 1000 tonnes
 						this.journal.ajouter("   "+(acteur.getNom())+" vend "+stock.get(this.fevesAchetees)+" de "+this.fevesAchetees);
 						vendeurs.add((IVendeurContratCadre<Feve>)vacteur);
 					} else {
@@ -161,11 +161,11 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 			}
 			if (vendeurs.size()>=1) {
 				IVendeurContratCadre<Feve> vendeur = vendeurs.get( (int)( Math.random()*vendeurs.size())); // ici tire au hasard plutot que de tenir compte des stocks en vente et des prix
-				// On determine la quantite qu'on peut esperer avec le tiers du reste de notre solde bancaire
-                this.journal.ajouter(" Determination de la quantite achetable avec une somme de "+String.format("%.3f",solde/3.0));
-				double quantite = 100.0; // On ne cherche pas a faire de contrat pour moins de 100 kg
+				// On determine la quantite qu'on peut esperer avec le reste de notre solde bancaire
+                //this.journal.ajouter(" Determination de la quantite achetable avec une somme de "+String.format("%.3f",solde*2.9/3.0));
+				double quantite = 1000000.0; // On ne cherche pas a faire de contrat pour moins de 1000 tonnes
 				double prix = vendeur.getPrix(this.fevesAchetees, quantite);
-				while (!Double.isNaN(prix) && prix*quantite<solde/3.0 ) {
+				while (!Double.isNaN(prix) && prix*quantite<solde ) {
 					quantite=quantite*1.5;
 					prix = vendeur.getPrix(this.fevesAchetees,  quantite);
 					this.journal.ajouter(" quantite "+String.format("%.3f",quantite)+" --> "+String.format("%.3f",quantite*prix));
