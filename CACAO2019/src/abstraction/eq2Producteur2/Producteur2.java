@@ -114,25 +114,26 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 
 	@Override
 	public void proposerPrixVendeur(ContratCadre<Feve> cc) {
-		if (cc.getListePrixAuKilo().size()==0) {
+		if (cc.getListePrixAuKilo().size()==0) { //On vérifie qu'on a un prix à proposer
 			cc.ajouterPrixAuKilo(getPrix(cc.getProduit(), cc.getQuantite()));
 		} else {
-			double prixVendeur = cc.getListePrixAuKilo().get(0);
+			double prixVendeur = cc.getListePrixAuKilo().get(cc.getListePrixAuKilo().size()-1);
 			double prixAcheteur = cc.getPrixAuKilo();
-			cc.ajouterPrixAuKilo(prixVendeur);
+			cc.ajouterPrixAuKilo(prixVendeur); //Le premier prix proposé est la prix au kilo initial
 			
 			if ((prixVendeur - prixAcheteur) < 0.05 * prixVendeur) { //On arrête la négociation si la différence de prix est suffisamment faible (5% du prixVendeur)
 				prixVendeur = prixAcheteur;
 				cc.getListePrixAuKilo().add(prixVendeur);
 			} else {
 				
-			if (prixAcheteur>=0.75*prixVendeur) { // on ne fait une proposition que si l'acheteur ne demande pas un prix trop bas.
+				if (prixAcheteur>=0.75*prixVendeur) { // on ne fait une proposition que si l'acheteur ne demande pas un prix trop bas.
 				prixVendeur = prixAcheteur * 1.1; // on augmente le prix proposé par l'acheteur de 10%
 				cc.getListePrixAuKilo().add(prixVendeur);
-			} else {
+				
+				} else {
 				prixVendeur *= 0.90; //On diminue le prix proposé de 10%
 				cc.getListePrixAuKilo().add(prixVendeur);
-			}
+				}
 			}
 		}
 	}
