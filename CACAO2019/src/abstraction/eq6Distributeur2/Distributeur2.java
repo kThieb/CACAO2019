@@ -52,28 +52,26 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 		
 		//NORDIN et Caroline
 
-		
-		this.soldeBancaire = new Indicateur("SoldeBancaire", this, 1000);
 
 		// Partie se référant au journal
 		this.journal = new Journal ("Marché du Chocolat");
-		this.soldeBancaire = new Indicateur("EQ6 Solde Bancaire", this, 10000);
+		this.soldeBancaire = new Indicateur("EQ6 Solde Bancaire", this, 100000);
 
 		Monde.LE_MONDE.ajouterIndicateur(this.soldeBancaire);
 		
 		//Chnager par nom du chocolat pour que le getNom de indcateur renvoie le type chocolat
-		this.stockMG_E_SHP = new Indicateur("EQ6 " + Chocolat.MG_E_SHP.toString(), this, 10);
+		this.stockMG_E_SHP = new Indicateur("EQ6 " + Chocolat.MG_E_SHP.toString(), this, 5000);
 		Monde.LE_MONDE.ajouterIndicateur(this.stockMG_E_SHP);
-		this.stockMG_NE_SHP = new Indicateur("EQ6 " + Chocolat.MG_NE_SHP.toString(), this,10);
+		this.stockMG_NE_SHP = new Indicateur("EQ6 " + Chocolat.MG_NE_SHP.toString(), this,5000);
 		Monde.LE_MONDE.ajouterIndicateur(this.stockMG_NE_SHP);
-		this.stockMG_NE_HP = new Indicateur("EQ6 " + Chocolat.MG_NE_HP.toString(), this, 10);
+		this.stockMG_NE_HP = new Indicateur("EQ6 " + Chocolat.MG_NE_HP.toString(), this, 5000);
 		Monde.LE_MONDE.ajouterIndicateur(this.stockMG_NE_HP);
-		this.stockHG_E_SHP = new Indicateur("EQ6 "+ Chocolat.HG_E_SHP.toString(), this, 10);
+		this.stockHG_E_SHP = new Indicateur("EQ6 "+ Chocolat.HG_E_SHP.toString(), this, 5000);
 		Monde.LE_MONDE.ajouterIndicateur(this.stockHG_E_SHP);
 		
-		this.prixMG_E_SHP = new Indicateur("EQ6 " + Chocolat.MG_E_SHP.toString(), this, 10);
+		this.prixMG_E_SHP = new Indicateur("EQ6 " + Chocolat.MG_E_SHP.toString(), this, 5);
 		Monde.LE_MONDE.ajouterIndicateur(this.prixMG_E_SHP);
-		this.prixMG_NE_SHP = new Indicateur("EQ6 " + Chocolat.MG_NE_SHP.toString(), this, 10);
+		this.prixMG_NE_SHP = new Indicateur("EQ6 " + Chocolat.MG_NE_SHP.toString(), this, 5);
 		Monde.LE_MONDE.ajouterIndicateur(this.prixMG_NE_SHP);
 		this.prixMG_NE_HP = new Indicateur("EQ6 "+ Chocolat.MG_NE_HP.toString(), this, 10);
 		Monde.LE_MONDE.ajouterIndicateur(this.prixMG_NE_HP);
@@ -84,9 +82,12 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 		Monde.LE_MONDE.ajouterJournal(this.journal);
 	
 		this.contratsEnCours = new ArrayList<ContratCadre<Chocolat>>();
-		
-		this.marge = 1.5; 
-
+		this.margeParProduit = new HashMap<Chocolat, Double>();
+		this.margeParProduit.put(Chocolat.HG_E_SHP, 1.5);
+		this.margeParProduit.put(Chocolat.MG_E_SHP, 1.5);
+		this.margeParProduit.put(Chocolat.MG_NE_SHP,1.5);
+		this.margeParProduit.put(Chocolat.MG_NE_HP, 1.5);
+		this.marge= 1.5;
 	}
 
 
@@ -219,6 +220,10 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 	
 	public double getMarge() {
 		return marge;
+	}
+	
+	public double getMargeParProduit(Chocolat c) {
+		return (this.margeParProduit.containsKey(c)? this.margeParProduit.get(c) : 0.0);
 	}
 
 	public void setMarge(double marge) {
@@ -429,7 +434,6 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 
 	@Override//Caroline
 	public void notifierAcheteur(ContratCadre<Chocolat> cc) {
-		cc.signer();
 		this.journal.ajouter("Nouveau Contrat" + cc.toString());
 		if (cc!=null) {
 			this.getContratsEnCours().add(cc);
@@ -438,21 +442,15 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 
 	@Override//Caroline
 	public void receptionner(Chocolat produit, double quantite, ContratCadre<Chocolat> cc) {
-		boolean penality = false;
 		this.journal.ajouter("Réception du produit" + produit.toString() + "en quantité" + quantite + "au sujet du contrat " + cc.toString());
 		if (cc != null && quantite >0 && cc.getProduit().equals(produit)) {
 			
 			if (quantite != cc.getEcheancier().getQuantite(Monde.LE_MONDE.getStep())) {
-				penality = true;
 			}
 		
 			this.getIndicateurStock(cc.getProduit()).ajouter(this, quantite);
 			
-			cc.livrer(quantite);
-			
-			if (penality) {
-				cc.penaliteLivraison();
-			} 	
+				
 		}
 	}
 
@@ -466,19 +464,13 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 		
 		if (cc!=null && this.soldeBancaire.getValeur() >montant + 100 ) {
 			this.soldeBancaire.retirer(this,montant);
-			cc.payer(montant);
 			montantpaye = montant;
 		} 
 		else {
 			if (montant-100>0) {
 				this.soldeBancaire.retirer(this,montant-100);
-				cc.payer(  montant-100);
 				montantpaye = montant-100;
-			} else {
-				cc.payer(0.0);
-			}
-			
-			cc.penalitePaiement();
+			} 
 		}
 		this.journal.ajouter(montantpaye + "sur le contrat" + cc.toString());
 		return montantpaye;
