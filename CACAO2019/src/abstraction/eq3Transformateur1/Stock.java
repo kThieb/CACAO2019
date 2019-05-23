@@ -29,6 +29,7 @@ public class Stock<T> {
 		}
 		return resultat;
 	}
+	
 	public void setQuantiteEnStock(T produit, double quantite) {
 		if (quantite >= 0.) { this.stock.put(produit, quantite); }
 		else { this.stock.put(produit, 0.); }
