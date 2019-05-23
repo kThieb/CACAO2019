@@ -150,23 +150,23 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 		if (produit==null || quantite<=0.0 || this.getStockEnVente().get(produit)<quantite) {
 
 		
-		return this.prixVente;
+		return this.gestionnaireFeve.getPrixVente(fevesProduites);
 		} 
 	
 		if (quantite > 10000000 && quantite < 20000000) {
-			return this.prixVente * 0.95;
+			return this.gestionnaireFeve.getPrixVente(fevesProduites) * 0.95;
 		}
 		if (quantite > 20000000) {
-			return this.prixVente * 0.9;
+			return this.gestionnaireFeve.getPrixVente(fevesProduites) * 0.9;
 		}
 		if (this.contratsEnCours.size() >= 1) {
 			ContratCadre<Feve> cc = this.contratsEnCours.get(this.contratsEnCours.size()-1);
 			double dernierPrix = cc.getPrixAuKilo();
-			if (dernierPrix > prixVente * 0.9 && prixVente * 1.05 < PRIX_MAX) {
-				this.prixVente *= 1.05;
+			if (dernierPrix > this.gestionnaireFeve.getPrixVente(fevesProduites) * 0.9 && this.gestionnaireFeve.getPrixVente(fevesProduites) * 1.05 < PRIX_MAX) {
+				this.gestionnaireFeve.get(fevesProduites).setPrix(this, this.gestionnaireFeve.getPrixVente(fevesProduites)*1.05);
 			}
-			else if (dernierPrix < prixVente * 0.8 && prixVente * 0.95 > PRIX_MIN) {
-				this.prixVente *= 0.95;
+			else if (dernierPrix < this.gestionnaireFeve.getPrixVente(fevesProduites) * 0.8 && this.gestionnaireFeve.getPrixVente(fevesProduites) * 0.95 > PRIX_MIN) {
+				this.gestionnaireFeve.get(fevesProduites).setPrix(this, this.gestionnaireFeve.getPrixVente(fevesProduites)*0.95);
 			}
 			
 		}
