@@ -40,6 +40,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	//end sacha
 	//begin Raphael
 	private Indicateur prixAchats;
+	private double facteurTransformation;
 	//end Raphael
 	
 	// begin eve : A MODIFIER
@@ -269,7 +270,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	
 	@Override
 	public double getPrix(Chocolat produit, Double quantite) {
-		//Begin Kevin
+		//Begin Raph/Kevin
 		if (produit==null || quantite<=0.0 || this.getStockEnVente().get(produit)<quantite) {
 			return Double.NaN;
 		}
@@ -283,10 +284,10 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 			}
 
 			prixMoyen = prixMoyen/ this.contratsFeveEnCours.size();
-			return prixMoyen *(1.0+this.marge);
+			return (prixMoyen/this.facteurTransformation) *(1.0+this.marge);
 		}
 		
-		//End Kevin
+		//End Raph/Kevin
 	}
 
 	@Override
@@ -309,7 +310,37 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 
 	@Override
 	public void proposerPrixVendeur(ContratCadre<Chocolat> cc) {
-		// TODO Auto-generated method stub
+		//Begin Raphael
+		
+		if (cc.getListePrixAuKilo().size()==0) {
+			cc.ajouterPrixAuKilo(getPrix(cc.getProduit(), cc.getQuantite()));
+		} else {
+			double prixVendeur = cc.getListePrixAuKilo().get(0);
+			double prixAcheteur = cc.getPrixAuKilo();
+			if (prixAcheteur>=0.75*prixVendeur) { // on ne fait une proposition que si l'acheteur ne demande pas un prix trop bas.
+				if (Math.random()<0.25) { // probabilite de 25% d'accepter
+					cc.ajouterPrixAuKilo(cc.getPrixAuKilo());
+				} else {
+					cc.ajouterPrixAuKilo((prixVendeur*(0.9+Math.random()*0.1))); // rabais de 10% max
+				}
+			}
+		}
+		
+		
+		
+		double prixVendeur = cc.getListePrixAuKilo().get(0);
+		int nbAchatsMoyenne=Math.min(10,this.prixAchats.getHistorique().getTaille());//Nombre d'achats pris en compte pour le calcul de la moyenne (au plus 10)
+		double moyenneDerniersAchats=0;
+		for(int i=0;i<nbAchatsMoyenne;i++) {//Calcul de la moyenne des derniers prix d'achat
+			moyenneDerniersAchats+=this.prixAchats.getHistorique().get(i).getValeur();
+		}
+		moyenneDerniersAchats=moyenneDerniersAchats/nbAchatsMoyenne;
+		if (prixVendeur<moyenneDerniersAchats*1.1) { // On accepte les prix inférieurs à 110% du prix moyen des derniers achats
+			cc.ajouterPrixAuKilo(cc.getPrixAuKilo());
+		} else {
+			cc.ajouterPrixAuKilo(moyenneDerniersAchats); // Sinon on propose un achat au prix moyen d'achat des dernièrs achats
+		}
+		//End Raphael
 		
 	}
 
