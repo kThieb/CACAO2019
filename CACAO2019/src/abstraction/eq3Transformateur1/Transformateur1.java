@@ -1,10 +1,7 @@
 package abstraction.eq3Transformateur1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map.Entry;
-
 import abstraction.eq3Transformateur1.Stock;
 import abstraction.eq7Romu.produits.Chocolat;
 import abstraction.eq7Romu.produits.Feve;
@@ -65,8 +62,11 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		// stock de chocolat
 		this.stockChocolat = new Stock<Chocolat>();
 		this.stockChocolat.setQuantiteEnStock(Chocolat.MG_NE_HP, 0.);
+		this.stockChocolat.setCoutEnFeves(Chocolat.MG_NE_HP, 0.1);
 		this.stockChocolat.setQuantiteEnStock(Chocolat.MG_NE_SHP, 0.);
+		this.stockChocolat.setCoutEnFeves(Chocolat.MG_NE_SHP, 0.075);
 		this.stockChocolat.setQuantiteEnStock(Chocolat.MG_E_SHP, 0.);
+		this.stockChocolat.setCoutEnFeves(Chocolat.MG_E_SHP, 0.120);
 		
  		this.iStockFeves = new Indicateur("EQ3 stock feves", this, 0);
  		this.iStockChocolat = new Indicateur("EQ3 stock chocolat", this, 0);
@@ -115,6 +115,17 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	public void next() {
 		// -------------------------- begin eve
 		// transformation
+		// TODO pas fini encore
+		// transformer les differents produits
+		// updater les indicateurs, stocks et solde bancaire
+		
+		// les quantites de cacao utilisees sont celles specifiees dans le cahier des charges v2
+		ArrayList<Double> quantitesTransformees = new ArrayList<Double>(); 
+		ArrayList<Chocolat> aProduire = this.stockChocolat.getProduitsEnStock();
+		for (Chocolat p: aProduire) {
+			quantitesTransformees.add(this.stockChocolat.getCoutEnFeves(p)*100);
+		}
+		
 		double quantiteTransformee = Math.random()*Math.min(100, this.iStockFeves.getValeur()); // on suppose qu'on a un stock infini de sucre
 		this.iStockFeves.retirer(this, quantiteTransformee);
 		this.iStockChocolat.ajouter(this, (2*quantiteTransformee));// 50% cacao, 50% sucre
@@ -185,6 +196,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		return res;
 	}
 	//end sacha
+	
 
 	@Override
 	public void proposerEcheancierAcheteur(ContratCadre<Feve> cc) {
@@ -192,7 +204,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		if (cc.getEcheancier()==null) { // il n'y a pas encore eu de contre-proposition de la part du vendeur
 			cc.ajouterEcheancier(new Echeancier(Monde.LE_MONDE.getStep(), 12, cc.getQuantite()/12));
 		} else {
-			if ((this.contratsFeveEnCours.isEmpty())&&(this.stockFeves.get(cc.getProduit()).getQuantiteEnStock() < stockLim)) { // On accepte forcément la proposition si on a pas de contrat cadre en cours et que le stock est inférieur à une quantité arbitraire
+			if ((this.contratsFeveEnCours.isEmpty())&&(this.stockFeves.getQuantiteEnStock(cc.getProduit()) < stockLim)) { // On accepte forcément la proposition si on a pas de contrat cadre en cours et que le stock est inférieur à une quantité arbitraire
 				cc.ajouterEcheancier(new Echeancier(cc.getEcheancier()));
 			} 
 			if (Math.random() < 0.33) {
@@ -208,7 +220,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 
 	@Override
 	public void proposerPrixAcheteur(ContratCadre<Feve> cc) {
-		//begin raphael
+		//begin raphaelle
 		double prixVendeur = cc.getListePrixAuKilo().get(0);
 		int nbAchatsMoyenne=Math.min(10,this.prixAchats.getHistorique().getTaille());//Nombre d'achats pris en compte pour le calcul de la moyenne (au plus 10)
 		double moyenneDerniersAchats=0;
@@ -240,7 +252,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		if (quantite<=0.0) {
 			throw new IllegalArgumentException("Appel de la methode receptionner de Transformateur1 avec une quantite egale a "+quantite);
 		}
-		this.stockFeves.put(produit, new Stock(quantite));
+		this.stockFeves.setQuantiteEnStock(produit, this.stockFeves.getQuantiteEnStock(produit) + quantite);
 		
 	}
 //end sacha
@@ -260,12 +272,25 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	// -------------------------------------------------------------------------------------------
 
 
+	//public StockEnVente<Chocolat> getStockEnVente() {
+	//	StockEnVente<Chocolat> stock = new StockEnVente<Chocolat>();
+	//	for (Entry<Chocolat, > choco : this.stockChocolat.getProduitsEnStock()) {
+	//		stock.ajouter(choco.getKey(), choco.getValue().getQuantiteEnStock());
+	//	};
+	//	return stock;
+	//}
+	
 	public StockEnVente<Chocolat> getStockEnVente() {
-		StockEnVente<Chocolat> stock = new StockEnVente<Chocolat>();
-		for (Entry<Chocolat, Stock> choco : this.stockChocolat.entrySet()) {
-			stock.ajouter(choco.getKey(), choco.getValue().getQuantiteEnStock());
-		};
-		return stock;
+		double stockRestant = 0 ;
+		Chocolat choco = Chocolat.MG_NE_HP ;
+		StockEnVente<Chocolat> res = new StockEnVente<Chocolat>();
+		for (ContratCadre<Chocolat> cc : this.contratsChocolatEnCours) {
+			choco = cc.getProduit();
+			stockRestant = stockChocolat.getQuantiteEnStock(choco);
+			stockRestant = stockRestant - cc.getQuantiteRestantALivrer();
+			res.ajouter(choco, stockRestant);
+		}
+		return res;
 	}
 	
 	@Override
@@ -327,7 +352,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		}
 		
 		
-		
+		/*
 		double prixVendeur = cc.getListePrixAuKilo().get(0);
 		int nbAchatsMoyenne=Math.min(10,this.prixAchats.getHistorique().getTaille());//Nombre d'achats pris en compte pour le calcul de la moyenne (au plus 10)
 		double moyenneDerniersAchats=0;
@@ -340,11 +365,10 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		} else {
 			cc.ajouterPrixAuKilo(moyenneDerniersAchats); // Sinon on propose un achat au prix moyen d'achat des dernièrs achats
 		}
+		*/
 		//End Raphael
-		
 	}
 
-	
 	public void notifierVendeur(ContratCadre<Chocolat> cc) {
 		//Begin Kevin
 		this.contratsChocolatEnCours.add(cc);
@@ -352,36 +376,29 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	}
 
 	
+	
 	public double livrer(Chocolat produit, double quantite, ContratCadre<Chocolat> cc) {
-		//Begin Kevin
-		if (produit==null || stockChocolat.containsKey(produit)) {
+		//Begin Raph/Kevin
+		if (produit==null || !stockChocolat.getProduitsEnStock().contains(produit)) {
 			throw new IllegalArgumentException("Appel de la methode livrer de Transformateur1 avec un produit ne correspondant pas à un des chocolats produits");
 		}
-		double livraison = Math.min(quantite, this.stockChocolat.get(produit).getQuantiteEnStock());
-		this.stockChocolat.get(produit).setQuantiteEnStock(this.stockChocolat.get(produit).getQuantiteEnStock() - livraison);
+		double livraison = Math.min(quantite, this.stockChocolat.getQuantiteEnStock(produit));
+		this.stockChocolat.setQuantiteEnStock(produit, this.stockChocolat.getQuantiteEnStock(produit) - livraison);;
 		return livraison;
-		//End Kevin
-		
-		//if (produit==null || !this.stockChocolat.keySet().contains(produit)) {
-		//	throw new IllegalArgumentException("Appel de la methode livrer de Transformateur1 avec un produit ne correspondant pas au chocolat produit");
-		//}
-		//if (this.stockChocolat.keySet().contains(produit) && this.stockChocolat.get(produit).getQuantiteEnStock()<quantite) {
-		//	throw new IllegalArgumentException("Appel de la methode livrer de Transformateur1 avec un quantite superieure au stock");
-		//}
-		//double livraison = this.stockChocolat.get(produit).getQuantiteEnStock();
-		//this.stockChocolat.retirer(this, livraison);
-		//return livraison;
+		//End Raph/Kevin
 	}
 
-	@Override
+	
 	public void encaisser(double montant, ContratCadre<Chocolat> cc) {
 
-		//Begin Kevin/Raph
+		//Begin Raph
 		if (montant<0.0) {
 			throw new IllegalArgumentException("Appel de la methode encaisser de Transformateur1 avec un montant negatif");
 		}
 		this.soldeBancaire.ajouter(this,  montant);
-		//End Kevin/Raph
+		
+		//End Raph
+
 
 		
 		
