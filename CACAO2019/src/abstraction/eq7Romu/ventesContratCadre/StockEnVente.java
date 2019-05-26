@@ -12,6 +12,7 @@ public class StockEnVente<I> {
 
 	public StockEnVente() {
 		this.stockEnVente = new HashMap<I, Double>();
+		
 	}
 
 	/**
