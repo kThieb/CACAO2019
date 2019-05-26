@@ -40,6 +40,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	private Indicateur prixAchats;
 	private double facteurTransformation;
 	private Marge margeChocolats;
+	private CoutEnFeves coutEnFeves;
 	private Indicateur iMargeBrute;
 	private Indicateur iCoutsProd;
 	//end Raphael
@@ -66,11 +67,8 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 				// stock de chocolat
 				this.stockChocolat = new Stock<Chocolat>();
 				this.stockChocolat.setQuantiteEnStock(Chocolat.MG_NE_HP, 0.);
-				this.stockChocolat.setCoutEnFeves(Chocolat.MG_NE_HP, 0.1);
 				this.stockChocolat.setQuantiteEnStock(Chocolat.MG_NE_SHP, 0.);
-				this.stockChocolat.setCoutEnFeves(Chocolat.MG_NE_SHP, 0.075);
 				this.stockChocolat.setQuantiteEnStock(Chocolat.MG_E_SHP, 0.);
-				this.stockChocolat.setCoutEnFeves(Chocolat.MG_E_SHP, 0.120);
 				
 		 		this.iStockFeves = new Indicateur("EQ3 stock feves", this, 0);
 		 		this.iStockChocolat = new Indicateur("EQ3 stock chocolat", this, 0);
@@ -78,7 +76,13 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 				// --------------------------------- end eve
 		 		
 		 		// --------------------------------- begin Raph
-				
+				//Feves utilisees pour la production des différents chocolats A MODIFIER AVEC LES BONNES VALEURS
+		 		this.coutEnFeves = new CoutEnFeves();
+		 		this.coutEnFeves.setCoutEnFeves(Chocolat.MG_NE_HP, Feve.CRIOLLO_HG_EQ, 1.);
+		 		this.coutEnFeves.setCoutEnFeves(Chocolat.MG_NE_HP, Feve.TRINITARIO_MG_NEQ, 1.);
+		 		this.coutEnFeves.setCoutEnFeves(Chocolat.MG_NE_SHP, Feve.FORASTERO_MG_EQ, 1.);
+		 		this.coutEnFeves.setCoutEnFeves(Chocolat.MG_NE_SHP, Feve.MERCEDES_MG_EQ, 1.);
+		 		
 				// Marges sur chocolats A MODIFIER AVEC LES BONNES VALEURS
 				this.margeChocolats = new Marge();
 				this.margeChocolats.setMargeBrute(Chocolat.MG_NE_HP, 0.);

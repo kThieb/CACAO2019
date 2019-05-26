@@ -36,9 +36,9 @@ private HashMap<Chocolat, Double> margeBrute;
 	}
 	public void setMargeBrute(Chocolat produit, double marge) {
 		if (marge >= 0.) {
-			this.coutProd.put(produit, marge);
+			this.margeBrute.put(produit, marge);
 		} else {
-			this.coutProd.put(produit, 0.);
+			this.margeBrute.put(produit, 0.);
 		}
 	}
 }

@@ -43,18 +43,8 @@ public class Stock<T> {
 	
 	// ----------------- methodes specifiques aux chocolats (a retirer plus tard)
 	
-	public double getCoutEnFeves(T produit) throws IllegalArgumentException {
-		//Begin Raphael
-		if (produit instanceof Chocolat) {
-			if (estEnStock(produit)) {
-				double cout = this.stock.get(produit).get("cout en feves");
-				return cout;
-			}
-			else { throw new IllegalArgumentException("La feve demandee n'est pas en stock"); }
-		}
-		else { throw new IllegalArgumentException("Le produit passe en argument n'est pas une feve"); }
-		//End Raphael
-		/*
+	public double getCoutEnFeves(T produit){
+
 		if (produit instanceof Feve) {
 			if (estEnStock(produit)) {
 				double cout = this.stock.get(produit).get("cout en feves");
@@ -63,12 +53,8 @@ public class Stock<T> {
 			else { throw new IllegalArgumentException("La feve demandee n'est pas en stock"); }
 		}
 		else { throw new IllegalArgumentException("Le produit passe en argument n'est pas une feve"); }
-		*/
+		
 	}
-	
-	
-	
-	
 	
 	public ArrayList<Feve> getFevesUtilisees(T produit) {
 		// TODO Eve
@@ -84,11 +70,5 @@ public class Stock<T> {
 		if (quantite >= 0.) { this.stock.get(produit).put("quantite", quantite); }
 		else { this.stock.get(produit).put("quantite", 0.); }
 	}
-	public void setCoutEnFeves(T produit, double cout) {
-		if (cout >= 0.) { this.stock.get(produit).put("cout en feves", cout); }
-		else { this.stock.get(produit).put("cout en feves", 0.); }
-	}
-	
-	
-	
+
 }
