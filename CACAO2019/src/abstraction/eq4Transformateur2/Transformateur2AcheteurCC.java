@@ -84,7 +84,7 @@ public class Transformateur2AcheteurCC implements IAcheteurContratCadre<Feve> {
 				prix = vendeur.getPrix(minProduit, qté);
 			}
 
-			System.out.println("Nouveau contrat cadre - " + vendeur.toString() + " " + minProduit.name() + " " + qté);
+			//System.out.println("Nouveau contrat cadre - " + vendeur.toString() + " " + minProduit.name() + " " + qté);
 			return new ContratCadre<Feve>(t2, vendeur, minProduit, qté);	
 		}
 		else
