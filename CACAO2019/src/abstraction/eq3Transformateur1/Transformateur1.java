@@ -3,6 +3,7 @@ package abstraction.eq3Transformateur1;
 import java.util.ArrayList;
 import java.util.List;
 import abstraction.eq3Transformateur1.Stock;
+import abstraction.eq3Transformateur1.Marge;
 import abstraction.eq7Romu.produits.Chocolat;
 import abstraction.eq7Romu.produits.Feve;
 import abstraction.eq7Romu.ventesContratCadre.ContratCadre;
@@ -38,6 +39,9 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	//begin Raphael
 	private Indicateur prixAchats;
 	private double facteurTransformation;
+	private Marge margeChocolats;
+	private Indicateur iMargeBrute;
+	private Indicateur iCoutsProd;
 	//end Raphael
 	
 	// begin eve : A MODIFIER
@@ -49,29 +53,45 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		
 		// --------------------------------- begin eve
 		
-		// stock de feves
-		this.stockFeves = new Stock<Feve>();
-		this.stockFeves.setQuantiteEnStock(Feve.CRIOLLO_HG_EQ, 0.);
-		this.stockFeves.setQuantiteEnStock(Feve.FORASTERO_MG_EQ, 0.);
-		this.stockFeves.setQuantiteEnStock(Feve.FORASTERO_MG_NEQ, 0.);
-		this.stockFeves.setQuantiteEnStock(Feve.MERCEDES_MG_EQ, 0.);
-		this.stockFeves.setQuantiteEnStock(Feve.MERCEDES_MG_NEQ, 0.);
-		this.stockFeves.setQuantiteEnStock(Feve.TRINITARIO_MG_EQ, 0.);
-		this.stockFeves.setQuantiteEnStock(Feve.TRINITARIO_MG_NEQ, 0.);
-		
-		// stock de chocolat
-		this.stockChocolat = new Stock<Chocolat>();
-		this.stockChocolat.setQuantiteEnStock(Chocolat.MG_NE_HP, 0.);
-		this.stockChocolat.setCoutEnFeves(Chocolat.MG_NE_HP, 0.1);
-		this.stockChocolat.setQuantiteEnStock(Chocolat.MG_NE_SHP, 0.);
-		this.stockChocolat.setCoutEnFeves(Chocolat.MG_NE_SHP, 0.075);
-		this.stockChocolat.setQuantiteEnStock(Chocolat.MG_E_SHP, 0.);
-		this.stockChocolat.setCoutEnFeves(Chocolat.MG_E_SHP, 0.120);
-		
- 		this.iStockFeves = new Indicateur("EQ3 stock feves", this, 0);
- 		this.iStockChocolat = new Indicateur("EQ3 stock chocolat", this, 0);
- 		
-		// --------------------------------- end eve
+				// stock de feves
+				this.stockFeves = new Stock<Feve>();
+				this.stockFeves.setQuantiteEnStock(Feve.CRIOLLO_HG_EQ, 0.);
+				this.stockFeves.setQuantiteEnStock(Feve.FORASTERO_MG_EQ, 0.);
+				this.stockFeves.setQuantiteEnStock(Feve.FORASTERO_MG_NEQ, 0.);
+				this.stockFeves.setQuantiteEnStock(Feve.MERCEDES_MG_EQ, 0.);
+				this.stockFeves.setQuantiteEnStock(Feve.MERCEDES_MG_NEQ, 0.);
+				this.stockFeves.setQuantiteEnStock(Feve.TRINITARIO_MG_EQ, 0.);
+				this.stockFeves.setQuantiteEnStock(Feve.TRINITARIO_MG_NEQ, 0.);
+				
+				// stock de chocolat
+				this.stockChocolat = new Stock<Chocolat>();
+				this.stockChocolat.setQuantiteEnStock(Chocolat.MG_NE_HP, 0.);
+				this.stockChocolat.setCoutEnFeves(Chocolat.MG_NE_HP, 0.1);
+				this.stockChocolat.setQuantiteEnStock(Chocolat.MG_NE_SHP, 0.);
+				this.stockChocolat.setCoutEnFeves(Chocolat.MG_NE_SHP, 0.075);
+				this.stockChocolat.setQuantiteEnStock(Chocolat.MG_E_SHP, 0.);
+				this.stockChocolat.setCoutEnFeves(Chocolat.MG_E_SHP, 0.120);
+				
+		 		this.iStockFeves = new Indicateur("EQ3 stock feves", this, 0);
+		 		this.iStockChocolat = new Indicateur("EQ3 stock chocolat", this, 0);
+		 		
+				// --------------------------------- end eve
+		 		
+		 		// --------------------------------- begin Raph
+				
+				// Marges sur chocolats A MODIFIER AVEC LES BONNES VALEURS
+				this.margeChocolats = new Marge();
+				this.margeChocolats.setMargeBrute(Chocolat.MG_NE_HP, 0.);
+				this.margeChocolats.setCoutProd(Chocolat.MG_NE_HP, 0.);
+				this.margeChocolats.setMargeBrute(Chocolat.MG_NE_SHP, 0.);
+				this.margeChocolats.setCoutProd(Chocolat.MG_NE_SHP, 0.);
+				this.margeChocolats.setMargeBrute(Chocolat.MG_E_SHP, 0.);
+				this.margeChocolats.setCoutProd(Chocolat.MG_E_SHP, 0.);
+				
+		 		this.iMargeBrute = new Indicateur("EQ3 marge", this, 0);
+		 		this.iCoutsProd = new Indicateur("EQ3 couts de production", this, 0);
+		 		
+				// --------------------------------- end Raph
 		
 		
 		this.soldeBancaire=new Indicateur("EQ3 solde bancaire", this, 100000);
@@ -309,7 +329,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 			}
 
 			prixMoyen = prixMoyen/ this.contratsFeveEnCours.size();
-			return (prixMoyen/this.facteurTransformation) *(1.0+this.marge);
+			return prixMoyen/this.facteurTransformation + this.margeChocolats.getCoutProd(produit)+this.margeChocolats.getMargeBrute(produit);
 		}
 		
 		//End Raph/Kevin
