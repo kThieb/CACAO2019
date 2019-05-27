@@ -260,6 +260,8 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 		} else {
 			this.stock.enlever(chocolat, quantite);
 			this.indicateurstock.retirer(this, quantite);
+			soldeBancaire.RecevoirPaiement(this, quantite*getPrix(chocolat));
+			this.indicateursolde.ajouter(this, quantite*getPrix(chocolat));
 			return this.stock.get(chocolat);
 		}
 	}
