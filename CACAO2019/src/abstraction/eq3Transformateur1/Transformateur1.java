@@ -146,13 +146,16 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		ArrayList<Feve> aDisposition = this.stockFeves.getProduitsEnStock();
 		for (Chocolat p: aProduire) {
 			for (Feve f: aDisposition) {
+				// transformation
 				double fevesUtilisees = this.stockFeves.getQuantiteEnStock(f)*0.9/this.coutEnFeves.getCoutEnFeves(p, f); // on garde 10% du stocks de feves au cas ou
 				double nouveauChocolat = fevesUtilisees*2; // 50% cacao, 50% sucre
+				
 				// update solde bancaire
 				this.soldeBancaire.retirer(this, nouveauChocolat*this.margeChocolats.getCoutProd(p));
-				// updater stocks
+				// updater stocks feves
 				this.iStockFeves.retirer(this, fevesUtilisees);
 				this.stockFeves.setQuantiteEnStock(f, this.stockFeves.getQuantiteEnStock(f) - fevesUtilisees);
+				// updater stocks chocolat
 				this.iStockChocolat.retirer(this, nouveauChocolat);
 				this.stockChocolat.setQuantiteEnStock(p, this.stockChocolat.getQuantiteEnStock(p) + nouveauChocolat);
 			}
