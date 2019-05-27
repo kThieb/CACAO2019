@@ -31,14 +31,7 @@ public class Transformateur2AcheteurCC implements IAcheteurContratCadre<Feve> {
 			solde += cc.getMontantRestantARegler();
 
 		List<IVendeurContratCadre> vendeurs = new ArrayList<IVendeurContratCadre>();
-		
-		// Liste des fèves que l'on souhaite acheter 
-		List<Feve> fevesAchetees = new ArrayList<Feve>();
-		fevesAchetees.add(Feve.CRIOLLO_HG_EQ);
-		fevesAchetees.add(Feve.FORASTERO_MG_EQ);
-		fevesAchetees.add(Feve.MERCEDES_MG_EQ);
-		fevesAchetees.add(Feve.TRINITARIO_MG_EQ);
-		
+
 		final double POIDS_MIN_CONTRAT = 150.0; // pas de contrats de moins de 150 kg
 		
 		// Choix du vendeur : on regroupe d'abord tous les vendeurs vérifiant les conditions souhaitées
@@ -48,7 +41,7 @@ public class Transformateur2AcheteurCC implements IAcheteurContratCadre<Feve> {
 				
 				List<Object> produits = sev.getProduitsEnVente();
 				for(Object o : produits) {
-					if(fevesAchetees.contains(o) && sev.get(o) >= POIDS_MIN_CONTRAT)
+					if(t2.FEVES_ACHAT.contains(o) && sev.get(o) >= POIDS_MIN_CONTRAT)
 						vendeurs.add((IVendeurContratCadre) a);
 				}
 			}
@@ -61,7 +54,7 @@ public class Transformateur2AcheteurCC implements IAcheteurContratCadre<Feve> {
 			// Construction d'une liste des produits que l'on est susceptibles d'acheter à ce vendeur
 			List<Feve> produitsInteressants = new ArrayList<Feve>();
 			for(Object o : vendeur.getStockEnVente().getProduitsEnVente()) {
-				if(fevesAchetees.contains(o) && vendeur.getStockEnVente().get(o) >= POIDS_MIN_CONTRAT)
+				if(t2.FEVES_ACHAT.contains(o) && vendeur.getStockEnVente().get(o) >= POIDS_MIN_CONTRAT)
 					produitsInteressants.add((Feve) o);
 			}
 			// Choix du produit à acheter (pour l'instant : le produit que l'on a en quantité la plus faible)

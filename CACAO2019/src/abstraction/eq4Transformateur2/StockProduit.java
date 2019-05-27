@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+// Kelian
 public class StockProduit<T> {
 	/** Stocke une pile de tas de fèves (ou de chocolat) par type de fèves (ou de chocolat)*/
 	private HashMap<T , LinkedList<TasProduit<T>>> stocks;
@@ -28,8 +29,8 @@ public class StockProduit<T> {
 		return qty;
 	}
 	
-	/** Renvoie le prix que l'on a payé pour acheter la quantité demandée (ou 0 si l'on n'a pas cette quantité) */
-	public double getPrixAchat(T sousType, double qty) {
+	/** Renvoie le prix correspondant à la quantité demandée (ou 0 si l'on n'a pas cette quantité) */
+	public double getPrix(T sousType, double qty) {
 		// On récupère les tas correspondant à ce sous-type
 		LinkedList<TasProduit<T>> tas = stocks.get(sousType);
 		
@@ -70,5 +71,20 @@ public class StockProduit<T> {
 			}
 			return prix;
 		}
+	}
+	
+	/** Pour un sous-type donné, renvoie le prochain tas qui périme */
+	public TasProduit<T> getProchainTasPerime(T sousType) {
+		LinkedList<TasProduit<T>> tas = stocks.get(sousType);
+		
+		int minDatePeremption = 0;
+		TasProduit<T> minTas = tas.get(0);
+		for(TasProduit<T> t : tas) {
+			if(t.getDatePeremption() < minDatePeremption) {
+				minDatePeremption = t.getDatePeremption();
+				minTas = t;
+			}
+		}
+		return minTas;
 	}
 }

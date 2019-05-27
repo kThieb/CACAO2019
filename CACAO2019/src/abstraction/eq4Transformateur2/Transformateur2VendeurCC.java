@@ -1,7 +1,6 @@
 package abstraction.eq4Transformateur2;
 
 import java.util.ArrayList;
-import java.util.HashMap;//Minh Tri
 import java.util.List;
 import java.util.Random;
 
@@ -13,12 +12,12 @@ import abstraction.eq7Romu.ventesContratCadre.StockEnVente;
 
 public class Transformateur2VendeurCC implements IVendeurContratCadre<Chocolat> {
 	private Transformateur2 t2;
-	protected HashMap<Chocolat,Double> catalogueChocolat;//Minh tri
+	//protected HashMap<Chocolat,Double> catalogueChocolat;//Minh tri
 	
 	// Initialise Transformateur2VendeurCC avec un catalogue vide
 	public Transformateur2VendeurCC(Transformateur2 trans2) {
 		this.t2 = trans2;
-		this.catalogueChocolat = new HashMap<Chocolat,Double>(); //Minh Tri
+		// this.catalogueChocolat = new HashMap<Chocolat,Double>(); //Minh Tri
 	}
 	
 	
@@ -37,10 +36,10 @@ public class Transformateur2VendeurCC implements IVendeurContratCadre<Chocolat> 
 
 	//Minh Tri
 	@Override
-	public double getPrix(Chocolat produit, Double quantite) {
-		if(!catalogueChocolat.containsKey(produit))
+	public double getPrix(Chocolat produit, Double qte) {
+		if(!t2.CHOCOLATS_VENTE.contains(produit))
 			return Double.MAX_VALUE;
-		return catalogueChocolat.get(produit)*quantite;
+		return t2.stocksChocolat.getPrix(produit, qte)*1.2;
 	}
 
 	@Override
