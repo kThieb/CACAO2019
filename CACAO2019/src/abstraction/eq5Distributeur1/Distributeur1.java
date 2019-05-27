@@ -22,6 +22,8 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 	private int numero;
 	private CompteBancaire soldeBancaire;
 	private Double marge;
+	private Indicateur indicateurstock;
+	private Indicateur indicateursolde;
 	private List<ContratCadre<Chocolat>> contratsEnCours;
 
 
@@ -39,10 +41,10 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 		stock.ajouter(Chocolat.MG_NE_HP, 0.0);
 		stock.ajouter(Chocolat.MG_NE_SHP, 0.0);
 		this.soldeBancaire = new CompteBancaire(this.getNom(), this, soldeInitial);
-		Indicateur indicateursolde = new Indicateur ("EQ5 solde bancaire",this);
+		this.indicateursolde = new Indicateur ("EQ5 solde bancaire",this);
 		indicateursolde.setValeur(this, soldeBancaire.getCompteBancaire());
 		Monde.LE_MONDE.ajouterIndicateur(indicateursolde);
-		Indicateur indicateurstock = new Indicateur ("EQ5 stock", this);
+		this.indicateurstock = new Indicateur ("EQ5 stock", this);
 		for (int i=0; i<stock.getProduitsEnVente().size(); i++) {
 			indicateurstock.ajouter(this, stock.get(stock.getProduitsEnVente().get(i)));
 		}
