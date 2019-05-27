@@ -14,7 +14,7 @@ import abstraction.fourni.Monde;
 
 public class Producteur1 implements IActeur /* , IVendeurCacaoAleatoire */ {
 
-	public static int COUT_FIXE_STOCK = 1000;
+	public static int COUT_FIXE = 1000;
 	public static int COUT_VARIABLE_STOCK = 5;
 	public static int DUREE_DE_VIE_FEVE = 1 * 52 / 2; // durée de vie en nexts
 	protected Indicateur stockFeves;
@@ -102,7 +102,7 @@ public class Producteur1 implements IActeur /* , IVendeurCacaoAleatoire */ {
 		Monde.LE_MONDE.ajouterIndicateur(this.stockForasteroI);
 		Monde.LE_MONDE.ajouterIndicateur(this.stockTrinitarioI);
 		Monde.LE_MONDE.ajouterIndicateur(this.soldeBancaire);
-		Monde.LE_MONDE.ajouterActeur(new SuperviseurVentesCacaoAleatoires());
+		//Monde.LE_MONDE.ajouterActeur(new SuperviseurVentesCacaoAleatoires());
 		// BEGIN Manon
 		this.journal1 = new Journal("Ventes aleatoires de cacao");
 		Monde.LE_MONDE.ajouterJournal(this.journal1);
@@ -159,7 +159,7 @@ public class Producteur1 implements IActeur /* , IVendeurCacaoAleatoire */ {
 
 		// BEGIN Nas
 		updateStock();
-		this.soldeBancaire.retirer(this, COUT_FIXE_STOCK + COUT_VARIABLE_STOCK * stockFeves.getValeur());
+		this.soldeBancaire.retirer(this, COUT_FIXE + COUT_VARIABLE_STOCK * stockFeves.getValeur());
 		// END Nas
 		//BEGIN ANTI 
 		updatePlantation();
