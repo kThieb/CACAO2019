@@ -26,7 +26,7 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	private double meteo = 0;
 	private double maladie_predateurs = 0;
 
-	private int numero;
+	private int numero ;
 	private List<ContratCadre<Feve>> contratsEnCours;
 	private int numStep;
 	private GestionnaireFeve gestionnaireFeve;
