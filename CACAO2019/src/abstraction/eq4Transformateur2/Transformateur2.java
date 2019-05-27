@@ -35,7 +35,7 @@ public class Transformateur2 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	private Transformateur2VendeurCC vendeurCC;
 	protected List<ContratCadre<Feve>> contratsFevesEnCours;
 	protected List<ContratCadre<Chocolat>> contratsChocolatEnCours;
-	protected HashMap<Chocolat,Double> stockEnVente;
+	protected StockEnVente<Chocolat> stockEnVente;
 	
 	public Transformateur2() {
 		this.iStockFeves = new Indicateur("EQ4 stock feves", this, 50);

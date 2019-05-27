@@ -72,7 +72,8 @@ public class Transformateur2AcheteurCC implements IAcheteurContratCadre<Feve> {
 			double prix = vendeur.getPrix(minProduit, qté);			
 			
 			// On réduit la quantité achetée tant que le prix est supérieur à 60% de notre solde
-			while(qté * prix > solde * 0.60) {
+			System.out.println(vendeur);
+			while(qté > 1e3 && qté * prix > solde * 0.60) {
 				qté *= 0.8;
 				prix = vendeur.getPrix(minProduit, qté);
 			}
