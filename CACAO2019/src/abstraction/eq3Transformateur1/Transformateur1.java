@@ -88,7 +88,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		 		this.coutEnFeves.setCoutEnFeves(Chocolat.MG_E_SHP, Feve.MERCEDES_MG_EQ, 0.12);
 		 		this.coutEnFeves.setCoutEnFeves(Chocolat.MG_E_SHP, Feve.TRINITARIO_MG_EQ, 0.12);
 		 		
-				// Marges sur chocolats A MODIFIER AVEC LES BONNES VALEURS
+				// Marges sur chocolats A MODIFIER AVEC LES BONNES VALEURS (couts production ok)
 				this.margeChocolats = new Marge();
 				this.margeChocolats.setMargeBrute(Chocolat.MG_NE_HP, 0.);
 				this.margeChocolats.setCoutProd(Chocolat.MG_NE_HP, 0.6);
