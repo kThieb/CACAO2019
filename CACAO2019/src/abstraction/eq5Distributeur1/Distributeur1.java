@@ -141,24 +141,7 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 		}
 	}
 
-	/**
-	 * @author Erine DUPONT 
-	 */
-	@Override
-	public double vendre(Chocolat chocolat, double quantite) {
-		double stock = this.getStockEnVente().get(chocolat);
-		if (quantite < 0.0) {
-			throw new IllegalArgumentException("Appel de vendre(chocolat, quantité) de "
-					+ "Distributeur1 avec quantité<0.0 (=="+quantite+")");
-		} else if (stock < quantite) {
-			throw new IllegalArgumentException("Appel de vendre(chocolat, quantité) de "
-					+ "Distributeur1 avec stock ( ==" + stock +") < quantité (=="+quantite+")");
-		} else {
-			this.stock.enlever(chocolat, quantite);;
-			return this.stock.get(chocolat);
-		}
-	}
-
+	
 	@Override
 	/**
 	 * @author Imane ZRIAA
@@ -197,6 +180,7 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 			throw new IllegalArgumentException("Appel de la methode receptionner de DistributeurRomu avec une quantite egale a "+quantite);
 		}
 		this.stock.ajouter((Chocolat) produit, quantite);
+		this.indicateurstock.ajouter(this, quantite);
 	}
 
 	
@@ -209,7 +193,7 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 			throw new IllegalArgumentException("Appel de la methode payer de Distributeur1 avec un montant negatif = "+montant);
 		}
 		double quantitepaye = soldeBancaire.Payer((IActeur)(cc.getVendeur()), montant);
-		//this.indicateursolde.retirer(this, quantitepaye);
+		this.indicateursolde.retirer(this, quantitepaye);
 		return quantitepaye;
 	}
 
@@ -260,5 +244,25 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 			return prixMoyen *(1.0+this.marge);
 		}
 	}
+	
+	/**
+	 * @author Erine DUPONT 
+	 */
+	@Override
+	public double vendre(Chocolat chocolat, double quantite) {
+		double stock = this.getStockEnVente().get(chocolat);
+		if (quantite < 0.0) {
+			throw new IllegalArgumentException("Appel de vendre(chocolat, quantité) de "
+					+ "Distributeur1 avec quantité<0.0 (=="+quantite+")");
+		} else if (stock < quantite) {
+			throw new IllegalArgumentException("Appel de vendre(chocolat, quantité) de "
+					+ "Distributeur1 avec stock ( ==" + stock +") < quantité (=="+quantite+")");
+		} else {
+			this.stock.enlever(chocolat, quantite);
+			this.indicateurstock.retirer(this, quantite);
+			return this.stock.get(chocolat);
+		}
+	}
+
 
 }
