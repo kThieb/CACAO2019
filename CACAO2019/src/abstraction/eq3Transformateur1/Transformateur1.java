@@ -52,6 +52,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	public Transformateur1() {
 		
 		// --------------------------------- begin eve
+			
 		
 				// stock de feves
 				ArrayList<Feve> feves = new ArrayList<Feve>();
@@ -117,7 +118,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		
 		
 		this.soldeBancaire=new Indicateur("EQ3 solde bancaire", this, 100000);
-		this.journal = new Journal ("Vente aléatoire de cacao");
+		this.journal = new Journal ("jEq3");
 		Monde.LE_MONDE.ajouterJournal(this.journal);
 		System.out.println("ajout du journal jEq3");
 		Monde.LE_MONDE.ajouterIndicateur(this.iStockFeves);
