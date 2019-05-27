@@ -344,8 +344,8 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 
 	public HashMap<Chocolat, Double> stockIdeal () {
 		HashMap<Chocolat, Double> stockIdeal= new HashMap<Chocolat, Double>();
-		stockIdeal.put(Chocolat.MG_E_SHP, 1500.0);
-		stockIdeal.put(Chocolat.MG_NE_SHP, 1500.0);
+		stockIdeal.put(Chocolat.MG_E_SHP, 0.0);
+		stockIdeal.put(Chocolat.MG_NE_SHP, 0.0);
 		stockIdeal.put(Chocolat.MG_NE_HP, 2000.0);
 		stockIdeal.put(Chocolat.HG_E_SHP, 1000.0);
 		return stockIdeal;
@@ -369,9 +369,9 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 		
 		for (Chocolat c : variations_produit.keySet()) {
 			System.out.println("changement for");
-			if (this.stockIdeal().get(c) -  (variations_produit.get(c)-this.getStockEnVente().get(c)) > max_ecart) {
+			if (this.stockIdeal().get(c) -  (variations_produit.get(c)+this.getStockEnVente().get(c)) > max_ecart) {
 				System.out.println("changement");
-				max_ecart = this.stockIdeal().get(c) -  (variations_produit.get(c)-this.getStockEnVente().get(c));
+				max_ecart = this.stockIdeal().get(c) -  (variations_produit.get(c)+this.getStockEnVente().get(c));
 				produit = c;
 			}
 		}
@@ -394,7 +394,7 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 
 					IVendeurContratCadre<Chocolat> vacteur = (IVendeurContratCadre<Chocolat>)acteur;
 					StockEnVente<Chocolat> stock = vacteur.getStockEnVente();
-					if (stock.get(produit)>0) {// on souhaite faire des contrats d'au moins 100kg
+					if (stock.get(produit)>100) {// on souhaite faire des contrats d'au moins 100kg
 						vendeurs.add((IVendeurContratCadre<Chocolat>)vacteur);
 					}
 				}
@@ -414,7 +414,7 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
             if (vendeur != null & produit != null && quantite != 0) 
             {
             	res = new ContratCadre<Chocolat>(this, vendeur, produit, vendeur.getStockEnVente().get(produit));
-            	this.journal.ajouter("Nouveau contrat sur produit= " + produit + "quantité = " + vendeur.getStockEnVente().get(produit) + "vendeur= " + vendeur);
+            	this.journal.ajouter("Nouveau contrat non signé sur produit= " + produit + "quantité = " + vendeur.getStockEnVente().get(produit) + "vendeur= " + vendeur);
             }
             else 
             { res = null;
