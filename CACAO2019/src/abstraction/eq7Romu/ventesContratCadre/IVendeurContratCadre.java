@@ -9,8 +9,7 @@ public interface IVendeurContratCadre<I> {
 	public StockEnVente<I> getStockEnVente() ;
 	
 	/**
-	 * 
-	 * @param produit, produit!=null
+     * @param produit, produit!=null
 	 * @param quantite, quantite>0.0
 	 * @return Retourne Double.NaN si produit==null ou quantite<=0.0 ou si la quantite disponible a la vente est inferieure a quantite.
 	 * Sinon, retourne le prix d'un kg avant negociation pour une commande d'une quantite quantite de produit produit.
