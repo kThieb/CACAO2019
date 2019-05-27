@@ -3,9 +3,6 @@ package abstraction.eq3Transformateur1;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import abstraction.eq7Romu.produits.Chocolat;
-import abstraction.eq7Romu.produits.Feve;
-
 public class Stock<T> {
 
 	// T est le chocolat ou la feve ; lui est associe une quantite en stock, en kg
