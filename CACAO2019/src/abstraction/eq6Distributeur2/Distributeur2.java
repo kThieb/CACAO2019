@@ -323,7 +323,15 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 		return variations_produit;
 	}
 	
-
+	public HashMap<Chocolat, Double> stockIdeal () {
+		HashMap<Chocolat, Double> stockIdeal= new HashMap<Chocolat, Double>();
+		stockIdeal.put(Chocolat.MG_E_SHP, 500.0);
+		stockIdeal.put(Chocolat.MG_NE_SHP, 500.0);
+		stockIdeal.put(Chocolat.MG_NE_HP, 1000.0);
+		stockIdeal.put(Chocolat.HG_E_SHP, 200.0);
+		return stockIdeal;
+	}
+	
 	@Override
 	public ContratCadre<Chocolat> getNouveauContrat() { //ILIAS
 		ContratCadre<Chocolat> res=null;
@@ -334,7 +342,7 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 		}
 		
 		//Choix du produit 
-		HashMap<Chocolat, Double> variations_produit=this.prevision_variation_stock ();
+		HashMap<Chocolat, Double> variations_produit = this.prevision_variation_stock ();
 		
 		double min = 5000000;
 		Chocolat produit = null;
@@ -344,11 +352,11 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 				produit = c;
 			}
 		}
-		if (variations_produit.get(produit) + this.getStockEnVente().get(produit) > 500) {
+		if (variations_produit.get(produit) + this.getStockEnVente().get(produit) > this.stockIdeal().get(produit)) {
 			return null;
 		}
 		
-		double quantite = 500 - this.getStockEnVente().get(produit) - variations_produit.get(produit);
+		double quantite = this.stockIdeal().get(produit) - this.getStockEnVente().get(produit) - variations_produit.get(produit);
 		
 		if (solde >1000) {
 			List<IVendeurContratCadre<Chocolat>> vendeurs = new ArrayList<IVendeurContratCadre<Chocolat>>();
@@ -429,7 +437,6 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 
 	@Override//Caroline
 	public void notifierAcheteur(ContratCadre<Chocolat> cc) {
-		cc.signer();
 		this.journal.ajouter("Nouveau Contrat" + cc.toString());
 		if (cc!=null) {
 			this.getContratsEnCours().add(cc);
@@ -438,21 +445,11 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 
 	@Override//Caroline
 	public void receptionner(Chocolat produit, double quantite, ContratCadre<Chocolat> cc) {
-		boolean penality = false;
 		this.journal.ajouter("Réception du produit" + produit.toString() + "en quantité" + quantite + "au sujet du contrat " + cc.toString());
 		if (cc != null && quantite >0 && cc.getProduit().equals(produit)) {
-			
-			if (quantite != cc.getEcheancier().getQuantite(Monde.LE_MONDE.getStep())) {
-				penality = true;
-			}
-		
+			this.getStockEnVente().ajouter(produit, quantite);
 			this.getIndicateurStock(cc.getProduit()).ajouter(this, quantite);
 			
-			cc.livrer(quantite);
-			
-			if (penality) {
-				cc.penaliteLivraison();
-			} 	
 		}
 	}
 
@@ -472,13 +469,8 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 		else {
 			if (montant-100>0) {
 				this.soldeBancaire.retirer(this,montant-100);
-				cc.payer(  montant-100);
 				montantpaye = montant-100;
-			} else {
-				cc.payer(0.0);
-			}
-			
-			cc.penalitePaiement();
+			} 
 		}
 		this.journal.ajouter(montantpaye + "sur le contrat" + cc.toString());
 		return montantpaye;
