@@ -61,8 +61,11 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 				feves.add(Feve.MERCEDES_MG_EQ);
 				feves.add(Feve.TRINITARIO_MG_EQ);
 				feves.add(Feve.TRINITARIO_MG_NEQ);
-							
 				this.stockFeves = new Stock<Feve>(feves);
+				for (Feve f: feves) {
+					this.stockFeves.setQuantiteEnStock(f, 1000000);
+				}
+
 				
 				
 				// stock de chocolat
@@ -116,9 +119,9 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		this.journal = new Journal ("Vente aléatoire de cacao");
 		Monde.LE_MONDE.ajouterJournal(this.journal);
 		System.out.println("ajout du journal jEq3");
-//		Monde.LE_MONDE.ajouterIndicateur(this.iStockFeves);
+		Monde.LE_MONDE.ajouterIndicateur(this.iStockFeves);
 		Monde.LE_MONDE.ajouterIndicateur(this.soldeBancaire);
-//		Monde.LE_MONDE.ajouterIndicateur(this.iStockChocolat);
+		Monde.LE_MONDE.ajouterIndicateur(this.iStockChocolat);
 		
 		//begin sacha
 		this.contratsChocolatEnCours = new ArrayList<ContratCadre<Chocolat>>();
