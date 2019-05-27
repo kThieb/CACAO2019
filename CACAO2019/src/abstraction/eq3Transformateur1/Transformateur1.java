@@ -63,9 +63,9 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 				feves.add(Feve.TRINITARIO_MG_NEQ);
 				this.stockFeves = new Stock<Feve>(feves);
 				for (Feve f: feves) {
-					this.stockFeves.setQuantiteEnStock(f, 1000000);
+					this.stockFeves.setQuantiteEnStock(f, 1000);
 				}
-
+		 		this.iStockFeves = new Indicateur("EQ3 stock feves", this, feves.size()*1000);
 				
 				
 				// stock de chocolat
@@ -74,9 +74,10 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 				chocolat.add(Chocolat.MG_NE_SHP);
 				chocolat.add(Chocolat.MG_E_SHP);
 				this.stockChocolat = new Stock<Chocolat>(chocolat);
-				
-		 		this.iStockFeves = new Indicateur("EQ3 stock feves", this, 0);
-		 		this.iStockChocolat = new Indicateur("EQ3 stock chocolat", this, 0);
+				for (Chocolat c: chocolat) {
+					this.stockChocolat.setQuantiteEnStock(c, 1000);
+				}
+		 		this.iStockChocolat = new Indicateur("EQ3 stock chocolat", this, chocolat.size()*1000);
 		 		
 				// --------------------------------- end eve
 		 		
@@ -102,11 +103,11 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		 		
 				// Marges sur chocolats A MODIFIER AVEC LES BONNES VALEURS (couts production ok)
 				this.margeChocolats = new Marge(chocolat);
-				this.margeChocolats.setMargeBrute(Chocolat.MG_NE_HP, 0.);
+				this.margeChocolats.setMargeBrute(Chocolat.MG_NE_HP, 1.);
 				this.margeChocolats.setCoutProd(Chocolat.MG_NE_HP, 0.6);
-				this.margeChocolats.setMargeBrute(Chocolat.MG_NE_SHP, 0.);
+				this.margeChocolats.setMargeBrute(Chocolat.MG_NE_SHP, 1.);
 				this.margeChocolats.setCoutProd(Chocolat.MG_NE_SHP, 0.65);
-				this.margeChocolats.setMargeBrute(Chocolat.MG_E_SHP, 0.);
+				this.margeChocolats.setMargeBrute(Chocolat.MG_E_SHP, 1.);
 				this.margeChocolats.setCoutProd(Chocolat.MG_E_SHP, 0.9);
 				
 		 		this.iMargeBrute = new Indicateur("EQ3 marge", this, 0);
