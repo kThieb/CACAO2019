@@ -43,9 +43,19 @@ public class Producteur1 implements IActeur /* , IVendeurCacaoAleatoire */ {
 
 	public Producteur1() {
 		this.stockFeves = new Indicateur("EQ1 stock feves", this, 3000);
+		// BEGIN Nas
 		this.stockCriolloI = new Indicateur("EQ1 stock criollo", this, 1000);
 		this.stockForasteroI = new Indicateur("EQ1 stock forastero", this, 1000);
 		this.stockTrinitarioI = new Indicateur("EQ1 stock trinitario", this, 1000);
+		this.stockCriollo=new HashMap<Integer, Double>();
+		this.stockForastero=new HashMap<Integer, Double>();
+		this.stockTrinitario=new HashMap<Integer, Double>();
+		for (int next = 0; next < DUREE_DE_VIE_FEVE - 1; next++) {
+			stockCriollo.put(next, (double) 0);
+			stockForastero.put(next, (double) 0);
+			stockTrinitario.put(next , (double) 0);
+		}
+		// END Nas
 		this.soldeBancaire = new Indicateur("EQ1 solde bancaire", this, 100000);
 		Monde.LE_MONDE.ajouterIndicateur(this.stockFeves);
 		Monde.LE_MONDE.ajouterIndicateur(this.stockCriolloI);
@@ -125,9 +135,9 @@ public class Producteur1 implements IActeur /* , IVendeurCacaoAleatoire */ {
 
 	// BEGIN Nas
 	private void update() {
-		HashMap<Integer, Double> stockCriolloOld = stockCriollo;
-		HashMap<Integer, Double> stockForasteroOld = stockForastero;
-		HashMap<Integer, Double> stockTrinitarioOld = stockTrinitario;
+		HashMap<Integer, Double> stockCriolloOld = new HashMap<Integer, Double>( stockCriollo);
+		HashMap<Integer, Double> stockForasteroOld = new HashMap<Integer, Double>(stockForastero);
+		HashMap<Integer, Double> stockTrinitarioOld = new HashMap<Integer, Double>(stockTrinitario);
 		for (int next = 0; next < DUREE_DE_VIE_FEVE - 1; next++) {
 			stockCriollo.put(next + 1, stockCriolloOld.get(next));
 			stockForastero.put(next + 1, stockForasteroOld.get(next));
