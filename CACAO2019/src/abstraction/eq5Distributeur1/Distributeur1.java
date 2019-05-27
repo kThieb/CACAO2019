@@ -1,13 +1,56 @@
 package abstraction.eq5Distributeur1;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import abstraction.eq7Romu.distributionChocolat.IDistributeurChocolat;
+import abstraction.eq7Romu.produits.Chocolat;
+import abstraction.eq7Romu.ventesContratCadre.ContratCadre;
+import abstraction.eq7Romu.ventesContratCadre.Echeancier;
+import abstraction.eq7Romu.ventesContratCadre.IAcheteurContratCadre;
+import abstraction.eq7Romu.ventesContratCadre.IVendeurContratCadre;
+import abstraction.eq7Romu.ventesContratCadre.StockEnVente;
+import abstraction.eq7Romu.ventesContratCadre.SuperviseurVentesContratCadre;
 import abstraction.fourni.IActeur;
 import abstraction.fourni.Indicateur;
+import abstraction.fourni.Journal;
+import abstraction.fourni.Monde;
 
-public class Distributeur1 implements IActeur {
+public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistributeurChocolat {
+	private Journal journal;
+	private Stock stock;
+	private int numero;
+	private CompteBancaire soldeBancaire;
+	private Double marge;
+	private List<ContratCadre<Chocolat>> contratsEnCours;
+
+
 
 	public Distributeur1() {
+		this(5.0, 100000.0);
 	}
-	
+
+	public Distributeur1(double marge, //ArrayList<Double> stockInitial, 
+			Double soldeInitial) {
+		ArrayList<Double> stockInitial= new ArrayList<Double>();
+		stockInitial.add(0.0);
+		stockInitial.add(0.0);
+		stockInitial.add(0.0);
+		stockInitial.add(0.0);
+		this.numero =1 ;
+		this.marge = marge;
+		this.stock = new Stock();
+		stock.ajouter(Chocolat.HG_E_SHP, 0.0);
+		stock.ajouter(Chocolat.MG_E_SHP, 0.0);
+		stock.ajouter(Chocolat.MG_NE_HP, 0.0);
+		stock.ajouter(Chocolat.MG_NE_SHP, 0.0);
+		this.soldeBancaire = new CompteBancaire(this.getNom(), this, soldeInitial);
+		Monde.LE_MONDE.ajouterIndicateur(this.soldeBancaire);
+		this.journal = new Journal("Journal "+this.getNom());
+		Monde.LE_MONDE.ajouterJournal(this.journal);
+		this.contratsEnCours = new ArrayList<ContratCadre<Chocolat>>();
+	}
+
 	public String getNom() {
 		return "EQ5";
 	}
@@ -17,4 +60,187 @@ public class Distributeur1 implements IActeur {
 
 	public void next() {
 	}
+
+	// ------------------------------------------------------------------------------------------------------
+	// ACHETEUR
+	// ------------------------------------------------------------------------------------------------------ 
+
+	@Override
+	/**
+	 * @author Erine DUPONT
+	 */
+	public ContratCadre<Chocolat> getNouveauContrat() {
+		// On va créer un nouveau contrat cadre 
+		ContratCadre<Chocolat> ncc = null;
+		// Au préalable, il faut identifier produit, quantité, vendeur, acheteur
+
+		// On détermine combien il resterait sur le compte si on soldait tous les contrats en cours.
+		double solde = this.soldeBancaire.getCompteBancaire();
+		for (ContratCadre<Chocolat> cc : this.contratsEnCours) {
+			solde = solde - cc.getMontantRestantARegler();
+		}
+
+		// On ne cherche pas a établir d'autres contrats d'achat si le compte bancaire est trop bas
+		if (solde>5000.0) { 
+
+			//Choix du produit : on choisit un produit au hasard parmi tous les produits
+			ArrayList<Chocolat> produits = new ArrayList<Chocolat>();
+			produits.add(Chocolat.HG_E_SHP);
+			produits.add(Chocolat.MG_E_SHP);
+			produits.add(Chocolat.MG_NE_HP);
+			produits.add(Chocolat.MG_NE_SHP);
+			Chocolat produit = produits.get((int) Math.random()*produits.size());
+
+
+			//Choix quantité : on choisit le vendeur ayant la plus grande quantité du produit
+			//Choix acteur
+			List<IVendeurContratCadre<Chocolat>> vendeurs = new ArrayList<IVendeurContratCadre<Chocolat>>();
+			for (IActeur acteur : Monde.LE_MONDE.getActeurs()) {
+				if (acteur instanceof IVendeurContratCadre) {
+					IVendeurContratCadre vacteur = (IVendeurContratCadre) acteur;
+					StockEnVente<Chocolat> stock = vacteur.getStockEnVente();
+					if (stock.get(produit)>100.0) { // on souhaite faire des contrats d'au moins 100kg
+						vendeurs.add((IVendeurContratCadre<Chocolat>)vacteur);
+					}
+				}
+			}
+			if (vendeurs.size()>1) { // On choisit le vendeur ayant le plus gros stock de produit
+				IVendeurContratCadre<Chocolat> vendeur_choisi = vendeurs.get(0); 
+				for (IVendeurContratCadre<Chocolat> vendeur : vendeurs) {
+					double stock = vendeur_choisi.getStockEnVente().get(produit);
+					if (vendeur.getStockEnVente().get(produit) > stock) {
+						stock = vendeur.getStockEnVente().get(produit);
+						vendeur_choisi = vendeur;
+					}
+				}
+				double quantite = vendeur_choisi.getStockEnVente().get(produit)*0.65; // On prend 65% de sa production
+				ncc = new ContratCadre<Chocolat>(this, vendeur_choisi, produit, quantite);
+
+			} else {
+				this.journal.ajouter("   Il ne reste que "+solde+" une fois tous les contrats payes donc nous ne souhaitons pas en creer d'autres pour l'instant");
+			}
+
+
+		}
+		//Création Contrat
+		return ncc;
+	}
+
+	/**
+	 * @author Imane ZRIAA
+	 */
+	@Override
+	public void proposerEcheancierAcheteur(ContratCadre C) {
+		if (C.getEcheancier()==null) {//pas de contre-proposition
+			C.ajouterEcheancier(new Echeancier(Monde.LE_MONDE.getStep(), 20, C.getQuantite()/20));
+		} else {
+			C.ajouterEcheancier(new Echeancier(C.getEcheancier())); // accepter la contre-proposition
+		}
+	}
+
+	/**
+	 * @author Erine DUPONT 
+	 */
+	@Override
+	public double vendre(Chocolat chocolat, double quantite) {
+		double stock = this.getStockEnVente().get(chocolat);
+		if (quantite < 0.0) {
+			throw new IllegalArgumentException("Appel de vendre(chocolat, quantité) de "
+					+ "Distributeur1 avec quantité<0.0 (=="+quantite+")");
+		} else if (stock < quantite) {
+			throw new IllegalArgumentException("Appel de vendre(chocolat, quantité) de "
+					+ "Distributeur1 avec stock ( ==" + stock +") < quantité (=="+quantite+")");
+		} else {
+			this.stock.enlever(chocolat, quantite);;
+			return this.stock.get(chocolat);
+		}
+	}
+
+	@Override
+	/**
+	 * @author Imane ZRIAA
+	 */
+	public void proposerPrixAcheteur(ContratCadre cc) {
+		double prixVendeur = cc.getPrixAuKilo();
+		if (Math.random()<0.25) { // probabilite de 25% d'accepter
+			cc.ajouterPrixAuKilo(cc.getPrixAuKilo());
+		} else {
+			cc.ajouterPrixAuKilo((prixVendeur*(0.9+Math.random()*0.1))); // Rabais de 10% max
+		}
+	}
+
+	@Override
+	public void notifierAcheteur(ContratCadre cc) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void receptionner(Object produit, double quantite, ContratCadre cc) {
+		// TODO Auto-generated method stub
+
+	}
+
+	
+	/**
+	 * @author Erwann DEFOY
+	 */
+	@Override
+	public double payer(double montant, ContratCadre cc) {
+		if (montant<=0.0) {
+			throw new IllegalArgumentException("Appel de la methode payer de Distributeur1 avec un montant negatif = "+montant);
+		}
+		double nouveausolde = soldeBancaire.getCompteBancaire() - montant;
+		soldeBancaire.Payer((IActeur)(cc.getVendeur()), montant);
+		return nouveausolde;
+	}
+
+	// ---------------------------------------------------------------------------------------------------------
+	// VENDEUR CLIENT
+	// ---------------------------------------------------------------------------------------------------------
+
+	/**
+	 * @author estelle
+	 */
+	@Override
+	public StockEnVente<Chocolat> getStockEnVente() {
+		StockEnVente<Chocolat> res = new StockEnVente<Chocolat>();
+		List<Chocolat> produits = this.stock.getProduitsEnVente();
+		for (int i =0; i< produits.size(); i++) {
+			res.ajouter(produits.get(i), stock.get(produits.get(i)));
+		}
+		return res;
+	}
+
+	/**
+	 * @author estel
+	 */
+	@Override
+	public double getPrix(Chocolat c) {
+		boolean vendu = false;
+		List<Chocolat> produits =this.stock.getProduitsEnVente();
+		for (int i=0; i<produits.size();i++) {
+			if (c.equals(produits.get(i))) {
+				vendu = true;
+			}
+		}
+		if (!vendu) {
+			return Double.NaN;
+		}
+
+		if (this.contratsEnCours.size()==0) {
+			return 50;
+		} else {
+
+			double prixMoyen = 0;
+			for (ContratCadre<Chocolat> cc : this.contratsEnCours) {
+				if (cc.getProduit()==c) {
+					prixMoyen+=cc.getPrixAuKilo();
+				}
+			}
+			prixMoyen = prixMoyen/ this.contratsEnCours.size();
+			return prixMoyen *(1.0+this.marge);
+		}
+	}
+
 }
