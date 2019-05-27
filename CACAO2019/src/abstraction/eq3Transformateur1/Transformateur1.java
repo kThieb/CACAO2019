@@ -80,7 +80,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		 		// --------------------------------- begin Raph
 				//Feves utilisees pour la production des différents chocolats
 		 		ArrayList<Chocolat> chocolats = new ArrayList<Chocolat>();
-		 		ArrayList<Feve> feves = new ArrayList<Feve>();
+		 		
 		 		this.coutEnFeves = new CoutEnFeves();
 		 		this.coutEnFeves.setCoutEnFeves(Chocolat.MG_NE_HP, Feve.FORASTERO_MG_NEQ, 0.1);
 		 		this.coutEnFeves.setCoutEnFeves(Chocolat.MG_NE_HP, Feve.MERCEDES_MG_NEQ, 0.1);
