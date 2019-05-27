@@ -23,15 +23,16 @@ public class CompteBancaire extends Indicateur {
 	/**
 	 * @author Erine DUPONT, Estelle BONNET
 	 */
-	public void Payer (IActeur auteur, double paiement) {
+	public double Payer (IActeur auteur, double paiement) {
 		double nouveausolde = this.getValeur() - paiement;
 		if (paiement<0.0){
 			throw new IllegalArgumentException("Appel de Payer(compte, paiement) de CompteBancaire avec paiement<0.0 (=="+paiement+")");
 		}	else if (nouveausolde <0.0) {
-			throw new IllegalArgumentException("Appel de Payer(compte, paiement) de CompteBancaire avec compte-paiement<0.0 (=="+nouveausolde+")");
-		}
-		else {
+			this.setValeur(auteur, 0);
+			return paiement + nouveausolde;
+		} else {
 			this.setValeur(auteur, nouveausolde);
+			return paiement;
 		}
 	}
 	
