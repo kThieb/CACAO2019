@@ -175,7 +175,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	
 	@Override
 	public ContratCadre<Feve> getNouveauContrat() {
-		// begin sachaa
+		// begin sacha
 		ContratCadre<Feve> res=null;
         // on determine combien il resterait sur le compte si on soldait tous les contrats en cours.
 		double solde = this.soldeBancaire.getValeur();
@@ -192,8 +192,8 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
             this.journal.ajouter("  recherche vendeur de "+this.fevesAchetees);
 			for (IActeur acteur : Monde.LE_MONDE.getActeurs()) {
 				if (acteur instanceof IVendeurContratCadre) {
-					IVendeurContratCadre vacteur = (IVendeurContratCadre)acteur;
-					StockEnVente stock = vacteur.getStockEnVente();
+					IVendeurContratCadre <Feve> vacteur = (IVendeurContratCadre<Feve>)acteur;
+					StockEnVente<Feve> stock = vacteur.getStockEnVente();
 					if (stock.get(this.fevesAchetees)>=1000000.0) {// on souhaite faire des contrats d'au moins 1000 tonnes
 						this.journal.ajouter("   "+(acteur.getNom())+" vend "+stock.get(this.fevesAchetees)+" de "+this.fevesAchetees);
 						vendeurs.add((IVendeurContratCadre<Feve>)vacteur);
