@@ -229,7 +229,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 					IVendeurContratCadre<Feve> vendeur = vendeurs.get( (int)( Math.random()*vendeurs.size())); // ici tire au hasard plutot que de tenir compte des stocks en vente et des prix
 					// On determine la quantite qu'on peut esperer avec le reste de notre solde bancaire
 	                //this.journal.ajouter(" Determination de la quantite achetable avec une somme de "+String.format("%.3f",solde*2.9/3.0));
-					double quantite = 1000000.0; // On ne cherche pas a faire de contrat pour moins de 1000 tonnes
+					double quantite = 100000.0; // On ne cherche pas a faire de contrat pour moins de 100 tonnes
 					double prix = vendeur.getPrix(f, quantite);
 					while (!Double.isNaN(prix) && prix*quantite<solde ) {
 						quantite=quantite*1.5;
@@ -260,11 +260,11 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 			if ((this.contratsFeveEnCours.isEmpty())&&(this.stockFeves.getQuantiteEnStock(cc.getProduit()) < stockLim)) { // On accepte forcément la proposition si on a pas de contrat cadre en cours et que le stock est inférieur à une quantité arbitraire
 				cc.ajouterEcheancier(new Echeancier(cc.getEcheancier()));
 			} 
-			if (Math.random() < 0.33) {
-				cc.ajouterEcheancier(new Echeancier(cc.getEcheancier())); //1 chance sur 3 d'accepter l'échéancier (si la première condition n'est pas remplie)
+			if (Math.random() < 0.5) {
+				cc.ajouterEcheancier(new Echeancier(cc.getEcheancier())); //1 chance sur 2 d'accepter l'échéancier (si la première condition n'est pas remplie)
 			}      
 			
-			else { // 2 chance sur 3 de proposer un echeancier etalant sur un step de plus
+			else { // 1 chance sur 2 de proposer un echeancier etalant sur un step de plus
 				cc.ajouterEcheancier(new Echeancier(cc.getEcheancier().getStepDebut(), cc.getEcheancier().getNbEcheances()+1, cc.getQuantite()/(cc.getEcheancier().getNbEcheances()+1)));
 			}
 		}
