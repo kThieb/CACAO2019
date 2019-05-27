@@ -4,6 +4,8 @@
 
 package abstraction.eq5Distributeur1;
 
+import java.util.List;
+
 import abstraction.eq7Romu.distributionChocolat.IDistributeurChocolat;
 import abstraction.eq7Romu.produits.Chocolat;
 import abstraction.eq7Romu.produits.Gamme;
@@ -12,17 +14,14 @@ import abstraction.fourni.IActeur;
 import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 
-public class ClientEuropeen {
+public class ClientEuropeen implements IActeur {
+	private static int NB_CLIENT = 0;
+	
 	private int numero;
 	private Journal journal;
 	private Chocolat uniqueProduit;
-	private Double quantiteParStep;
-	private int noteprix ;
-	private int notequalite ;
-	private int notefidelite ;
-	private int temporalite ;
-
-
+	private int quantiteParStep;
+	
 	public String getNom() {
 		return "CL"+this.numero;
 	}
@@ -30,12 +29,13 @@ public class ClientEuropeen {
 	public void initialiser() {
 	}
 
-	public ClientEuropeen(int numero, int noteprix, int notequalite, int notequantite, int notefidelite) {
-		this.journal = new Journal("Journal" + this.getNom()) ;
-		this.numero = numero ;
-		this.noteprix = noteprix ;
-		this.notequalite = notequalite ;
-		this.notefidelite = notefidelite ;
+	public ClientEuropeen(Chocolat uniqueProduit, int quantiteParStep) {
+		NB_CLIENT++;
+		this.numero = NB_CLIENT;
+		this.uniqueProduit = uniqueProduit;
+		this.quantiteParStep = quantiteParStep;
+		this.journal = new Journal("Journal"+this.getNom());
+		Monde.LE_MONDE.ajouterJournal(this.journal);
 	}
 
 
