@@ -32,8 +32,6 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	private int numStep;
 	private GestionnaireFeve gestionnaireFeve; 
 
-		this.numero = NB_PROD;
-		this.fevesProduites=fevesProduites;
 
 	
 	public Producteur2( List<Integer> productionParStep, List<Double> stockInitial, double soldeInitial) {
