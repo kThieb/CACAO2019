@@ -19,7 +19,7 @@ public class Journal  extends Observable{
 	private String nom;            // le nom du journal
 	private ArrayList<String>liste;// la liste des messages deposes sur le journal
 	private int lignesAffichables;
-
+	private ArrayList<ArrayList<String>> hist ;
 	/**
 	 * Initialise le journal avec le nom nom et une liste de messages vide   
 	 * @param nom le nom du journal
@@ -28,6 +28,7 @@ public class Journal  extends Observable{
 		this.nom = nom;
 		this.liste=new ArrayList<String>();
 		this.lignesAffichables=200;
+		this.hist= new ArrayList<ArrayList<String>>() ;
 	}
 	/**
 	 * @return Retourne le nom du journal
@@ -93,4 +94,17 @@ public class Journal  extends Observable{
 		}
 		return s+"</html>";
 	}
+	
+	public void ajout(int i ,String s) {
+		this.hist.get(i).add(s);
+	}
+	public ArrayList<ArrayList<String>> getHist() {
+		return hist;
+	}
+	public void setHist(ArrayList<ArrayList<String>> hist) {
+		this.hist = hist;
+	}
+	
 }
+	
+	

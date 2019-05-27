@@ -39,6 +39,9 @@ public enum Chocolat {
 	public void setGamme(Gamme gamme) {
 		this.gamme = gamme;
 	}
+	
+	
+	//Nazim
 	public double getQualite() {
 		int N = 0;
 		if (isEquitable()) {

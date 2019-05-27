@@ -352,6 +352,8 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 
 	public ContratCadre<Chocolat> getNouveauContrat() { //ILIAS
 		
+		retireVieuxContrats();
+		
 		ContratCadre<Chocolat> res=null;
 		
 		double solde = this.getSoldeBancaire().getValeur();
@@ -525,15 +527,7 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 		return montantpaye;
 		}
 	
-	
-	public ArrayList<Double> evaluation_produit (Chocolat c) {
-		ArrayList<Double> L = new ArrayList<Double>(); 
-		L.add(this.getPrix(c));
-		L.add(this.getStockEnVente().get(c));
-		L.add(c.getQualite());
-		return L;
-		
-	}
-	
+
+
 	
 }
