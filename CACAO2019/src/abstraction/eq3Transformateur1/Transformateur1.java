@@ -173,7 +173,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	
 	@Override
 	public ContratCadre<Feve> getNouveauContrat() {
-		// begin sachaa
+		// begin sacha
 		ContratCadre<Feve> res=null;
         // on determine combien il resterait sur le compte si on soldait tous les contrats en cours.
 		double solde = this.soldeBancaire.getValeur();
