@@ -156,8 +156,6 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 
 	public void next() {
 		// -------------------------- begin eve
-		// transformation
-		// TODO pas fini encore
 		
 		// les quantites de cacao utilisees sont celles specifiees dans le cahier des charges v2
 		ArrayList<Chocolat> aProduire = this.stockChocolat.getProduitsEnStock();
