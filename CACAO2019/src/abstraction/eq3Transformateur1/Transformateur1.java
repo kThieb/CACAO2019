@@ -140,22 +140,24 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		// -------------------------- begin eve
 		// transformation
 		// TODO pas fini encore
-		// transformer les differents produits
-		// updater les indicateurs, stocks et solde bancaire
 		
 		// les quantites de cacao utilisees sont celles specifiees dans le cahier des charges v2
-		ArrayList<Double> quantitesTransformees = new ArrayList<Double>(); 
 		ArrayList<Chocolat> aProduire = this.stockChocolat.getProduitsEnStock();
+		ArrayList<Feve> aDisposition = this.stockFeves.getProduitsEnStock();
 		for (Chocolat p: aProduire) {
-			for (Feve f: this.stockFeves.getProduitsEnStock()) {
-				quantitesTransformees.add(this.coutEnFeves.getCoutEnFeves(p,f)*100);
+			for (Feve f: aDisposition) {
+				double fevesUtilisees = this.stockFeves.getQuantiteEnStock(f)*0.9/this.coutEnFeves.getCoutEnFeves(p, f); // on garde 10% du stocks de feves au cas ou
+				double nouveauChocolat = fevesUtilisees*2; // 50% cacao, 50% sucre
+				// update solde bancaire
+				this.soldeBancaire.retirer(this, nouveauChocolat*this.margeChocolats.getCoutProd(p));
+				// updater stocks
+				this.iStockFeves.retirer(this, fevesUtilisees);
+				this.stockFeves.setQuantiteEnStock(f, this.stockFeves.getQuantiteEnStock(f) - fevesUtilisees);
+				this.iStockChocolat.retirer(this, nouveauChocolat);
+				this.stockChocolat.setQuantiteEnStock(p, this.stockChocolat.getQuantiteEnStock(p) + nouveauChocolat);
 			}
 		}
 		
-		double quantiteTransformee = Math.random()*Math.min(100, this.iStockFeves.getValeur()); // on suppose qu'on a un stock infini de sucre
-		this.iStockFeves.retirer(this, quantiteTransformee);
-		this.iStockChocolat.ajouter(this, (2*quantiteTransformee));// 50% cacao, 50% sucre
-		this.soldeBancaire.retirer(this, quantiteTransformee*1.0234); // sucre, main d'oeuvre, autres frais
 		// -------------------------- end eve
 	}
 	
