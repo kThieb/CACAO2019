@@ -30,10 +30,13 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 		this(5.0, 100000.0);
 	}
 
-	/**
-	 * @author Estelle Bonnet
-	 */
-	public Distributeur1(double marge, double soldeInitial) {
+	public Distributeur1(double marge, //ArrayList<Double> stockInitial, 
+			Double soldeInitial) {
+		ArrayList<Double> stockInitial= new ArrayList<Double>();
+		stockInitial.add(0.0);
+		stockInitial.add(0.0);
+		stockInitial.add(0.0);
+		stockInitial.add(0.0);
 		this.numero =1 ;
 		this.marge = marge;
 		this.stock = new Stock();

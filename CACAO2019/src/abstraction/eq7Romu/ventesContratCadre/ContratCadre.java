@@ -127,11 +127,11 @@ public class ContratCadre<I> {
 	}
 
 	public double getMontantRestantARegler() {
-		return this.montantRestantARegler;
+		return this.montantRestantARegler<EPSILON ? 0.0 : this.montantRestantARegler;
 	}
 
 	public double getQuantiteRestantALivrer() {
-		return this.quantiteRestantALivrer;
+		return this.quantiteRestantALivrer<EPSILON ? 0.0 : this.quantiteRestantALivrer;
 	}
 
 	public void ajouterEcheancier(Echeancier e) {
