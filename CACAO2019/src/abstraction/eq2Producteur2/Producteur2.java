@@ -14,26 +14,9 @@ import abstraction.fourni.Indicateur;
 import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 
-/**
- * @author DELL
- *
- */
-/**
- * @author DELL
- *
- */
-/**
- * @author DELL
- *
- */
-/**
- * @author DELL
- *
- */
-/**
- * @author DELL
- *
- */
+
+
+
 public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	  
 	private static int NB_PROD = 2;
