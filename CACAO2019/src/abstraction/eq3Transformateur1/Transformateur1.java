@@ -54,14 +54,16 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		// --------------------------------- begin eve
 		
 				// stock de feves
-				this.stockFeves = new Stock<Feve>();
-				this.stockFeves.setQuantiteEnStock(Feve.CRIOLLO_HG_EQ, 0.);
-				this.stockFeves.setQuantiteEnStock(Feve.FORASTERO_MG_EQ, 0.);
-				this.stockFeves.setQuantiteEnStock(Feve.FORASTERO_MG_NEQ, 0.);
-				this.stockFeves.setQuantiteEnStock(Feve.MERCEDES_MG_EQ, 0.);
-				this.stockFeves.setQuantiteEnStock(Feve.MERCEDES_MG_NEQ, 0.);
-				this.stockFeves.setQuantiteEnStock(Feve.TRINITARIO_MG_EQ, 0.);
-				this.stockFeves.setQuantiteEnStock(Feve.TRINITARIO_MG_NEQ, 0.);
+				ArrayList<Feve> feves = new ArrayList<Feve>();
+				feves.add(Feve.CRIOLLO_HG_EQ);
+				feves.add(Feve.FORASTERO_MG_EQ);
+				feves.add(Feve.FORASTERO_MG_NEQ);
+				feves.add(Feve.MERCEDES_MG_EQ);
+				feves.add(Feve.TRINITARIO_MG_EQ);
+				feves.add(Feve.TRINITARIO_MG_NEQ);
+							
+				this.stockFeves = new Stock<Feve>(feves);
+				
 				
 				// stock de chocolat
 				this.stockChocolat = new Stock<Chocolat>();
