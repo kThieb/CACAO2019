@@ -93,6 +93,10 @@ public class Producteur1 implements IActeur /* , IVendeurCacaoAleatoire */ {
 				plantationCriollo.put(next, 2);
 				plantationForastero.put(next, 2);
 				plantationTrinitario.put(next, 2);
+			} else {
+				plantationCriollo.put(next, 0);
+				plantationForastero.put(next, 0);
+				plantationTrinitario.put(next, 0);
 			}
 		}
 		//END ANTI 
