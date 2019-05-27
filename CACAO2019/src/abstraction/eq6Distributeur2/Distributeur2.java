@@ -23,9 +23,6 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 
 
 	private List<ContratCadre<Chocolat>> contratsEnCours;
-	private Indicateur stock;
-
-	private int numero;
 
 	
 	private HashMap<Chocolat,Double> margeParProduit;
@@ -257,7 +254,7 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 
 	}
 
-	//Nordin
+	//NORDIN
 	public double vendre(Chocolat c, double quantite) {
 		List<String> chocolatsdisponibles = new ArrayList<String>();
 		for (Chocolat chocolat : this.getStockEnVente().getProduitsEnVente()) {
@@ -267,7 +264,7 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 				this.getStockEnVente().ajouter(c, stockenvente);
 				this.getIndicateurStock(c).retirer(this, q);
 				this.getSoldeBancaire().ajouter(this, this.getPrix(c)*q);
-				this.journal.ajouter("Vente de "+q+"à "+this.getPrix(c));
+				this.journal.ajouter("Vente de "+q+" à " +this.getPrix(c) + " euros" + " pour le chocolat " +c);
 				return q;
 				}
 		else {chocolatsdisponibles.add(""+chocolat);}
@@ -335,6 +332,7 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 			double d = c.getEcheancier().getQuantiteAPartirDe(Monde.LE_MONDE.getStep());
 			variations_produit.put(ch, d);
 		}
+
 		
 		return variations_produit;
 	}
@@ -366,7 +364,7 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 		
 		Chocolat produit =  Chocolat.MG_NE_HP;
 		double max_ecart = Math.max(this.stockIdeal().get(produit) - (variations_produit.get(produit)+this.getStockEnVente().get(produit)),0.0);
-		
+
 		for (Chocolat c : variations_produit.keySet()) {
 			if (Math.max(this.stockIdeal().get(c) -  (variations_produit.get(c)+this.getStockEnVente().get(c)),0) > max_ecart) {
 				max_ecart = Math.max(this.stockIdeal().get(c) -  (variations_produit.get(c)+this.getStockEnVente().get(c)),0.0);
@@ -384,15 +382,17 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 			quantite = this.stockIdeal().get(produit) - this.getStockEnVente().get(produit) - variations_produit.get(produit);
 		}
 		
+
 		if (solde >1000) 
 		{
+
 			List<IVendeurContratCadre<Chocolat>> vendeurs = new ArrayList<IVendeurContratCadre<Chocolat>>();
 			for (IActeur acteur : Monde.LE_MONDE.getActeurs()) {
-				if (acteur instanceof IVendeurContratCadre) {
+				if (acteur instanceof IVendeurContratCadre<?>) {
 
 					IVendeurContratCadre<Chocolat> vacteur = (IVendeurContratCadre<Chocolat>)acteur;
 					StockEnVente<Chocolat> stock = vacteur.getStockEnVente();
-					if (stock.get(produit)>100) {// on souhaite faire des contrats d'au moins 100kg
+					if (stock.get(produit)>quantite-100) {// on souhaite faire des contrats d'au moins 100kg
 						vendeurs.add((IVendeurContratCadre<Chocolat>)vacteur);
 					}
 				}
@@ -411,16 +411,17 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 			
             if (vendeur != null & produit != null && quantite != 0) 
             {
-            	res = new ContratCadre<Chocolat>(this, vendeur, produit, vendeur.getStockEnVente().get(produit));
-            	this.journal.ajouter("Nouveau contrat non signé sur produit= " + produit + "quantité = " + vendeur.getStockEnVente().get(produit) + "vendeur= " + vendeur);
+            	res = new ContratCadre<Chocolat>(this, vendeur, produit, Math.max(vendeur.getStockEnVente().get(produit),quantite));
+            	this.journal.ajouter("Nouveau contrat non signé sur produit= " + produit + " Quantité = " +  Math.max(vendeur.getStockEnVente().get(produit),quantite) + "vendeur= " + vendeur);
             }
             else 
             { res = null;
             }
 		
 		}
-		
-		return res; 
+		else {this.journal.ajouter(" Il ne reste que "+solde+" une fois tous les contrats payes donc nous ne souhaitons pas en creer d'autres pour l'instant");
+		}
+	return res;
 		
 	}
 
@@ -428,9 +429,12 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 	//Caroline 
 	public void proposerEcheancierAcheteur(ContratCadre<Chocolat> cc) {
 		if (cc!=null) {
+			
 			if (cc.getEcheancier()==null) { // il n'y a pas encore eu de contre-proposition de la part du vendeur
 				cc.ajouterEcheancier(new Echeancier(Monde.LE_MONDE.getStep(), 10, cc.getQuantite()/10));
-		}   else {
+		}   
+			
+			else {
 				cc.ajouterEcheancier(new Echeancier(cc.getEcheancier())); // on accepte la contre-proposition du vendeur 
 				this.journal.ajouter("Contrat " + cc + "avec écheancier");
 				}
@@ -467,7 +471,7 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 			if (satisfaitParPrixContratCadre (cc)) {
 				cc.ajouterPrixAuKilo(cc.getPrixAuKilo());
 				this.getIndicateurPrix(cc.getProduit()).ajouter(this,cc.getPrixAuKilo()*this.getMarge());
-				this.journal.ajouter("Accord sur Prix sur contrat" + cc.toString());
+				this.journal.ajouter("Accord sur Prix sur contrat " + cc.toString());
 			} else {
 					if (cc.getListePrixAuKilo().size() >= 3 ) {
 						cc.ajouterPrixAuKilo(cc.getListePrixAuKilo().get(cc.getListePrixAuKilo().size() -2)*1.05);
@@ -477,6 +481,7 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 
 	@Override//Caroline
 	public void notifierAcheteur(ContratCadre<Chocolat> cc) {
+		this.journal.ajouter("Nouveau Contrat " + cc.toString());
 		if (cc!=null) {
 			this.journal.ajouter("Nouveau Contrat" + cc.toString());
 			this.getContratsEnCours().add(cc);
@@ -491,13 +496,12 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 			this.getStockEnVente().ajouter(produit, quantite);
 
 		
-		this.journal.ajouter("Réception du produit" + produit.toString() +
-				"en quantité" + quantite + "au sujet du contrat " + cc.toString());
+		this.journal.ajouter("Réception du produit " + produit.toString() +
+				"en quantité " + quantite + "au sujet du contrat " + cc.toString());
 		
 		if (cc != null && quantite >0 && cc.getProduit().equals(produit)) {
-			this.getStockEnVente().ajouter(produit, quantite);
-			System.out.println(quantite);
-
+			double quantiteajoutee= this.getStockEnVente().get(produit)+quantite;
+			this.getStockEnVente().ajouter(produit, quantiteajoutee);
 			this.getIndicateurStock(cc.getProduit()).ajouter(this, quantite);
 
 		}}
@@ -514,6 +518,7 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 		if (montant<0.0) {
 			throw new IllegalArgumentException("Appel de la methode payer avec un montant negatif");
 		}
+
 		if (solde - montant > -5000) {
 				montantpaye = montant;
 				getSoldeBancaire().retirer(this, montantpaye);
@@ -523,7 +528,9 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 				getSoldeBancaire().retirer(this, montantpaye);
 						} 
 				
+
 		this.journal.ajouter(montantpaye + "sur le contrat" + cc.toString());
+
 		return montantpaye;
 		}
 	
