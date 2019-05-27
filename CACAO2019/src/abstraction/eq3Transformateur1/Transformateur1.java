@@ -168,6 +168,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 					double fevesUtilisees = (this.stockFeves.getQuantiteEnStock(f)*0.9)*this.coutEnFeves.getCoutEnFeves(p, f); // on garde 10% du stocks de feves au cas ou
 					double nouveauChocolat = fevesUtilisees*2; // 50% cacao, 50% sucre
 				
+					
 					// update solde bancaire
 					this.soldeBancaire.retirer(this, nouveauChocolat*this.margeChocolats.getCoutProd(p));
 					// updater stocks feves
