@@ -78,7 +78,7 @@ public class Producteur1 implements IActeur /* , IVendeurCacaoAleatoire */ {
 			stockTrinitario.put(next , (double) 0);
 		}
 		Random r=new Random();
-		alea=r.nextInt(12+1);
+		alea=r.nextInt(unAnEnSteps);
 		// END Nas
 		//BEGIN ANTI 
 		this.plantationCriolloI = new Indicateur("EQ1 plantation criollo", this, 80);
@@ -130,12 +130,12 @@ public class Producteur1 implements IActeur /* , IVendeurCacaoAleatoire */ {
 	}
 	
 	public void modifierCompteurRecolte() {
-		if (compteur_recolte<12) {
+		if (compteur_recolte<unAnEnSteps) {
 			compteur_recolte++;
 		} else {
 			compteur_recolte=0;
 			Random r=new Random();
-			alea=r.nextInt(12);
+			alea=r.nextInt(unAnEnSteps);
 		}
 	}
 
@@ -158,7 +158,7 @@ public class Producteur1 implements IActeur /* , IVendeurCacaoAleatoire */ {
 		// this.stockFeves.setValeur(this, nouveauStock);
 
 		// BEGIN Nas
-		update();
+		updateStock();
 		this.soldeBancaire.retirer(this, COUT_FIXE_STOCK + COUT_VARIABLE_STOCK * stockFeves.getValeur());
 		// END Nas
 		//BEGIN ANTI 
@@ -229,7 +229,7 @@ public class Producteur1 implements IActeur /* , IVendeurCacaoAleatoire */ {
 	// END ANTI 
 
 	// BEGIN Nas
-	private void update() {
+	private void updateStock() {
 		HashMap<Integer, Double> stockCriolloOld = new HashMap<Integer, Double>( stockCriollo);
 		HashMap<Integer, Double> stockForasteroOld = new HashMap<Integer, Double>(stockForastero);
 		HashMap<Integer, Double> stockTrinitarioOld = new HashMap<Integer, Double>(stockTrinitario);
