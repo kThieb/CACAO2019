@@ -48,7 +48,6 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	private Journal journal;
 
 	
-	private Feve fevesProduites;
 	private int numero;
 	private List<ContratCadre<Feve>> contratsEnCours;
 	private int numStep;
@@ -56,11 +55,10 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 
 	
 	public Producteur2( List<Integer> productionParStep, List<Double> stockInitial, double soldeInitial) {
-		this.fevesProduites = fevesProduites;
 		this.gestionnaireFeve = new GestionnaireFeve(this);
-		this.initstock(fevesProduites, stockInitial.get(0)); // TODO attention, on prend le premier élément seulement de la liste 
+		this.initstock(Feve.FORASTERO_MG_NEQ, stockInitial.get(0)); // TODO attention, on prend le premier élément seulement de la liste 
 		
-		Monde.LE_MONDE.ajouterIndicateur(gestionnaireFeve.get(fevesProduites).getStockIndicateur());
+		Monde.LE_MONDE.ajouterIndicateur(gestionnaireFeve.get(Feve.FORASTERO_MG_NEQ).getStockIndicateur());
 		this.soldeBancaire = new Indicateur(this.getNom()+" Solde", this, soldeInitial);
 		Monde.LE_MONDE.ajouterIndicateur(this.soldeBancaire);
 		this.contratsEnCours = new ArrayList<ContratCadre<Feve>>();
@@ -71,12 +69,13 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	
 	public Producteur2() {
 		this(new LinkedList<Integer>(),new LinkedList<Double>(),0.0);
+		this.gestionnaireFeve.setProduction(this, Feve.FORASTERO_MG_NEQ, 75000000);
+		this.gestionnaireFeve.setStock(this, Feve.FORASTERO_MG_NEQ, 220000000);
 		
 	}
 	
 	public void initstock(Feve fevesProduites, double stockInitial) {
 		gestionnaireFeve.setStock(this,fevesProduites, stockInitial);
-		this(Feve.FORASTERO_MG_NEQ, 75000000, 220000000, 100000000);
 	}
 	
 	public String getNom() {
