@@ -102,7 +102,6 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 
 	}
 	
-	
 
 
 	@Override
@@ -182,21 +181,21 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 		
 		else {
 		if (quantite > 10000000 && quantite < 20000000) {
-			prixAPayer = this.gestionnaireFeve.getPrixVente(fevesProduites) * 0.95;  // on réduit le prix de 5% si l'on commande plus de 10 000 T
+			prixAPayer = this.gestionnaireFeve.getPrixVente(produit) * 0.95;  // on réduit le prix de 5% si l'on commande plus de 10 000 T
 		}
 		else if (quantite > 20000000) {
-			prixAPayer = this.gestionnaireFeve.getPrixVente(fevesProduites) * 0.9;  // on réduit le prix de 10% si l'on commande plus de 20 000 T
+			prixAPayer = this.gestionnaireFeve.getPrixVente(produit) * 0.9;  // on réduit le prix de 10% si l'on commande plus de 20 000 T
 		}
 		
-		else { prixAPayer = this.gestionnaireFeve.getPrixVente(fevesProduites);}
+		else { prixAPayer = this.gestionnaireFeve.getPrixVente(produit);}
 		if (this.contratsEnCours.size() >= 1) {
 			ContratCadre<Feve> cc = this.contratsEnCours.get(this.contratsEnCours.size()-1);
 			double dernierPrix = cc.getPrixAuKilo();  //  on recherche le prix auquel on a vendu la dernière fois
-			if (dernierPrix > this.gestionnaireFeve.getPrixVente(fevesProduites) * 0.9 && this.gestionnaireFeve.getPrixVente(fevesProduites) * 1.05 < PRIX_MAX) {
-				this.gestionnaireFeve.get(fevesProduites).setPrix(this, this.gestionnaireFeve.getPrixVente(fevesProduites)*1.05);
+			if (dernierPrix > this.gestionnaireFeve.getPrixVente(produit) * 0.9 && this.gestionnaireFeve.getPrixVente(produit) * 1.05 < PRIX_MAX) {
+				this.gestionnaireFeve.get(produit).setPrix(this, this.gestionnaireFeve.getPrixVente(produit)*1.05);
 			}  // si l'on a vendu à plus de 90% du prix maximal, on augmente le prix initial de 5%
-			else if (dernierPrix < this.gestionnaireFeve.getPrixVente(fevesProduites) * 0.8 && this.gestionnaireFeve.getPrixVente(fevesProduites) * 0.95 > PRIX_MIN) {
-				this.gestionnaireFeve.get(fevesProduites).setPrix(this, this.gestionnaireFeve.getPrixVente(fevesProduites)*0.95);
+			else if (dernierPrix < this.gestionnaireFeve.getPrixVente(produit) * 0.8 && this.gestionnaireFeve.getPrixVente(produit) * 0.95 > PRIX_MIN) {
+				this.gestionnaireFeve.get(produit).setPrix(this, this.gestionnaireFeve.getPrixVente(produit)*0.95);
 			}  // si l'on a vendu à moins de 80% du prix maximal, on diminue le prix initial de 5%
 		}
 		return prixAPayer ; }
