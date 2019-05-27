@@ -10,6 +10,8 @@ private HashMap<Chocolat, Double> coutProd;
 private HashMap<Chocolat, Double> margeBrute;
 	
 	public Marge(ArrayList<Chocolat> produits) {
+		this.coutProd = new HashMap<Chocolat, Double>();
+		this.margeBrute = new HashMap<Chocolat, Double>();
 		for (Chocolat p: produits) { 
 			this.coutProd.put(p, 0.);
 			this.margeBrute.put(p, 0.);

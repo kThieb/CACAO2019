@@ -9,6 +9,7 @@ public class Stock<T> {
 	private HashMap<T, Double> stock;
 	
 	public Stock(ArrayList<T> produits) {
+		this.stock = new HashMap<T, Double>();
 		for (T p: produits) { 
 			this.stock.put(p, 0.);
 		}

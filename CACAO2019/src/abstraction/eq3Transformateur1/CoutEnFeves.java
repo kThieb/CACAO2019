@@ -14,6 +14,7 @@ public class CoutEnFeves {
 	}
 	
 	public CoutEnFeves(ArrayList<Chocolat> chocolats, ArrayList<Feve> feves) {
+		this.cout = new HashMap<Chocolat, HashMap<Feve, Double>>();
 		for (Chocolat c: chocolats) { 
 			this.cout.put(c, new HashMap<Feve, Double>());
 			for(Feve f:feves) {
