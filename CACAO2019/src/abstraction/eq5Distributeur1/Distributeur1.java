@@ -175,7 +175,7 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 	@Override
 	public void notifierAcheteur(ContratCadre cc) {
 		// TODO Auto-generated method stub
-		
+		this.contratsEnCours.add(cc);
 
 		
 		
