@@ -53,6 +53,7 @@ public class VendeurContratCadre extends Producteur1 implements IVendeurContratC
 				reste= 0;
 				stock-= reste+qtt;}
 		}
+		if(reste!=0) { newEcheancier.ajouter(reste);}
 				
 				cc.ajouterEcheancier(newEcheancier);
 			}
@@ -131,14 +132,24 @@ public class VendeurContratCadre extends Producteur1 implements IVendeurContratC
 		      }
 		      if (cc==null) {throw new IllegalArgumentException("Appel de la methode livrer(produit,quantite,ContratCadre) de VendeurContratCadre avec ContratCadre null ");
 		      }
-		      if (quantite>this.getStockEnVente().get(produit)) {
+		      /*if (quantite>this.getStockEnVente().get(produit)) {
 		    	  super.stockFeves.retirer(this, this.getStockEnVente().get(produit));
 		    	  cc.livrer(this.getStockEnVente().get(produit));
 		         return this.getStockEnVente().get(produit);
+		      }*/
+		      //BEGIN Nas
+		      if (quantite>getStockI(produit).getValeur()) {
+		    	  double valeur_livre=getStockI(produit).getValeur();
+		    	  retirer(produit,valeur_livre);
+		    	  cc.livrer(valeur_livre);
+		         return valeur_livre;
 		      }
+		      
+		      //END Nas
 		      else {
 		    	  cc.livrer(quantite);
-		    	  super.stockFeves.retirer(this, quantite);
+		    	  //super.stockFeves.retirer(this, quantite);
+		    	  retirer(produit,quantite);
 		         return quantite;
 		      }
 		   
@@ -147,18 +158,22 @@ public class VendeurContratCadre extends Producteur1 implements IVendeurContratC
 	//BEGIN NAS
 	public void retirer(Feve feve, double quantite) {
 		super.stockFeves.retirer(this, quantite);
-		this.getStockEnVente();
-		if (feve.getVariete() == Variete.CRIOLLO) {
-			super.stockCriolloI.retirer(this, quantite);
+		getStockI(feve).retirer(this, quantite);
+		double quantite_a_enlever=quantite;
+		int next=DUREE_DE_VIE_FEVE-1;
+		while (quantite_a_enlever>0 && next >0) {
+			if (getStock(feve).get(next)<quantite_a_enlever) {
+				quantite_a_enlever=quantite_a_enlever-getStock(feve).get(next);
+				getStock(feve).put(next, (double) 0);
+			} else {
 			
-			
-		} else if (feve.getVariete() == Variete.FORASTERO) {
-			super.stockForasteroI.retirer(this, quantite);
-			
-		} else if (feve.getVariete() == Variete.TRINITARIO) {
-			super.stockTrinitarioI.retirer(this, quantite);
+				getStock(feve).put(next, getStock(feve).get(next)-quantite_a_enlever);
+				quantite_a_enlever=0;
+			}
+			next--;
 			
 		}
+		
 		
 	}
 	//END NAS

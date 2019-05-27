@@ -20,12 +20,12 @@ public class Producteur1 implements IActeur /* , IVendeurCacaoAleatoire */ {
 	protected Indicateur stockCriolloI;
 	protected Indicateur stockForasteroI;
 	protected Indicateur stockTrinitarioI;
-	protected HashMap<Integer, Integer> stockCriollo;
-	protected HashMap<Integer, Integer> stockForastero;
-	protected HashMap<Integer, Integer> stockTrinitario;
-	protected int recolteCriollo = 33;
-	protected int recolteForastero = 33;
-	protected int recolteTrinitario = 33;
+	protected HashMap<Integer, Double> stockCriollo;
+	protected HashMap<Integer, Double> stockForastero;
+	protected HashMap<Integer, Double> stockTrinitario;
+	protected double recolteCriollo = 33;
+	protected double recolteForastero = 33;
+	protected double recolteTrinitario = 33;
 
 	protected Indicateur soldeBancaire;
 	// BEGIN ANTI
@@ -65,7 +65,7 @@ public class Producteur1 implements IActeur /* , IVendeurCacaoAleatoire */ {
 		return this.historiqueContrats;
 	}
 
-	public int getRecolte(Feve feve) {
+	public double getRecolte(Feve feve) {
 		if (feve.getVariete() == Variete.CRIOLLO) {
 			return recolteCriollo;
 		} else if (feve.getVariete() == Variete.FORASTERO) {
@@ -125,15 +125,15 @@ public class Producteur1 implements IActeur /* , IVendeurCacaoAleatoire */ {
 
 	// BEGIN Nas
 	private void update() {
-		HashMap<Integer, Integer> stockCriolloOld = stockCriollo;
-		HashMap<Integer, Integer> stockForasteroOld = stockForastero;
-		HashMap<Integer, Integer> stockTrinitarioOld = stockTrinitario;
+		HashMap<Integer, Double> stockCriolloOld = stockCriollo;
+		HashMap<Integer, Double> stockForasteroOld = stockForastero;
+		HashMap<Integer, Double> stockTrinitarioOld = stockTrinitario;
 		for (int next = 0; next < DUREE_DE_VIE_FEVE - 1; next++) {
 			stockCriollo.put(next + 1, stockCriolloOld.get(next));
 			stockForastero.put(next + 1, stockForasteroOld.get(next));
 			stockTrinitario.put(next + 1, stockTrinitarioOld.get(next));
 		}
-		stockCriollo.put(0, recolteCriollo);
+		stockCriollo.put(0,  recolteCriollo);
 		stockForastero.put(0, recolteForastero);
 		stockTrinitario.put(0, recolteTrinitario);
 
@@ -152,6 +152,39 @@ public class Producteur1 implements IActeur /* , IVendeurCacaoAleatoire */ {
 		stockFeves.setValeur(this,
 				stockCriolloI.getValeur() + stockForasteroI.getValeur() + stockTrinitarioI.getValeur());
 
+	}
+	
+	protected Indicateur getStockI(Feve feve) {
+		if (feve.getVariete()== Variete.CRIOLLO) {
+	    	  
+	    	  return stockCriolloI;
+	      }
+	      if (feve.getVariete()== Variete.FORASTERO) {
+	    	  
+	    	  return stockForasteroI;
+	      }
+	      if (feve.getVariete()== Variete.TRINITARIO) {
+	    	  
+	    	  return stockTrinitarioI;
+	      }
+		return stockFeves;
+		
+	}
+	
+	protected HashMap<Integer, Double> getStock(Feve feve){
+		if (feve.getVariete()== Variete.CRIOLLO) {
+	    	  
+	    	  return stockCriollo;
+	      }
+	      if (feve.getVariete()== Variete.FORASTERO) {
+	    	  
+	    	  return stockForastero;
+	      }
+	      if (feve.getVariete()== Variete.TRINITARIO) {
+	    	  
+	    	  return stockTrinitario;
+	      }
+		return stockCriollo;
 	}
 	// END Nass
 
