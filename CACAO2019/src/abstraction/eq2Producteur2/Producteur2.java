@@ -1,8 +1,8 @@
 package abstraction.eq2Producteur2;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 import abstraction.eq7Romu.produits.Feve;
 import abstraction.eq7Romu.ventesContratCadre.ContratCadre;
@@ -23,12 +23,13 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 
 	private Indicateur soldeBancaire;
 	private Journal journal;
+	private double meteo = 0;
+	private double maladie_predateurs = 0;
 
 	private int numero;
 	private List<ContratCadre<Feve>> contratsEnCours;
 	private int numStep;
 	private GestionnaireFeve gestionnaireFeve;
-
 
 	public Producteur2() {
 		this.gestionnaireFeve = new GestionnaireFeve(this);
@@ -68,24 +69,29 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 
 	}
 
+	public void recolte(Feve f) {
+		if (this.numStep <= 6 || this.numStep >= 21 || (this.numStep >= 9 && this.numStep <= 14)) {
+			Random rand=new Random();
+			this.maladie_predateurs=-rand.nextInt(200)/1000;
+			this.meteo=rand.nextInt(200)/1000-1;
+			double qualitePRoduction=maladie_predateurs+meteo;
+			double qualiteProduction = (Math.random() - 0.5) / 2.5 + 1; // entre 0.8 et 1.2
+			double nouveauStock = this.gestionnaireFeve.getStock(f)
+						+ this.gestionnaireFeve.getProductionParStep(f) * qualiteProduction; 
+			this.gestionnaireFeve.setStock(this, f, nouveauStock);
+		}
+	}
+
 	public void next() {
 		for (Feve f : gestionnaireFeve.getFeves()) {
-			if (this.numStep <= 6 || this.numStep >= 21 || (this.numStep >= 9 && this.numStep <= 14)) {
-				double qualiteProduction = (Math.random() - 0.5) / 2.5 + 1; // entre 0.8 et 1.2
-				double nouveauStock = this.gestionnaireFeve.getStock(f)
-						+ this.gestionnaireFeve.getProductionParStep(f) * qualiteProduction; // fait varier la
-																								// production entre 80%
-																								// et 120% de la
-																								// production "normale"
-				this.gestionnaireFeve.setStock(this, f, nouveauStock);
-			}
-			if (this.numStep == 24) {
-				this.numStep = 1;
-			} else {
-				this.numStep++;
-			}
+			this.recolte(f);
 			this.journal.ajouter(
 					"Step " + Monde.LE_MONDE.getStep() + " : prix de vente = " + this.gestionnaireFeve.getPrixVente(f));
+		}
+		if (this.numStep == 24) {
+			this.numStep = 1;
+		} else {			
+			this.numStep++;
 		}
 	}
 
@@ -120,13 +126,13 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 																						// demandée est en stock
 				throw new IllegalArgumentException("La quantité demandée n est pas disponible");
 			} else {
-				cc.ajouterEcheancier(new Echeancier(e)); // on accepte la proposition de l'acheteur car on a la quantite en stock 
+				cc.ajouterEcheancier(new Echeancier(e)); // on accepte la proposition de l'acheteur car on a la quantite
+															// en stock
 
 			}
 		}
 	}
 
-	
 	@Override
 	public void proposerPrixVendeur(ContratCadre<Feve> cc) {
 		if (cc.getListePrixAuKilo().size() == 0) { // On vérifie qu'on a un prix à proposer
