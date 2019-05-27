@@ -185,6 +185,7 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 		else if (quantite > 20000000) {
 			prixAPayer = this.gestionnaireFeve.getPrixVente(fevesProduites) * 0.9;  // on réduit le prix de 10% si l'on commande plus de 20 000 T
 		}
+		
 		else { prixAPayer = this.gestionnaireFeve.getPrixVente(fevesProduites);}
 		if (this.contratsEnCours.size() >= 1) {
 			ContratCadre<Feve> cc = this.contratsEnCours.get(this.contratsEnCours.size()-1);
