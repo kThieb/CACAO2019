@@ -8,15 +8,12 @@ import abstraction.eq7Romu.produits.Feve;
 
 public class Stock<T> {
 
-	private HashMap<T, HashMap<String, Double>> stock;
+	// T est le chocolat ou la feve ; lui est associe une quantite en stock, en kg
+	private HashMap<T, Double> stock;
 	
 	public Stock(ArrayList<T> produits) {
 		for (T p: produits) { 
-			this.stock.put(p, new HashMap<String, Double>()); 
-			this.stock.get(p).put("quantite", 0.);
-			if (p instanceof Chocolat) {
-				this.stock.get(p).put("cout en feves", 0.);
-			}
+			this.stock.put(p, 0.);
 		}
 	}
 	public Stock() { }
@@ -26,11 +23,11 @@ public class Stock<T> {
 	// -----------------------------------------------------------
 	
 	public double getQuantiteEnStock(T produit) {
-		return this.stock.get(produit).get("quantite");
+		return this.stock.get(produit);
 	}
 	
 	public boolean estEnStock(T produit) {
-		return this.stock.containsKey(produit) && (this.stock.get(produit).get("quantite") > 0.);
+		return this.stock.containsKey(produit) && (this.stock.get(produit) > 0.);
 	}
 	
 	public ArrayList<T> getProduitsEnStock() {
@@ -41,34 +38,14 @@ public class Stock<T> {
 		return resultat;
 	}
 	
-	// ----------------- methodes specifiques aux chocolats (a retirer plus tard)
-	
-	public double getCoutEnFeves(T produit){
-
-		if (produit instanceof Feve) {
-			if (estEnStock(produit)) {
-				double cout = this.stock.get(produit).get("cout en feves");
-				return cout;
-			}
-			else { throw new IllegalArgumentException("La feve demandee n'est pas en stock"); }
-		}
-		else { throw new IllegalArgumentException("Le produit passe en argument n'est pas une feve"); }
-		
-	}
-	
-	public ArrayList<Feve> getFevesUtilisees(T produit) {
-		// TODO Eve
-		return new ArrayList<Feve>();
-	}
-	
 	
 	// -----------------------------------------------------------
 	//          SETTERS
 	// -----------------------------------------------------------
 	
 	public void setQuantiteEnStock(T produit, double quantite) {
-		if (quantite >= 0.) { this.stock.get(produit).put("quantite", quantite); }
-		else { this.stock.get(produit).put("quantite", 0.); }
+		if (quantite >= 0.) { this.stock.put(produit, quantite); }
+		else { this.stock.put(produit, 0.); }
 	}
 
 }

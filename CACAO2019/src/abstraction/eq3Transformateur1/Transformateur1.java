@@ -146,7 +146,9 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		ArrayList<Double> quantitesTransformees = new ArrayList<Double>(); 
 		ArrayList<Chocolat> aProduire = this.stockChocolat.getProduitsEnStock();
 		for (Chocolat p: aProduire) {
-			quantitesTransformees.add(this.stockChocolat.getCoutEnFeves(p)*100);
+			for (Feve f: this.stockFeves.getProduitsEnStock()) {
+				quantitesTransformees.add(this.coutEnFeves.getCoutEnFeves(p,f)*100);
+			}
 		}
 		
 		double quantiteTransformee = Math.random()*Math.min(100, this.iStockFeves.getValeur()); // on suppose qu'on a un stock infini de sucre
