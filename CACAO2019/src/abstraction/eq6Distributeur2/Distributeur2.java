@@ -262,8 +262,6 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 		List<String> chocolatsdisponibles = new ArrayList<String>();
 		for (Chocolat chocolat : this.getStockEnVente().getProduitsEnVente()) {
 		if( c.equals(chocolat)) {
-				System.out.println(quantite);
-				System.out.println(this.getStockEnVente().get(c));
 				Double q = Math.min(this.getStockEnVente().get(c), quantite);
 				Double stockenvente = this.getStockEnVente().get(c) - q;
 				this.getStockEnVente().ajouter(c, stockenvente);
@@ -330,11 +328,11 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 		} else {
 			variations_produit.put(Chocolat.HG_E_SHP,0.0);
 		}
-	    
+
 		for (ContratCadre c  : this.getContratsEnCours()) {
 			Chocolat ch = (Chocolat) c.getProduit();
 			//10 steps pour le contrat 
-			double d = c.getEcheancier().getQuantiteTotale()/10;
+			double d = c.getEcheancier().getQuantiteAPartirDe(Monde.LE_MONDE.getStep());
 			variations_produit.put(ch, d);
 		}
 		
@@ -365,20 +363,18 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 		HashMap<Chocolat, Double> variations_produit = this.prevision_variation_stock ();
 		
 		Chocolat produit =  Chocolat.MG_NE_HP;
-		double max_ecart = this.stockIdeal().get(produit) - (variations_produit.get(produit)+this.getStockEnVente().get(produit));
+		double max_ecart = Math.max(this.stockIdeal().get(produit) - (variations_produit.get(produit)+this.getStockEnVente().get(produit)),0.0);
 		
 		for (Chocolat c : variations_produit.keySet()) {
-			System.out.println("changement for");
-			if (this.stockIdeal().get(c) -  (variations_produit.get(c)+this.getStockEnVente().get(c)) > max_ecart) {
-				System.out.println("changement");
-				max_ecart = this.stockIdeal().get(c) -  (variations_produit.get(c)+this.getStockEnVente().get(c));
+			if (Math.max(this.stockIdeal().get(c) -  (variations_produit.get(c)+this.getStockEnVente().get(c)),0) > max_ecart) {
+				max_ecart = Math.max(this.stockIdeal().get(c) -  (variations_produit.get(c)+this.getStockEnVente().get(c)),0.0);
 				produit = c;
 			}
 		}
 		
 		//QUANTITE
 		double quantite;
-		if (variations_produit.get(produit) + this.getStockEnVente().get(produit) > this.stockIdeal().get(produit)+500) {
+		if (variations_produit.get(produit) + this.getStockEnVente().get(produit) > this.stockIdeal().get(produit)) {
 			quantite = 0;
 		}
 		else 
