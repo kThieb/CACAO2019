@@ -1,13 +1,10 @@
 package abstraction.eq2Producteur2;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
-import abstraction.eq1Producteur1.ventesCacaoAleatoires.IVendeurCacaoAleatoire;
 import abstraction.eq7Romu.produits.Feve;
-import abstraction.eq7Romu.produits.Gamme;
-import abstraction.eq7Romu.produits.Variete;
 import abstraction.eq7Romu.ventesContratCadre.ContratCadre;
 import abstraction.eq7Romu.ventesContratCadre.Echeancier;
 import abstraction.eq7Romu.ventesContratCadre.IVendeurContratCadre;
@@ -17,6 +14,26 @@ import abstraction.fourni.Indicateur;
 import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 
+/**
+ * @author DELL
+ *
+ */
+/**
+ * @author DELL
+ *
+ */
+/**
+ * @author DELL
+ *
+ */
+/**
+ * @author DELL
+ *
+ */
+/**
+ * @author DELL
+ *
+ */
 public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	  
 	private static int NB_PROD = 2;
@@ -31,21 +48,17 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	private Journal journal;
 
 	
-	private Feve fevesProduites;
 	private int numero;
 	private List<ContratCadre<Feve>> contratsEnCours;
 	private int numStep;
 	private GestionnaireFeve gestionnaireFeve;
-	
-	
-	
-	public Producteur2(Feve fevesProduites, int productionParStep, double stockInitial, double soldeInitial) {
-		NB_PROD++;
 
-
-		this.numero = NB_PROD;
-		this.fevesProduites=fevesProduites;
-
+	
+	public Producteur2( List<Integer> productionParStep, List<Double> stockInitial, double soldeInitial) {
+		this.gestionnaireFeve = new GestionnaireFeve(this);
+		this.initstock(Feve.FORASTERO_MG_NEQ, stockInitial.get(0)); // TODO attention, on prend le premier élément seulement de la liste 
+		
+		Monde.LE_MONDE.ajouterIndicateur(gestionnaireFeve.get(Feve.FORASTERO_MG_NEQ).getStockIndicateur());
 		this.soldeBancaire = new Indicateur(this.getNom()+" Solde", this, soldeInitial);
 		Monde.LE_MONDE.ajouterIndicateur(this.soldeBancaire);
 		this.contratsEnCours = new ArrayList<ContratCadre<Feve>>();
@@ -55,7 +68,14 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	}
 	
 	public Producteur2() {
-		this(Feve.FORASTERO_MG_NEQ, 75000000, 220000000, 100000000);
+		this(new LinkedList<Integer>(),new LinkedList<Double>(),0.0);
+		this.gestionnaireFeve.setProduction(this, Feve.FORASTERO_MG_NEQ, 75000000);
+		this.gestionnaireFeve.setStock(this, Feve.FORASTERO_MG_NEQ, 220000000);
+		
+	}
+	
+	public void initstock(Feve fevesProduites, double stockInitial) {
+		gestionnaireFeve.setStock(this,fevesProduites, stockInitial);
 	}
 	
 	public String getNom() {
@@ -70,9 +90,15 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	public void next() {
 
 		if (this.numStep <= 6 || this.numStep >= 21 || (this.numStep >= 9 && this.numStep <= 14)) {
+<<<<<<< HEAD
 			double qualiteProduction = (Math.random() * 0.4) + 0.8; //entre 0.8 et 1.2
 			double nouveauStock = this.stockFeves.getValeur() + productionParStep * qualiteProduction;  //fait varier la production entre 80% et 120% de la production "normale"
 			this.stockFeves.setValeur(this, nouveauStock); }
+=======
+			double qualiteProduction = (Math.random() - 0.5)/2.5 + 1; //entre 0.8 et 1.2
+			double nouveauStock = stockFeves.getValeur() + productionParStep * qualiteProduction;  //fait varier la production entre 80% et 120% de la production "normale"
+			stockFeves.setValeur(this, nouveauStock); }
+>>>>>>> branch 'master' of https://github.com/Clementmagnin/CACAO2019.git
 		if (this.numStep == 24) {
 			this.numStep = 1;
 		} else {
@@ -86,17 +112,17 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 
 	@Override
 	public StockEnVente<Feve> getStockEnVente() {
-		double stockRestantNeq = this.gestionnaireFeve.getStock(Feve.FORASTERO_MG_NEQ);
-		double stockRestantEq = this.gestionnaireFeve.getStock(Feve.FORASTERO_MG_EQ);
-		for (ContratCadre<Feve> cc : this.contratsEnCours) {
-			if (Monde.LE_MONDE != null) {
-				Feve typeFeve = cc.getProduit();
-				double qRestantLivrer = cc.getQuantiteRestantALivrer();
-			}
-		}
 		StockEnVente<Feve> res = new StockEnVente<Feve>();
-		res.ajouter(this.fevesProduites, Math.max(0.0, stockRestant));
-		return res;
+		List<Feve>feves = gestionnaireFeve.getFeves();
+		for(Feve feve : feves) {
+			double stockRestant = this.gestionnaireFeve.getStock(feve);
+			for (ContratCadre<Feve> cc : this.contratsEnCours) {
+				if (Monde.LE_MONDE != null) {
+					if (cc.getProduit()==feve) {
+					stockRestant = stockRestant - cc.getQuantiteRestantALivrer();
+					res.ajouter(feve, Math.max(0.0, stockRestant));
+				}}}}
+	return res;
 	}
 
 
@@ -166,6 +192,7 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 		else if (quantite > 20000000) {
 			prixAPayer = this.gestionnaireFeve.getPrixVente(fevesProduites) * 0.9;  // on réduit le prix de 10% si l'on commande plus de 20 000 T
 		}
+		
 		else { prixAPayer = this.gestionnaireFeve.getPrixVente(fevesProduites);}
 		if (this.contratsEnCours.size() >= 1) {
 			ContratCadre<Feve> cc = this.contratsEnCours.get(this.contratsEnCours.size()-1);
