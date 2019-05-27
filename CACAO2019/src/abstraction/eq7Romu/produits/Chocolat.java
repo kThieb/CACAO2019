@@ -29,21 +29,5 @@ public enum Chocolat {
 			System.out.println(c);
 		}
 	}
-	
-	// Modification Erwann
-	public double NoteQualite() {
-		int N = 0;
-		if (isEquitable()) {
-			N = N+1 ;
-		}
-		if (isSansHuileDePalme()) {
-			N = N+1 ;
-		}
-		if (this.getGamme() == Gamme.HAUTE) {
-			N= N+2 ;
-		} else if (this.getGamme() == Gamme.MOYENNE) {
-			N = N+1 ;
-		}
-		return 10*N/4;
-	}
+
 }
