@@ -93,7 +93,6 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	}
 
 
-
 	/** 
 	 * Propose un nouvel echeancier au producteur
 	 * */
