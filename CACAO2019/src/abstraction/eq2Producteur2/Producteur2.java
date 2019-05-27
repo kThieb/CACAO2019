@@ -15,8 +15,6 @@ import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 
 
-
-
 public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	  
 	private static int NB_PROD = 2;
@@ -25,8 +23,6 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	private static final double PRIX_MAX = 2.500;
 	
 
-
-
 	private Indicateur soldeBancaire;
 	private Journal journal;
 
@@ -34,7 +30,10 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	private int numero;
 	private List<ContratCadre<Feve>> contratsEnCours;
 	private int numStep;
-	private GestionnaireFeve gestionnaireFeve;
+	private GestionnaireFeve gestionnaireFeve; 
+
+		this.numero = NB_PROD;
+		this.fevesProduites=fevesProduites;
 
 	
 	public Producteur2( List<Integer> productionParStep, List<Double> stockInitial, double soldeInitial) {
@@ -89,8 +88,6 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 			this.journal.ajouter("Step "+Monde.LE_MONDE.getStep()+" : prix de vente = "+this.gestionnaireFeve.getPrixVente(f));
 		}
 	}
-	
-	
 
 
 	@Override
@@ -109,10 +106,21 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	}
 
 
-
-	/** a modifier*/
+	/** 
+	 * Propose un nouvel echeancier au producteur
+	 * */
 	public void proposerEcheancierVendeur(ContratCadre<Feve> cc) {
-		cc.ajouterEcheancier(new Echeancier(cc.getEcheancier())); // on accepte la proposition de l'acheteur car on a la quantite en stock 
+		if (contratsEnCours.contains(cc)) {
+			Echeancier e = cc.getEcheancier();
+		} else {
+			contratsEnCours.add(cc);
+			Echeancier e = cc.getEcheancier();
+			if (e.getQuantiteTotale() > this.getStockEnVente().get(this.getStockEnVente().size()-1)) { //On s assure que la quantitée demandée est en stock
+				throw new IllegalArgumentException("La quantité demandée n est pas disponible");
+			} else {
+				cc.ajouterEcheancier(new Echeancier(cc.getEcheancier())); // on accepte la proposition de l'acheteur car on a la quantite en stock 
+			}
+		}
 	}
 		
 
@@ -177,6 +185,7 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 		}
 		
 		else { prixAPayer = this.gestionnaireFeve.getPrixVente(produit);}
+
 		if (this.contratsEnCours.size() >= 1) {
 			ContratCadre<Feve> cc = this.contratsEnCours.get(this.contratsEnCours.size()-1);
 			double dernierPrix = cc.getPrixAuKilo();  //  on recherche le prix auquel on a vendu la dernière fois
@@ -190,8 +199,7 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 		return prixAPayer ; }
 		
 		
-		
-		
+
 	}
 	
 	@Override
