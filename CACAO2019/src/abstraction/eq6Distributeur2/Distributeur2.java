@@ -309,7 +309,6 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 		if ( stockMG_NE_SHP.getHistorique().getTaille() -2 > 0 ) {
 			double variation_stockMG_NE_SHP = stockMG_NE_SHP.getHistorique().get(stockMG_NE_SHP.getHistorique().getTaille() -2).getValeur() - stockMG_NE_SHP.getValeur();
 			variations_produit.put(Chocolat.MG_NE_SHP, -1*variation_stockMG_NE_SHP);
-			variations_produit.put(Chocolat.MG_NE_SHP, - 1*variation_stockMG_NE_SHP);
 		} else {
 			variations_produit.put(Chocolat.MG_NE_SHP, 0.0);
 		}
@@ -324,13 +323,6 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 			variations_produit.put(Chocolat.HG_E_SHP, -1*variation_stockHG_E_SHP);	
 		} else {
 			variations_produit.put(Chocolat.HG_E_SHP,0.0);
-		}
-	    
-		for (ContratCadre c  : this.getContratsEnCours()) {
-			Chocolat ch = (Chocolat) c.getProduit();
-			//10 steps pour le contrat 
-			double d = c.getEcheancier().getQuantiteTotale()/10;
-			variations_produit.put(ch, d);
 		}
 		return variations_produit;
 	}
