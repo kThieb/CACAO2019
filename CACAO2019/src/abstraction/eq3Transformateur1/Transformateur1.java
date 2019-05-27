@@ -90,15 +90,15 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		 		this.coutEnFeves = new CoutEnFeves(chocolat,feves);
 		 				
 
-		 		this.coutEnFeves.setCoutEnFeves(Chocolat.MG_NE_HP, Feve.FORASTERO_MG_NEQ, 0.1);
-		 		this.coutEnFeves.setCoutEnFeves(Chocolat.MG_NE_HP, Feve.MERCEDES_MG_NEQ, 0.1);
-		 		this.coutEnFeves.setCoutEnFeves(Chocolat.MG_NE_HP, Feve.TRINITARIO_MG_NEQ, 0.1);
-		 		this.coutEnFeves.setCoutEnFeves(Chocolat.MG_NE_SHP, Feve.FORASTERO_MG_NEQ, 0.15);
-		 		this.coutEnFeves.setCoutEnFeves(Chocolat.MG_NE_SHP, Feve.MERCEDES_MG_NEQ, 0.15);
-		 		this.coutEnFeves.setCoutEnFeves(Chocolat.MG_NE_SHP, Feve.TRINITARIO_MG_NEQ, 0.15);
-		 		this.coutEnFeves.setCoutEnFeves(Chocolat.MG_E_SHP, Feve.FORASTERO_MG_EQ, 0.12);
-		 		this.coutEnFeves.setCoutEnFeves(Chocolat.MG_E_SHP, Feve.MERCEDES_MG_EQ, 0.12);
-		 		this.coutEnFeves.setCoutEnFeves(Chocolat.MG_E_SHP, Feve.TRINITARIO_MG_EQ, 0.12); 
+		 		this.coutEnFeves.setCoutEnFeves(Chocolat.MG_NE_HP, Feve.FORASTERO_MG_NEQ, 0.5);
+		 		this.coutEnFeves.setCoutEnFeves(Chocolat.MG_NE_HP, Feve.MERCEDES_MG_NEQ, 0.5);
+		 		this.coutEnFeves.setCoutEnFeves(Chocolat.MG_NE_HP, Feve.TRINITARIO_MG_NEQ, 0.5);
+		 		this.coutEnFeves.setCoutEnFeves(Chocolat.MG_NE_SHP, Feve.FORASTERO_MG_NEQ, 75.0/150);
+		 		this.coutEnFeves.setCoutEnFeves(Chocolat.MG_NE_SHP, Feve.MERCEDES_MG_NEQ, 75.0/150);
+		 		this.coutEnFeves.setCoutEnFeves(Chocolat.MG_NE_SHP, Feve.TRINITARIO_MG_NEQ, 75.0/150);
+		 		this.coutEnFeves.setCoutEnFeves(Chocolat.MG_E_SHP, Feve.FORASTERO_MG_EQ, 12.0/20);
+		 		this.coutEnFeves.setCoutEnFeves(Chocolat.MG_E_SHP, Feve.MERCEDES_MG_EQ, 12.0/20);
+		 		this.coutEnFeves.setCoutEnFeves(Chocolat.MG_E_SHP, Feve.TRINITARIO_MG_EQ, 12.0/20); 
 		 		
 		 		
 				// Marges sur chocolats A MODIFIER AVEC LES BONNES VALEURS (couts production ok)
@@ -162,10 +162,11 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		ArrayList<Feve> aDisposition = this.stockFeves.getProduitsEnStock();
 		for (Chocolat p: aProduire) {
 			for (Feve f: aDisposition) {
+				System.out.println("avant choco "+p+" feve "+ f+" stock choco "+this.stockChocolat.getQuantiteEnStock(p)+" stock feve "+this.stockFeves.getQuantiteEnStock(f));
 				// transformation
 				if (this.coutEnFeves.getCoutEnFeves(p, f) > 0.0) {
-					double fevesUtilisees = this.stockFeves.getQuantiteEnStock(f)*0.9/this.coutEnFeves.getCoutEnFeves(p, f); // on garde 10% du stocks de feves au cas ou
-				
+					double fevesUtilisees = (this.stockFeves.getQuantiteEnStock(f)*0.9)*this.coutEnFeves.getCoutEnFeves(p, f); // on garde 10% du stocks de feves au cas ou
+					System.out.println(" utilisees = "+fevesUtilisees);
 					double nouveauChocolat = fevesUtilisees*2; // 50% cacao, 50% sucre
 				
 					// update solde bancaire
@@ -178,6 +179,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 					this.iStockChocolat.setValeur(this, this.stockChocolat.getQuantiteEnStock(p));
 			
 				}
+				System.out.println("apres choco "+p+" feve "+ f+" stock choco "+this.stockChocolat.getQuantiteEnStock(p)+" stock feve "+this.stockFeves.getQuantiteEnStock(f));
 			}
 		}
 		
