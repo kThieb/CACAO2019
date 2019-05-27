@@ -10,10 +10,10 @@ import abstraction.fourni.IActeur;
 public class GestionnaireFeve extends HashMap<Feve, IndicateurFeve>{
 	
 	public GestionnaireFeve(IActeur acteur) {
-		this.put(Feve.FORASTERO_MG_NEQ, new IndicateurFeve(acteur));
-		this.put(Feve.FORASTERO_MG_EQ, new IndicateurFeve(acteur));
-		this.put(Feve.MERCEDES_MG_EQ, new IndicateurFeve(acteur));
-		this.put(Feve.MERCEDES_MG_NEQ, new IndicateurFeve(acteur));
+		this.put(Feve.FORASTERO_MG_NEQ, new IndicateurFeve(acteur,Feve.FORASTERO_MG_NEQ));
+		this.put(Feve.FORASTERO_MG_EQ, new IndicateurFeve(acteur,Feve.FORASTERO_MG_EQ));
+		this.put(Feve.MERCEDES_MG_EQ, new IndicateurFeve(acteur,Feve.MERCEDES_MG_EQ));
+		this.put(Feve.MERCEDES_MG_NEQ, new IndicateurFeve(acteur,Feve.MERCEDES_MG_NEQ));
 	}	
 	
 

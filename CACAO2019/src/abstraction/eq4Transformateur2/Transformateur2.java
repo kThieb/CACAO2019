@@ -27,6 +27,7 @@ public class Transformateur2 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	protected HashMap<Feve, Stock> stockFeves;
 	
 	
+	
 	private Transformateur2AcheteurCC acheteurCC;
 	private Transformateur2VendeurCC vendeurCC;
 	
