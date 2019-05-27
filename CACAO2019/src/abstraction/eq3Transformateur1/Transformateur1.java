@@ -75,21 +75,26 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 				// --------------------------------- end eve
 		 		
 		 		// --------------------------------- begin Raph
-				//Feves utilisees pour la production des différents chocolats A MODIFIER AVEC LES BONNES VALEURS
+				//Feves utilisees pour la production des différents chocolats
 		 		this.coutEnFeves = new CoutEnFeves();
-		 		this.coutEnFeves.setCoutEnFeves(Chocolat.MG_NE_HP, Feve.CRIOLLO_HG_EQ, 1.);
-		 		this.coutEnFeves.setCoutEnFeves(Chocolat.MG_NE_HP, Feve.TRINITARIO_MG_NEQ, 1.);
-		 		this.coutEnFeves.setCoutEnFeves(Chocolat.MG_NE_SHP, Feve.FORASTERO_MG_EQ, 1.);
-		 		this.coutEnFeves.setCoutEnFeves(Chocolat.MG_NE_SHP, Feve.MERCEDES_MG_EQ, 1.);
+		 		this.coutEnFeves.setCoutEnFeves(Chocolat.MG_NE_HP, Feve.FORASTERO_MG_NEQ, 0.1);
+		 		this.coutEnFeves.setCoutEnFeves(Chocolat.MG_NE_HP, Feve.MERCEDES_MG_NEQ, 0.1);
+		 		this.coutEnFeves.setCoutEnFeves(Chocolat.MG_NE_HP, Feve.TRINITARIO_MG_NEQ, 0.1);
+		 		this.coutEnFeves.setCoutEnFeves(Chocolat.MG_NE_SHP, Feve.FORASTERO_MG_NEQ, 0.15);
+		 		this.coutEnFeves.setCoutEnFeves(Chocolat.MG_NE_SHP, Feve.MERCEDES_MG_NEQ, 0.15);
+		 		this.coutEnFeves.setCoutEnFeves(Chocolat.MG_NE_SHP, Feve.TRINITARIO_MG_NEQ, 0.15);
+		 		this.coutEnFeves.setCoutEnFeves(Chocolat.MG_E_SHP, Feve.FORASTERO_MG_EQ, 0.12);
+		 		this.coutEnFeves.setCoutEnFeves(Chocolat.MG_E_SHP, Feve.MERCEDES_MG_EQ, 0.12);
+		 		this.coutEnFeves.setCoutEnFeves(Chocolat.MG_E_SHP, Feve.TRINITARIO_MG_EQ, 0.12);
 		 		
-				// Marges sur chocolats A MODIFIER AVEC LES BONNES VALEURS
+				// Marges sur chocolats A MODIFIER AVEC LES BONNES VALEURS (couts production ok)
 				this.margeChocolats = new Marge();
 				this.margeChocolats.setMargeBrute(Chocolat.MG_NE_HP, 0.);
-				this.margeChocolats.setCoutProd(Chocolat.MG_NE_HP, 0.);
+				this.margeChocolats.setCoutProd(Chocolat.MG_NE_HP, 0.6);
 				this.margeChocolats.setMargeBrute(Chocolat.MG_NE_SHP, 0.);
-				this.margeChocolats.setCoutProd(Chocolat.MG_NE_SHP, 0.);
+				this.margeChocolats.setCoutProd(Chocolat.MG_NE_SHP, 0.65);
 				this.margeChocolats.setMargeBrute(Chocolat.MG_E_SHP, 0.);
-				this.margeChocolats.setCoutProd(Chocolat.MG_E_SHP, 0.);
+				this.margeChocolats.setCoutProd(Chocolat.MG_E_SHP, 0.9);
 				
 		 		this.iMargeBrute = new Indicateur("EQ3 marge", this, 0);
 		 		this.iCoutsProd = new Indicateur("EQ3 couts de production", this, 0);
