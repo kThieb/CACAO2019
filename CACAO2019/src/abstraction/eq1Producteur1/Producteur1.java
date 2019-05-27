@@ -143,9 +143,9 @@ public class Producteur1 implements IActeur /* , IVendeurCacaoAleatoire */ {
 			stockForastero.put(next + 1, stockForasteroOld.get(next));
 			stockTrinitario.put(next + 1, stockTrinitarioOld.get(next));
 		}
-		stockCriollo.put(0,  recolteCriollo);
-		stockForastero.put(0, recolteForastero);
-		stockTrinitario.put(0, recolteTrinitario);
+		stockCriollo.put(0,  getRecolte(Feve.CRIOLLO_HG_EQ));
+		stockForastero.put(0, getRecolte(Feve.FORASTERO_MG_NEQ));
+		stockTrinitario.put(0, getRecolte(Feve.TRINITARIO_MG_NEQ));
 
 		stockCriolloI.setValeur(this, 0);
 		stockForasteroI.setValeur(this, 0);
