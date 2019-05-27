@@ -1,13 +1,10 @@
 package abstraction.eq2Producteur2;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
-import abstraction.eq1Producteur1.ventesCacaoAleatoires.IVendeurCacaoAleatoire;
 import abstraction.eq7Romu.produits.Feve;
-import abstraction.eq7Romu.produits.Gamme;
-import abstraction.eq7Romu.produits.Variete;
 import abstraction.eq7Romu.ventesContratCadre.ContratCadre;
 import abstraction.eq7Romu.ventesContratCadre.Echeancier;
 import abstraction.eq7Romu.ventesContratCadre.IVendeurContratCadre;
@@ -17,6 +14,26 @@ import abstraction.fourni.Indicateur;
 import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 
+/**
+ * @author DELL
+ *
+ */
+/**
+ * @author DELL
+ *
+ */
+/**
+ * @author DELL
+ *
+ */
+/**
+ * @author DELL
+ *
+ */
+/**
+ * @author DELL
+ *
+ */
 public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	  
 	private static int NB_PROD = 2;
@@ -54,12 +71,12 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	
 	// Constructeur avec hmaps
 	
-	public Producteur2( Feve fevesProduites, int productionParStep, double stockInitial, double soldeInitial) {
+	public Producteur2( List<Integer> productionParStep, List<Double> stockInitial, double soldeInitial) {
 		NB_PROD++;
 		this.numero = NB_PROD;
 		this.fevesProduites = fevesProduites;
 		this.gestionnaireFeve = new GestionnaireFeve(this);
-		this.initstock(fevesProduites, stockInitial);
+		this.initstock(fevesProduites, stockInitial.get(0)); // TODO attention, on prend le premier élément seulement de la liste 
 		
 		Monde.LE_MONDE.ajouterIndicateur(gestionnaireFeve.get(fevesProduites).getStockIndicateur());
 		this.soldeBancaire = new Indicateur(this.getNom()+" Solde", this, soldeInitial);
@@ -72,14 +89,24 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	
 	public void initstock(Feve fevesProduites, double stockInitial) {
 		gestionnaireFeve.setStock(this,fevesProduites, stockInitial);
-		
-		
 	}
 	
 	
 	
 	public Producteur2() {
-		this(Feve.FORASTERO_MG_NEQ, 75000000, 220000000, 100000000);
+		List<Integer>productionParStep=new LinkedList<Integer>();
+		productionParStep.add(75000000);
+		productionParStep.add(0);
+		productionParStep.add(0);
+		productionParStep.add(0);
+
+		List<Double>stockInitial=new LinkedList<Double>();
+		productionParStep.add(220000000);
+		productionParStep.add(0);
+		productionParStep.add(0);
+		productionParStep.add(0);
+		
+		Producteur2(productionParStep ,stockInitial, Double.valueOf(100000000));
 	}
 	
 	public String getNom() {
@@ -180,6 +207,7 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 			}
 			
 		}
+		return 0; //TODO ligne rajoutée juste pour éviter le message d'erreur.
 	}
 
 	@Override
