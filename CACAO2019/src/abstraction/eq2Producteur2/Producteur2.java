@@ -74,6 +74,7 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	}
 
 	public void next() {
+		retireVieuxContrats();
 		for (Feve f:gestionnaireFeve.getFeves()) {
 			if (this.numStep <= 6 || this.numStep >= 21 || (this.numStep >= 9 && this.numStep <= 14)) {
 				double qualiteProduction = (Math.random() - 0.5)/2.5 + 1; //entre 0.8 et 1.2
@@ -86,7 +87,20 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 			this.journal.ajouter("Step "+Monde.LE_MONDE.getStep()+" : prix de vente = "+this.gestionnaireFeve.getPrixVente(f));
 		}
 	}
-
+	//update solde bancaire, livrer 
+	
+	
+	public void retireVieuxContrats() {
+		List<ContratCadre<Feve>> aEnlever = new ArrayList<ContratCadre<Feve>>();
+		for (ContratCadre<Feve> c : this.contratsEnCours) {
+			if (c.getQuantiteRestantALivrer()<=0.0 && c.getMontantRestantARegler()<=0.0) {
+				aEnlever.add(c);
+			}
+		}
+		for (ContratCadre<Feve> c : aEnlever) {
+			this.contratsEnCours.remove(c);
+		}
+	}
 
 	@Override
 	public StockEnVente<Feve> getStockEnVente() {
@@ -199,6 +213,7 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 		
 
 	}
+	
 	
 	@Override
 	public double livrer(Feve produit, double quantite, ContratCadre<Feve> cc) {
