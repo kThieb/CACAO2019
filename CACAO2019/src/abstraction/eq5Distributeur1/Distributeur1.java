@@ -170,7 +170,6 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 	 * @author Imane ZRIAA
 	 */
 	public void proposerPrixAcheteur(ContratCadre cc) {
-		// TODO Auto-generated method stub
 		double prixVendeur = cc.getPrixAuKilo();
 		if (Math.random()<0.25) { // probabilite de 25% d'accepter
 			cc.ajouterPrixAuKilo(cc.getPrixAuKilo());
