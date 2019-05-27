@@ -87,27 +87,17 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 		this.numStep = 1;
 	}
 	
+	public Producteur2() {
+		Producteur2(new LinkedList<Integer>(),new LinkedList<Double>(),0.0);
+	}
+	
 	public void initstock(Feve fevesProduites, double stockInitial) {
 		gestionnaireFeve.setStock(this,fevesProduites, stockInitial);
 	}
 	
 	
 	
-	public Producteur2() {
-		List<Integer>productionParStep=new LinkedList<Integer>();
-		productionParStep.add(75000000);
-		productionParStep.add(0);
-		productionParStep.add(0);
-		productionParStep.add(0);
-
-		List<Double>stockInitial=new LinkedList<Double>();
-		productionParStep.add(220000000);
-		productionParStep.add(0);
-		productionParStep.add(0);
-		productionParStep.add(0);
-		
-		Producteur2(productionParStep ,stockInitial, Double.valueOf(100000000));
-	}
+	
 	
 	public String getNom() {
 		return "EQ2";
