@@ -229,7 +229,7 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 
 	//Nordin
 	public double getPrix(Chocolat c) {
-		return (this.prixParProduit.containsKey(c)? this.prixParProduit.get(c) : 0.0);
+		return this.prixParProduit==null ? Double.MAX_VALUE : (this.prixParProduit.containsKey(c)? this.prixParProduit.get(c) : 0.0);
 	}
 
 	//Nordin
@@ -258,8 +258,12 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 		for (ContratCadre<Chocolat> cc : this.getContratsEnCours()) {
 			solde = solde - cc.getMontantRestantARegler();
 		}
-		
-		Chocolat produit = this.stockEnVente.getProduitsEnVente().get((int)(Math.random()*4));
+		//System.out.println("stock "+this.stockEnVente);
+		//System.out.println("produits "+this.stockEnVente.getProduitsEnVente());
+		if (this.stockEnVente==null || this.stockEnVente.getProduitsEnVente()==null) {
+			return null;
+		}
+		Chocolat produit = this.stockEnVente.getProduitsEnVente().get((int)(Math.random()*Math.min(4, this.stockEnVente.getProduitsEnVente().size())));
 		
 		if (solde >1000) {
 			List<IVendeurContratCadre<Chocolat>> vendeurs = new ArrayList<IVendeurContratCadre<Chocolat>>();
