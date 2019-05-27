@@ -119,21 +119,29 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	}
 
 	public void next() {
+		List<Feve>feves = gestionnaireFeve.getFeves();
+		String newLine = System.getProperty("line.separator");
+		String text = "";
 
 		if (this.numStep <= 6 || this.numStep >= 21 || (this.numStep >= 9 && this.numStep <= 14)) {
 			double qualiteProduction = (Math.random() - 0.5)/2.5 + 1; //entre 0.8 et 1.2
-			double nouveauStock = this.gestionnaireFeve.getStock(Feve.FORASTERO_MG_NEQ)+ this.gestionnaireFeve.getProductionParStep(Feve.FORASTERO_MG_NEQ)* qualiteProduction;
-			this.gestionnaireFeve.setStock(this, Feve.FORASTERO_MG_NEQ, nouveauStock); }
+			
+			for(Feve feve :feves) {
+			double nouveauStock = this.gestionnaireFeve.getStock(feve)+ this.gestionnaireFeve.getProductionParStep(feve)* qualiteProduction;
+			this.gestionnaireFeve.setStock(this, feve, nouveauStock);
+			text += ( "prix de vente  "+ feve.toString() + ":" + this.gestionnaireFeve.getPrixVente(feve) + newLine );
+			}
+		}
+			
 		if (this.numStep == 24) {
 			this.numStep = 1;
 		} else {
 		this.numStep++; }
-		this.journal.ajouter("Step "+Monde.LE_MONDE.getStep()+" : prix de vente = "+this.gestionnaireFeve.getPrixVente(Feve.FORASTERO_MG_NEQ));
-
+		
+		this.journal.ajouter("Step "+Monde.LE_MONDE.getStep()+ text);
 	}
 	
 	
-
 
 	@Override
 	public StockEnVente<Feve> getStockEnVente() {
