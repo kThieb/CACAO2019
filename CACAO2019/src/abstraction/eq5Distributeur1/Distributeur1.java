@@ -162,21 +162,32 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 	@Override
 	/**
 	 * @author Imane ZRIAA
+	 * @author2 Erine DUPONT
 	 */
 	public void proposerPrixAcheteur(ContratCadre cc) {
 		double prixVendeur = cc.getPrixAuKilo();
-		if (Math.random()<0.25) { // probabilite de 25% d'accepter
+		/*if (Math.random()<0.25) { // probabilite de 25% d'accepter
 			cc.ajouterPrixAuKilo(cc.getPrixAuKilo());
 		} else {
 			cc.ajouterPrixAuKilo((prixVendeur*(0.9+Math.random()*0.1))); // Rabais de 10% max
+		}*/
+		if (5 < prixVendeur && prixVendeur < 10 && stock.get((Chocolat) cc.getProduit())<1000) {
+			cc.ajouterPrixAuKilo(prixVendeur*0.8);
+		} else if (5 < prixVendeur && prixVendeur < 10 && stock.get((Chocolat) cc.getProduit())>=1000) {
+			cc.ajouterPrixAuKilo(prixVendeur*0.6);
+		} else if (prixVendeur <= 5) {
+			cc.ajouterPrixAuKilo(prixVendeur);
 		}
 	}
-
+	/** @author Erine DUPONT
+	 */
 	@Override
 	public void notifierAcheteur(ContratCadre cc) {
 		this.contratsEnCours.add(cc);
 	}
 
+	/**@author Erine DUPONT
+	 */
 	@Override
 	public void receptionner(Object produit, double quantite, ContratCadre cc) {
 		if (produit==null || !produit.equals(cc.getProduit())) {
