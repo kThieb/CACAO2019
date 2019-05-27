@@ -260,4 +260,25 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 			return prixMoyen *(1.0+this.marge);
 		}
 	}
+	
+	/**
+	 * @author Erine DUPONT 
+	 */
+	@Override
+	public double vendre(Chocolat chocolat, double quantite) {
+		double stock = this.getStockEnVente().get(chocolat);
+		if (quantite < 0.0) {
+			throw new IllegalArgumentException("Appel de vendre(chocolat, quantité) de "
+					+ "Distributeur1 avec quantité<0.0 (=="+quantite+")");
+		} else if (stock < quantite) {
+			throw new IllegalArgumentException("Appel de vendre(chocolat, quantité) de "
+					+ "Distributeur1 avec stock ( ==" + stock +") < quantité (=="+quantite+")");
+		} else {
+			this.stock.enlever(chocolat, quantite);
+			this.indicateurstock.retirer(this, quantite);
+			soldeBancaire.RecevoirPaiement(this, quantite*getPrix(chocolat));
+			this.indicateursolde.ajouter(this, quantite*getPrix(chocolat));
+			return this.stock.get(chocolat);
+		}
+	}
 }
