@@ -102,14 +102,14 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		 		this.coutEnFeves.setCoutEnFeves(Chocolat.MG_E_SHP, Feve.TRINITARIO_MG_EQ, 12.0/20); 
 		 		
 		 		
-				// Marges sur chocolats A MODIFIER AVEC LES BONNES VALEURS (couts production ok)
+				// Marges sur chocolat
 				this.margeChocolats = new Marge(chocolat);
-				this.margeChocolats.setMargeBrute(Chocolat.MG_NE_HP, 1.);
-				this.margeChocolats.setCoutProd(Chocolat.MG_NE_HP, 0.6);
-				this.margeChocolats.setMargeBrute(Chocolat.MG_NE_SHP, 1.);
-				this.margeChocolats.setCoutProd(Chocolat.MG_NE_SHP, 0.65);
-				this.margeChocolats.setMargeBrute(Chocolat.MG_E_SHP, 1.);
-				this.margeChocolats.setCoutProd(Chocolat.MG_E_SHP, 0.9);
+				this.margeChocolats.setMargeBrute(Chocolat.MG_NE_HP, 5.);
+				this.margeChocolats.setCoutProd(Chocolat.MG_NE_HP, 3.);
+				this.margeChocolats.setMargeBrute(Chocolat.MG_NE_SHP, 10);
+				this.margeChocolats.setCoutProd(Chocolat.MG_NE_SHP, 4.33);
+				this.margeChocolats.setMargeBrute(Chocolat.MG_E_SHP, 10);
+				this.margeChocolats.setCoutProd(Chocolat.MG_E_SHP, 4.5);
 				
 		 		this.iMargeBrute = new Indicateur("EQ3 marge", this, 0);
 		 		this.iCoutsProd = new Indicateur("EQ3 couts de production", this, 0);
