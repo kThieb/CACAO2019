@@ -39,9 +39,11 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	
 	public Producteur2( List<Integer> productionParStep, List<Double> stockInitial, double soldeInitial) {
 		this.gestionnaireFeve = new GestionnaireFeve(this);
-		this.initstock(Feve.FORASTERO_MG_NEQ, stockInitial.get(0)); // TODO attention, on prend le premier élément seulement de la liste 
 		
-		Monde.LE_MONDE.ajouterIndicateur(gestionnaireFeve.get(Feve.FORASTERO_MG_NEQ).getStockIndicateur());
+		List<Feve> feves=this.gestionnaireFeve.getFeves();
+		for(Feve f:feves) {
+			Monde.LE_MONDE.ajouterIndicateur(gestionnaireFeve.get(f).getStockIndicateur());
+		}
 		this.soldeBancaire = new Indicateur(this.getNom()+" Solde", this, soldeInitial);
 		Monde.LE_MONDE.ajouterIndicateur(this.soldeBancaire);
 		this.contratsEnCours = new ArrayList<ContratCadre<Feve>>();
@@ -51,15 +53,18 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	}
 	
 	public Producteur2() {
-		this(new LinkedList<Integer>(),new LinkedList<Double>(),0.0);
 		this.gestionnaireFeve.setProduction(this, Feve.FORASTERO_MG_NEQ, 75000000);
 		this.gestionnaireFeve.setStock(this, Feve.FORASTERO_MG_NEQ, 220000000);
 		
-	}
-	
-	public void initstock(Feve fevesProduites, double stockInitial) {
-		gestionnaireFeve.setStock(this,fevesProduites, stockInitial);
-
+		this.gestionnaireFeve.setProduction(this, Feve.FORASTERO_MG_EQ, 75000000); //TODO rectifier les productions des autres feves
+		this.gestionnaireFeve.setStock(this, Feve.FORASTERO_MG_EQ, 220000000);
+		
+		this.gestionnaireFeve.setProduction(this, Feve.MERCEDES_MG_NEQ, 75000000);
+		this.gestionnaireFeve.setStock(this, Feve.FORASTERO_MG_NEQ, 220000000);
+		
+		this.gestionnaireFeve.setProduction(this, Feve.MERCEDES_MG_EQ, 75000000);
+		this.gestionnaireFeve.setStock(this, Feve.MERCEDES_MG_EQ, 220000000);
+		
 	}
 	
 	public String getNom() {
@@ -72,17 +77,17 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	}
 
 	public void next() {
-
-		if (this.numStep <= 6 || this.numStep >= 21 || (this.numStep >= 9 && this.numStep <= 14)) {
-			double qualiteProduction = (Math.random() - 0.5)/2.5 + 1; //entre 0.8 et 1.2
-			double nouveauStock = this.gestionnaireFeve.getStock(Feve.FORASTERO_MG_NEQ)+ this.gestionnaireFeve.getProductionParStep(Feve.FORASTERO_MG_NEQ) * qualiteProduction;  //fait varier la production entre 80% et 120% de la production "normale"
-			this.gestionnaireFeve.setStock(this, Feve.FORASTERO_MG_NEQ, nouveauStock);}
-		if (this.numStep == 24) {
-			this.numStep = 1;
-		} else {
-		this.numStep++; }
-		this.journal.ajouter("Step "+Monde.LE_MONDE.getStep()+" : prix de vente = "+this.gestionnaireFeve.getPrixVente(Feve.FORASTERO_MG_NEQ));
-
+		for (Feve f:gestionnaireFeve.getFeves()) {
+			if (this.numStep <= 6 || this.numStep >= 21 || (this.numStep >= 9 && this.numStep <= 14)) {
+				double qualiteProduction = (Math.random() - 0.5)/2.5 + 1; //entre 0.8 et 1.2
+				double nouveauStock = this.gestionnaireFeve.getStock(f)+ this.gestionnaireFeve.getProductionParStep(f) * qualiteProduction;  //fait varier la production entre 80% et 120% de la production "normale"
+				this.gestionnaireFeve.setStock(this, f, nouveauStock);}
+			if (this.numStep == 24) {
+				this.numStep = 1;
+			} else {
+			this.numStep++; }
+			this.journal.ajouter("Step "+Monde.LE_MONDE.getStep()+" : prix de vente = "+this.gestionnaireFeve.getPrixVente(f));
+		}
 	}
 	
 	
@@ -165,21 +170,21 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 		
 		else {
 		if (quantite > 10000000 && quantite < 20000000) {
-			prixAPayer = this.gestionnaireFeve.getPrixVente(Feve.FORASTERO_MG_NEQ) * 0.95;  // on réduit le prix de 5% si l'on commande plus de 10 000 T
+			prixAPayer = this.gestionnaireFeve.getPrixVente(produit) * 0.95;  // on réduit le prix de 5% si l'on commande plus de 10 000 T
 		}
 		else if (quantite > 20000000) {
-			prixAPayer = this.gestionnaireFeve.getPrixVente((Feve.FORASTERO_MG_NEQ) )* 0.9;  // on réduit le prix de 10% si l'on commande plus de 20 000 T
+			prixAPayer = this.gestionnaireFeve.getPrixVente(produit )* 0.9;  // on réduit le prix de 10% si l'on commande plus de 20 000 T
 		}
 		
-		else { prixAPayer = this.gestionnaireFeve.getPrixVente((Feve.FORASTERO_MG_NEQ));}
+		else { prixAPayer = this.gestionnaireFeve.getPrixVente(produit);}
 		if (this.contratsEnCours.size() >= 1) {
 			ContratCadre<Feve> cc = this.contratsEnCours.get(this.contratsEnCours.size()-1);
 			double dernierPrix = cc.getPrixAuKilo();  //  on recherche le prix auquel on a vendu la dernière fois
-			if (dernierPrix > this.gestionnaireFeve.getPrixVente((Feve.FORASTERO_MG_NEQ)) * 0.9 && this.gestionnaireFeve.getPrixVente((Feve.FORASTERO_MG_NEQ)) * 1.05 < PRIX_MAX) {
-				this.gestionnaireFeve.get((Feve.FORASTERO_MG_NEQ)).setPrix(this, this.gestionnaireFeve.getPrixVente((Feve.FORASTERO_MG_NEQ))*1.05);
+			if (dernierPrix > this.gestionnaireFeve.getPrixVente(produit) * 0.9 && this.gestionnaireFeve.getPrixVente(produit) * 1.05 < PRIX_MAX) {
+				this.gestionnaireFeve.get(produit).setPrix(this, this.gestionnaireFeve.getPrixVente(produit)*1.05);
 			}  // si l'on a vendu à plus de 90% du prix maximal, on augmente le prix initial de 5%
-			else if (dernierPrix < this.gestionnaireFeve.getPrixVente((Feve.FORASTERO_MG_NEQ)) * 0.8 && this.gestionnaireFeve.getPrixVente((Feve.FORASTERO_MG_NEQ)) * 0.95 > PRIX_MIN) {
-				this.gestionnaireFeve.get((Feve.FORASTERO_MG_NEQ)).setPrix(this, this.gestionnaireFeve.getPrixVente((Feve.FORASTERO_MG_NEQ))*0.95);
+			else if (dernierPrix < this.gestionnaireFeve.getPrixVente(produit) * 0.8 && this.gestionnaireFeve.getPrixVente(produit) * 0.95 > PRIX_MIN) {
+				this.gestionnaireFeve.get(produit).setPrix(this, this.gestionnaireFeve.getPrixVente(produit)*0.95);
 			}  // si l'on a vendu à moins de 80% du prix maximal, on diminue le prix initial de 5%
 		}
 		return prixAPayer ; }
