@@ -26,7 +26,21 @@ public class Producteur1 implements IActeur /* , IVendeurCacaoAleatoire */ {
 	protected double recolteCriollo = 33;
 	protected double recolteForastero = 33;
 	protected double recolteTrinitario = 33;
-
+	//BEGIN ANTI 
+	protected Indicateur plantationCriolloI;
+	protected Indicateur plantationForasteroI;
+	protected Indicateur plantationTrinitarioI;
+	protected HashMap<Integer, Integer> plantationCriollo;
+	protected HashMap<Integer, Integer> plantationForastero;
+	protected HashMap<Integer, Integer> plantationTrinitario; 
+	protected int compteurSteps = 0 ;
+	public static int dureeDeVieCacaoyer = 1040 ; 
+	protected int criolloPlante = 33 ; 
+	protected int forasteroPlante = 33 ; 
+	protected int trinitarioPlante = 33 ;
+	public static int unAnEnSteps = 26 ; 
+	public static int troisAnsEnSteps = 78 ; 
+//END ANTI
 	protected Indicateur soldeBancaire;
 	// BEGIN ANTI
 	// private StockEnVente<Feve> stockEnVente;
@@ -50,12 +64,29 @@ public class Producteur1 implements IActeur /* , IVendeurCacaoAleatoire */ {
 		this.stockCriollo=new HashMap<Integer, Double>();
 		this.stockForastero=new HashMap<Integer, Double>();
 		this.stockTrinitario=new HashMap<Integer, Double>();
+
 		for (int next = 0; next < DUREE_DE_VIE_FEVE - 1; next++) {
 			stockCriollo.put(next, (double) 0);
 			stockForastero.put(next, (double) 0);
 			stockTrinitario.put(next , (double) 0);
 		}
 		// END Nas
+		//BEGIN ANTI 
+		this.plantationCriolloI = new Indicateur("EQ1 plantation criollo", this, 80);
+		this.plantationForasteroI = new Indicateur("EQ1 plantation forastero", this, 80);
+		this.plantationTrinitarioI = new Indicateur("EQ1 plantation trinitario", this, 80);
+		this.plantationCriollo = new HashMap<Integer, Integer>();
+		this.plantationForastero = new HashMap<Integer, Integer>(); 
+		this.plantationTrinitario = new HashMap<Integer, Integer>(); 
+		
+		for (int next = 0; next < dureeDeVieCacaoyer - 1; next++) {
+			if ( next%unAnEnSteps == 0 ) {
+				plantationCriollo.put(next, 2);
+				plantationForastero.put(next, 2);
+				plantationTrinitario.put(next, 2);
+			}
+		}
+		//END ANTI 
 		this.soldeBancaire = new Indicateur("EQ1 solde bancaire", this, 100000);
 		Monde.LE_MONDE.ajouterIndicateur(this.stockFeves);
 		Monde.LE_MONDE.ajouterIndicateur(this.stockCriolloI);
@@ -108,6 +139,9 @@ public class Producteur1 implements IActeur /* , IVendeurCacaoAleatoire */ {
 		update();
 		this.soldeBancaire.retirer(this, COUT_FIXE_STOCK + COUT_VARIABLE_STOCK * stockFeves.getValeur());
 		// END Nas
+		//BEGIN ANTI 
+		updatePlantation();
+		//END ANTI
 
 	}
 
@@ -132,12 +166,52 @@ public class Producteur1 implements IActeur /* , IVendeurCacaoAleatoire */ {
 		return mapPrix;
 		// END Pauline
 	}
+	//BEGIN ANTI 
+	
+	public void updatePlantation() {
+		
+	
+		HashMap<Integer, Integer> plantationCriolloOld = new HashMap<Integer,Integer>(plantationCriollo);
+		HashMap<Integer, Integer> plantationForasteroOld = new HashMap<Integer, Integer>(plantationForastero);
+		HashMap<Integer, Integer> plantationTrinitarioOld = new HashMap<Integer, Integer>(plantationTrinitario);
+		
+		for (int next = 0; next < dureeDeVieCacaoyer - 1; next++) {
+			plantationCriollo.put(next + 1 , plantationCriolloOld.get(next));
+			plantationForastero.put(next + 1 , plantationForasteroOld.get(next));
+			plantationTrinitario.put( next + 1 , plantationTrinitarioOld.get(next));
+			if (next > troisAnsEnSteps - 1) {
+			recolteCriollo += plantationCriollo.get(next);
+			recolteForastero += plantationForastero.get(next);
+			recolteTrinitario += plantationTrinitario.get(next);
+			}
+			
+					
+		}
+		if (compteurSteps%unAnEnSteps == 0  ) {
+			plantationCriollo.put(0, criolloPlante);
+			plantationForastero.put(0, forasteroPlante);
+			plantationTrinitario.put(0, trinitarioPlante);
+			
+		}
+		plantationCriolloI.setValeur(this,  0);
+		plantationForasteroI.setValeur(this,  0);
+		plantationTrinitarioI.setValeur(this, 0);
+		
+		for (int next = 0 ; next < dureeDeVieCacaoyer; next++) {
+			plantationCriolloI.ajouter(this, plantationCriollo.get(next));
+			plantationForasteroI.ajouter(this, plantationForastero.get(next));
+			plantationTrinitarioI.ajouter(this, plantationTrinitario.get(next));
+			
+		}
+	}
+	// END ANTI 
 
 	// BEGIN Nas
 	private void update() {
 		HashMap<Integer, Double> stockCriolloOld = new HashMap<Integer, Double>( stockCriollo);
 		HashMap<Integer, Double> stockForasteroOld = new HashMap<Integer, Double>(stockForastero);
 		HashMap<Integer, Double> stockTrinitarioOld = new HashMap<Integer, Double>(stockTrinitario);
+	
 		for (int next = 0; next < DUREE_DE_VIE_FEVE - 1; next++) {
 			stockCriollo.put(next + 1, stockCriolloOld.get(next));
 			stockForastero.put(next + 1, stockForasteroOld.get(next));
