@@ -76,6 +76,7 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	
 	public void initstock(Feve fevesProduites, double stockInitial) {
 		gestionnaireFeve.setStock(this,fevesProduites, stockInitial);
+
 	}
 	
 	public String getNom() {
