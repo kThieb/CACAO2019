@@ -15,7 +15,7 @@ public class Producteur1 implements IActeur /* , IVendeurCacaoAleatoire */ {
 
 	public static int COUT_FIXE_STOCK = 1000;
 	public static int COUT_VARIABLE_STOCK = 5;
-	public static int DUREE_DE_VIE_FEVE = 1 * 52 * 2; // durée de vie en nexts
+	public static int DUREE_DE_VIE_FEVE = 1 * 52 / 2; // durée de vie en nexts
 	protected Indicateur stockFeves;
 	protected Indicateur stockCriolloI;
 	protected Indicateur stockForasteroI;
@@ -83,7 +83,7 @@ public class Producteur1 implements IActeur /* , IVendeurCacaoAleatoire */ {
 		} else if (feve.getVariete() == Variete.TRINITARIO) {
 			return recolteTrinitario;
 		}
-		return 0;
+		return Double.NaN;
 	}
 
 	public Indicateur getSoldeBancaire() {
