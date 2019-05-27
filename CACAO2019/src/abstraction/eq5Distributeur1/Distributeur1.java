@@ -30,22 +30,23 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 		this(5.0, 100000.0);
 	}
 
-	public Distributeur1(double marge, //ArrayList<Double> stockInitial, 
-			Double soldeInitial) {
-		ArrayList<Double> stockInitial= new ArrayList<Double>();
-		stockInitial.add(0.0);
-		stockInitial.add(0.0);
-		stockInitial.add(0.0);
-		stockInitial.add(0.0);
+	public Distributeur1(double marge, Double soldeInitial) {
 		this.numero =1 ;
 		this.marge = marge;
 		this.stock = new Stock();
-		stock.ajouter(Chocolat.HG_E_SHP, 0.0);
+		stock.ajouter(Chocolat.HG_E_SHP, 150000.0);
 		stock.ajouter(Chocolat.MG_E_SHP, 0.0);
 		stock.ajouter(Chocolat.MG_NE_HP, 0.0);
 		stock.ajouter(Chocolat.MG_NE_SHP, 0.0);
 		this.soldeBancaire = new CompteBancaire(this.getNom(), this, soldeInitial);
-		Monde.LE_MONDE.ajouterIndicateur(this.soldeBancaire);
+		Indicateur indicateursolde = new Indicateur ("EQ5 solde bancaire",this);
+		indicateursolde.setValeur(this, soldeBancaire.getCompteBancaire());
+		Monde.LE_MONDE.ajouterIndicateur(indicateursolde);
+		Indicateur indicateurstock = new Indicateur ("EQ5 stock", this);
+		for (int i=0; i<stock.getProduitsEnVente().size(); i++) {
+			indicateurstock.ajouter(this, stock.get(stock.getProduitsEnVente().get(i)));
+		}
+		Monde.LE_MONDE.ajouterIndicateur(indicateurstock);
 		this.journal = new Journal("Journal "+this.getNom());
 		Monde.LE_MONDE.ajouterJournal(this.journal);
 		this.contratsEnCours = new ArrayList<ContratCadre<Chocolat>>();
