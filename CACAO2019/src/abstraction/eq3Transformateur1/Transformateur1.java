@@ -75,9 +75,9 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 				chocolat.add(Chocolat.MG_E_SHP);
 				this.stockChocolat = new Stock<Chocolat>(chocolat);
 				for (Chocolat c: chocolat) {
-					this.stockChocolat.setQuantiteEnStock(c, 1000);
+					this.stockChocolat.setQuantiteEnStock(c, 1000000);
 				}
-		 		this.iStockChocolat = new Indicateur("EQ3 stock chocolat", this, chocolat.size()*1000);
+		 		this.iStockChocolat = new Indicateur("EQ3 stock chocolat", this, chocolat.size()*1000000);
 		 		
 				// --------------------------------- end eve
 		 		
@@ -238,6 +238,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 					}
 					quantite = quantite/1.5;
 					res = new ContratCadre<Feve>(this, vendeur, f, quantite);
+					System.out.println(res.toString());
 				} else {
 					this.journal.ajouter("   Aucun vendeur trouve --> pas de nouveau contrat a ce step");
 				}
@@ -246,6 +247,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		} else {
 			this.journal.ajouter("   Il ne reste que "+solde+" une fois tous les contrats payes donc nous ne souhaitons pas en creer d'autres pour l'instant");
 		}
+		System.out.println("derniere etape" + res.toString());
 		return res;
 	}
 	//end sacha
