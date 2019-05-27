@@ -79,8 +79,6 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		 		
 		 		// --------------------------------- begin Raph
 				//Feves utilisees pour la production des différents chocolats
-		 		ArrayList<Chocolat> chocolats = new ArrayList<Chocolat>();
-		 		
 		 		this.coutEnFeves = new CoutEnFeves();
 		 		this.coutEnFeves.setCoutEnFeves(Chocolat.MG_NE_HP, Feve.FORASTERO_MG_NEQ, 0.1);
 		 		this.coutEnFeves.setCoutEnFeves(Chocolat.MG_NE_HP, Feve.MERCEDES_MG_NEQ, 0.1);
@@ -93,7 +91,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		 		this.coutEnFeves.setCoutEnFeves(Chocolat.MG_E_SHP, Feve.TRINITARIO_MG_EQ, 0.12);
 		 		
 				// Marges sur chocolats A MODIFIER AVEC LES BONNES VALEURS (couts production ok)
-				this.margeChocolats = new Marge();
+				this.margeChocolats = new Marge(chocolat);
 				this.margeChocolats.setMargeBrute(Chocolat.MG_NE_HP, 0.);
 				this.margeChocolats.setCoutProd(Chocolat.MG_NE_HP, 0.6);
 				this.margeChocolats.setMargeBrute(Chocolat.MG_NE_SHP, 0.);
