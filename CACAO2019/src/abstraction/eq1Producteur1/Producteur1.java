@@ -1,6 +1,7 @@
 package abstraction.eq1Producteur1;
 
 import java.util.HashMap;
+import java.util.Random;
 
 import abstraction.eq1Producteur1.ventesCacaoAleatoires.SuperviseurVentesCacaoAleatoires;
 import abstraction.eq7Romu.produits.Feve;
@@ -26,6 +27,8 @@ public class Producteur1 implements IActeur /* , IVendeurCacaoAleatoire */ {
 	protected double recolteCriollo = 33;
 	protected double recolteForastero = 33;
 	protected double recolteTrinitario = 33;
+	protected int compteur_recolte = 0;
+	protected int alea;
 
 	protected Indicateur soldeBancaire;
 	// BEGIN ANTI
@@ -55,6 +58,8 @@ public class Producteur1 implements IActeur /* , IVendeurCacaoAleatoire */ {
 			stockForastero.put(next, (double) 0);
 			stockTrinitario.put(next , (double) 0);
 		}
+		Random r=new Random();
+		alea=r.nextInt(12+1);
 		// END Nas
 		this.soldeBancaire = new Indicateur("EQ1 solde bancaire", this, 100000);
 		Monde.LE_MONDE.ajouterIndicateur(this.stockFeves);
@@ -76,14 +81,27 @@ public class Producteur1 implements IActeur /* , IVendeurCacaoAleatoire */ {
 	}
 
 	public double getRecolte(Feve feve) {
+		
+		
 		if (feve.getVariete() == Variete.CRIOLLO) {
-			return recolteCriollo;
+			return alea==compteur_recolte ? recolteCriollo*Math.random() :recolteCriollo;
 		} else if (feve.getVariete() == Variete.FORASTERO) {
-			return recolteForastero;
+			return alea==compteur_recolte ? recolteForastero*Math.random() :recolteForastero;
 		} else if (feve.getVariete() == Variete.TRINITARIO) {
-			return recolteTrinitario;
+			return alea==compteur_recolte ? recolteTrinitario*Math.random() :recolteTrinitario;
 		}
+		
 		return Double.NaN;
+	}
+	
+	public void modifierCompteurRecolte() {
+		if (compteur_recolte<12) {
+			compteur_recolte++;
+		} else {
+			compteur_recolte=0;
+			Random r=new Random();
+			alea=r.nextInt(12);
+		}
 	}
 
 	public Indicateur getSoldeBancaire() {
@@ -143,6 +161,9 @@ public class Producteur1 implements IActeur /* , IVendeurCacaoAleatoire */ {
 			stockForastero.put(next + 1, stockForasteroOld.get(next));
 			stockTrinitario.put(next + 1, stockTrinitarioOld.get(next));
 		}
+		
+		modifierCompteurRecolte();
+		
 		stockCriollo.put(0,  getRecolte(Feve.CRIOLLO_HG_EQ));
 		stockForastero.put(0, getRecolte(Feve.FORASTERO_MG_NEQ));
 		stockTrinitario.put(0, getRecolte(Feve.TRINITARIO_MG_NEQ));
