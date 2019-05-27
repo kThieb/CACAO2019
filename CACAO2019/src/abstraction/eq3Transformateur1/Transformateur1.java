@@ -173,11 +173,11 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 					// update solde bancaire
 					this.soldeBancaire.retirer(this, nouveauChocolat*this.margeChocolats.getCoutProd(p));
 					// updater stocks feves
-					this.iStockFeves.retirer(this, fevesUtilisees);
 					this.stockFeves.setQuantiteEnStock(f, this.stockFeves.getQuantiteEnStock(f) - fevesUtilisees);
+					this.iStockFeves.setValeur(this, this.stockFeves.getQuantiteEnStock(f));;
 					// updater stocks chocolat
-					this.iStockChocolat.retirer(this, nouveauChocolat);
 					this.stockChocolat.setQuantiteEnStock(p, this.stockChocolat.getQuantiteEnStock(p) + nouveauChocolat);
+					this.iStockChocolat.setValeur(this, this.stockChocolat.getQuantiteEnStock(p));
 			
 				}
 			}
