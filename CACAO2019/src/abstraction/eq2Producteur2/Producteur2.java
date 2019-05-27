@@ -116,7 +116,7 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 			if (e.getQuantiteTotale() > this.getStockEnVente().get(cc.getProduit())) { //On s assure que la quantitée demandée est en stock
 				throw new IllegalArgumentException("La quantité demandée n est pas disponible");
 			} else {
-				cc.ajouterEcheancier(new Echeancier(cc.getEcheancier())); // on accepte la proposition de l'acheteur car on a la quantite en stock 
+				cc.ajouterEcheancier(new Echeancier(e)); // on accepte la proposition de l'acheteur car on a la quantite en stock 
 			}
 		}
 	}
