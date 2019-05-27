@@ -16,8 +16,6 @@ public interface IDistributeurChocolat {
 	 * @return Retourne le prix de vente actuel d'un kilogramme de c
 	 */
 	public double getPrix(Chocolat c);
-
-	public double getNoteQualite(Chocolat c);
 	
 	/**
 	 * @param c

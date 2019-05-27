@@ -196,10 +196,4 @@ public class DistributeurRomu implements IActeur, IAcheteurContratCadre<Chocolat
 		return paiement;
 	}
 
-	@Override
-	public double getNoteQualite(Chocolat c) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
 }

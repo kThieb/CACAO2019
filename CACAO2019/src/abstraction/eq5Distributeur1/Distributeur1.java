@@ -156,15 +156,6 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 		}
 	}
 
-
-	/**
-	 * @author Erwann DEFOY
-	 */
-	@Override
-	public double getNoteQualite(Chocolat c) {
-		return c.NoteQualite();
-	}
-
 	@Override
 	/**
 	 * @author Imane ZRIAA
