@@ -1,6 +1,7 @@
 package abstraction.eq3Transformateur1;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import abstraction.eq3Transformateur1.Stock;
 import abstraction.eq3Transformateur1.Marge;
@@ -24,8 +25,11 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	private int nbNextAvantEchange;
 	private Journal journal;
 
+	//begin Raph
+	private static HashMap<Chocolat, Double> PRIX_VENTE_PAR_DEFAUT = new HashMap<Chocolat, Double>();
+	//End Raph
+	
 	//Begin Kevin
-	private static final double PRIX_VENTE_PAR_DEFAUT = 40.0;
 	private static final double stockLim = 10000.0;
 	//End Kevin
 	
@@ -112,6 +116,10 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 				
 		 		this.iMargeBrute = new Indicateur("EQ3 marge", this, 0);
 		 		this.iCoutsProd = new Indicateur("EQ3 couts de production", this, 0);
+		 		
+		 		this.PRIX_VENTE_PAR_DEFAUT.put(Chocolat.MG_NE_HP,40.);
+		 		this.PRIX_VENTE_PAR_DEFAUT.put(Chocolat.MG_NE_SHP,40.);
+		 		this.PRIX_VENTE_PAR_DEFAUT.put(Chocolat.MG_E_SHP,40.);
 		 		
 				// --------------------------------- end Raph
 		
@@ -347,22 +355,27 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	}
 	
 	@Override
-	public double getPrix(Chocolat produit, Double quantite) {
+	public double getPrix(Chocolat chocolat, Double quantite) {
 		//Begin Raph/Kevin
-		if (produit==null || quantite<=0.0 || this.getStockEnVente().get(produit)<quantite) {
+		double prix=0.;
+		if (chocolat==null || quantite<=0.0 || this.getStockEnVente().get(chocolat)<quantite) {
 			return Double.NaN;
 		}
 		if (this.contratsFeveEnCours.size()==0) {
-			return PRIX_VENTE_PAR_DEFAUT;
+			return PRIX_VENTE_PAR_DEFAUT.get(chocolat);
 		}
 		else {
-			double prixMoyen = 0.0;
+			HashMap<Feve,Double> prixMoyenFeves = new HashMap<Feve,Double>();
+			HashMap<Feve, Double> qttTotaleFeves = new HashMap<Feve,Double>();
 			for (ContratCadre<Feve> cc : this.contratsFeveEnCours) {
-				prixMoyen+=cc.getPrixAuKilo();
+				prixMoyenFeves.put(cc.getProduit(), cc.getQuantiteRestantALivrer()*cc.getPrixAuKilo());
+				qttTotaleFeves.put(cc.getProduit(), cc.getQuantiteRestantALivrer());
 			}
-
-			prixMoyen = prixMoyen/ this.contratsFeveEnCours.size();
-			return prixMoyen/this.facteurTransformation + this.margeChocolats.getCoutProd(produit)+this.margeChocolats.getMargeBrute(produit);
+			for(Feve feve : qttTotaleFeves.keySet()) {
+				prixMoyenFeves.put(feve,prixMoyenFeves.get(feve)/qttTotaleFeves.get(feve));
+				prix+=prixMoyenFeves.get(feve)*coutEnFeves.getCoutEnFeves(chocolat,feve);
+			}
+			return prix + this.margeChocolats.getCoutProd(chocolat)+this.margeChocolats.getMargeBrute(chocolat);
 		}
 		
 		//End Raph/Kevin
