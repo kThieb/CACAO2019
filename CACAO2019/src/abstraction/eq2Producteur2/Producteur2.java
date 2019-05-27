@@ -70,7 +70,7 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	public void next() {
 
 		if (this.numStep <= 6 || this.numStep >= 21 || (this.numStep >= 9 && this.numStep <= 14)) {
-			double qualiteProduction = (Math.random() - 0.5)/2.5 + 1; //entre 0.8 et 1.2
+			double qualiteProduction = (Math.random() * 0.4) + 0.8; //entre 0.8 et 1.2
 			double nouveauStock = this.stockFeves.getValeur() + productionParStep * qualiteProduction;  //fait varier la production entre 80% et 120% de la production "normale"
 			this.stockFeves.setValeur(this, nouveauStock); }
 		if (this.numStep == 24) {
@@ -86,10 +86,12 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 
 	@Override
 	public StockEnVente<Feve> getStockEnVente() {
-		double stockRestant = this.gestionnaireFeve.getStock(Feve.FORASTERO_MG_NEQ);
+		double stockRestantNeq = this.gestionnaireFeve.getStock(Feve.FORASTERO_MG_NEQ);
+		double stockRestantEq = this.gestionnaireFeve.getStock(Feve.FORASTERO_MG_EQ);
 		for (ContratCadre<Feve> cc : this.contratsEnCours) {
 			if (Monde.LE_MONDE != null) {
-				stockRestant = stockRestant - cc.getQuantiteRestantALivrer();
+				Feve typeFeve = cc.getProduit();
+				double qRestantLivrer = cc.getQuantiteRestantALivrer();
 			}
 		}
 		StockEnVente<Feve> res = new StockEnVente<Feve>();
