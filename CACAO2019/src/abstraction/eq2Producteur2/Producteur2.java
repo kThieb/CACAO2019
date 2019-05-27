@@ -52,7 +52,7 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	
 	
 	
-	// Constructeur avec hmaps
+	// Constructeur avec hmaps mais initiamement seulement 1 type de fèves
 	
 	public Producteur2( Feve fevesProduites, int productionParStep, double stockInitial, double soldeInitial) {
 		NB_PROD++;
@@ -118,15 +118,17 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 
 	@Override
 	public StockEnVente<Feve> getStockEnVente() {
-		double stockRestant = this.gestionnaireFeve.getStock(Feve.FORASTERO_MG_NEQ);
-		for (ContratCadre<Feve> cc : this.contratsEnCours) {
-			if (Monde.LE_MONDE != null) {
-				stockRestant = stockRestant - cc.getQuantiteRestantALivrer();
-			}
-		}
 		StockEnVente<Feve> res = new StockEnVente<Feve>();
-		res.ajouter(this.fevesProduites, Math.max(0.0, stockRestant));
-		return res;
+		List<Feve>feves = gestionnaireFeve.getFeves();
+		for(Feve feve : feves) {
+			double stockRestant = this.gestionnaireFeve.getStock(feve);
+			for (ContratCadre<Feve> cc : this.contratsEnCours) {
+				if (Monde.LE_MONDE != null) {
+					if (cc.getProduit()==feve) {
+					stockRestant = stockRestant - cc.getQuantiteRestantALivrer();
+					res.ajouter(feve, Math.max(0.0, stockRestant));
+				}}}}
+	return res;
 	}
 
 
