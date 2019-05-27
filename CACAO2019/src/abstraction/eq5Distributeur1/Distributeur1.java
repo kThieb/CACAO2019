@@ -200,7 +200,7 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 	// ---------------------------------------------------------------------------------------------------------
 
 	/**
-	 * @author estelle
+	 * @author Estelle
 	 */
 	@Override
 	public StockEnVente<Chocolat> getStockEnVente() {
@@ -213,7 +213,7 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 	}
 
 	/**
-	 * @author estel
+	 * @author Estelle
 	 */
 	@Override
 	public double getPrix(Chocolat c) {
