@@ -196,7 +196,6 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 		}
 		return prixAPayer ; }
 		
-		
 
 	}
 	
