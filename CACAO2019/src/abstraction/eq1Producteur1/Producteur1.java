@@ -209,10 +209,12 @@ public class Producteur1 implements IActeur /* , IVendeurCacaoAleatoire */ {
 			
 					
 		}
+		compteurSteps++;
 		if (compteurSteps%unAnEnSteps == 0  ) {
 			plantationCriollo.put(0, criolloPlante);
 			plantationForastero.put(0, forasteroPlante);
 			plantationTrinitario.put(0, trinitarioPlante);
+			this.soldeBancaire.retirer(this, 5000);
 			
 		}
 		plantationCriolloI.setValeur(this,  0);
