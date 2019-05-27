@@ -172,19 +172,18 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 
 	@Override
 	public void notifierAcheteur(ContratCadre cc) {
-		// TODO Auto-generated method stub
-		
-
-		
-		
-		
-		
+		this.contratsEnCours.add(cc);				
 	}
 
 	@Override
 	public void receptionner(Object produit, double quantite, ContratCadre cc) {
-		// TODO Auto-generated method stub
-
+		if (produit==null || !produit.equals(cc.getProduit())) {
+			throw new IllegalArgumentException("Appel de la methode receptionner de DistributeurRomu avec un produit ne correspondant pas au produit distribue par le distributeur");
+		}
+		if (quantite<=0.0) {
+			throw new IllegalArgumentException("Appel de la methode receptionner de DistributeurRomu avec une quantite egale a "+quantite);
+		}
+		this.stock.ajouter((Chocolat) produit, quantite);
 	}
 
 	
