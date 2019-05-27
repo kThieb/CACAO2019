@@ -14,6 +14,9 @@ import abstraction.fourni.IActeur;
 import abstraction.fourni.Monde;
 
 public class Transformateur2AcheteurCC implements IAcheteurContratCadre<Feve> {
+	private static final double POIDS_MIN_CONTRAT_ACHAT = 150.0; // pas de contrats de moins de 150 kg
+	private static final double DEPENSE_MAX_PAR_CC = 0.60; // on ne dépense pas plus de 60% de notre solde par CC
+	
 	private Transformateur2 t2;
 	
 	public Transformateur2AcheteurCC(Transformateur2 trans2) {
@@ -31,8 +34,6 @@ public class Transformateur2AcheteurCC implements IAcheteurContratCadre<Feve> {
 			solde += cc.getMontantRestantARegler();
 
 		List<IVendeurContratCadre> vendeurs = new ArrayList<IVendeurContratCadre>();
-
-		final double POIDS_MIN_CONTRAT = 150.0; // pas de contrats de moins de 150 kg
 		
 		// Choix du vendeur : on regroupe d'abord tous les vendeurs vérifiant les conditions souhaitées
 		for(IActeur a : Monde.LE_MONDE.getActeurs()) {
@@ -41,7 +42,7 @@ public class Transformateur2AcheteurCC implements IAcheteurContratCadre<Feve> {
 				
 				List<Object> produits = sev.getProduitsEnVente();
 				for(Object o : produits) {
-					if(t2.FEVES_ACHAT.contains(o) && sev.get(o) >= POIDS_MIN_CONTRAT)
+					if(t2.FEVES_ACHAT.contains(o) && sev.get(o) >= POIDS_MIN_CONTRAT_ACHAT)
 						vendeurs.add((IVendeurContratCadre) a);
 				}
 			}
@@ -49,12 +50,13 @@ public class Transformateur2AcheteurCC implements IAcheteurContratCadre<Feve> {
 		
 		// On choisit ensuite l'un des vendeurs, si possible
 		if(vendeurs.size() > 0) {
+			// TODO Choix aléatoire d'un vendeur
 			IVendeurContratCadre vendeur = vendeurs.get((int) (Math.random() * vendeurs.size()));
 			
 			// Construction d'une liste des produits que l'on est susceptibles d'acheter à ce vendeur
 			List<Feve> produitsInteressants = new ArrayList<Feve>();
 			for(Object o : vendeur.getStockEnVente().getProduitsEnVente()) {
-				if(t2.FEVES_ACHAT.contains(o) && vendeur.getStockEnVente().get(o) >= POIDS_MIN_CONTRAT)
+				if(t2.FEVES_ACHAT.contains(o) && vendeur.getStockEnVente().get(o) >= POIDS_MIN_CONTRAT_ACHAT)
 					produitsInteressants.add((Feve) o);
 			}
 			// Choix du produit à acheter (pour l'instant : le produit que l'on a en quantité la plus faible)
@@ -68,12 +70,11 @@ public class Transformateur2AcheteurCC implements IAcheteurContratCadre<Feve> {
 				}
 			}
 			
-			double qté = Math.min(20e3, vendeur.getStockEnVente().get(minProduit)); // on achete au maximum 20 tonnes
+			double qté = vendeur.getStockEnVente().get(minProduit);
 			double prix = vendeur.getPrix(minProduit, qté);			
 			
 			// On réduit la quantité achetée tant que le prix est supérieur à 60% de notre solde
-			System.out.println(vendeur);
-			while(qté > 1e3 && qté * prix > solde * 0.60) {
+			while(qté > POIDS_MIN_CONTRAT_ACHAT && qté * prix > solde * DEPENSE_MAX_PAR_CC) {
 				qté *= 0.8;
 				prix = vendeur.getPrix(minProduit, qté);
 			}
@@ -111,6 +112,7 @@ public class Transformateur2AcheteurCC implements IAcheteurContratCadre<Feve> {
 	public void proposerPrixAcheteur(ContratCadre<Feve> cc) {
 		// TODO Stocker le prix du dernier achat de ce produit et l'utiliser comme référence 
 		// (éviter d'acheter plus de 10% plus haut que l'achat le moins cher de ce produit, par exemple)
+		
 		double prixVendeur = cc.getListePrixAuKilo().get(0);
 		if (Math.random() < 0.25) // probabilite de 25% d'accepter
 			cc.ajouterPrixAuKilo(cc.getPrixAuKilo());
