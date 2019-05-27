@@ -66,10 +66,11 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 				
 				
 				// stock de chocolat
-				this.stockChocolat = new Stock<Chocolat>();
-				this.stockChocolat.setQuantiteEnStock(Chocolat.MG_NE_HP, 0.);
-				this.stockChocolat.setQuantiteEnStock(Chocolat.MG_NE_SHP, 0.);
-				this.stockChocolat.setQuantiteEnStock(Chocolat.MG_E_SHP, 0.);
+				ArrayList<Chocolat> chocolat = new ArrayList<Chocolat>();
+				chocolat.add(Chocolat.MG_NE_HP);
+				chocolat.add(Chocolat.MG_NE_SHP);
+				chocolat.add(Chocolat.MG_E_SHP);
+				this.stockChocolat = new Stock<Chocolat>(chocolat);
 				
 		 		this.iStockFeves = new Indicateur("EQ3 stock feves", this, 0);
 		 		this.iStockChocolat = new Indicateur("EQ3 stock chocolat", this, 0);
@@ -78,6 +79,8 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		 		
 		 		// --------------------------------- begin Raph
 				//Feves utilisees pour la production des différents chocolats
+		 		ArrayList<Chocolat> chocolats = new ArrayList<Chocolat>();
+		 		ArrayList<Feve> feves = new ArrayList<Feve>();
 		 		this.coutEnFeves = new CoutEnFeves();
 		 		this.coutEnFeves.setCoutEnFeves(Chocolat.MG_NE_HP, Feve.FORASTERO_MG_NEQ, 0.1);
 		 		this.coutEnFeves.setCoutEnFeves(Chocolat.MG_NE_HP, Feve.MERCEDES_MG_NEQ, 0.1);
