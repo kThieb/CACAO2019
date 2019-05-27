@@ -25,8 +25,6 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	private static final double PRIX_MAX = 2.500;
 	
 
-
-
 	private Indicateur soldeBancaire;
 	private Journal journal;
 
@@ -41,7 +39,6 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	
 	public Producteur2(Feve fevesProduites, int productionParStep, double stockInitial, double soldeInitial) {
 		NB_PROD++;
-
 
 		this.numero = NB_PROD;
 		this.fevesProduites=fevesProduites;
@@ -80,8 +77,6 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 		this.journal.ajouter("Step "+Monde.LE_MONDE.getStep()+" : prix de vente = "+this.gestionnaireFeve.getPrixVente(Feve.FORASTERO_MG_NEQ));
 
 	}
-	
-	
 
 
 	@Override
@@ -99,9 +94,21 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 
 
 
-	/** a modifier*/
+	/** 
+	 * Propose un nouvel echeancier au producteur
+	 * */
 	public void proposerEcheancierVendeur(ContratCadre<Feve> cc) {
-		cc.ajouterEcheancier(new Echeancier(cc.getEcheancier())); // on accepte la proposition de l'acheteur car on a la quantite en stock 
+		if (contratsEnCours.contains(cc)) {
+			Echeancier e = cc.getEcheancier();
+		} else {
+			contratsEnCours.add(cc);
+			Echeancier e = cc.getEcheancier();
+			if (e.getQuantiteTotale() > this.getStockEnVente().get(this.getStockEnVente().size()-1)) { //On s assure que la quantitée demandée est en stock
+				throw new IllegalArgumentException("La quantité demandée n est pas disponible");
+			} else {
+				cc.ajouterEcheancier(new Echeancier(cc.getEcheancier())); // on accepte la proposition de l'acheteur car on a la quantite en stock 
+			}
+		}
 	}
 		
 
