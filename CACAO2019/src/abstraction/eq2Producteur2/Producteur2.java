@@ -122,6 +122,7 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	}
 		
 
+	
 	@Override
 	public void proposerPrixVendeur(ContratCadre<Feve> cc) {
 		if (cc.getListePrixAuKilo().size()==0) { //On vérifie qu'on a un prix à proposer
