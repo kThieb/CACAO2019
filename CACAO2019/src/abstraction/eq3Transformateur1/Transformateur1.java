@@ -26,7 +26,6 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 
 	//Begin Kevin
 	private static final double PRIX_VENTE_PAR_DEFAUT = 40.0;
-	private double marge;
 	private static final double stockLim = 10000.0;
 	//End Kevin
 	
