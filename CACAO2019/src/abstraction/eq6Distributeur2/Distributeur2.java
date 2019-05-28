@@ -24,28 +24,28 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 
 	private List<ContratCadre<Chocolat>> contratsEnCours;
 
-	
+
 	private HashMap<Chocolat,Double> margeParProduit;
 	private Indicateur soldeBancaire;
-	
+
 	private Indicateur stockMG_E_SHP;
 	private Indicateur stockMG_NE_SHP;
 	private Indicateur stockMG_NE_HP;
 	private Indicateur stockHG_E_SHP;
-	
+
 	private Indicateur prixMG_E_SHP;
 	private Indicateur prixMG_NE_SHP;
 	private Indicateur prixMG_NE_HP;;
 	private Indicateur prixHG_E_SHP;
-	
+
 	private Journal journal;
-	
+
 	private HashMap<Chocolat,Double> prixParProduit;
 	private StockEnVente<Chocolat> stockEnVente; 
 
-	
+
 	public Distributeur2() {
-		
+
 		//NORDIN et Caroline
 
 
@@ -54,7 +54,7 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 		this.soldeBancaire = new Indicateur("EQ6 Solde Bancaire", this, 100000);
 
 		Monde.LE_MONDE.ajouterIndicateur(this.soldeBancaire);
-		
+
 		//Chnager par nom du chocolat pour que le getNom de indcateur renvoie le type chocolat
 		this.stockMG_E_SHP = new Indicateur("EQ6 stcok" + Chocolat.MG_E_SHP.toString(), this, 5000);
 		Monde.LE_MONDE.ajouterIndicateur(this.stockMG_E_SHP);
@@ -64,7 +64,7 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 		Monde.LE_MONDE.ajouterIndicateur(this.stockMG_NE_HP);
 		this.stockHG_E_SHP = new Indicateur("EQ6 stock "+ Chocolat.HG_E_SHP.toString(), this, 5000);
 		Monde.LE_MONDE.ajouterIndicateur(this.stockHG_E_SHP);
-		
+
 		this.prixMG_E_SHP = new Indicateur("EQ6 " + Chocolat.MG_E_SHP.toString(), this, 50);
 		Monde.LE_MONDE.ajouterIndicateur(this.prixMG_E_SHP);
 		this.prixMG_NE_SHP = new Indicateur("EQ6 " + Chocolat.MG_NE_SHP.toString(), this, 50);
@@ -73,23 +73,23 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 		Monde.LE_MONDE.ajouterIndicateur(this.prixMG_NE_HP);
 		this.prixHG_E_SHP = new Indicateur("EQ6 " + Chocolat.HG_E_SHP.toString(), this, 100);
 		Monde.LE_MONDE.ajouterIndicateur(this.prixHG_E_SHP);
-		
+
 		this.journal = new Journal("Journal EQ6");
 		Monde.LE_MONDE.ajouterJournal(this.journal);
-		
+
 		this.stockEnVente = new StockEnVente<Chocolat>();
 		this.stockEnVente.ajouter(Chocolat.HG_E_SHP, this.getStockHG_E_SHP().getValeur());
 		this.stockEnVente.ajouter(Chocolat.MG_E_SHP, this.getStockMG_E_SHP().getValeur());
 		this.stockEnVente.ajouter(Chocolat.MG_NE_SHP,this.getStockMG_NE_SHP().getValeur());
 		this.stockEnVente.ajouter(Chocolat.MG_NE_HP, this.getStockMG_NE_HP().getValeur());
-		
+
 		this.contratsEnCours = new ArrayList<ContratCadre<Chocolat>>();
 		this.margeParProduit = new HashMap<Chocolat, Double>();
 		this.margeParProduit.put(Chocolat.HG_E_SHP, 1.5);
 		this.margeParProduit.put(Chocolat.MG_E_SHP, 1.5);
 		this.margeParProduit.put(Chocolat.MG_NE_SHP,1.5);
 		this.margeParProduit.put(Chocolat.MG_NE_HP, 1.5);
-		
+
 		//Caroline
 		this.prixParProduit =  new HashMap<Chocolat,Double>();
 		this.prixParProduit.put(Chocolat.HG_E_SHP, this.getPrixHG_E_SHP().getValeur());
@@ -135,7 +135,7 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 		return prixHG_E_SHP;
 	}
 
-	
+
 	/**
 	 * @return the stockMG_E_SHP
 	 */
@@ -183,7 +183,7 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 	}
 	//Nordin et Caro
 	public Indicateur getIndicateurPrix (Chocolat c) {
-		
+
 		if (c.getGamme()==Gamme.MOYENNE && (c.isEquitable()) && (c.isSansHuileDePalme())) {
 			return this.prixMG_E_SHP;
 		}
@@ -199,22 +199,22 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 		else {
 			return null;
 		}
-		
+
 	}
-	
+
 	public List<ContratCadre<Chocolat>> getContratsEnCours() {
 		return this.contratsEnCours;
 	}
-	
+
 	public HashMap<Chocolat,Double> getPrixParProduit () {	
 		return this.prixParProduit;
 	}
-	
+
 	public StockEnVente<Chocolat> getStockEnVente() {
 		//NORDIN
 		return this.stockEnVente;
 	}
-	
+
 	private double getMargeParProduit(Chocolat c) {
 		if  (!getPrixParProduit().containsKey(c)) {
 			return 0.0;
@@ -231,7 +231,7 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 	}
 
 	public void next() {
-		
+
 	}
 
 	//Nordin
@@ -239,7 +239,7 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 		if (!getPrixParProduit().containsKey(c)) {
 			return 0.0;
 		}
-		 /*this.prixParProduit==null ? Double.MAX_VALUE */ 
+		/*this.prixParProduit==null ? Double.MAX_VALUE */ 
 		return	(getPrixParProduit().containsKey(c)? getPrixParProduit().get(c) : 0.0);
 
 	}
@@ -248,7 +248,7 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 	public double vendre(Chocolat c, double quantite) {
 		List<String> chocolatsdisponibles = new ArrayList<String>();
 		for (Chocolat chocolat : this.getStockEnVente().getProduitsEnVente()) {
-		if( c.equals(chocolat)) {
+			if( c.equals(chocolat)) {
 				Double q = Math.min(this.getStockEnVente().get(c), quantite);
 				Double stockenvente = this.getStockEnVente().get(c) - q;
 				this.getStockEnVente().ajouter(c, stockenvente);
@@ -256,14 +256,14 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 				this.getSoldeBancaire().ajouter(this, this.getPrix(c)*q);
 				this.journal.ajouter("Vente de "+q+" à " +this.getPrix(c) + " euros" + " pour le chocolat " +c);
 				return q;
-				}
-		else {chocolatsdisponibles.add(""+chocolat);}
+			}
+			else {chocolatsdisponibles.add(""+chocolat);}
 		}
-		
+
 		for (String i : chocolatsdisponibles) {
 			this.journal.ajouter("vente de 0.0 (produit demande = "+c+ " vs produit dispo = "+i+")");
 		}
-		
+
 		return 0.0;
 	}
 
@@ -273,7 +273,7 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 	 * est nulle et le montant a regler est egalement nul (toutes les livraisons et tous les paiements
 	 * ont ete effectues).
 	 */
-	
+
 	public void retireVieuxContrats() {
 		List<ContratCadre<Chocolat>> aEnlever = new ArrayList<ContratCadre<Chocolat>>();
 		for (ContratCadre<Chocolat> c : this.contratsEnCours) {
@@ -289,39 +289,54 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 	// Caroline 
 
 	private HashMap<Chocolat, Double> derniere_vente () {
-		
+
 		HashMap<Chocolat, Double> vente_produit= new HashMap<Chocolat, Double>();
 		double vente_stockMG_E_SHP = 0;
 		double vente_stockMG_NE_HP = 0;
 		double vente_stockMG_NE_SHP = 0;
 		double vente_stockHG_E_SHP = 0;
 
-		for (ContratCadre<Chocolat> c  : this.getContratsEnCours()) {
-			Chocolat ch = (Chocolat) c.getProduit();
-			if (ch.equals(Chocolat.MG_E_SHP)) {
-				vente_stockMG_E_SHP +=c.getEcheancier().getQuantite(Monde.LE_MONDE.getStep()-1);
-			}
-			if (ch.equals(Chocolat.MG_NE_HP)) {
-				vente_stockMG_NE_HP +=c.getEcheancier().getQuantite(Monde.LE_MONDE.getStep()-1);
-			}
-			if (ch.equals(Chocolat.MG_NE_SHP)) {
-				vente_stockMG_NE_SHP +=c.getEcheancier().getQuantite(Monde.LE_MONDE.getStep()-1);
-			}
-			if (ch.equals(Chocolat.HG_E_SHP)) {
-				vente_stockHG_E_SHP +=c.getEcheancier().getQuantite(Monde.LE_MONDE.getStep()-1);
+		if (Monde.LE_MONDE.getStep()>0) {
+			for (ContratCadre<Chocolat> c  : this.getContratsEnCours()) {
+				Chocolat ch = (Chocolat) c.getProduit();
+				if (ch.equals(Chocolat.MG_E_SHP)) {
+					vente_stockMG_E_SHP +=c.getEcheancier().getQuantite(Monde.LE_MONDE.getStep()-1);
+				}
+				if (ch.equals(Chocolat.MG_NE_HP)) {
+					vente_stockMG_NE_HP +=c.getEcheancier().getQuantite(Monde.LE_MONDE.getStep()-1);
+				}
+				if (ch.equals(Chocolat.MG_NE_SHP)) {
+					vente_stockMG_NE_SHP +=c.getEcheancier().getQuantite(Monde.LE_MONDE.getStep()-1);
+				}
+				if (ch.equals(Chocolat.HG_E_SHP)) {
+					vente_stockHG_E_SHP +=c.getEcheancier().getQuantite(Monde.LE_MONDE.getStep()-1);
+				}
 			}
 		}
-		if ( stockMG_E_SHP.getHistorique().getTaille() -2 > 0 ) {
+		if ( stockMG_E_SHP.getHistorique().getTaille()  > 2 ) {
 			vente_stockMG_E_SHP += stockMG_E_SHP.getHistorique().get(stockMG_E_SHP.getHistorique().getTaille() -2).getValeur() - stockMG_E_SHP.getValeur();
-			vente_stockMG_NE_HP += stockMG_NE_HP.getHistorique().get(stockMG_NE_HP.getHistorique().getTaille() -2).getValeur() - stockMG_NE_HP.getValeur();
-			vente_stockMG_NE_SHP += stockMG_NE_SHP.getHistorique().get(stockMG_NE_SHP.getHistorique().getTaille() -2).getValeur() - stockMG_NE_SHP.getValeur();
-			vente_stockHG_E_SHP += stockHG_E_SHP.getHistorique().get(stockHG_E_SHP.getHistorique().getTaille() -2).getValeur() - stockHG_E_SHP.getValeur();
+
 		} else {
-			vente_stockMG_E_SHP=0;
-			vente_stockMG_NE_HP=0;
-			vente_stockMG_NE_SHP=0;
-			vente_stockHG_E_SHP=0;	
-		}
+			vente_stockMG_E_SHP=0; }
+		
+		if ( stockMG_NE_SHP.getHistorique().getTaille()  > 2 ) {
+			vente_stockMG_NE_SHP += stockMG_NE_SHP.getHistorique().get(stockMG_NE_SHP.getHistorique().getTaille() -2).getValeur() - stockMG_NE_SHP.getValeur();
+
+		} else {
+			vente_stockMG_NE_SHP=0;}
+
+		if ( stockMG_NE_HP.getHistorique().getTaille()  > 2 ) {
+			vente_stockMG_NE_HP += stockMG_NE_HP.getHistorique().get(stockMG_NE_HP.getHistorique().getTaille() -2).getValeur() - stockMG_NE_HP.getValeur();
+
+		} else {
+			vente_stockMG_NE_HP=0;}
+
+		if ( stockHG_E_SHP.getHistorique().getTaille()  > 2 ) {
+			vente_stockHG_E_SHP += stockHG_E_SHP.getHistorique().get(stockHG_E_SHP.getHistorique().getTaille() -2).getValeur() - stockHG_E_SHP.getValeur();
+
+		} else {
+			vente_stockHG_E_SHP=0;}
+
 
 		vente_produit.put(Chocolat.MG_E_SHP, vente_stockMG_E_SHP);
 		vente_produit.put(Chocolat.MG_NE_HP, vente_stockMG_NE_HP);
@@ -330,13 +345,13 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 
 		return vente_produit;
 	}
-	
+
 	//Caroline
 	// À améliorer avec temporalité pour avoir des prévisions de ventes plus valables sur 5 steps environ
-	
+
 	private HashMap<Chocolat, Double> prevision_variation_stock_sur_5_STEPS () {
 		HashMap<Chocolat, Double> variations_produit= new HashMap<Chocolat, Double>();
-		
+
 		//PREVISION stockMG_E_SHP
 
 		double variation_stockMG_E_SHP = 0;
@@ -370,64 +385,64 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 
 		variation_stockHG_E_SHP = -5*this.derniere_vente().get(Chocolat.HG_E_SHP) + recevoir_stockHG_E_SHP;
 		variations_produit.put(Chocolat.HG_E_SHP, variation_stockHG_E_SHP);
-				
+
 		return variations_produit;
 	}
-	
+
 	//Caroline
 	private HashMap<Chocolat, Double> stockIdeal () {
 		//HashMap<Chocolat, Double> historique_vente = historique_vente() ;
-		
+
 		//ETUDE DE MARCHÉ : Prendre en compte l'avis des clients les plus fidèles sur leur avis de produit ainsi que l'historique de leur demande 
-				/*
+		/*
 				for (IActeur acteur : Monde.LE_MONDE.getActeurs()) {
 					if (acteur instanceof Client1) {
 						Client1 c = (Client1)acteur;
-						c.get
+						c.Offres(Monde.LE_MONDE.getStep());
 					} 
 				}
-				*/
-		
+		 
+*/
 		//Pour l'instant avec 4 clients qui veulent chaquun un produit different avec 7500 par step on prend : 
-		
+
 		HashMap<Chocolat, Double> stockIdeal= new HashMap<Chocolat, Double>();
 		stockIdeal.put(Chocolat.MG_E_SHP, 15000.0);
 		stockIdeal.put(Chocolat.MG_NE_SHP, 15000.0);
 		stockIdeal.put(Chocolat.MG_NE_HP, 15000.0);
 		stockIdeal.put(Chocolat.HG_E_SHP, 15000.0);
 		//Il serait mieux de voir la quantite reçue par step afin de combler les écarts avec de nouveaux contrats 
-		
+
 		//Travail sur le stock idéal par rapport aux ventes précédentes
-		/*
+		
 		for (Chocolat c : stockIdeal.keySet() ) {
-			if (historique_vente.get(c) < 1000 && this.getStockEnVente().get(c) > 1000) {
-				stockIdeal.put(c, 1000.0);
+			
+			if (derniere_vente().get(c) < 5000) {
+				stockIdeal.put(c, 5000.0);
 			}
-			if (historique_vente.get(c) > 10000 && this.getStockEnVente().get(c) < 10000) {
-				stockIdeal.put(c, 10000.0);
+			if (derniere_vente().get(c) > 10000) {
+				stockIdeal.put(c, 20000.0);
 			}
 		}
-		*/
-		
-		
+		 
+
+
 		return stockIdeal;
 	}
-	
+
 
 	public ContratCadre<Chocolat> getNouveauContrat() { //ILIAS et Caroline
-		
-		retireVieuxContrats();
-		
+
+
 		ContratCadre<Chocolat> res=null;
-		
+
 		double solde = this.getSoldeBancaire().getValeur();
 		for (ContratCadre<Chocolat> cc : this.getContratsEnCours()) {
 			solde = solde - cc.getMontantRestantARegler();
 		}
-		
+
 		//Choix du produit 
 		HashMap<Chocolat, Double> variations_produit = this.prevision_variation_stock_sur_5_STEPS ();
-		
+
 		Chocolat produit =  Chocolat.MG_NE_SHP;
 		//Écart entre stock ideal et stock supposé dans 5 steps
 		double max_ecart = Math.max(this.stockIdeal().get(produit) - (variations_produit.get(produit)+this.getStockEnVente().get(produit)),0.0);
@@ -438,7 +453,7 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 				produit = c;
 			}
 		}
-		
+
 		//QUANTITE
 		double quantite;
 		if (variations_produit.get(produit) + this.getStockEnVente().get(produit) > this.stockIdeal().get(produit)) {
@@ -451,9 +466,10 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 				quantite = 0;
 			}
 		}
-		
 
-		if (solde >10000) 
+		retireVieuxContrats();
+		
+		if (solde >10000 && quantite > 1000 ) 
 		{
 
 			List<IVendeurContratCadre<Chocolat>> vendeurs = new ArrayList<IVendeurContratCadre<Chocolat>>();
@@ -461,38 +477,38 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 				if (acteur instanceof IVendeurContratCadre<?>) {
 					IVendeurContratCadre<Chocolat> vacteur = (IVendeurContratCadre<Chocolat>)acteur;
 					StockEnVente<Chocolat> stock = vacteur.getStockEnVente();
-					if (stock.get(produit)>1000) {// on souhaite faire des contrats d'au moins 100kg
+					if (stock.get(produit)>quantite*0.7) {// on souhaite faire des contrats d'au moins 100kg
 						vendeurs.add((IVendeurContratCadre<Chocolat>)vacteur);
 					}
 				}
 			}
-			
+
 
 			//VENDEUR
 			double meilleurprix = 5000000;
 			IVendeurContratCadre<Chocolat> vendeur = null;
 			for (IVendeurContratCadre<Chocolat> v : vendeurs) 
 			{
-				if (v.getPrix(produit, Math.min(1000,quantite)) < meilleurprix) 
+				if (v.getPrix(produit, Math.min(v.getStockEnVente().get(produit),quantite)) < meilleurprix) 
 				{
 					vendeur = v;
 				}
 			}
-			
-            if (vendeur != null & produit != null && quantite != 0) 
-            {
-            	res = new ContratCadre<Chocolat>(this, vendeur, produit, Math.min(vendeur.getStockEnVente().get(produit),quantite));
-            	this.journal.ajouter(Monde.LE_MONDE.getStep() + "Nouveau contrat non signé : " + res.getNumero() + " Produit : "+ produit + " Quantité = " +  Math.min(vendeur.getStockEnVente().get(produit),quantite) + " vendeur= " + vendeur.toString());
-            }
-            else 
-            { res = null;
-            }
-		
+
+			if (vendeur != null & produit != null && quantite != 0) 
+			{
+				res = new ContratCadre<Chocolat>(this, vendeur, produit, Math.min(vendeur.getStockEnVente().get(produit),quantite));
+				this.journal.ajouter(Monde.LE_MONDE.getStep() + "Nouveau contrat non signé : " + res.getNumero() + " Produit : "+ produit + " Quantité = " +  Math.min(vendeur.getStockEnVente().get(produit),quantite) + " vendeur= " + vendeur.toString());
+			}
+			else 
+			{ res = null;
+			}
+
 		}
 		else {this.journal.ajouter(" Il ne reste que "+solde+" une fois tous les contrats payes donc nous ne souhaitons pas en creer d'autres pour l'instant");
 		}
-	return res;
-		
+		return res;
+
 	}
 
 	@Override
@@ -500,59 +516,59 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 	//A ameliorer selon la quantite demandée dans contrat, la quantite nécessaire aux prochains steps selon la demande en prévoyant des futurs coûrts de stockage
 	public void proposerEcheancierAcheteur(ContratCadre<Chocolat> cc) {
 		if (cc!=null) {
-			
+
 			if (cc.getEcheancier()==null) { // il n'y a pas encore eu de contre-proposition de la part du vendeur
 				cc.ajouterEcheancier(new Echeancier(Monde.LE_MONDE.getStep(), 5, cc.getQuantite()/5));
 
-		}   
-			
+			}   
+
 			else {
 				cc.ajouterEcheancier(new Echeancier(cc.getEcheancier())); // on accepte la contre-proposition du vendeur 
 				this.journal.ajouter("Contrat " + cc.getNumero() + "avec écheancier" + cc.getEcheancier().getNbEcheances());
-				}
+			}
 		}
 	}
-	
+
 	//Caroline
 	public boolean satisfaitParPrixContratCadre (ContratCadre<Chocolat> cc) {
 		boolean satisfait = true;
 		Chocolat produit = cc.getProduit();
-		
+
 		double dernierprixpropose = cc.getPrixAuKilo();
 		double notreprix = this.getPrix(produit);
-		
+
 		if (notreprix/dernierprixpropose >= this.getMargeParProduit(cc.getProduit())) {
 			satisfait = true;
 		}else {
 			satisfait = false;
 		}
-		
+
 		return satisfait;
 	}
 
 
-	
+
 	@Override
 	//Caroline
 	public void proposerPrixAcheteur(ContratCadre<Chocolat> cc) {
 		//Si le dernier prix de la liste nous satisfait => proposer le même prix
 		//Sinon, le dernier prix nous satisfait pas :
-			//Si le vendeur propose 2 fois le même prix et pas satisfait => ne pas ajouter de prix
-			// Sinon proposer un nouveau prix 
-		
+		//Si le vendeur propose 2 fois le même prix et pas satisfait => ne pas ajouter de prix
+		// Sinon proposer un nouveau prix 
+
 		if (cc!=null && 25 > cc.getListePrixAuKilo().size()) {
 			if (satisfaitParPrixContratCadre (cc)) {
 				cc.ajouterPrixAuKilo(cc.getPrixAuKilo());
 				this.getIndicateurPrix(cc.getProduit()).ajouter(this,cc.getPrixAuKilo());
 				this.journal.ajouter("Accord sur Prix sur contrat " + cc.getNumero());
 			} else {
-					if (cc.getListePrixAuKilo().size() >= 2) {
-						if (cc.getListePrixAuKilo().get(cc.getListePrixAuKilo().size() -2)*1.02 < this.prixParProduit.get(cc.getProduit())) {
-							cc.ajouterPrixAuKilo(cc.getListePrixAuKilo().get(cc.getListePrixAuKilo().size() -2)*1.02);
-						} 
-					}else {
-						cc.ajouterPrixAuKilo(cc.getVendeur().getPrix(cc.getProduit(), cc.getQuantite())*0.8);
-					
+				if (cc.getListePrixAuKilo().size() >= 2) {
+					if (cc.getListePrixAuKilo().get(cc.getListePrixAuKilo().size() -2)*1.02 < this.prixParProduit.get(cc.getProduit())) {
+						cc.ajouterPrixAuKilo(cc.getListePrixAuKilo().get(cc.getListePrixAuKilo().size() -2)*1.02);
+					} 
+				}else {
+					cc.ajouterPrixAuKilo(cc.getVendeur().getPrix(cc.getProduit(), cc.getQuantite())*0.8);
+
 				}	}}}
 
 	@Override//Caroline
@@ -568,7 +584,7 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 
 		this.journal.ajouter("Réception du produit " + produit.toString() +
 				"en quantité " + quantite + "contrat " + cc.getNumero());
-		
+
 		if (cc != null && quantite >0 && cc.getProduit().equals(produit)) {
 			double quantiteajoutee= this.getStockEnVente().get(produit)+quantite;
 			this.getStockEnVente().ajouter(produit, quantiteajoutee);
@@ -584,27 +600,27 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 		if (cc!=null | montant ==0.0 ) {
 			return 0.0;
 		}
-		
+
 		if (montant<0.0) {
 			throw new IllegalArgumentException("Appel de la methode payer avec un montant negatif");
 		}
 
 		if (solde - montant > -5000) {
-				montantpaye = montant;
-				this.soldeBancaire.retirer(this, montantpaye);
-					} 
+			montantpaye = montant;
+			this.soldeBancaire.retirer(this, montantpaye);
+		} 
 		else   {
-				montantpaye = solde+5000;
-				this.soldeBancaire.retirer(this, montantpaye);
-						} 
-				
+			montantpaye = solde+5000;
+			this.soldeBancaire.retirer(this, montantpaye);
+		} 
+
 
 		this.journal.ajouter(montantpaye + "sur le contrat" + cc.getNumero());
 
 		return montantpaye;
-		}
-	
+	}
 
 
-	
+
+
 }
