@@ -357,8 +357,7 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 		}
 		double quantite = 500  + this.getStockEnVente().get(produit) - variations_produit.get(produit);
 
-		//System.out.println("stock "+this.stockEnVente);
-		//System.out.println("produits "+this.stockEnVente.getProduitsEnVente());
+		
 		if (this.stockEnVente==null || this.getStockEnVente().getProduitsEnVente()==null) {
 			return null;
 		}
@@ -400,8 +399,8 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 	//Caroline 
 	public void proposerEcheancierAcheteur(ContratCadre<Chocolat> cc) {
 		if (cc!=null) {
-			
-			if (cc.getEcheancier()==null) { // il n'y a pas encore eu de contre-proposition de la part du vendeur
+			if (cc.getEcheancier()==null) {
+									// il n'y a pas encore eu de contre-proposition de la part du vendeur
 				cc.ajouterEcheancier(new Echeancier(Monde.LE_MONDE.getStep(), 10, cc.getQuantite()/10));
 		}   
 			
