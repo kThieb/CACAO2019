@@ -36,9 +36,9 @@ public class CreateurRomu implements IActeur {
  		Monde.LE_MONDE.ajouterActeur(new TransformateurRomu(Feve.TRINITARIO_MG_NEQ, 
 				Chocolat.MG_NE_HP, 10000, 1.5, 5000.0, 5000.0, 100000.0, 0.15));
 		Monde.LE_MONDE.ajouterActeur(new TransformateurRomu(Feve.TRINITARIO_MG_NEQ, 
-				Chocolat.MG_NE_HP, 5000, 1.8, 5000.0, 5000.0, 100000.0, 0.20));
+				Chocolat.MG_NE_SHP, 5000, 1.8, 5000.0, 5000.0, 100000.0, 0.20));
 		Monde.LE_MONDE.ajouterActeur(new TransformateurRomu(Feve.TRINITARIO_MG_NEQ, 
-				Chocolat.MG_NE_HP, 10000, 1.5, 5000.0, 5000.0, 100000.0, 0.15));		
+				Chocolat.MG_E_SHP, 10000, 1.5, 5000.0, 5000.0, 100000.0, 0.15));		
 	
 	    Monde.LE_MONDE.ajouterActeur(new TransformateurRomu(Feve.TRINITARIO_MG_NEQ, 
 						Chocolat.MG_NE_HP, 5000, 1.8, 5000.0, 5000.0, 100000.0, 0.20));
@@ -92,6 +92,12 @@ public class CreateurRomu implements IActeur {
 		Monde.LE_MONDE.ajouterActeur(new ClientFinalRomu(Chocolat.HG_E_SHP, 
 				7500.0));  
 		
+		Monde.LE_MONDE.ajouterActeur(new ClientFinalRomu(Chocolat.MG_E_SHP, 
+				7500.0));  
+		
+		Monde.LE_MONDE.ajouterActeur(new ClientFinalRomu(Chocolat.MG_NE_SHP, 
+				7500.0));  
+		
 
 		Monde.LE_MONDE.ajouterActeur(new ClientFinalRomu(Chocolat.MG_NE_HP, 
 				7500.0));
@@ -102,7 +108,7 @@ public class CreateurRomu implements IActeur {
 		Monde.LE_MONDE.ajouterActeur(new Client1(0.5,0.8,0.1,500.0,Chocolat.MG_NE_HP));
 		Monde.LE_MONDE.ajouterActeur(new Client1(0.5,0.8,0.1,500.0,Chocolat.MG_E_SHP));
 		Monde.LE_MONDE.ajouterActeur(new Client1(0.5,0.8,0.1,500.0,Chocolat.MG_NE_SHP));
-*/
+
 		
 		
 		
@@ -112,7 +118,7 @@ public class CreateurRomu implements IActeur {
 				7500.0));
 		Monde.LE_MONDE.ajouterActeur(new ClientFinalRomu(Chocolat.MG_NE_HP, 
 				7500.0));
-		
+		*/
 	}
 	public String getNom() {
 		return "CreateurROMU";
