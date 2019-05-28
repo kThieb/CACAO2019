@@ -47,8 +47,6 @@ public class CreateurRomu implements IActeur {
 				Chocolat.HG_E_SHP, 2000, 1.1, 2000.0, 2000.0, 100000.0, 0.25));
 		
 
-
-
 //		Monde.LE_MONDE.ajouterActeur(new DistributeurRomu(Chocolat.MG_NE_HP, 
 //				0.25, 200.0, 100000.0));
 
@@ -67,13 +65,9 @@ public class CreateurRomu implements IActeur {
 	//			0.20, 200.0, 100000.0));
 //		Monde.LE_MONDE.ajouterActeur(new DistributeurRomu(Chocolat.HG_E_SHP, 
 //				0.30, 200.0, 100000.0));
-		List<Double> list = new ArrayList<Double>();
-		for(int i = 1; i <= 100; i++)
-		{
-			Double index =i+0.0;
-			list.add(index);	
-			}
+	
 		
+
 		/*for(int i = 1; i <= 10; i++)
 		{
 			Collections.shuffle(list);
@@ -99,10 +93,14 @@ public class CreateurRomu implements IActeur {
 				7500.0));  
 		
 
-		Monde.LE_MONDE.ajouterActeur(new ClientFinalRomu(Chocolat.MG_NE_HP, 
-				7500.0));
+	//	Monde.LE_MONDE.ajouterActeur(new ClientFinalRomu(Chocolat.HG_E_SHP, 
+	//			7500.0));  
 
+
+	//	Monde.LE_MONDE.ajouterActeur(new ClientFinalRomu(Chocolat.MG_NE_HP, 
+	//			7500.0));
 		
+
 		/*
 		Monde.LE_MONDE.ajouterActeur(new Client1(0.5,0.8,0.1,500.0,Chocolat.HG_E_SHP));
 		Monde.LE_MONDE.ajouterActeur(new Client1(0.5,0.8,0.1,500.0,Chocolat.MG_NE_HP));
@@ -116,6 +114,12 @@ public class CreateurRomu implements IActeur {
 				7500.0));
 		Monde.LE_MONDE.ajouterActeur(new ClientFinalRomu(Chocolat.MG_NE_SHP, 
 				7500.0));
+=======
+	//	Monde.LE_MONDE.ajouterActeur(new ClientFinalRomu(Chocolat.MG_E_SHP, 
+	//			7500.0));
+	//	Monde.LE_MONDE.ajouterActeur(new ClientFinalRomu(Chocolat.MG_NE_SHP, 
+	//			7500.0));
+>>>>>>> branch 'master' of https://github.com/nordinel/CACAO2019.git
 		Monde.LE_MONDE.ajouterActeur(new ClientFinalRomu(Chocolat.MG_NE_HP, 
 				7500.0));
 		*/

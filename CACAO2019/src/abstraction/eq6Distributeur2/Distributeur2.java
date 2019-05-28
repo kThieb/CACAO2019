@@ -444,6 +444,7 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 		if (variations_produit.get(produit) + this.getStockEnVente().get(produit) > this.stockIdeal().get(produit)) {
 			quantite = 0;
 		}
+
 		else 
 		{   quantite =  Math.max(this.stockIdeal().get(produit) - (variations_produit.get(produit)+this.getStockEnVente().get(produit)),0.0);
 			if (quantite <1000) {
@@ -502,6 +503,7 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 			
 			if (cc.getEcheancier()==null) { // il n'y a pas encore eu de contre-proposition de la part du vendeur
 				cc.ajouterEcheancier(new Echeancier(Monde.LE_MONDE.getStep(), 5, cc.getQuantite()/5));
+
 		}   
 			
 			else {
