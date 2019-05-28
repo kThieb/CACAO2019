@@ -1,10 +1,6 @@
 package abstraction.eq7Romu.acteurs;
 
-import java.util.ArrayList;
 
-import abstraction.eq6Distributeur2.Client1;
-import java.util.Collections;
-import java.util.List;
 import abstraction.eq7Romu.produits.Chocolat;
 import abstraction.eq7Romu.produits.Feve;
 import abstraction.eq7Romu.ventesContratCadre.SuperviseurVentesContratCadre;
