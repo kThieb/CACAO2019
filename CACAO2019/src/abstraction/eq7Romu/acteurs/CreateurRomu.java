@@ -47,8 +47,6 @@ public class CreateurRomu implements IActeur {
 				Chocolat.HG_E_SHP, 2000, 1.1, 2000.0, 2000.0, 100000.0, 0.25));
 		
 
-
-
 //		Monde.LE_MONDE.ajouterActeur(new DistributeurRomu(Chocolat.MG_NE_HP, 
 //				0.25, 200.0, 100000.0));
 
@@ -69,17 +67,16 @@ public class CreateurRomu implements IActeur {
 //				0.30, 200.0, 100000.0));
 	
 		
-		Monde.LE_MONDE.ajouterActeur(new ClientFinalRomu(Chocolat.HG_E_SHP, 
-				7500.0));  
-		
+	//	Monde.LE_MONDE.ajouterActeur(new ClientFinalRomu(Chocolat.HG_E_SHP, 
+	//			7500.0));  
 
-		Monde.LE_MONDE.ajouterActeur(new ClientFinalRomu(Chocolat.MG_NE_HP, 
-				7500.0));
+	//	Monde.LE_MONDE.ajouterActeur(new ClientFinalRomu(Chocolat.MG_NE_HP, 
+	//			7500.0));
 		
-		Monde.LE_MONDE.ajouterActeur(new ClientFinalRomu(Chocolat.MG_E_SHP, 
-				7500.0));
-		Monde.LE_MONDE.ajouterActeur(new ClientFinalRomu(Chocolat.MG_NE_SHP, 
-				7500.0));
+	//	Monde.LE_MONDE.ajouterActeur(new ClientFinalRomu(Chocolat.MG_E_SHP, 
+	//			7500.0));
+	//	Monde.LE_MONDE.ajouterActeur(new ClientFinalRomu(Chocolat.MG_NE_SHP, 
+	//			7500.0));
 		Monde.LE_MONDE.ajouterActeur(new ClientFinalRomu(Chocolat.MG_NE_HP, 
 				7500.0));
 		

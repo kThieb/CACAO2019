@@ -183,14 +183,13 @@ public class Client1 implements IActeur{
 
 	
 	public void next() {
-		IDistributeurChocolat D = null ;
+		/*IDistributeurChocolat D = null ;
 		int step = Monde.LE_MONDE.getStep();
 		double notemax =0.0;
 		List<Double> Notesfinales = new ArrayList<Double>();
 		List<Double> Notes = this.Offres(step);
-		ArrayList<ArrayList<String>>  Commandes = journal.getHist();
 		for (IDistributeurChocolat V: Distributeurs) {
-			for ( ArrayList<String> x: Commandes){
+			//for ( ArrayList<String> x: Commandes){
 				double t =0 ;
 				int i = 0 ;
 				if ("V" == x.get(1)) {
@@ -217,12 +216,7 @@ public class Client1 implements IActeur{
 		this.journal.ajouter(""+ D);
 		this.journal.ajouter("" +numero);
 		this.journal.ajouter(""+quantitemoyenne*temporalite.get(step));
-		
-		this.journal.ajout(step,""+step);
-		this.journal.ajout(step , ""+ D);
-		this.journal.ajout(step ,"" +numero);
-		this.journal.ajout(step , ""+quantitemoyenne*temporalite.get(step));
-		
+	*/
 	}
 
 }
