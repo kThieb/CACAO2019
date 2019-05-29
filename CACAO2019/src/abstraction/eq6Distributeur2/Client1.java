@@ -6,6 +6,7 @@ import java.util.List;
 
 import abstraction.eq7Romu.distributionChocolat.IDistributeurChocolat;
 import abstraction.eq7Romu.produits.Chocolat;
+import abstraction.eq7Romu.produits.Gamme;
 import abstraction.eq7Romu.ventesContratCadre.StockEnVente;
 import abstraction.fourni.IActeur;
 import abstraction.fourni.Journal;
@@ -64,7 +65,22 @@ public class Client1 implements IActeur{
 	
 	
 	
-	
+	//Nazim
+		public double getQualite(Chocolat c) {
+			int N = 0;
+			if (c.isEquitable()) {
+				N = N+1 ;
+			}
+			if (c.isSansHuileDePalme()) {
+				N = N+1 ;
+			}
+			if (c.getGamme() == Gamme.HAUTE ) {
+				N= N+2 ;
+			} else if (c.getGamme() == Gamme.MOYENNE) {
+				N = N+1 ;
+			}
+			return 10*N/4;
+		}
 	
 	public String getNom() {
 		return "CL"+this.numero;
@@ -117,7 +133,7 @@ public class Client1 implements IActeur{
 		ArrayList<Double> L = new ArrayList<Double>(); 
 		L.add(D.getPrix(c));
 		L.add(D.getStockEnVente().get(c));
-		L.add(c.getQualite());
+		L.add(getQualite(c));
 		return L;
 		
 	}
