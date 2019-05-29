@@ -200,7 +200,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	
 	@Override
 	public ContratCadre<Feve> getNouveauContrat() {
-		// begin sacha
+		// begin eve
 		ContratCadre<Feve> res=null;
 		ArrayList<Feve> choixFeve = this.stockFeves.getProduitsEnStock();
 		Feve f = choixFeve.get(((int) Math.random())*choixFeve.size());
@@ -250,10 +250,9 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		} else {
 			this.journal.ajouter("   Il ne reste que "+solde+" une fois tous les contrats payes donc nous ne souhaitons pas en creer d'autres pour l'instant");
 		}
-		// on prend un contrat cadre au hasard dans la liste de ceux qu'on a vus
 		return res;
 	}
-	//end sacha
+	//end eve
 	
 
 	@Override
