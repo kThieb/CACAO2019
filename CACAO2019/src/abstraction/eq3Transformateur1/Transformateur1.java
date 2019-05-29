@@ -232,17 +232,23 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 			if (vendeurs.size()>=1) {
 				IVendeurContratCadre<Feve> vendeur = vendeurs.get( (int)( Math.random()*vendeurs.size())); // ici tire au hasard plutot que de tenir compte des stocks en vente et des prix
 				// On determine la quantite qu'on peut esperer avec le reste de notre solde bancaire
-				this.journal.ajouter(" Determination de la quantite achetable avec une somme de "+String.format("%.3f",solde*2.9/3.0));
+				this.journal.ajouter(" Determination de la quantite achetable avec une somme de "+String.format("%.3f",solde));
 				double quantite = 500000.0; // On ne cherche pas a faire de contrat pour moins de 500 tonnes
 				double prix = vendeur.getPrix(f, quantite);
-				while (!Double.isNaN(prix) && prix*quantite<solde ) {
-					quantite=quantite*1.5;
-					prix = vendeur.getPrix(f,  quantite);
-					this.journal.ajouter(" quantite "+String.format("%.3f",quantite)+" --> "+String.format("%.3f",quantite*prix));
+				this.journal.ajouter("prix total = "+prix*quantite+" solde = "+solde);
+				if (prix*quantite>solde) {
+					while (!Double.isNaN(prix) && prix*quantite<solde ) {
+						quantite=quantite*1.5;
+						prix = vendeur.getPrix(f,  quantite);
+						this.journal.ajouter(" quantite "+String.format("%.3f",quantite)+" --> "+String.format("%.3f",prix*quantite));
+					}
+					quantite = quantite/1.5;
+					res = new ContratCadre<Feve>(this, vendeur, f, quantite);
+					this.journal.ajouter("vendeur de "+f+" trouve: quantite = "+quantite);
 				}
-				quantite = quantite/1.5;
-				res = new ContratCadre<Feve>(this, vendeur, f, quantite);
-				this.journal.ajouter("vendeur de "+f+" trouve: quantite = "+quantite);
+				else {
+					this.journal.ajouter("solde = "+solde+" insuffisant pour un contrat cadre de plus de 500 tonnes");
+				}
 			} else {
 				this.journal.ajouter("   Aucun vendeur trouve --> pas de nouveau contrat a ce step"); 
 			}
