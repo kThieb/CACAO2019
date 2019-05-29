@@ -244,7 +244,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 				res = new ContratCadre<Feve>(this, vendeur, f, quantite);
 				this.journal.ajouter("vendeur de "+f+" trouve: quantite = "+quantite);
 			} else {
-				this.journal.ajouter("   Aucun vendeur trouve --> pas de nouveau contrat a ce step");
+				this.journal.ajouter("   Aucun vendeur trouve --> pas de nouveau contrat a ce step"); 
 			}
 
 		} else {
