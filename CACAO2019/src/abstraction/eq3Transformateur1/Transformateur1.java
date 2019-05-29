@@ -236,7 +236,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 				double quantite = 500000.0; // On ne cherche pas a faire de contrat pour moins de 500 tonnes
 				double prix = vendeur.getPrix(f, quantite);
 				this.journal.ajouter("prix total = "+prix*quantite+" solde = "+solde);
-				if (prix*quantite>solde) {
+				if (prix*quantite<solde) {
 					while (!Double.isNaN(prix) && prix*quantite<solde ) {
 						quantite=quantite*1.5;
 						prix = vendeur.getPrix(f,  quantite);
@@ -312,19 +312,19 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 
 	@Override
 	public void receptionner(Feve produit, double quantite, ContratCadre<Feve> cc) {
-		// begin sacha
-		for (Feve f:this.stockFeves.getProduitsEnStock()) {
-			if (produit==null || !produit.equals(f)) {
-				throw new IllegalArgumentException("Appel de la methode receptionner de Transformateur1 avec un produit ne correspondant pas aux feves achetees par le transformateur");
-			}
-			if (quantite<=0.0) {
-				throw new IllegalArgumentException("Appel de la methode receptionner de Transformateur1 avec une quantite egale a "+quantite);
-			}
-			this.stockFeves.setQuantiteEnStock(produit, this.stockFeves.getQuantiteEnStock(produit) + quantite);
+		// begin sacha et eve
+		ArrayList<Feve> produitsEnStock = this.stockFeves.getProduitsEnStock();
+		if (produit==null || !(produitsEnStock.contains(produit))) {
+			throw new IllegalArgumentException("Appel de la methode receptionner de Transformateur1 avec un produit ne correspondant pas aux feves achetees par le transformateur");
 		}
-		
+		if (quantite<=0.0) {
+			throw new IllegalArgumentException("Appel de la methode receptionner de Transformateur1 avec une quantite egale a "+quantite);
+		}
+		this.stockFeves.setQuantiteEnStock(produit, this.stockFeves.getQuantiteEnStock(produit) + quantite);
 	}
-//end sacha
+//end sacha et eve
+	
+	
 	@Override
 	public double payer(double montant, ContratCadre<Feve> cc) {
 		// begin sacha
