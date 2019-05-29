@@ -202,7 +202,9 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	public ContratCadre<Feve> getNouveauContrat() {
 		// begin sacha
 		ContratCadre<Feve> res=null;
-        // on determine combien il resterait sur le compte si on soldait tous les contrats en cours.
+		ArrayList<Feve> choixFeve = this.stockFeves.getProduitsEnStock();
+		Feve f = choixFeve.get(((int) Math.random())*choixFeve.size());
+		// on determine combien il resterait sur le compte si on soldait tous les contrats en cours.
 		double solde = this.soldeBancaire.getValeur();
 		this.journal.ajouter("Determination du solde une fois tous les contrats en cours payes");
 		this.journal.ajouter("- solde="+solde);
@@ -213,43 +215,42 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		this.journal.ajouter("--> solde="+solde);
 
 		if (solde>10000.0) { // On ne cherche pas a etablir d'autres contrats d'achat si le compte bancaire est trop bas
-			for (Feve f: this.stockFeves.getProduitsEnStock()) {
-				List<IVendeurContratCadre<Feve>> vendeurs = new ArrayList<IVendeurContratCadre<Feve>>();
-				this.journal.ajouter("  recherche vendeur de "+f);
-				for (IActeur acteur : Monde.LE_MONDE.getActeurs()) {
-					if (acteur instanceof IVendeurContratCadre) {
-						IVendeurContratCadre <Feve> vacteur = (IVendeurContratCadre<Feve>)acteur;
-						StockEnVente<Feve> stock = vacteur.getStockEnVente();
-						if (stock.get(f)>=1000000.0) {// on souhaite faire des contrats d'au moins 1000 tonnes
-							this.journal.ajouter("   "+(acteur.getNom())+" vend "+stock.get(f)+" de "+f);
-							vendeurs.add((IVendeurContratCadre<Feve>)vacteur);
-						} else {
-							this.journal.ajouter("   "+(acteur.getNom())+" ne vend que "+stock.toHtml());
-						}
+			List<IVendeurContratCadre<Feve>> vendeurs = new ArrayList<IVendeurContratCadre<Feve>>();
+			this.journal.ajouter("  recherche vendeur de "+f);
+			for (IActeur acteur : Monde.LE_MONDE.getActeurs()) {
+				if (acteur instanceof IVendeurContratCadre) {
+					IVendeurContratCadre <Feve> vacteur = (IVendeurContratCadre<Feve>)acteur;
+					StockEnVente<Feve> stock = vacteur.getStockEnVente();
+					if (stock.get(f)>=500000.0) {// on souhaite faire des contrats d'au moins 500 tonnes
+						this.journal.ajouter("   "+(acteur.getNom())+" vend "+stock.get(f)+" de "+f);
+						vendeurs.add((IVendeurContratCadre<Feve>)vacteur);
+					} else {
+						this.journal.ajouter("   "+(acteur.getNom())+" ne vend que "+stock.toHtml());
 					}
-				}
-				if (vendeurs.size()>=1) {
-					IVendeurContratCadre<Feve> vendeur = vendeurs.get( (int)( Math.random()*vendeurs.size())); // ici tire au hasard plutot que de tenir compte des stocks en vente et des prix
-					// On determine la quantite qu'on peut esperer avec le reste de notre solde bancaire
-	                this.journal.ajouter(" Determination de la quantite achetable avec une somme de "+String.format("%.3f",solde*2.9/3.0));
-					double quantite = 1000000.0; // On ne cherche pas a faire de contrat pour moins de 1000 tonnes
-					double prix = vendeur.getPrix(f, quantite);
-					while (!Double.isNaN(prix) && prix*quantite<solde ) {
-						quantite=quantite*1.5;
-						prix = vendeur.getPrix(f,  quantite);
-						this.journal.ajouter(" quantite "+String.format("%.3f",quantite)+" --> "+String.format("%.3f",quantite*prix));
-					}
-					quantite = quantite/1.5;
-					res = new ContratCadre<Feve>(this, vendeur, f, quantite);
-					this.journal.ajouter("vendeur de "+f+" trouve");
-				} else {
-					this.journal.ajouter("   Aucun vendeur trouve --> pas de nouveau contrat a ce step");
 				}
 			}
-   
+			if (vendeurs.size()>=1) {
+				IVendeurContratCadre<Feve> vendeur = vendeurs.get( (int)( Math.random()*vendeurs.size())); // ici tire au hasard plutot que de tenir compte des stocks en vente et des prix
+				// On determine la quantite qu'on peut esperer avec le reste de notre solde bancaire
+				this.journal.ajouter(" Determination de la quantite achetable avec une somme de "+String.format("%.3f",solde*2.9/3.0));
+				double quantite = 500000.0; // On ne cherche pas a faire de contrat pour moins de 500 tonnes
+				double prix = vendeur.getPrix(f, quantite);
+				while (!Double.isNaN(prix) && prix*quantite<solde ) {
+					quantite=quantite*1.5;
+					prix = vendeur.getPrix(f,  quantite);
+					this.journal.ajouter(" quantite "+String.format("%.3f",quantite)+" --> "+String.format("%.3f",quantite*prix));
+				}
+				quantite = quantite/1.5;
+				res = new ContratCadre<Feve>(this, vendeur, f, quantite);
+				this.journal.ajouter("vendeur de "+f+" trouve: quantite = "+quantite);
+			} else {
+				this.journal.ajouter("   Aucun vendeur trouve --> pas de nouveau contrat a ce step");
+			}
+
 		} else {
 			this.journal.ajouter("   Il ne reste que "+solde+" une fois tous les contrats payes donc nous ne souhaitons pas en creer d'autres pour l'instant");
 		}
+		// on prend un contrat cadre au hasard dans la liste de ceux qu'on a vus
 		return res;
 	}
 	//end sacha
