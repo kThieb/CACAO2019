@@ -232,7 +232,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 			if (vendeurs.size()>=1) {
 				IVendeurContratCadre<Feve> vendeur = vendeurs.get( (int)( Math.random()*vendeurs.size())); // ici tire au hasard plutot que de tenir compte des stocks en vente et des prix
 				// On determine la quantite qu'on peut esperer avec le reste de notre solde bancaire
-				this.journal.ajouter(" Determination de la quantite achetable avec une somme de "+String.format("%.3f",solde));
+				this.journal.ajouter(" Determination de la quantite achetable avec une somme de "+String.format("%.3f",solde)); 
 				double quantite = 500000.0; // On ne cherche pas a faire de contrat pour moins de 500 tonnes
 				double prix = vendeur.getPrix(f, quantite);
 				this.journal.ajouter("prix total = "+prix*quantite+" solde = "+solde);
