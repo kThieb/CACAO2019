@@ -29,6 +29,5 @@ public enum Chocolat {
 			System.out.println(c);
 		}
 	}
-	
 
 }

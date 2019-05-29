@@ -195,5 +195,5 @@ public class DistributeurRomu implements IActeur, IAcheteurContratCadre<Chocolat
 		this.soldeBancaire.retirer(this,  paiement);
 		return paiement;
 	}
-	
+
 }

@@ -29,5 +29,4 @@ public interface IDistributeurChocolat {
 	 */
 	public double vendre(Chocolat c, double quantite);
 	
-	
 }

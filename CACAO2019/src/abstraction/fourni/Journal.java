@@ -19,6 +19,7 @@ public class Journal  extends Observable{
 	private String nom;            // le nom du journal
 	private ArrayList<String>liste;// la liste des messages deposes sur le journal
 	private int lignesAffichables;
+
 	/**
 	 * Initialise le journal avec le nom nom et une liste de messages vide   
 	 * @param nom le nom du journal
@@ -92,8 +93,4 @@ public class Journal  extends Observable{
 		}
 		return s+"</html>";
 	}
-	
-	
 }
-	
-	
