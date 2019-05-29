@@ -30,14 +30,5 @@ public enum Chocolat {
 		}
 	}
 	
-	public void setEquitable(boolean equitable) {
-		this.equitable = equitable;
-	}
-	public void setSansHuileDePalme(boolean sansHuileDePalme) {
-		this.sansHuileDePalme = sansHuileDePalme;
-	}
-	public void setGamme(Gamme gamme) {
-		this.gamme = gamme;
-	}
 
 }
