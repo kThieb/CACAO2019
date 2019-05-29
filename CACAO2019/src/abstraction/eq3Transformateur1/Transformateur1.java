@@ -53,79 +53,79 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	// end eve
 	
 	public Transformateur1() {
-		
+
 		// --------------------------------- begin eve
-			
-		
-				// stock de feves
-				ArrayList<Feve> feves = new ArrayList<Feve>();
-				feves.add(Feve.CRIOLLO_HG_EQ);
-				feves.add(Feve.FORASTERO_MG_EQ);
-				feves.add(Feve.FORASTERO_MG_NEQ);
-				feves.add(Feve.MERCEDES_MG_EQ);
-				feves.add(Feve.TRINITARIO_MG_EQ);
-				feves.add(Feve.TRINITARIO_MG_NEQ);
-				this.stockFeves = new Stock<Feve>(feves);
-				for (Feve f: feves) {
-					this.stockFeves.setQuantiteEnStock(f, 1000);
-				}
-		 		this.iStockFeves = new Indicateur("EQ3 stock feves", this, feves.size()*1000);
-				
-				
-				// stock de chocolat
-				ArrayList<Chocolat> chocolat = new ArrayList<Chocolat>();
-				chocolat.add(Chocolat.MG_NE_HP);
-				chocolat.add(Chocolat.MG_NE_SHP);
-				chocolat.add(Chocolat.MG_E_SHP);
-				this.stockChocolat = new Stock<Chocolat>(chocolat);
-				for (Chocolat c: chocolat) {
-					this.stockChocolat.setQuantiteEnStock(c, 1000000);
-				}
-		 		this.iStockChocolat = new Indicateur("EQ3 stock chocolat", this, chocolat.size()*1000000);
-		 		
-				// --------------------------------- end eve
-		 		
-		 		// --------------------------------- begin Raph
-				//Feves utilisees pour la production des différents chocolats
 
-		 		
-		 		
-		 		
-		 		this.coutEnFeves = new CoutEnFeves(chocolat,feves);
-		 				
 
-		 		this.coutEnFeves.setCoutEnFeves(Chocolat.MG_NE_HP, Feve.FORASTERO_MG_NEQ, 0.5);
-		 		this.coutEnFeves.setCoutEnFeves(Chocolat.MG_NE_HP, Feve.MERCEDES_MG_NEQ, 0.5);
-		 		this.coutEnFeves.setCoutEnFeves(Chocolat.MG_NE_HP, Feve.TRINITARIO_MG_NEQ, 0.5);
-		 		this.coutEnFeves.setCoutEnFeves(Chocolat.MG_NE_SHP, Feve.FORASTERO_MG_NEQ, 75.0/150);
-		 		this.coutEnFeves.setCoutEnFeves(Chocolat.MG_NE_SHP, Feve.MERCEDES_MG_NEQ, 75.0/150);
-		 		this.coutEnFeves.setCoutEnFeves(Chocolat.MG_NE_SHP, Feve.TRINITARIO_MG_NEQ, 75.0/150);
-		 		this.coutEnFeves.setCoutEnFeves(Chocolat.MG_E_SHP, Feve.FORASTERO_MG_EQ, 12.0/20);
-		 		this.coutEnFeves.setCoutEnFeves(Chocolat.MG_E_SHP, Feve.MERCEDES_MG_EQ, 12.0/20);
-		 		this.coutEnFeves.setCoutEnFeves(Chocolat.MG_E_SHP, Feve.TRINITARIO_MG_EQ, 12.0/20); 
-		 		
-		 		
-				// Marges sur chocolat
-				this.margeChocolats = new Marge(chocolat);
-				this.margeChocolats.setMargeBrute(Chocolat.MG_NE_HP, 5.);
-				this.margeChocolats.setCoutProd(Chocolat.MG_NE_HP, 3.);
-				this.margeChocolats.setMargeBrute(Chocolat.MG_NE_SHP, 10);
-				this.margeChocolats.setCoutProd(Chocolat.MG_NE_SHP, 4.33);
-				this.margeChocolats.setMargeBrute(Chocolat.MG_E_SHP, 10);
-				this.margeChocolats.setCoutProd(Chocolat.MG_E_SHP, 4.5);
-				
-		 		this.iMargeBrute = new Indicateur("EQ3 marge", this, 0);
-		 		this.iCoutsProd = new Indicateur("EQ3 couts de production", this, 0);
-		 		
-		 		this.PRIX_VENTE_PAR_DEFAUT.put(Chocolat.MG_NE_HP,40.);
-		 		this.PRIX_VENTE_PAR_DEFAUT.put(Chocolat.MG_NE_SHP,40.);
-		 		this.PRIX_VENTE_PAR_DEFAUT.put(Chocolat.MG_E_SHP,40.);
-		 		
-				// --------------------------------- end Raph
+		// stock de feves
+		ArrayList<Feve> feves = new ArrayList<Feve>();
+		feves.add(Feve.CRIOLLO_HG_EQ);
+		feves.add(Feve.FORASTERO_MG_EQ);
+		feves.add(Feve.FORASTERO_MG_NEQ);
+		feves.add(Feve.MERCEDES_MG_EQ);
+		feves.add(Feve.TRINITARIO_MG_EQ);
+		feves.add(Feve.TRINITARIO_MG_NEQ);
+		this.stockFeves = new Stock<Feve>(feves);
+		for (Feve f: feves) {
+			this.stockFeves.setQuantiteEnStock(f, 1000);
+		}
+		this.iStockFeves = new Indicateur("EQ3 stock feves", this, feves.size()*1000);
+
+
+		// stock de chocolat
+		ArrayList<Chocolat> chocolat = new ArrayList<Chocolat>();
+		chocolat.add(Chocolat.MG_NE_HP);
+		chocolat.add(Chocolat.MG_NE_SHP);
+		chocolat.add(Chocolat.MG_E_SHP);
+		this.stockChocolat = new Stock<Chocolat>(chocolat);
+		for (Chocolat c: chocolat) {
+			this.stockChocolat.setQuantiteEnStock(c, 1000000);
+		}
+		this.iStockChocolat = new Indicateur("EQ3 stock chocolat", this, chocolat.size()*1000000);
+
+		// --------------------------------- end eve
+
+		// --------------------------------- begin Raph
+		//Feves utilisees pour la production des différents chocolats
+
+
+
+
+		this.coutEnFeves = new CoutEnFeves(chocolat,feves);
+
+
+		this.coutEnFeves.setCoutEnFeves(Chocolat.MG_NE_HP, Feve.FORASTERO_MG_NEQ, 0.5);
+		this.coutEnFeves.setCoutEnFeves(Chocolat.MG_NE_HP, Feve.MERCEDES_MG_NEQ, 0.5);
+		this.coutEnFeves.setCoutEnFeves(Chocolat.MG_NE_HP, Feve.TRINITARIO_MG_NEQ, 0.5);
+		this.coutEnFeves.setCoutEnFeves(Chocolat.MG_NE_SHP, Feve.FORASTERO_MG_NEQ, 75.0/150);
+		this.coutEnFeves.setCoutEnFeves(Chocolat.MG_NE_SHP, Feve.MERCEDES_MG_NEQ, 75.0/150);
+		this.coutEnFeves.setCoutEnFeves(Chocolat.MG_NE_SHP, Feve.TRINITARIO_MG_NEQ, 75.0/150);
+		this.coutEnFeves.setCoutEnFeves(Chocolat.MG_E_SHP, Feve.FORASTERO_MG_EQ, 12.0/20);
+		this.coutEnFeves.setCoutEnFeves(Chocolat.MG_E_SHP, Feve.MERCEDES_MG_EQ, 12.0/20);
+		this.coutEnFeves.setCoutEnFeves(Chocolat.MG_E_SHP, Feve.TRINITARIO_MG_EQ, 12.0/20); 
+
+
+		// Marges sur chocolat
+		this.margeChocolats = new Marge(chocolat);
+		this.margeChocolats.setMargeBrute(Chocolat.MG_NE_HP, 5.);
+		this.margeChocolats.setCoutProd(Chocolat.MG_NE_HP, 3.);
+		this.margeChocolats.setMargeBrute(Chocolat.MG_NE_SHP, 10);
+		this.margeChocolats.setCoutProd(Chocolat.MG_NE_SHP, 4.33);
+		this.margeChocolats.setMargeBrute(Chocolat.MG_E_SHP, 10);
+		this.margeChocolats.setCoutProd(Chocolat.MG_E_SHP, 4.5);
+
+		this.iMargeBrute = new Indicateur("EQ3 marge", this, 0);
+		this.iCoutsProd = new Indicateur("EQ3 couts de production", this, 0);
+
+		this.PRIX_VENTE_PAR_DEFAUT.put(Chocolat.MG_NE_HP,40.);
+		this.PRIX_VENTE_PAR_DEFAUT.put(Chocolat.MG_NE_SHP,40.);
+		this.PRIX_VENTE_PAR_DEFAUT.put(Chocolat.MG_E_SHP,40.);
+
+		// --------------------------------- end Raph
 		
 		
-		this.soldeBancaire=new Indicateur("EQ3 solde bancaire", this, 100000);
-		this.journal = new Journal ("Journal Equipe 3");
+		this.soldeBancaire=new Indicateur("EQ3 solde bancaire", this, 2000000);
+		this.journal = new Journal ("Journal EQ3");
 		Monde.LE_MONDE.ajouterJournal(this.journal);
 		System.out.println("ajout du journal jEq3");
 		Monde.LE_MONDE.ajouterIndicateur(this.iStockFeves);
@@ -218,8 +218,8 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		this.journal.ajouter("--> solde="+solde);
 
 		if (solde>10000.0) { // On ne cherche pas a etablir d'autres contrats d'achat si le compte bancaire est trop bas
-			List<IVendeurContratCadre<Feve>> vendeurs = new ArrayList<IVendeurContratCadre<Feve>>();
 			for (Feve f: this.stockFeves.getProduitsEnStock()) {
+				List<IVendeurContratCadre<Feve>> vendeurs = new ArrayList<IVendeurContratCadre<Feve>>();
 				this.journal.ajouter("  recherche vendeur de "+f);
 				for (IActeur acteur : Monde.LE_MONDE.getActeurs()) {
 					if (acteur instanceof IVendeurContratCadre) {
@@ -236,9 +236,10 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 				if (vendeurs.size()>=1) {
 					IVendeurContratCadre<Feve> vendeur = vendeurs.get( (int)( Math.random()*vendeurs.size())); // ici tire au hasard plutot que de tenir compte des stocks en vente et des prix
 					// On determine la quantite qu'on peut esperer avec le reste de notre solde bancaire
-	                //this.journal.ajouter(" Determination de la quantite achetable avec une somme de "+String.format("%.3f",solde*2.9/3.0));
+	                this.journal.ajouter(" Determination de la quantite achetable avec une somme de "+String.format("%.3f",solde*2.9/3.0));
 					double quantite = 1000000.0; // On ne cherche pas a faire de contrat pour moins de 1000 tonnes
 					double prix = vendeur.getPrix(f, quantite);
+					System.out.println(prix*quantite);
 					while (!Double.isNaN(prix) && prix*quantite<solde ) {
 						quantite=quantite*1.5;
 						prix = vendeur.getPrix(f,  quantite);
@@ -246,7 +247,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 					}
 					quantite = quantite/1.5;
 					res = new ContratCadre<Feve>(this, vendeur, f, quantite);
-					System.out.println(res.toString());
+					this.journal.ajouter("vendeur de "+f+" trouve");
 				} else {
 					this.journal.ajouter("   Aucun vendeur trouve --> pas de nouveau contrat a ce step");
 				}
@@ -255,7 +256,6 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		} else {
 			this.journal.ajouter("   Il ne reste que "+solde+" une fois tous les contrats payes donc nous ne souhaitons pas en creer d'autres pour l'instant");
 		}
-		System.out.println("derniere etape" + res.toString());
 		return res;
 	}
 	//end sacha
@@ -270,7 +270,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 			if ((this.contratsFeveEnCours.isEmpty())&&(this.stockFeves.getQuantiteEnStock(cc.getProduit()) < stockLim)) { // On accepte forcément la proposition si on a pas de contrat cadre en cours et que le stock est inférieur à une quantité arbitraire
 				cc.ajouterEcheancier(new Echeancier(cc.getEcheancier()));
 			} 
-			if (Math.random() < 0.33) {
+			else if (Math.random() < 0.33) {
 				cc.ajouterEcheancier(new Echeancier(cc.getEcheancier())); //1 chance sur 3 d'accepter l'échéancier (si la première condition n'est pas remplie)
 			}      
 			
