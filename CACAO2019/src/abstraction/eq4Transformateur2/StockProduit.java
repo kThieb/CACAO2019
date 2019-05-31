@@ -6,11 +6,11 @@ import java.util.List;
 
 // Kelian
 public class StockProduit<T> {
-	/** Stocke une pile de tas de fèves (ou de chocolat) par type de fèves (ou de chocolat)*/
+	/** Stocke une file de tas de fèves (ou de chocolat) par type de fèves (ou de chocolat) */
 	private HashMap<T , LinkedList<TasProduit<T>>> stocks;
 	
-	
 	public StockProduit(List<T> stockables) {
+		// Initialisation des files
 		stocks = new HashMap<T, LinkedList<TasProduit<T>>>();
 		for(int i = 0; i < stockables.size(); i++)
 			stocks.put(stockables.get(i), new LinkedList<TasProduit<T>>());
@@ -20,10 +20,11 @@ public class StockProduit<T> {
 		stocks.get(type).add(t);
 	}
 	
-	public double getQuantiteTotale(T type) {
-		// On récupère les tas de fèves correspondant à ce type
-		LinkedList<TasProduit<T>> tas = stocks.get(type);
+	public double getQuantiteTotale(T sousType) {
+		// On récupère les tas de fèves/chocolat correspondant à ce sous-type
+		LinkedList<TasProduit<T>> tas = stocks.get(sousType);
 		double qty = 0;
+		// On additionne les quantités de produit de chaque tas
 		for(int i = 0; i < tas.size(); i++)
 			qty += tas.get(i).getQuantité();
 		return qty;
@@ -39,11 +40,11 @@ public class StockProduit<T> {
 		else {
 			double prix = 0;
 			int i = 0;
-			while(qty > 0) {
+			while(qty > 0 && i < tas.size()) {
 				TasProduit<T> t = tas.get(i); // prochain tas à vider
 				double qteAPrendre = Math.min(qty, t.getQuantité());
 				qty -= qteAPrendre;
-				prix += qteAPrendre * t.getPrixUnitaire();
+				prix += qteAPrendre * t.getPrixAuKilo();
 				i++;
 			}
 			return prix;
@@ -64,7 +65,7 @@ public class StockProduit<T> {
 				double qteAPrendre = Math.min(qty, t.getQuantité());
 				t.prendre(qty);
 				qty -= qteAPrendre;
-				prix += qteAPrendre * t.getPrixUnitaire();
+				prix += qteAPrendre * t.getPrixAuKilo();
 				// On supprime le tas s'il est vide
 				if(t.getQuantité() == 0)
 					tas.pop();

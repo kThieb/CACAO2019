@@ -2,10 +2,10 @@ package abstraction.eq4Transformateur2;
 
 // Kelian
 public class TasProduit<T> {
-	/** Représente une livraison de fèves ou de chocolat */
+	/** Représente une livraison de fèves ou de chocolats */
 	
 	private double quantité; // kg
-	private double prixAuKilo;
+	private double prixAuKilo; // €
 	private int datePeremption;
 	
 	public TasProduit(double quantité, double prixAuKilo) {
@@ -17,16 +17,12 @@ public class TasProduit<T> {
 		return quantité;
 	}
 	
-	public double getPrixUnitaire() {
+	public double getPrixAuKilo() {
 		return prixAuKilo;
 	}
 	
 	public int getDatePeremption() {
 		return datePeremption;
-	}
-	
-	public double getPrixAuKilo() {
-		return prixAuKilo;
 	}
 	
 	public boolean prendre(double qte) {
