@@ -12,7 +12,7 @@ import abstraction.fourni.Indicateur;
 import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 
-public class Producteur1 implements IActeur /* , IVendeurCacaoAleatoire */ {
+public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire */ {
 
 	public static int COUT_FIXE = 1000;
 	public static int COUT_VARIABLE_STOCK = 5;
@@ -53,7 +53,7 @@ public class Producteur1 implements IActeur /* , IVendeurCacaoAleatoire */ {
 	// private StockEnVente<Feve> stockEnVente;
 	// END ANTI
 	// BEGIN Manon
-	private Journal journal1;
+	protected Journal journal1;
 	// END MANON
 	// BEGIN Pauline
 	protected HashMap<Feve, Double> prixAuKilo;
@@ -62,7 +62,7 @@ public class Producteur1 implements IActeur /* , IVendeurCacaoAleatoire */ {
 	protected HashMap<Integer, ContratCadre<Feve>> historiqueContrats;
 	// END ANTI
 
-	public Producteur1() {
+	public Producteur1Interne() {
 		this.stockFeves = new Indicateur("EQ1 stock feves", this, 3000);
 		// BEGIN Nas
 		this.stockCriolloI = new Indicateur("EQ1 stock criollo", this, 1000);
@@ -108,7 +108,7 @@ public class Producteur1 implements IActeur /* , IVendeurCacaoAleatoire */ {
 		Monde.LE_MONDE.ajouterIndicateur(this.soldeBancaire);
 		//Monde.LE_MONDE.ajouterActeur(new SuperviseurVentesCacaoAleatoires());
 		// BEGIN Manon
-		this.journal1 = new Journal("Ventes aleatoires de cacao");
+		this.journal1 = new Journal("JEQ1");
 		Monde.LE_MONDE.ajouterJournal(this.journal1);
 		System.out.println(" ajout du journal...");
 		// END Manon
