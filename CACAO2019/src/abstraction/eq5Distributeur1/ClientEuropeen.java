@@ -22,13 +22,16 @@ public class ClientEuropeen implements IActeur {
 	private Chocolat uniqueProduit;
 	private int quantiteParStep;
 	
+	/** @author Erwann DEFOY */
 	public String getNom() {
 		return "CL"+this.numero;
 	}
-
+	
+	/** @author Erwann DEFOY */
 	public void initialiser() {
 	}
 
+	/** @author Erwann DEFOY */
 	public ClientEuropeen(Chocolat uniqueProduit, int quantiteParStep) {
 		NB_CLIENT++;
 		this.numero = NB_CLIENT;
@@ -38,7 +41,7 @@ public class ClientEuropeen implements IActeur {
 		Monde.LE_MONDE.ajouterJournal(this.journal);
 	}
 
-
+	/** @author Erwann DEFOY */
 	public void next() {
 		this.journal.ajouter("Step "+Monde.LE_MONDE.getStep()+" : tentative d'achat de "+quantiteParStep+" de "+this.uniqueProduit+" ____________");
 		double quantiteAchetee = 0.0;
@@ -82,6 +85,7 @@ public class ClientEuropeen implements IActeur {
 		} while (quantiteAchetee<this.quantiteParStep && distributeurDeQualite!=null);
 	}
 	
+	/** @author Erwann DEFOY */
 	public double NoteQualite(Chocolat c) {
 		int N = 0;
 		if (c.isEquitable()) {
@@ -98,6 +102,7 @@ public class ClientEuropeen implements IActeur {
 		return 10*N/4;
 	}
 	
+	/** @author Erwann DEFOY */
 	public double getNoteQualite (IDistributeurChocolat dist, Chocolat c) {
 		return NoteQualite (c);
 		

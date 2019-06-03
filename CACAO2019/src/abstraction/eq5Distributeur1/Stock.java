@@ -10,6 +10,7 @@ import abstraction.eq7Romu.produits.Chocolat;
 public class Stock {
 	private HashMap<Chocolat, Double> stock;
 
+	/** @author Estelle BONNET */
 	public Stock() {
 		this.stock = new HashMap<Chocolat, Double>();
 	}
@@ -20,6 +21,7 @@ public class Stock {
 	 * @param produit
 	 * @param quantite mise en vente du produit
 	 */
+	/** @authors Erine DUPONT & Estelle BONNET */
 	public void ajouter(Chocolat produit, Double quantite) {
 		if (quantite<0.0) {
 			throw new IllegalArgumentException("Appel de ajouter(produit, quantite) de Stock avec quantite<0.0 (=="+quantite+")");
@@ -28,6 +30,7 @@ public class Stock {
 		}
 	}
 	
+	/** @authors Erine DUPONT & Estelle BONNET */
 	public void enlever(Chocolat produit, Double quantite) {
 		if (quantite<0.0) {
 			throw new IllegalArgumentException("Appel de enlever(produit, quantite) de Stock "
@@ -40,21 +43,24 @@ public class Stock {
 		}
 	}
 	
-
+	/** @author Estelle BONNET */
 	public List<Chocolat> getProduitsEnVente() {
 		ArrayList<Chocolat> produits=new ArrayList<Chocolat>();
 		produits.addAll(this.stock.keySet());
 		return produits;
 	}
 
+	/** @author Estelle BONNET */
 	public Double get(Chocolat produit) {
 		return (this.stock.containsKey(produit)? this.stock.get(produit) : 0.0) ;
 	}
 
+	/** @author Estelle BONNET */
 	public String toString() {
 		return this.stock.toString();
 	}
 	
+	/** @author Estelle BONNET */
 	public String toHtml() {
 		String res = "";
 		for (Chocolat produit : this.stock.keySet()) {

@@ -27,11 +27,16 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 	private List<ContratCadre<Chocolat>> contratsEnCours;
 
 
-
+	/**
+	 * @author Erine DUPONT & Estelle BONNET
+	 */
 	public Distributeur1() {
 		this(5.0, 100000.0);
 	}
 
+	/**
+	 * @author Erine DUPONT & Estelle BONNET
+	 */
 	public Distributeur1(double marge, Double soldeInitial) {
 		this.numero =1 ;
 		this.marge = marge;
@@ -148,7 +153,8 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 	 */
 	public void proposerPrixAcheteur(ContratCadre cc) {
 		double prixVendeur = cc.getPrixAuKilo();
-		/*if (Math.random()<0.25) { // probabilite de 25% d'accepter
+		/* VERSION IMANE
+		 * if (Math.random()<0.25) { // probabilite de 25% d'accepter
 			cc.ajouterPrixAuKilo(cc.getPrixAuKilo());
 		} else {
 			cc.ajouterPrixAuKilo((prixVendeur*(0.9+Math.random()*0.1))); // Rabais de 10% max
@@ -161,16 +167,16 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 			cc.ajouterPrixAuKilo(prixVendeur);
 		}
 	}
-	/** @author Erine DUPONT
+	
+	/** 
+	 * @author Erine DUPONT
 	 */
-	@Override
 	public void notifierAcheteur(ContratCadre cc) {
 		this.contratsEnCours.add(cc);
 	}
 
 	/**@author Erine DUPONT
 	 */
-	@Override
 	public void receptionner(Object produit, double quantite, ContratCadre cc) {
 		if (produit==null || !produit.equals(cc.getProduit())) {
 			throw new IllegalArgumentException("Appel de la methode receptionner de DistributeurRomu avec un produit ne correspondant pas au produit distribue par le distributeur");
@@ -181,11 +187,9 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 		this.stock.ajouter((Chocolat) produit, quantite);
 	}
 
-	
 	/**
 	 * @author Erwann DEFOY
 	 */
-	@Override
 	public double payer(double montant, ContratCadre cc) {
 		if (montant<=0.0) {
 			throw new IllegalArgumentException("Appel de la methode payer de Distributeur1 avec un montant negatif = "+montant);
@@ -200,9 +204,8 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 	// ---------------------------------------------------------------------------------------------------------
 
 	/**
-	 * @author Estelle
+	 * @author Estelle BONNET
 	 */
-	@Override
 	public StockEnVente<Chocolat> getStockEnVente() {
 		StockEnVente<Chocolat> res = new StockEnVente<Chocolat>();
 		List<Chocolat> produits = this.stock.getProduitsEnVente();
@@ -213,9 +216,8 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 	}
 
 	/**
-	 * @author Estelle
+	 * @author Estelle BONNET
 	 */
-	@Override
 	public double getPrix(Chocolat c) {
 		boolean vendu = false;
 		List<Chocolat> produits =this.stock.getProduitsEnVente();
@@ -242,11 +244,10 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 			return prixMoyen *(1.0+this.marge);
 		}
 	}
-	
+
 	/**
 	 * @author Erine DUPONT 
 	 */
-	@Override
 	public double vendre(Chocolat chocolat, double quantite) {
 		double stock = this.getStockEnVente().get(chocolat);
 		if (quantite < 0.0) {
