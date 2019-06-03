@@ -256,15 +256,13 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 		if (quantite < 0.0) {
 			throw new IllegalArgumentException("Appel de vendre(chocolat, quantité) de "
 					+ "Distributeur1 avec quantité<0.0 (=="+quantite+")");
-		} else if (stock < quantite) {
-			throw new IllegalArgumentException("Appel de vendre(chocolat, quantité) de "
-					+ "Distributeur1 avec stock ( ==" + stock +") < quantité (=="+quantite+")");
 		} else {
-			this.stock.enlever(chocolat, quantite);
-			this.indicateurstock.retirer(this, quantite);
-			soldeBancaire.RecevoirPaiement(this, quantite*getPrix(chocolat));
-			this.indicateursolde.ajouter(this, quantite*getPrix(chocolat));
-			return this.stock.get(chocolat);
-		}
+			double quantitevendue = Math.min(stock, quantite);
+			soldeBancaire.RecevoirPaiement(this, quantitevendue*getPrix(chocolat));
+			this.indicateursolde.ajouter(this, quantitevendue*getPrix(chocolat));
+			this.stock.enlever(chocolat, quantitevendue);
+			this.indicateurstock.retirer(this, quantitevendue);			
+			return quantitevendue;
+		} 
 	}
 }
