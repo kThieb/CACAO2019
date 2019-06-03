@@ -123,12 +123,12 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 				}
 				double quantite = vendeur_choisi.getStockEnVente().get(produit)*0.65; // On prend 65% de sa production
 				ncc = new ContratCadre<Chocolat>(this, vendeur_choisi, produit, quantite);
-
+				this.journal.ajouter("Nouveau contrat cadre signé avec " + vendeur_choisi + 
+						". Chocolat: "+ produit+ "/ Quantité: "+ quantite);
 			} else {
-				this.journal.ajouter("   Il ne reste que "+solde+" une fois tous les contrats payes donc nous ne souhaitons pas en creer d'autres pour l'instant");
+				this.journal.ajouter("   Il ne reste que "+solde+" une fois tous les contrats payes donc nous ne souhaitons "
+						+ "pas en créer d'autres pour l'instant");
 			}
-
-
 		}
 		//Création Contrat
 		return ncc;
@@ -161,10 +161,15 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 		}*/
 		if (5 < prixVendeur && prixVendeur < 10 && stock.get((Chocolat) cc.getProduit())<1000) {
 			cc.ajouterPrixAuKilo(prixVendeur*0.8);
+			this.journal.ajouter("Nous proposons un prix de " + prixVendeur*0.8);
 		} else if (5 < prixVendeur && prixVendeur < 10 && stock.get((Chocolat) cc.getProduit())>=1000) {
 			cc.ajouterPrixAuKilo(prixVendeur*0.6);
+			this.journal.ajouter("Nous proposons un prix de " + prixVendeur*0.6);
 		} else if (prixVendeur <= 5) {
 			cc.ajouterPrixAuKilo(prixVendeur);
+			this.journal.ajouter("Nous proposons un prix de " + prixVendeur);
+		} else {
+			this.journal.ajouter("Nous refusons le prix de " + prixVendeur);
 		}
 	}
 	
@@ -185,17 +190,20 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 			throw new IllegalArgumentException("Appel de la methode receptionner de DistributeurRomu avec une quantite egale a "+quantite);
 		}
 		this.stock.ajouter((Chocolat) produit, quantite);
+		this.journal.ajouter("Réception de "+ quantite + "kg de" + produit);
 	}
 
 	/**
 	 * @author Erwann DEFOY
+	 * @author2 Erine DUPONT : ajout du journal
 	 */
 	public double payer(double montant, ContratCadre cc) {
 		if (montant<=0.0) {
 			throw new IllegalArgumentException("Appel de la methode payer de Distributeur1 avec un montant negatif = "+montant);
 		}
 		double quantitepaye = soldeBancaire.Payer((IActeur)(cc.getVendeur()), montant);
-		//this.indicateursolde.retirer(this, quantitepaye);
+		this.indicateursolde.retirer(this, quantitepaye);
+		this.journal.ajouter("Paiement de " + montant);
 		return quantitepaye;
 	}
 
@@ -261,7 +269,8 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 			soldeBancaire.RecevoirPaiement(this, quantitevendue*getPrix(chocolat));
 			this.indicateursolde.ajouter(this, quantitevendue*getPrix(chocolat));
 			this.stock.enlever(chocolat, quantitevendue);
-			this.indicateurstock.retirer(this, quantitevendue);			
+			this.indicateurstock.retirer(this, quantitevendue);
+			this.journal.ajouter("La quantité de " + chocolat + "vendue est : "+ quantite);
 			return quantitevendue;
 		} 
 	}
