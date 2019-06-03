@@ -31,7 +31,7 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 	 * @author Erine DUPONT & Estelle BONNET
 	 */
 	public Distributeur1() {
-		this(5.0, 100000.0);
+		this(0.1, 100000.0);
 	}
 
 	/**
