@@ -159,13 +159,13 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 		} else {
 			cc.ajouterPrixAuKilo((prixVendeur*(0.9+Math.random()*0.1))); // Rabais de 10% max
 		}*/
-		if (5 < prixVendeur && prixVendeur < 10 && stock.get((Chocolat) cc.getProduit())<1000) {
+		if (100 < prixVendeur && prixVendeur < 1000 && stock.get((Chocolat) cc.getProduit())<1000) {
 			cc.ajouterPrixAuKilo(prixVendeur*0.8);
 			this.journal.ajouter("Nous proposons un prix de " + prixVendeur*0.8);
-		} else if (5 < prixVendeur && prixVendeur < 10 && stock.get((Chocolat) cc.getProduit())>=1000) {
+		} else if (100 < prixVendeur && prixVendeur < 1000 && stock.get((Chocolat) cc.getProduit())>=1000) {
 			cc.ajouterPrixAuKilo(prixVendeur*0.6);
 			this.journal.ajouter("Nous proposons un prix de " + prixVendeur*0.6);
-		} else if (prixVendeur <= 5) {
+		} else if (prixVendeur <= 100) {
 			cc.ajouterPrixAuKilo(prixVendeur);
 			this.journal.ajouter("Nous proposons un prix de " + prixVendeur);
 		} else {
@@ -270,7 +270,7 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 			this.indicateursolde.ajouter(this, quantitevendue*getPrix(chocolat));
 			this.stock.enlever(chocolat, quantitevendue);
 			this.indicateurstock.retirer(this, quantitevendue);
-			this.journal.ajouter("La quantité de " + chocolat + "vendue est : "+ quantite);
+			this.journal.ajouter("La quantité de " + chocolat + " vendue est : "+ quantite);
 			return quantitevendue;
 		} 
 	}
