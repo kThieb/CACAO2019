@@ -217,6 +217,7 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 
 	/**
 	 * @author Estelle BONNET
+	 * @author2 Erine DUPONT
 	 */
 	public double getPrix(Chocolat c) {
 		boolean vendu = false;
@@ -234,13 +235,15 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 			return 50;
 		} else {
 
-			double prixMoyen = 0;
+			double somme = 0;
+			int nbproduits = 0;
 			for (ContratCadre<Chocolat> cc : this.contratsEnCours) {
 				if (cc.getProduit()==c) {
-					prixMoyen+=cc.getPrixAuKilo();
+					somme += cc.getPrixAuKilo();
+					nbproduits += 1;
 				}
 			}
-			prixMoyen = prixMoyen/ this.contratsEnCours.size();
+			double prixMoyen = somme/ nbproduits;
 			return prixMoyen *(1.0+this.marge);
 		}
 	}
