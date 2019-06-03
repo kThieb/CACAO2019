@@ -31,7 +31,7 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 	 * @author Erine DUPONT & Estelle BONNET
 	 */
 	public Distributeur1() {
-		this(0.1, 100000.0);
+		this(0.1, 100000.0); // La marge doit être en pourcentage !!! 5% > 0.05
 	}
 
 	/**
@@ -39,7 +39,7 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 	 */
 	public Distributeur1(double marge, Double soldeInitial) {
 		this.numero =1 ;
-		this.marge = marge;
+		this.marge = marge;   // La marge doit être en pourcentage !!! 5% > 0.05
 		this.stock = new Stock();
 		stock.ajouter(Chocolat.HG_E_SHP, 150000.0);
 		stock.ajouter(Chocolat.MG_E_SHP, 0.0);
