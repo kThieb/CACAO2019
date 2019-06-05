@@ -1,7 +1,6 @@
 package abstraction.eq3Transformateur1;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import abstraction.eq3Transformateur1.Stock;
@@ -58,7 +57,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 
 
 		// stock de feves
-		ArrayList<Feve> feves = new ArrayList<Feve>(Arrays.asList(Feve.values()));
+		ArrayList<Feve> feves = new ArrayList<Feve>();
 		feves.add(Feve.CRIOLLO_HG_EQ);
 		feves.add(Feve.FORASTERO_MG_EQ);
 		feves.add(Feve.FORASTERO_MG_NEQ);
