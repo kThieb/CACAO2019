@@ -1,6 +1,7 @@
 package abstraction.eq3Transformateur1;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import abstraction.eq3Transformateur1.Stock;
@@ -57,7 +58,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 
 
 		// stock de feves
-		ArrayList<Feve> feves = new ArrayList<Feve>();
+		ArrayList<Feve> feves = new ArrayList<Feve>(Arrays.asList(Feve.values()));
 		feves.add(Feve.CRIOLLO_HG_EQ);
 		feves.add(Feve.FORASTERO_MG_EQ);
 		feves.add(Feve.FORASTERO_MG_NEQ);
@@ -307,15 +308,15 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	@Override
 	public void receptionner(Feve produit, double quantite, ContratCadre<Feve> cc) {
 		// begin sacha
-		for (Feve f:this.stockFeves.getProduitsEnStock()) {
-			if (produit==null || !produit.equals(f)) {
-				throw new IllegalArgumentException("Appel de la methode receptionner de Transformateur1 avec un produit ne correspondant pas aux feves achetees par le transformateur");
-			}
+	//	for (Feve f:this.stockFeves.getProduitsEnStock()) {
+	//		if (produit==null || !produit.equals(f)) {
+	//			throw new IllegalArgumentException("Appel de la methode receptionner de Transformateur1 avec un produit ne correspondant pas aux feves achetees par le transformateur");
+	//		}
 			if (quantite<=0.0) {
 				throw new IllegalArgumentException("Appel de la methode receptionner de Transformateur1 avec une quantite egale a "+quantite);
 			}
 			this.stockFeves.setQuantiteEnStock(produit, this.stockFeves.getQuantiteEnStock(produit) + quantite);
-		}
+	//	}
 		
 	}
 //end sacha
