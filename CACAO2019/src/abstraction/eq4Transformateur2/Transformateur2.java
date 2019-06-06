@@ -239,6 +239,7 @@ public class Transformateur2 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		/* TODO Attention : produire toute la qté nécessaire pour le CC d'un coup n'est pas forcément une bonne idée vis à vis de la péremption */
 	}
 	
+	// Kelian
 	/** Renvoie le step actuel dans l'année en cours */
 	public static int getCurrentStepInAnnee() {
 		return Monde.LE_MONDE.getStep() % STEPS_PAR_ANNEE;

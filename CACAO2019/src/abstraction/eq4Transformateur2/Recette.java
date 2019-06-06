@@ -5,7 +5,8 @@ import java.util.List;
 
 import abstraction.eq7Romu.produits.Chocolat;
 import abstraction.eq7Romu.produits.Feve;
-//Guillaume
+
+// Guillaume & Adrien
 public enum Recette {
 	// Définition des recettes
 	HauteQ(Feve.CRIOLLO_HG_EQ, 1, 5,Chocolat.HG_E_SHP),
@@ -28,6 +29,7 @@ public enum Recette {
 		this.output = output;
 	}
 	
+	// Kelian
 	/** Renvoie la liste des recettes utilisant un type de fève donné. */
 	public static List<Recette> getRecettes(Feve inputFeve) {
 		List<Recette> recettes = new ArrayList<Recette>();
@@ -38,6 +40,7 @@ public enum Recette {
 		return recettes;
 	}
 
+	// Kelian
 	/** Renvoie la liste des recettes produisant un type de chocolat donné. */
 	public static List<Recette> getRecettes(Chocolat output) {
 		List<Recette> recettes = new ArrayList<Recette>();
@@ -66,7 +69,7 @@ public enum Recette {
 	
 	public double calculCout(double qte) {
 		return getCoutTransformation() * qte; // TODO ajouter coût fixe
-		// TODO URGENT prendre en compte le prix d'achat des feves
+		// TODO URGENT prendre en compte le prix d'achat des feves ici ?
 	}
 
 	
