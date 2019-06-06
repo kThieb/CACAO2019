@@ -47,7 +47,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 	protected HashMap<Integer, Integer> plantationForastero;
 	protected HashMap<Integer, Integer> plantationTrinitario; 
 	protected int compteurSteps = 0 ;
-	public static int dureeDeVieCacaoyer = 1040 ; 
+	public static int dureeDeVieCacaoyer = 960 ; 
 	protected int criolloPlante ; 
 	protected int forasteroPlante ; 
 	protected int trinitarioPlante ;
@@ -410,9 +410,9 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 			
 					
 		}
-		criolloPlante = (int) Math.ceil(moyenneDemandeCriollo());
-		forasteroPlante = (int) Math.ceil(moyenneDemandeForastero());
-		trinitarioPlante = (int) Math.ceil(moyenneDemandeTrinitario());
+		criolloPlante = (int) Math.ceil(moyenneDemandeCriollo()*1/40);
+		forasteroPlante = (int) Math.ceil(moyenneDemandeForastero()*1/40);
+		trinitarioPlante = (int) Math.ceil(moyenneDemandeTrinitario()*1/40);
 		
 		if (compteurSteps%unAnEnSteps == 0  ) {
 			plantationCriollo.put(0, criolloPlante);
