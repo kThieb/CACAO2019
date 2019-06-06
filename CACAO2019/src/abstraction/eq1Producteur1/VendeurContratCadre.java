@@ -19,7 +19,7 @@ public class VendeurContratCadre extends Producteur1Interne implements IVendeurC
         	double stocktotal= this.getStockI(feve).getValeur();
         	for (ContratCadre<Feve> cc : this.contratEnCours) {
 			if (Monde.LE_MONDE!=null) {
-				stocktotal-= cc.getQuantiteRestantALivrer();
+				stocktotal-= cc.getQuantiteRestantALivrer();  
 			}
 		}
 		
