@@ -153,7 +153,6 @@ public class VendeurContratCadre extends Producteur1Interne implements IVendeurC
 	public void encaisser(double montant, ContratCadre<Feve> cc) {
 		super.soldeBancaire.ajouter(this ,  montant);
 		//cc.payer(montant);
-		journal1.ajouter("solde bancaire +" + Double.toString(montant));
 
 	}
 //
