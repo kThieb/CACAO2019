@@ -1,3 +1,4 @@
+//Begin Raph
 package abstraction.eq3Transformateur1;
 
 import java.util.ArrayList;
@@ -17,17 +18,27 @@ private HashMap<Chocolat, Double> margeBrute;
 			this.margeBrute.put(p, 0.);
 		}
 	}
-	public Marge() { }
+	public Marge() {
+		this(new ArrayList<Chocolat> ());
+	}
 	
 	// -----------------------------------------------------------
 	//          GETTERS & SETTERS
 	// -----------------------------------------------------------
 
 	public double getCoutProd(Chocolat produit) {
-		return this.coutProd.get(produit);
+		if(coutProd.containsKey(produit)) {
+			return this.coutProd.get(produit);
+		}else {
+			return 0.;
+		}
 	}
 	public double getMargeBrute(Chocolat produit) {
-		return this.margeBrute.get(produit);
+		if(coutProd.containsKey(produit)) {
+			return this.margeBrute.get(produit);
+		}else {
+			return 0.;
+		}
 	}
 	public void setCoutProd(Chocolat produit, double cout) {
 		if (cout >= 0.) {
@@ -44,3 +55,4 @@ private HashMap<Chocolat, Double> margeBrute;
 		}
 	}
 }
+//End Raph
