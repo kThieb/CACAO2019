@@ -185,6 +185,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	// 			ACHETEUR
 	// -------------------------------------------------------------------------------------------
 
+	
 	// -------------------------- begin eve
 	public double quantiteDesiree(double quantiteEnVente, double prix) {
 		double possible = Math.max(0.0, soldeBancaire.getValeur()/prix);
@@ -241,7 +242,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 				if (prix*quantite<solde) {
 
 					while (!Double.isNaN(prix) && prix*quantite<solde ) {
-						quantite=quantite*1.5;
+						quantite=quantite*1.2;
 						prix = vendeur.getPrix(f,  quantite);
 						this.journal.ajouter(" quantite "+String.format("%.3f",quantite)+" --> "+String.format("%.3f",prix*quantite));
 					}
