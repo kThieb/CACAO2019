@@ -27,7 +27,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	private Journal journal;
 
 	//begin Raph
-	private static HashMap<Chocolat, Double> PRIX_VENTE_PAR_DEFAUT = new HashMap<Chocolat, Double>();
+	private HashMap<Chocolat, Double> PRIX_VENTE_PAR_DEFAUT = new HashMap<Chocolat, Double>();
 	//End Raph
 	
 	//Begin Kevin
@@ -105,6 +105,8 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		this.PRIX_VENTE_PAR_DEFAUT.put(Chocolat.MG_NE_HP,40.);
 		this.PRIX_VENTE_PAR_DEFAUT.put(Chocolat.MG_NE_SHP,40.);
 		this.PRIX_VENTE_PAR_DEFAUT.put(Chocolat.MG_E_SHP,40.);
+		this.PRIX_VENTE_PAR_DEFAUT.put(Chocolat.HG_E_SHP,1000.);
+		
 
 		// --------------------------------- end Raph
 		
@@ -218,6 +220,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 						this.journal.ajouter("   "+(acteur.getNom())+" ne vend que "+stock.toHtml());
 					}
 				}
+
 			}
 			if (vendeurs.size()>=1) {
 				IVendeurContratCadre<Feve> vendeur = vendeurs.get( (int)( Math.random()*vendeurs.size())); // ici tire au hasard plutot que de tenir compte des stocks en vente et des prix
@@ -227,6 +230,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 				double prix = vendeur.getPrix(f, quantite);
 				this.journal.ajouter("prix total = "+prix*quantite+" solde = "+solde);
 				if (prix*quantite<solde) {
+
 					while (!Double.isNaN(prix) && prix*quantite<solde ) {
 						quantite=quantite*1.5;
 						prix = vendeur.getPrix(f,  quantite);
@@ -262,6 +266,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 			if ((this.contratsFeveEnCours.isEmpty())&&(this.stockFeves.getQuantiteEnStock(cc.getProduit()) < stockLim)) { // On accepte forcément la proposition si on a pas de contrat cadre en cours et que le stock est inférieur à une quantité arbitraire 
 				cc.ajouterEcheancier(new Echeancier(cc.getEcheancier())); 
 			} 
+
 			else if (Math.random() < 0.33) { 
 				cc.ajouterEcheancier(new Echeancier(cc.getEcheancier())); //1 chance sur 3 d'accepter l'échéancier (si la première condition n'est pas remplie) 
 			}
@@ -271,6 +276,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 						cc.getEcheancier().getNbEcheances()+1,
 						cc.getQuantite()/(cc.getEcheancier().getNbEcheances()+1))); 
 			}
+			
 		}
 		//End Kevin
 	}
@@ -278,6 +284,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	@Override
 	public void proposerPrixAcheteur(ContratCadre<Feve> cc) {
 		//begin raphael et eve
+
 		double prixVendeur = cc.getListePrixAuKilo().get(0);
 		int nbAchatsMoyenne=Math.min(10,cc.getListePrixAuKilo().size());//Nombre d'achats pris en compte pour le calcul de la moyenne (au plus 10)
 		double moyenneDerniersAchats=0;
@@ -292,7 +299,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		}
 		//end raphael et eve
 	}
-
+	
 	@Override
 	public void notifierAcheteur(ContratCadre<Feve> cc) {
 		// begin sacha
@@ -306,15 +313,20 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		ArrayList<Feve> produitsEnStock = this.stockFeves.getProduitsEnStock();
 		if (produit==null || !(produitsEnStock.contains(produit))) {
 			throw new IllegalArgumentException("Appel de la methode receptionner de Transformateur1 avec un produit ne correspondant pas aux feves achetees par le transformateur");
+
 		}
+				
+
 		if (quantite<=0.0) {
 			throw new IllegalArgumentException("Appel de la methode receptionner de Transformateur1 avec une quantite egale a "+quantite);
 		}
 		this.stockFeves.addQuantiteEnStock(produit, quantite);
+
 	}
 //end sacha et eve
 	
 	
+
 	@Override
 	public double payer(double montant, ContratCadre<Feve> cc) {
 		// begin sacha
@@ -378,6 +390,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 			return prix + this.margeChocolats.getCoutProd(chocolat)+this.margeChocolats.getMargeBrute(chocolat);
 		}	
 		//End Raph/Kevin
+		
 	}
 
 	@Override
@@ -421,8 +434,9 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	public void notifierVendeur(ContratCadre<Chocolat> cc) {
 		//Begin Kevin
 		this.contratsChocolatEnCours.add(cc);
-		//End Kevin
+		//End Kevin.
 	}
+
 
 	
 	
@@ -435,6 +449,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		this.stockChocolat.removeQuantiteEnStock(produit, livraison);;
 		return livraison;
 		//End Raph/Kevin
+		
 	}
 
 	
