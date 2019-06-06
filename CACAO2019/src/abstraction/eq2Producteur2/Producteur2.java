@@ -257,6 +257,8 @@ public void recolte(Feve f) {
 					"Appel de la methode livrer de Producteur2 avec un produit ne correspondant pas aux feves produites");
 		}
 		
+		
+		
 		double livraison = Math.min(quantite, this.gestionnaireFeve.getStock(produit));
 		this.gestionnaireFeve.get(produit).getStockIndicateur().retirer(this, livraison);
 		
