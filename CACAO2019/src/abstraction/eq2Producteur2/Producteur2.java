@@ -42,6 +42,7 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 			Monde.LE_MONDE.ajouterIndicateur(gestionnaireFeve.get(f).getStockIndicateur());
 		}
 		this.soldeBancaire = new Indicateur(this.getNom() + " Solde", this, 100000);
+		
 		Monde.LE_MONDE.ajouterIndicateur(this.soldeBancaire);
 		this.contratsEnCours = new ArrayList<ContratCadre<Feve>>();
 		this.journal = new Journal("Journal " + this.getNom());
@@ -52,14 +53,17 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 		this.gestionnaireFeve.setStock(this, Feve.FORASTERO_MG_NEQ, 200000000);
 		this.gestionnaireFeve.setPrix(this, Feve.FORASTERO_MG_NEQ, 1.5);
 
+		
 		this.gestionnaireFeve.setProduction(this, Feve.FORASTERO_MG_EQ, 7500000); // TODO rectifier les productions des autres feves
 		this.gestionnaireFeve.setStock(this, Feve.FORASTERO_MG_EQ, 20000000);
 		this.gestionnaireFeve.setPrix(this, Feve.FORASTERO_MG_EQ, 1.7);
+		
 		
 		this.gestionnaireFeve.setProduction(this, Feve.MERCEDES_MG_NEQ, 7500000);
 		this.gestionnaireFeve.setStock(this, Feve.MERCEDES_MG_NEQ, 20000000);
 		this.gestionnaireFeve.setPrix(this, Feve.MERCEDES_MG_NEQ, 1.3);
 
+		
 		this.gestionnaireFeve.setProduction(this, Feve.MERCEDES_MG_EQ, 750000);
 		this.gestionnaireFeve.setStock(this, Feve.MERCEDES_MG_EQ, 2000000);
 		this.gestionnaireFeve.setPrix(this, Feve.MERCEDES_MG_EQ, 1.4);
