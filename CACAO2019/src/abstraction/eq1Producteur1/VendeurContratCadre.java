@@ -16,7 +16,7 @@ public class VendeurContratCadre extends Producteur1Interne implements IVendeurC
 
 	public StockEnVente<Feve> getStockEnVente() {
         journal1.ajouter("stock en vente " +stockEnVente); // ROMU
-		return new StockEnVente<Feve>();// ROMU. Prealablement stockEnVente; mais jamais initialisee...
+		return stockEnVente;// ROMU. Prealablement stockEnVente; mais jamais initialisee...
 	}
 
 	public double getPrix(Feve produit, Double quantite) {
@@ -30,6 +30,7 @@ public class VendeurContratCadre extends Producteur1Interne implements IVendeurC
 			Producteur1Interne prod = new Producteur1Interne();
 			return prod.getPrixAuKilo().get(produit);
 		}
+		// END Pauline
 	}
 //Begin MANON ET PAULINE
 	public void proposerEcheancierVendeur(ContratCadre<Feve> cc) {

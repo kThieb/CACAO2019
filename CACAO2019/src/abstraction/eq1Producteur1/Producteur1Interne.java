@@ -114,11 +114,13 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		// END Manon
 
 	}
-
+	// BEGIN Anti
 	public HashMap<Integer, ContratCadre<Feve>> getHistoriqueContrats() {
 		return this.historiqueContrats;
 	}
+	// END Anti
 
+	// BEGIN Nas
 	public double getRecolte(Feve feve) {
 		
 		
@@ -132,6 +134,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		
 		return Double.NaN;
 	}
+
 	
 	public void modifierCompteurRecolte() {
 		if (compteur_recolte<unAnEnSteps) {
@@ -142,6 +145,8 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 			alea=r.nextInt(unAnEnSteps);
 		}
 	}
+	
+	// END Nas
 
 	public Indicateur getSoldeBancaire() {
 		return this.soldeBancaire;
