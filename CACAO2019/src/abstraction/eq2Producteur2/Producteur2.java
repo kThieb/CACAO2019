@@ -57,7 +57,7 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 		this.gestionnaireFeve.setStock(this, Feve.FORASTERO_MG_EQ, 220000000);
 		
 		this.gestionnaireFeve.setProduction(this, Feve.MERCEDES_MG_NEQ, 75000000);
-		this.gestionnaireFeve.setStock(this, Feve.FORASTERO_MG_NEQ, 220000000);
+		this.gestionnaireFeve.setStock(this, Feve.MERCEDES_MG_NEQ, 220000000);
 		
 		this.gestionnaireFeve.setProduction(this, Feve.MERCEDES_MG_EQ, 75000000);
 		this.gestionnaireFeve.setStock(this, Feve.MERCEDES_MG_EQ, 220000000);
@@ -66,7 +66,6 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	
 	public String getNom() {
 		return "EQ2";
-		
 	}
 
 	public void initialiser() {
@@ -210,4 +209,6 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 		return livraison;
 	}
 
+	
+	
 }
