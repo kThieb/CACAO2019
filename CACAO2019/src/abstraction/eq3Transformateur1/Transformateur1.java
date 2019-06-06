@@ -215,7 +215,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 				if (acteur instanceof IVendeurContratCadre) {
 					IVendeurContratCadre <Feve> vacteur = (IVendeurContratCadre<Feve>)acteur;
 					StockEnVente<Feve> stock = vacteur.getStockEnVente();
-					if (stock.get(f)>=500000.0) {// on souhaite faire des contrats d'au moins 500 tonnes
+					if (stock.get(f)>=1000.0) {// on souhaite faire des contrats d'au moins 1 tonnes
 						this.journal.ajouter("   "+(acteur.getNom())+" vend "+stock.get(f)+" de "+f);
 						vendeurs.add((IVendeurContratCadre<Feve>)vacteur);
 					} else {
@@ -234,7 +234,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 				if (prix*quantite<solde) {
 
 					while (!Double.isNaN(prix) && prix*quantite<solde ) {
-						quantite=quantite*1.5;
+						quantite=quantite*1.2;
 						prix = vendeur.getPrix(f,  quantite);
 						this.journal.ajouter(" quantite "+String.format("%.3f",quantite)+" --> "+String.format("%.3f",prix*quantite));
 					}
