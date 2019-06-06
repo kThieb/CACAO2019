@@ -48,7 +48,7 @@ public class VendeurContratCadre extends Producteur1Interne implements IVendeurC
 					if(this.getStockEnVente().get(feve)==this.getStockI(feve).getValeur()) {
 						if(this.getStockI(feve).getValeur()*this.getPrixAuKilo().get(feve)-0.1>this.getCOUT_FIXE()/3+this.getStockI(feve).getValeur()*this.getCOUT_VARIABLE_STOCK())
 								this.prixAuKilo.put(feve, this.getPrixAuKilo().get(feve)-0.1);
-				}
+				}  
 					else {return prod.getPrixAuKilo().get(produit);}
 			 }
 				
