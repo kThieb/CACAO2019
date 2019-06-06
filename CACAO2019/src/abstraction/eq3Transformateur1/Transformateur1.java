@@ -189,13 +189,14 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	public ContratCadre<Feve> getNouveauContrat() {
 		// begin eve
 		ContratCadre<Feve> res=null;
-		ArrayList<Feve> choixFeve = new ArrayList<Feve>(Arrays.asList(Feve.values()));
-		for (Feve f: choixFeve) {
-			if (f.getGamme() != Gamme.MOYENNE) {
-				choixFeve.remove(f);
+		ArrayList<Feve> toutesFeves = new ArrayList<Feve>(Arrays.asList(Feve.values()));
+		ArrayList<Feve> choixFeve = new ArrayList<Feve>();
+		for (Feve f: toutesFeves) {
+			if (f.getGamme() == Gamme.MOYENNE) {
+				choixFeve.add(f);
 			}
 		}
-		Feve f = choixFeve.get(((int) Math.random())*choixFeve.size());
+		Feve f = choixFeve.get(((int) (Math.random()*choixFeve.size())));
 		// on determine combien il resterait sur le compte si on soldait tous les contrats en cours.
 		double solde = this.soldeBancaire.getValeur();
 		this.journal.ajouter("Determination du solde une fois tous les contrats en cours payes");
@@ -310,6 +311,8 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	@Override
 	public void receptionner(Feve produit, double quantite, ContratCadre<Feve> cc) {
 		// begin sacha et eve
+		
+		this.journal.ajouter("Receptionner " + produit + ", quantite = " + quantite);
 		ArrayList<Feve> produitsEnStock = this.stockFeves.getProduitsEnStock();
 		if (produit==null || !(produitsEnStock.contains(produit))) {
 			throw new IllegalArgumentException("Appel de la methode receptionner de Transformateur1 avec un produit ne correspondant pas aux feves achetees par le transformateur");
@@ -321,6 +324,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 			throw new IllegalArgumentException("Appel de la methode receptionner de Transformateur1 avec une quantite egale a "+quantite);
 		}
 		this.stockFeves.addQuantiteEnStock(produit, quantite);
+		this.iStockFeves.ajouter(this, quantite);
 
 	}
 //end sacha et eve
@@ -446,7 +450,8 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 			throw new IllegalArgumentException("Appel de la methode livrer de Transformateur1 avec un produit ne correspondant pas à un des chocolats produits");
 		}
 		double livraison = Math.min(quantite, this.stockChocolat.getQuantiteEnStock(produit));
-		this.stockChocolat.removeQuantiteEnStock(produit, livraison);;
+		this.stockChocolat.removeQuantiteEnStock(produit, livraison);
+		this.iStockChocolat.retirer(this, livraison);
 		return livraison;
 		//End Raph/Kevin
 		
