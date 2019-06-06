@@ -230,6 +230,14 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 
 	}
 
+	private double fraisStockage() {
+		double cout =0;
+		cout+= this.getStockHG_E_SHP().getValeur();
+		cout+= this.getStockMG_E_SHP().getValeur();
+		cout+= this.getStockMG_NE_HP().getValeur();
+		cout+= this.getStockMG_NE_SHP().getValeur();
+		return cout;
+	}
 	
 	//Nordin
 	public double getPrix(Chocolat c) {
