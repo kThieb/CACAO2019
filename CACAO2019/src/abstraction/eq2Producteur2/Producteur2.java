@@ -188,13 +188,13 @@ public void recolte(Feve f) {
 					cc.getListePrixAuKilo().add(prixVendeur);
 				} else { 
 			
-					if (prixAcheteur >= 0.75 * prixVendeur && prixAcheteur * 1.1 >= getCoutProduction(cc.getProduit)) { 
+					if (prixAcheteur >= 0.75 * prixVendeur && prixAcheteur * 1.1 >= getCoutProduction(cc.getProduit())) { 
 						// on ne fait une proposition que si l'acheteur ne demande pas un prix trop bas, tout en respectant la marge minimale
 						prixVendeur = prixAcheteur * 1.1; // on augmente le prix proposé par l'acheteur de 10%
 						cc.getListePrixAuKilo().add(prixVendeur);
 
 					} else {
-						if (prixVendeur * 0.90 < getCoutProduction(cc.getProduit)) {
+						if (prixVendeur * 0.90 < getCoutProduction(cc.getProduit())) {
 							//On s'assure de conserver notre marge minimale
 							prixVendeur = getCoutProduction(cc.getProduit()) * 1.01;
 						
