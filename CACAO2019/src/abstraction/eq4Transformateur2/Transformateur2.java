@@ -43,6 +43,9 @@ public class Transformateur2 implements IActeur, IAcheteurContratCadre<Feve>, IV
 
 	protected StockEnVente<Chocolat> stockEnVente;
 	
+	// Historique des demandes (utilisée pour définir notre stratégie d'achat de fèves)
+	protected HistoriqueDemande historiqueDemande;
+	
 	// Constantes
 	public static final int STEPS_PAR_ANNEE = 24;
 	private static final double MAX_PRODUCTION_PAR_STEP = 10e3; // Production max. de chocolats par step, en kg
@@ -90,6 +93,9 @@ public class Transformateur2 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		// Initialisation des stocks
 		stocksChocolat = new StockProduit<Chocolat>(CHOCOLATS_VENTE);
 		stockFeves = new StockProduit<Feve>(FEVES_ACHAT);
+		
+		// Initialisation de l'historique des demandes
+		historiqueDemande = new HistoriqueDemande();
 	}
 
 	public void next() {
