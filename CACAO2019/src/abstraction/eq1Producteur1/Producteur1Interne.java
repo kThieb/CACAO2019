@@ -47,7 +47,10 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 	protected int forasteroPlante = 33 ; 
 	protected int trinitarioPlante = 33 ;
 	public static int unAnEnSteps = 24 ; 
+	public static int deuxAnsEnSteps = 48 ;
 	public static int troisAnsEnSteps = 72 ; 
+	public static int quatreAnsEnSteps = 96 ;
+	public static int cinqAnsEnSteps = 120 ;
 //END ANTI
 
 	protected int compteur_recolte = 0;
@@ -225,11 +228,25 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 					
 					if (stepDebut < unAnEnSteps) {
 						moyenne.set(0, moyenne.get(0)+echeancier.getQuantiteJusquA(unAnEnSteps));
-						if (stepFin < unAnEnSteps) {
-							
-						}
 						stepDebut = unAnEnSteps ; 
+						
 					}
+					if (stepFin > unAnEnSteps && stepDebut < deuxAnsEnSteps ) {
+						moyenne.set(1, moyenne.get(1)+echeancier.getQuantiteJusquA(deuxAnsEnSteps)- echeancier.getQuantiteJusquA(stepDebut));
+						stepDebut = deuxAnsEnSteps ; 
+						
+					}
+					if (stepFin > deuxAnsEnSteps && stepDebut < troisAnsEnSteps ) {
+						moyenne.set(2, moyenne.get(2)+echeancier.getQuantiteJusquA(troisAnsEnSteps) - echeancier.getQuantiteJusquA(stepDebut));
+						stepDebut = troisAnsEnSteps ;
+					}
+					if (stepFin > troisAnsEnSteps && stepDebut < quatreAnsEnSteps ) {
+						moyenne.set(3, moyenne.get(3)+echeancier.getQuantiteJusquA(quatreAnsEnSteps) - echeancier.getQuantiteJusquA(stepDebut));
+						stepDebut = quatreAnsEnSteps ; 
+				}
+					if (stepFin > quatreAnsEnSteps && stepDebut < cinqAnsEnSteps ) {
+						moyenne.set(4, moyenne.get(4)+echeancier.getQuantiteJusquA(cinqAnsEnSteps) - echeancier.getQuantiteJusquA(stepDebut));
+						stepDebut = cinqAnsEnSteps ; 
 				}
 				
 				
@@ -239,6 +256,13 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		}
 		
 	}
+		double total = 0 ; 
+		for (Double qte : moyenne) {
+			total += qte ;
+		}
+		return total / moyenne.size() ;}
+		
+				
 	
 	
 	public void updatePlantation() {
