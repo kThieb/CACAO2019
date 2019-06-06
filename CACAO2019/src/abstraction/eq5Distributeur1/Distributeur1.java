@@ -22,10 +22,8 @@ import abstraction.fourni.Monde;
 public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistributeurChocolat {
 	private Journal journal;
 	private Stock stock;
-	private int numero;
 	private CompteBancaire soldeBancaire;
 	private Double marge;
-	private Indicateur indicateurstock;
 	private Indicateur indicateursolde;
 	private List<ContratCadre<Chocolat>> contratsEnCours;
 
@@ -41,22 +39,15 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 	 * @author Erine DUPONT & Estelle BONNET
 	 */
 	public Distributeur1(double marge, Double soldeInitial) {
-		this.numero =1 ;
 		this.marge = marge;   // La marge doit être en pourcentage !!! 5% > 0.05
 		this.stock = new Stock();
-		stock.ajouter(Chocolat.HG_E_SHP, 150000.0);
-		stock.ajouter(Chocolat.MG_E_SHP, 0.0);
-		stock.ajouter(Chocolat.MG_NE_HP, 0.0);
-		stock.ajouter(Chocolat.MG_NE_SHP, 0.0);
+		stock.ajouter(Chocolat.HG_E_SHP, 150000.0, this);
+		stock.ajouter(Chocolat.MG_E_SHP, 0.0, this);
+		stock.ajouter(Chocolat.MG_NE_HP, 0.0, this);
+		stock.ajouter(Chocolat.MG_NE_SHP, 0.0, this);
 		this.soldeBancaire = new CompteBancaire(this.getNom(), this, soldeInitial);
-		this.indicateursolde = new Indicateur ("EQ5 solde bancaire",this);
-		indicateursolde.setValeur(this, soldeBancaire.getCompteBancaire());
+		this.indicateursolde = new Indicateur ("EQ5 solde bancaire",this, soldeBancaire.getCompteBancaire());
 		Monde.LE_MONDE.ajouterIndicateur(indicateursolde);
-		this.indicateurstock = new Indicateur ("EQ5 stock", this);
-		for (int i=0; i<stock.getProduitsEnVente().size(); i++) {
-			indicateurstock.ajouter(this, stock.get(stock.getProduitsEnVente().get(i)));
-		}
-		Monde.LE_MONDE.ajouterIndicateur(indicateurstock);
 		this.journal = new Journal("Journal "+this.getNom());
 		Monde.LE_MONDE.ajouterJournal(this.journal);
 		this.contratsEnCours = new ArrayList<ContratCadre<Chocolat>>();
@@ -299,7 +290,7 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 			throw new IllegalArgumentException("Appel de la methode receptionner de DistributeurRomu avec une quantite egale a "+quantite);
 		}
 		if (cc.getProduit().equals(produit)) { 
-			this.stock.ajouter((Chocolat) produit, quantite);
+			this.stock.ajouter((Chocolat) produit, quantite, this);
 		}
 		this.journal.ajouter("Réception de "+ quantite + "kg de" + produit);
 	}
@@ -379,8 +370,7 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 			double quantitevendue = Math.min(stock, quantite);
 			soldeBancaire.RecevoirPaiement(this, quantitevendue*getPrix(chocolat));
 			this.indicateursolde.ajouter(this, quantitevendue*getPrix(chocolat));
-			this.stock.enlever(chocolat, quantitevendue);
-			this.indicateurstock.retirer(this, quantitevendue);
+			this.stock.enlever(chocolat, quantitevendue, this);
 			this.journal.ajouter("La quantité de " + chocolat + " vendue est : "+ quantite);
 			return quantitevendue;
 		} 
