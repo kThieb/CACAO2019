@@ -39,29 +39,33 @@ public class VendeurContratCadre extends Producteur1Interne implements IVendeurC
 		} else {
 
 			if(this.getHistoriqueSoldeBancaire().size()<=1) {
-				
+				this.journal1.ajouter("Prix de Vente"+ prod.getPrixAuKilo().get(produit));
 				return prod.getPrixAuKilo().get(produit);}
 			
 			else{
 			if (this.getHistoriqueSoldeBancaire().get(this.getHistoriqueSoldeBancaire().size()-2)>this.getHistoriqueSoldeBancaire().get(this.getHistoriqueSoldeBancaire().size()-1)){
-				for(Feve feve: this.getFeve()) {
-					if(this.getStockEnVente().get(feve)==this.getStockI(feve).getValeur()) {
-						if(this.getStockI(feve).getValeur()*this.getPrixAuKilo().get(feve)-0.1>this.getCOUT_FIXE()/3+this.getStockI(feve).getValeur()*this.getCOUT_VARIABLE_STOCK())
-								this.prixAuKilo.put(feve, this.getPrixAuKilo().get(feve)-0.1);
+					if(this.getStockEnVente().get(produit)==this.getStockI(produit).getValeur()) {
+						if(this.getStockI(produit).getValeur()*this.getPrixAuKilo().get(produit)-0.1>this.getCOUT_FIXE()/3+this.getStockI(produit).getValeur()*this.getCOUT_VARIABLE_STOCK())
+								this.prixAuKilo.put(produit, this.getPrixAuKilo().get(produit)-0.1);
+						this.journal1.ajouter("Prix de Vente"+ prod.getPrixAuKilo().get(produit));
+						return prod.getPrixAuKilo().get(produit);
 				}  
-					else {return prod.getPrixAuKilo().get(produit);}
-			 }
+					else {this.journal1.ajouter("Prix de Vente"+ prod.getPrixAuKilo().get(produit));
+					return prod.getPrixAuKilo().get(produit);}
+			 }else {this.journal1.ajouter("Prix de Vente"+ prod.getPrixAuKilo().get(produit));
+				 return prod.getPrixAuKilo().get(produit);}
 				
 				//END MANON
 
 			// utiliser Producteur1.getPrixAuKilo() pour savoir prix en fct du produit
 			}
-			else {return prod.getPrixAuKilo().get(produit);}
-			}
-			return prod.getPrixAuKilo().get(produit);
+			
+			}		
+					
+
 			}
 		// END Pauline
-	}
+	
 //Begin MANON ET PAULINE
 	public void proposerEcheancierVendeur(ContratCadre<Feve> cc) {
 		Echeancier e= cc.getEcheancier();
@@ -179,6 +183,7 @@ public class VendeurContratCadre extends Producteur1Interne implements IVendeurC
 		    	  double valeur_livre=getStockI(produit).getValeur();
 		    	  retirer(produit,valeur_livre);
 		    	  //cc.livrer(valeur_livre);
+		    	  this.journal1.ajouter("Valeur livré"+ valeur_livre);
 		         return valeur_livre;
 		      }
 		      
@@ -187,6 +192,7 @@ public class VendeurContratCadre extends Producteur1Interne implements IVendeurC
 		    	  //cc.livrer(quantite);
 		    	  //super.stockFeves.retirer(this, quantite);
 		    	  retirer(produit,quantite);
+		    	  this.journal1.ajouter("Valeur livré"+ quantite);
 		         return quantite;
 		      }
 		   

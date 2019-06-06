@@ -34,9 +34,9 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 	protected HashMap<Integer, Double> stockCriollo;
 	protected HashMap<Integer, Double> stockForastero;
 	protected HashMap<Integer, Double> stockTrinitario;
-	protected double recolteCriollo = 33;
-	protected double recolteForastero = 33;
-	protected double recolteTrinitario = 33;
+	protected double recolteCriollo ;
+	protected double recolteForastero ;
+	protected double recolteTrinitario ;
     protected List<ContratCadre<Feve>> contratEnCours;  //
     protected List<Double>historiqueSoldeBancaire;
 
@@ -48,7 +48,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 	protected HashMap<Integer, Integer> plantationForastero;
 	protected HashMap<Integer, Integer> plantationTrinitario; 
 	protected int compteurSteps = 0 ;
-	public static int dureeDeVieCacaoyer = 1040 ; 
+	public static int dureeDeVieCacaoyer = 960 ; 
 	protected int criolloPlante ; 
 	protected int forasteroPlante ; 
 	protected int trinitarioPlante ;
@@ -106,6 +106,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		this.plantationForastero = new HashMap<Integer, Integer>(); 
 		this.plantationTrinitario = new HashMap<Integer, Integer>(); 
 		
+		
 		for (int next = 0; next < dureeDeVieCacaoyer - 1; next++) {
 			if ( next%unAnEnSteps == 0 ) {
 				plantationCriollo.put(next, 2);
@@ -124,6 +125,9 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		Monde.LE_MONDE.ajouterIndicateur(this.stockForasteroI);
 		Monde.LE_MONDE.ajouterIndicateur(this.stockTrinitarioI);
 		Monde.LE_MONDE.ajouterIndicateur(this.soldeBancaire);
+		Monde.LE_MONDE.ajouterIndicateur(this.plantationCriolloI);
+		Monde.LE_MONDE.ajouterIndicateur(this.plantationForasteroI);
+		Monde.LE_MONDE.ajouterIndicateur(this.plantationTrinitarioI);
 		//Monde.LE_MONDE.ajouterActeur(new SuperviseurVentesCacaoAleatoires());
 		// BEGIN Manon
 		this.journal1 = new Journal("JEQ1");
@@ -193,6 +197,8 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		//END ANTI
 		//BEGINMANON
 		this.historiqueSoldeBancaire.add(this.getSoldeBancaire().getValeur());
+		for(Feve feve:this.getFeve()) {
+			this.journal1.ajouter("Prix de Vente"+ this.getPrixAuKilo().get(feve));}
 
 	}
 
@@ -403,6 +409,9 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		HashMap<Integer, Integer> plantationTrinitarioOld = new HashMap<Integer, Integer>(plantationTrinitario);
 		
 		for (int next = 0; next < dureeDeVieCacaoyer - 1; next++) {
+			recolteCriollo = 0;
+			recolteTrinitario = 0;
+			recolteForastero = 0;
 			plantationCriollo.put(next + 1 , plantationCriolloOld.get(next));
 			plantationForastero.put(next + 1 , plantationForasteroOld.get(next));
 			plantationTrinitario.put( next + 1 , plantationTrinitarioOld.get(next));
@@ -414,9 +423,9 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 			
 					
 		}
-		criolloPlante = (int) Math.ceil(moyenneDemandeCriollo());
-		forasteroPlante = (int) Math.ceil(moyenneDemandeForastero());
-		trinitarioPlante = (int) Math.ceil(moyenneDemandeTrinitario());
+		criolloPlante = (int) Math.ceil(moyenneDemandeCriollo()*1/40);
+		forasteroPlante = (int) Math.ceil(moyenneDemandeForastero()*1/40);
+		trinitarioPlante = (int) Math.ceil(moyenneDemandeTrinitario()*1/40);
 		
 		if (compteurSteps%unAnEnSteps == 0  ) {
 			plantationCriollo.put(0, criolloPlante);
@@ -570,24 +579,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 	public void setStockTrinitario(HashMap<Integer, Double> stockTrinitario) {
 		this.stockTrinitario = stockTrinitario;
 	}
-	public double getRecolteCriollo() {
-		return recolteCriollo;
-	}
-	public void setRecolteCriollo(double recolteCriollo) {
-		this.recolteCriollo = recolteCriollo;
-	}
-	public double getRecolteForastero() {
-		return recolteForastero;
-	}
-	public void setRecolteForastero(double recolteForastero) {
-		this.recolteForastero = recolteForastero;
-	}
-	public double getRecolteTrinitario() {
-		return recolteTrinitario;
-	}
-	public void setRecolteTrinitario(double recolteTrinitario) {
-		this.recolteTrinitario = recolteTrinitario;
-	}
+	
 	public List<ContratCadre<Feve>> getContratEnCours() {
 		return contratEnCours;
 	}
