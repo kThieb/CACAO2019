@@ -161,7 +161,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 					this.soldeBancaire.retirer(this, nouveauChocolat*this.margeChocolats.getCoutProd(p));
 					// updater stocks feves
 					this.stockFeves.removeQuantiteEnStock(f, fevesUtilisees);
-					this.journal.ajouter("Transformation de " + fevesUtilisees + " de feves");
+					this.journal.ajouter("Transformation de " + fevesUtilisees + " de feves " + f);
 					this.iStockFeves.setValeur(this, this.stockFeves.getQuantiteEnStock(f));;
 					// updater stocks chocolat
 					this.stockChocolat.addQuantiteEnStock(p, nouveauChocolat);
@@ -237,7 +237,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 					while (!Double.isNaN(prix) && prix*quantite<solde ) {
 						quantite=quantite*1.2;
 						prix = vendeur.getPrix(f,  quantite);
-						this.journal.ajouter(" quantite "+String.format("%.3f",quantite)+" --> "+String.format("%.3f",prix*quantite));
+//						this.journal.ajouter(" quantite "+String.format("%.3f",quantite)+" --> "+String.format("%.3f",prix*quantite));
 					}
 					quantite = quantite/1.5;
 					res = new ContratCadre<Feve>(this, vendeur, f, quantite);
