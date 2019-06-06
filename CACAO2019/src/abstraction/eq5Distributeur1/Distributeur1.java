@@ -149,7 +149,7 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 			if (e==null && C.getEcheancier().getNbEcheances() > 2) {//pas de contre-proposition
 				C.ajouterEcheancier(new Echeancier(Monde.LE_MONDE.getStep(), 5, C.getQuantite()/5));
 		} else {
-			if( e.getQuantiteTotale() == C.getQuantite() && e.getStepDebut()> 5 ) {
+			if( e.getQuantiteTotale() == C.getQuantite() && e.getStepDebut()> 2) {
 				C.ajouterEcheancier(new Echeancier(C.getEcheancier())); 
 			}	
 			this.journal.ajouter("Contrat n° " + C.getNumero() + " avec " + C.getEcheancier().getNbEcheances()+ " échéances");
