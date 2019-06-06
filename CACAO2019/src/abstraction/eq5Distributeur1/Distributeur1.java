@@ -28,7 +28,6 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 	private Indicateur indicateurstock;
 	private Indicateur indicateursolde;
 	private List<ContratCadre<Chocolat>> contratsEnCours;
-	private Chocolat c ;
 
 
 	/**
@@ -61,7 +60,8 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 		this.journal = new Journal("Journal "+this.getNom());
 		Monde.LE_MONDE.ajouterJournal(this.journal);
 		this.contratsEnCours = new ArrayList<ContratCadre<Chocolat>>();
-		Monde.LE_MONDE.ajouterActeur(new ClientEuropeen(c, 100));
+		Monde.LE_MONDE.ajouterActeur(new ClientEuropeen(Chocolat.HG_E_SHP, 100));
+		Monde.LE_MONDE.ajouterActeur(new ClientEuropeen(Chocolat.MG_E_SHP, 100));
 	}
 
 	public String getNom() {
