@@ -200,7 +200,7 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 			throw new IllegalArgumentException("Appel de la methode receptionner de DistributeurRomu avec une quantite egale a "+quantite);
 		}
 		if (quantite >0 && cc.getProduit().equals(produit)) {
-			double quantiteajoutee= this.getStockEnVente().get()+quantite ;	
+			double quantiteajoutee= this.getStockEnVente().get((Chocolat) produit)+quantite ;	
 		}
 		
 		this.stock.ajouter((Chocolat) produit, quantite);
