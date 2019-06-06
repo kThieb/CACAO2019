@@ -195,7 +195,7 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 		this.contratsEnCours.add(cc);
 	}
 
-	/**@author Erine DUPONT
+	/**@author Erine DUPONT / Imane ZRIAA 
 	 */
 	public void receptionner(Object produit, double quantite, ContratCadre cc) {
 		if (produit==null || !produit.equals(cc.getProduit())) {
@@ -204,9 +204,8 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 		if (quantite<=0.0) {
 			throw new IllegalArgumentException("Appel de la methode receptionner de DistributeurRomu avec une quantite egale a "+quantite);
 		}
-		if (quantite >0 && cc.getProduit().equals(produit)) {
-			double quantiteajoutee= this.getStockEnVente().get((Chocolat) produit)+quantite ;
-			this.stock.ajouter((Chocolat) produit, quantiteajoutee);
+		if (quantite >0 && cc.getProduit().equals(produit)) { // Condition ajoutée 
+			this.stock.ajouter((Chocolat) produit, quantite);
 		}
 		
 		this.journal.ajouter("Réception de "+ quantite + "kg de" + produit);
