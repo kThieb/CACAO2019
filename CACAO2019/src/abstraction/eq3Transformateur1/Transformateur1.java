@@ -8,6 +8,7 @@ import abstraction.eq3Transformateur1.Stock;
 import abstraction.eq3Transformateur1.Marge;
 import abstraction.eq7Romu.produits.Chocolat;
 import abstraction.eq7Romu.produits.Feve;
+import abstraction.eq7Romu.produits.Gamme;
 import abstraction.eq7Romu.ventesContratCadre.ContratCadre;
 import abstraction.eq7Romu.ventesContratCadre.Echeancier;
 import abstraction.eq7Romu.ventesContratCadre.IAcheteurContratCadre;
@@ -186,7 +187,12 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	public ContratCadre<Feve> getNouveauContrat() {
 		// begin eve
 		ContratCadre<Feve> res=null;
-		ArrayList<Feve> choixFeve = this.stockFeves.getProduitsEnStock();
+		ArrayList<Feve> choixFeve = new ArrayList<Feve>(Arrays.asList(Feve.values()));
+		for (Feve f: choixFeve) {
+			if (f.getGamme() != Gamme.MOYENNE) {
+				choixFeve.remove(f);
+			}
+		}
 		Feve f = choixFeve.get(((int) Math.random())*choixFeve.size());
 		// on determine combien il resterait sur le compte si on soldait tous les contrats en cours.
 		double solde = this.soldeBancaire.getValeur();
