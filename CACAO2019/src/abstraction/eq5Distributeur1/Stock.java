@@ -29,7 +29,10 @@ public class Stock {
 	 * @param quantite mise en vente du produit
 	 * @param acteur
 	 */
-	/** @authors Erine DUPONT & Estelle BONNET */
+	/** @authors Erine DUPONT & Estelle BONNET 
+	 * V2 @author Estelle Bonnet
+	 */
+	
 	public void ajouter(Chocolat produit, Double quantite, IActeur acteur) {
 		if (quantite<0.0) {
 			throw new IllegalArgumentException("Appel de ajouter(produit, quantite) de Stock avec quantite<0.0 (=="+quantite+")");
@@ -45,7 +48,9 @@ public class Stock {
 		}
 	}
 	
-	/** @authors Erine DUPONT & Estelle BONNET */
+	/** @authors Erine DUPONT & Estelle BONNET 
+	 * V2 @author Estelle Bonnet
+	 */
 	public void enlever(Chocolat produit, Double quantite, IActeur acteur) {
 		if (quantite<0.0) {
 			throw new IllegalArgumentException("Appel de enlever(produit, quantite) de Stock "
