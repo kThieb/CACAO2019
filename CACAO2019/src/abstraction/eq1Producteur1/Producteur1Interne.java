@@ -62,7 +62,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 	protected HashMap<Feve, Double> prixAuKilo;
 	// END Pauline
 	// BEGIN ANTI
-	protected HashMap<Integer, ContratCadre<Feve>> historiqueContrats;
+	protected HashMap<Integer, ContratCadre<Feve>> historiqueContrats=new HashMap<Integer, ContratCadre<Feve>>();
 	// END ANTI
 
 	public Producteur1Interne() {
@@ -112,7 +112,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		Monde.LE_MONDE.ajouterIndicateur(this.soldeBancaire);
 		//Monde.LE_MONDE.ajouterActeur(new SuperviseurVentesCacaoAleatoires());
 		// BEGIN Manon
-		this.journal1 = new Journal("JEQ1");
+		this.journal1 = new Journal("Journal EQ1");
 		Monde.LE_MONDE.ajouterJournal(this.journal1);
 		System.out.println(" ajout du journal...");
 		// END Manon
