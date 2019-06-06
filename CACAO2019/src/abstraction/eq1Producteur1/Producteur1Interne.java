@@ -49,9 +49,9 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 	protected HashMap<Integer, Integer> plantationTrinitario; 
 	protected int compteurSteps = 0 ;
 	public static int dureeDeVieCacaoyer = 1040 ; 
-	protected int criolloPlante = 33 ; 
-	protected int forasteroPlante = 33 ; 
-	protected int trinitarioPlante = 33 ;
+	protected int criolloPlante ; 
+	protected int forasteroPlante ; 
+	protected int trinitarioPlante ;
 	public static int unAnEnSteps = 24 ; 
 	public static int deuxAnsEnSteps = 48 ;
 	public static int troisAnsEnSteps = 72 ; 
@@ -218,7 +218,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 	}
 	//BEGIN ANTI 
 
-	public Double moyenneDemande(){
+	public Double moyenneDemandeCriollo(){
 		List<Double> moyenne = new ArrayList<Double>() ; 
 		for (int i=0; i<5; i++) {
 			moyenne.add(0.0);
@@ -227,6 +227,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		Iterator<Entry<Integer, ContratCadre<Feve>>> it = setHisto.iterator();
 		while(it.hasNext()) {
 			Entry<Integer, ContratCadre<Feve>> e = it.next();
+			if (e.getValue().getProduit().getVariete() == Variete.CRIOLLO) {
 			List<Echeancier> echeanciers = e.getValue().getEcheanciers();
 			
 			for(int i=0; i<echeanciers.size(); i++) {
@@ -267,13 +268,129 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		}
 		
 	}
+		}
+		double total = 0 ; 
+		for (Double qte : moyenne) {
+			total += qte ;
+		}
+		return total / moyenne.size() ;}
+	
+	public Double moyenneDemandeForastero(){
+		List<Double> moyenne = new ArrayList<Double>() ; 
+		for (int i=0; i<5; i++) {
+			moyenne.add(0.0);
+		}
+		Set<Entry<Integer, ContratCadre<Feve>>> setHisto= historiqueContrats.entrySet();
+		Iterator<Entry<Integer, ContratCadre<Feve>>> it = setHisto.iterator();
+		while(it.hasNext()) {
+			Entry<Integer, ContratCadre<Feve>> e = it.next();
+			if (e.getValue().getProduit().getVariete() == Variete.FORASTERO) {
+			List<Echeancier> echeanciers = e.getValue().getEcheanciers();
+			
+			for(int i=0; i<echeanciers.size(); i++) {
+				Echeancier echeancier = echeanciers.get(i);
+				int stepDebut = echeancier.getStepDebut();
+				if (stepDebut <cinqAnsEnSteps) {
+					int stepFin = echeancier.getStepFin();
+					if (stepFin - stepDebut > cinqAnsEnSteps) {
+						stepFin = cinqAnsEnSteps; }
+					
+					if (stepDebut < unAnEnSteps) {
+						moyenne.set(0, moyenne.get(0)+echeancier.getQuantiteJusquA(unAnEnSteps));
+						stepDebut = unAnEnSteps ; 
+						
+					}
+					if (stepFin > unAnEnSteps && stepDebut < deuxAnsEnSteps ) {
+						moyenne.set(1, moyenne.get(1)+echeancier.getQuantiteJusquA(deuxAnsEnSteps)- echeancier.getQuantiteJusquA(stepDebut));
+						stepDebut = deuxAnsEnSteps ; 
+						
+					}
+					if (stepFin > deuxAnsEnSteps && stepDebut < troisAnsEnSteps ) {
+						moyenne.set(2, moyenne.get(2)+echeancier.getQuantiteJusquA(troisAnsEnSteps) - echeancier.getQuantiteJusquA(stepDebut));
+						stepDebut = troisAnsEnSteps ;
+					}
+					if (stepFin > troisAnsEnSteps && stepDebut < quatreAnsEnSteps ) {
+						moyenne.set(3, moyenne.get(3)+echeancier.getQuantiteJusquA(quatreAnsEnSteps) - echeancier.getQuantiteJusquA(stepDebut));
+						stepDebut = quatreAnsEnSteps ; 
+				}
+					if (stepFin > quatreAnsEnSteps && stepDebut < cinqAnsEnSteps ) {
+						moyenne.set(4, moyenne.get(4)+echeancier.getQuantiteJusquA(cinqAnsEnSteps) - echeancier.getQuantiteJusquA(stepDebut));
+						stepDebut = cinqAnsEnSteps ; 
+				}
+				
+				
+			}
+			
+			
+		}
+		
+	}
+		}
+		double total = 0 ; 
+		for (Double qte : moyenne) {
+			total += qte ;
+		}
+		return total / moyenne.size() ;}
+	
+	public Double moyenneDemandeTrinitario(){
+		List<Double> moyenne = new ArrayList<Double>() ; 
+		for (int i=0; i<5; i++) {
+			moyenne.add(0.0);
+		}
+		Set<Entry<Integer, ContratCadre<Feve>>> setHisto= historiqueContrats.entrySet();
+		Iterator<Entry<Integer, ContratCadre<Feve>>> it = setHisto.iterator();
+		while(it.hasNext()) {
+			Entry<Integer, ContratCadre<Feve>> e = it.next();
+			if (e.getValue().getProduit().getVariete() == Variete.TRINITARIO) {
+			List<Echeancier> echeanciers = e.getValue().getEcheanciers();
+			
+			for(int i=0; i<echeanciers.size(); i++) {
+				Echeancier echeancier = echeanciers.get(i);
+				int stepDebut = echeancier.getStepDebut();
+				if (stepDebut <cinqAnsEnSteps) {
+					int stepFin = echeancier.getStepFin();
+					if (stepFin - stepDebut > cinqAnsEnSteps) {
+						stepFin = cinqAnsEnSteps; }
+					
+					if (stepDebut < unAnEnSteps) {
+						moyenne.set(0, moyenne.get(0)+echeancier.getQuantiteJusquA(unAnEnSteps));
+						stepDebut = unAnEnSteps ; 
+						
+					}
+					if (stepFin > unAnEnSteps && stepDebut < deuxAnsEnSteps ) {
+						moyenne.set(1, moyenne.get(1)+echeancier.getQuantiteJusquA(deuxAnsEnSteps)- echeancier.getQuantiteJusquA(stepDebut));
+						stepDebut = deuxAnsEnSteps ; 
+						
+					}
+					if (stepFin > deuxAnsEnSteps && stepDebut < troisAnsEnSteps ) {
+						moyenne.set(2, moyenne.get(2)+echeancier.getQuantiteJusquA(troisAnsEnSteps) - echeancier.getQuantiteJusquA(stepDebut));
+						stepDebut = troisAnsEnSteps ;
+					}
+					if (stepFin > troisAnsEnSteps && stepDebut < quatreAnsEnSteps ) {
+						moyenne.set(3, moyenne.get(3)+echeancier.getQuantiteJusquA(quatreAnsEnSteps) - echeancier.getQuantiteJusquA(stepDebut));
+						stepDebut = quatreAnsEnSteps ; 
+				}
+					if (stepFin > quatreAnsEnSteps && stepDebut < cinqAnsEnSteps ) {
+						moyenne.set(4, moyenne.get(4)+echeancier.getQuantiteJusquA(cinqAnsEnSteps) - echeancier.getQuantiteJusquA(stepDebut));
+						stepDebut = cinqAnsEnSteps ; 
+				}
+				
+				
+			}
+			
+			
+		}
+		
+	}
+		}
 		double total = 0 ; 
 		for (Double qte : moyenne) {
 			total += qte ;
 		}
 		return total / moyenne.size() ;}
 		
-				
+	//END ANTI
+	//BEGIN ANTI
 	
 
 	
@@ -296,6 +413,10 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 			
 					
 		}
+		criolloPlante = (int) Math.ceil(moyenneDemandeCriollo());
+		forasteroPlante = (int) Math.ceil(moyenneDemandeForastero());
+		trinitarioPlante = (int) Math.ceil(moyenneDemandeTrinitario());
+		
 		if (compteurSteps%unAnEnSteps == 0  ) {
 			plantationCriollo.put(0, criolloPlante);
 			plantationForastero.put(0, forasteroPlante);
