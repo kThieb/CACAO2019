@@ -27,7 +27,7 @@ public class ClientEuropeen implements IActeur {
 	
 	/** @author Erwann DEFOY */
 	public String getNom() {
-		return "CL"+this.numero;
+		return "Client Europeen"+this.numero;
 	}
 	
 	/** @author Erwann DEFOY */
@@ -49,7 +49,7 @@ public class ClientEuropeen implements IActeur {
 		this.numero = NB_CLIENT;
 		this.uniqueProduit = uniqueProduit;
 		this.quantiteParStep = quantiteParStep;
-		this.journal = new Journal("Journal Européen");
+		this.journal = new Journal("Journal "+this.getNom());
 		Monde.LE_MONDE.ajouterJournal(this.journal);
 	}
 
@@ -73,7 +73,7 @@ public class ClientEuropeen implements IActeur {
 						quantiteEnVente = s.get(this.uniqueProduit);
 						this.journal.ajouter("Step "+Monde.LE_MONDE.getStep()+" : "+((IActeur)dist).getNom()+" vend la quantite de "+quantiteEnVente+" a "+dist.getPrix(this.uniqueProduit));
 						if (quantiteEnVente>0.0) { // dist vend le chocolat recherche
-							if (distributeurDeQualite==null || getNoteQualite(dist, this.uniqueProduit)>meilleureQualite) { // recherche si le produit est de meilleur qualité
+							if ((distributeurDeQualite==null || getNoteQualite(dist, this.uniqueProduit)>meilleureQualite) && dist.getPrix(this.uniqueProduit) < 10 ) { // recherche si le produit est de meilleur qualité
 								distributeurDeQualite = dist;
 								quantiteEnVenteMeilleur = quantiteEnVente;
 								meilleureQualite = getNoteQualite(dist, this.uniqueProduit);
@@ -117,7 +117,6 @@ public class ClientEuropeen implements IActeur {
 	/** @author Erwann DEFOY */
 	public double getNoteQualite (IDistributeurChocolat dist, Chocolat c) {
 		return NoteQualite (c);
-		
 	}
 
 }
