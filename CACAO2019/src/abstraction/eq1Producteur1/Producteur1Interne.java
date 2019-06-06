@@ -16,8 +16,8 @@ import abstraction.fourni.Monde;
 
 public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire */ {
 
-	public static int COUT_FIXE = 1000;
-	public static int COUT_VARIABLE_STOCK = 5;
+	public static int COUT_FIXE = 500;
+	public static int COUT_VARIABLE_STOCK = 1;
 	public static int DUREE_DE_VIE_FEVE = 1 * 52 / 2; // durée de vie en nexts
 	protected Indicateur stockFeves;
 	protected Indicateur stockCriolloI;
@@ -30,6 +30,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 	protected double recolteForastero = 33;
 	protected double recolteTrinitario = 33;
     protected List<ContratCadre<Feve>> contratEnCours;  //
+    protected List<Double> historiqueSoldeBancaire;
 
 	//BEGIN ANTI 
 	protected Indicateur plantationCriolloI;
@@ -75,6 +76,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		this.stockForastero=new HashMap<Integer, Double>();
 		this.stockTrinitario=new HashMap<Integer, Double>();
 		this.contratEnCours= new ArrayList<ContratCadre<Feve>> ();
+		this.historiqueSoldeBancaire=new ArrayList<Double>();
 
 		for (int next = 0; next < DUREE_DE_VIE_FEVE - 1; next++) {
 			stockCriollo.put(next, (double) 0);
@@ -176,6 +178,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		// END Nas
 		//BEGIN ANTI 
 		updatePlantation();
+		this.historiqueSoldeBancaire.add(this.getSoldeBancaire().getValeur());
 		//END ANTI
 
 	}
@@ -320,5 +323,201 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		
 	}
 	//END MANON
+	public int getCOUT_FIXE() {
+		return COUT_FIXE;
+	}
+	public void setCOUT_FIXE(int cOUT_FIXE) {
+		COUT_FIXE = cOUT_FIXE;
+	}
+	public  int getCOUT_VARIABLE_STOCK() {
+		return COUT_VARIABLE_STOCK;
+	}
+	public void setCOUT_VARIABLE_STOCK(int cOUT_VARIABLE_STOCK) {
+		COUT_VARIABLE_STOCK = cOUT_VARIABLE_STOCK;
+	}
+	public static int getDUREE_DE_VIE_FEVE() {
+		return DUREE_DE_VIE_FEVE;
+	}
+	public static void setDUREE_DE_VIE_FEVE(int dUREE_DE_VIE_FEVE) {
+		DUREE_DE_VIE_FEVE = dUREE_DE_VIE_FEVE;
+	}
+	public Indicateur getStockFeves() {
+		return stockFeves;
+	}
+	public void setStockFeves(Indicateur stockFeves) {
+		this.stockFeves = stockFeves;
+	}
+	public Indicateur getStockCriolloI() {
+		return stockCriolloI;
+	}
+	public void setStockCriolloI(Indicateur stockCriolloI) {
+		this.stockCriolloI = stockCriolloI;
+	}
+	public Indicateur getStockForasteroI() {
+		return stockForasteroI;
+	}
+	public void setStockForasteroI(Indicateur stockForasteroI) {
+		this.stockForasteroI = stockForasteroI;
+	}
+	public Indicateur getStockTrinitarioI() {
+		return stockTrinitarioI;
+	}
+	public void setStockTrinitarioI(Indicateur stockTrinitarioI) {
+		this.stockTrinitarioI = stockTrinitarioI;
+	}
+	public HashMap<Integer, Double> getStockCriollo() {
+		return stockCriollo;
+	}
+	public void setStockCriollo(HashMap<Integer, Double> stockCriollo) {
+		this.stockCriollo = stockCriollo;
+	}
+	public HashMap<Integer, Double> getStockForastero() {
+		return stockForastero;
+	}
+	public void setStockForastero(HashMap<Integer, Double> stockForastero) {
+		this.stockForastero = stockForastero;
+	}
+	public HashMap<Integer, Double> getStockTrinitario() {
+		return stockTrinitario;
+	}
+	public void setStockTrinitario(HashMap<Integer, Double> stockTrinitario) {
+		this.stockTrinitario = stockTrinitario;
+	}
+	public double getRecolteCriollo() {
+		return recolteCriollo;
+	}
+	public void setRecolteCriollo(double recolteCriollo) {
+		this.recolteCriollo = recolteCriollo;
+	}
+	public double getRecolteForastero() {
+		return recolteForastero;
+	}
+	public void setRecolteForastero(double recolteForastero) {
+		this.recolteForastero = recolteForastero;
+	}
+	public double getRecolteTrinitario() {
+		return recolteTrinitario;
+	}
+	public void setRecolteTrinitario(double recolteTrinitario) {
+		this.recolteTrinitario = recolteTrinitario;
+	}
+	public List<ContratCadre<Feve>> getContratEnCours() {
+		return contratEnCours;
+	}
+	public void setContratEnCours(List<ContratCadre<Feve>> contratEnCours) {
+		this.contratEnCours = contratEnCours;
+	}
+	public List<Double> getHistoriqueSoldeBancaire() {
+		return historiqueSoldeBancaire;
+	}
+	public void setHistoriqueSoldeBancaire(List<Double> historiqueSoldeBancaire) {
+		this.historiqueSoldeBancaire = historiqueSoldeBancaire;
+	}
+	public Indicateur getPlantationCriolloI() {
+		return plantationCriolloI;
+	}
+	public void setPlantationCriolloI(Indicateur plantationCriolloI) {
+		this.plantationCriolloI = plantationCriolloI;
+	}
+	public Indicateur getPlantationForasteroI() {
+		return plantationForasteroI;
+	}
+	public void setPlantationForasteroI(Indicateur plantationForasteroI) {
+		this.plantationForasteroI = plantationForasteroI;
+	}
+	public Indicateur getPlantationTrinitarioI() {
+		return plantationTrinitarioI;
+	}
+	public void setPlantationTrinitarioI(Indicateur plantationTrinitarioI) {
+		this.plantationTrinitarioI = plantationTrinitarioI;
+	}
+	public HashMap<Integer, Integer> getPlantationCriollo() {
+		return plantationCriollo;
+	}
+	public void setPlantationCriollo(HashMap<Integer, Integer> plantationCriollo) {
+		this.plantationCriollo = plantationCriollo;
+	}
+	public HashMap<Integer, Integer> getPlantationForastero() {
+		return plantationForastero;
+	}
+	public void setPlantationForastero(HashMap<Integer, Integer> plantationForastero) {
+		this.plantationForastero = plantationForastero;
+	}
+	public HashMap<Integer, Integer> getPlantationTrinitario() {
+		return plantationTrinitario;
+	}
+	public void setPlantationTrinitario(HashMap<Integer, Integer> plantationTrinitario) {
+		this.plantationTrinitario = plantationTrinitario;
+	}
+	public int getCompteurSteps() {
+		return compteurSteps;
+	}
+	public void setCompteurSteps(int compteurSteps) {
+		this.compteurSteps = compteurSteps;
+	}
+	public static int getDureeDeVieCacaoyer() {
+		return dureeDeVieCacaoyer;
+	}
+	public static void setDureeDeVieCacaoyer(int dureeDeVieCacaoyer) {
+		Producteur1Interne.dureeDeVieCacaoyer = dureeDeVieCacaoyer;
+	}
+	public int getCriolloPlante() {
+		return criolloPlante;
+	}
+	public void setCriolloPlante(int criolloPlante) {
+		this.criolloPlante = criolloPlante;
+	}
+	public int getForasteroPlante() {
+		return forasteroPlante;
+	}
+	public void setForasteroPlante(int forasteroPlante) {
+		this.forasteroPlante = forasteroPlante;
+	}
+	public int getTrinitarioPlante() {
+		return trinitarioPlante;
+	}
+	public void setTrinitarioPlante(int trinitarioPlante) {
+		this.trinitarioPlante = trinitarioPlante;
+	}
+	public static int getUnAnEnSteps() {
+		return unAnEnSteps;
+	}
+	public static void setUnAnEnSteps(int unAnEnSteps) {
+		Producteur1Interne.unAnEnSteps = unAnEnSteps;
+	}
+	public static int getTroisAnsEnSteps() {
+		return troisAnsEnSteps;
+	}
+	public static void setTroisAnsEnSteps(int troisAnsEnSteps) {
+		Producteur1Interne.troisAnsEnSteps = troisAnsEnSteps;
+	}
+	public int getCompteur_recolte() {
+		return compteur_recolte;
+	}
+	public void setCompteur_recolte(int compteur_recolte) {
+		this.compteur_recolte = compteur_recolte;
+	}
+	public int getAlea() {
+		return alea;
+	}
+	public void setAlea(int alea) {
+		this.alea = alea;
+	}
+	public Journal getJournal1() {
+		return journal1;
+	}
+	public void setJournal1(Journal journal1) {
+		this.journal1 = journal1;
+	}
+	public void setSoldeBancaire(Indicateur soldeBancaire) {
+		this.soldeBancaire = soldeBancaire;
+	}
+	public void setPrixAuKilo(HashMap<Feve, Double> prixAuKilo) {
+		this.prixAuKilo = prixAuKilo;
+	}
+	public void setHistoriqueContrats(HashMap<Integer, ContratCadre<Feve>> historiqueContrats) {
+		this.historiqueContrats = historiqueContrats;
+	}
+	
 
 }
