@@ -91,6 +91,9 @@ public class Transformateur2VendeurCC implements IVendeurContratCadre<Chocolat> 
 	@Override
 	public void notifierVendeur(ContratCadre<Chocolat> cc) {
 		t2.contratsChocolatEnCours.add(cc);
+		for (int i = cc.getEcheancier().getStepDebut(); i<=cc.getEcheancier().getStepFin();i++) {
+			TasProduit<Chocolat> tas = new TasProduit<>(cc.getEcheancier().getQuantite(i), cc.getPrixAuKilo());
+		}
 	}
 
 	@Override

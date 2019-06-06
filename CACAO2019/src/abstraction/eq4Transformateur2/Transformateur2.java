@@ -44,7 +44,7 @@ public class Transformateur2 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	protected StockEnVente<Chocolat> stockEnVente;
 	
 	// Historique des demandes (utilisée pour définir notre stratégie d'achat de fèves)
-	protected HistoriqueDemande historiqueDemande;
+	public HistoriqueDemande historiqueDemande;
 	
 	// Constantes
 	public static final int STEPS_PAR_ANNEE = 24;
