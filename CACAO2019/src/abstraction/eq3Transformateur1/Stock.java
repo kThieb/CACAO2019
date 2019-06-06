@@ -60,7 +60,7 @@ public class Stock<T> {
 	
 	public void removeQuantiteEnStock(T produit, double quantite)
 			throws IllegalArgumentException {
-		if (quantite<=0.) {
+		if (quantite>=0.) {
 			double newQuantiteEnStock = getQuantiteEnStock(produit) - quantite;
 			if (newQuantiteEnStock<0.) {
 				throw new IllegalArgumentException("Quantite retiree trop grande !");
