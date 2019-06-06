@@ -25,7 +25,7 @@ public class VendeurContratCadre extends Producteur1Interne implements IVendeurC
 		
 		stockEnVente.ajouter(feve, Math.max(0.0, stocktotal));
         }
-        journal1.ajouter("stock en vente " +stockEnVente); // ROMU
+        //journal1.ajouter("stock en vente " +stockEnVente); // ROMU
 		return stockEnVente;// ROMU. Prealablement stockEnVente; mais jamais initialisee...
 	}
 //END MANON
