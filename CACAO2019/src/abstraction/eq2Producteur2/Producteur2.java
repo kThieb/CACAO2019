@@ -150,8 +150,8 @@ public void recolte(Feve f) {
 		} else {
 			contratsEnCours.add(cc);
 			Echeancier e = cc.getEcheancier();
-			if (e.getQuantiteTotale() > this.getStockEnVente().get(cc.getProduit())) { // On s assure que la quantité
-																						// demandée est en stock
+			if (e.getQuantiteTotale() > this.getStockEnVente().get(cc.getProduit())) { 
+				// On s assure que la quantité demandée est en stock
 				throw new IllegalArgumentException("La quantité demandée n est pas disponible");
 			} else {
 				cc.ajouterEcheancier(new Echeancier(e)); // on accepte la proposition de l'acheteur car on a la quantite
