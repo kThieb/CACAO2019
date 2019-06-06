@@ -3,9 +3,12 @@ package abstraction.eq3Transformateur1;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/** 
+ * 
+ * @author eve
+ *
+ */
 public class Stock<T> {
-	
-	// ------------------------------ begin eve 
 
 	// T est le chocolat ou la feve ; lui est associe une quantite en stock, en kg
 	private HashMap<T, Double> stock;
@@ -70,7 +73,5 @@ public class Stock<T> {
 			throw new IllegalArgumentException("Appel de removeQuantiteEnStock avec quantite positive. Utiliser plutot addQuantiteEnStock");
 		}
 	}
-	
-	// ------------------------------ end eve
 
 }

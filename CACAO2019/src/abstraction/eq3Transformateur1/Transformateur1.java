@@ -23,7 +23,6 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
  	private Indicateur iStockFeves;
  	private Indicateur iStockChocolat;
     private Indicateur soldeBancaire;
-	private int nbNextAvantEchange;
 	private Journal journal;
 
 	//begin Raph
@@ -40,14 +39,11 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	private List<ContratCadre<Feve>> contratsFeveEnCours;
 	//end sacha
 	//begin Raphael
-	private double facteurTransformation;
 	private Marge margeChocolats;
 	private CoutEnFeves coutEnFeves;
-	private Indicateur iMargeBrute;
-	private Indicateur iCoutsProd;
 	//end Raphael
 	
-	// begin eve : A MODIFIER
+	// begin eve
 	private Stock<Chocolat> stockChocolat;
 	private Stock<Feve> stockFeves;
 	// end eve
@@ -105,9 +101,6 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		this.margeChocolats.setMargeBrute(Chocolat.MG_E_SHP, 10);
 		this.margeChocolats.setCoutProd(Chocolat.MG_E_SHP, 4.5);
 
-		this.iMargeBrute = new Indicateur("EQ3 marge", this, 0);
-		this.iCoutsProd = new Indicateur("EQ3 couts de production", this, 0);
-
 		this.PRIX_VENTE_PAR_DEFAUT.put(Chocolat.MG_NE_HP,40.);
 		this.PRIX_VENTE_PAR_DEFAUT.put(Chocolat.MG_NE_SHP,40.);
 		this.PRIX_VENTE_PAR_DEFAUT.put(Chocolat.MG_E_SHP,40.);
@@ -130,7 +123,6 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		this.contratsFeveEnCours = new ArrayList<ContratCadre<Feve>>();
 		//end sacha
 		
-		this.nbNextAvantEchange = 0;
 
 	}
 	
@@ -160,11 +152,11 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 			for (Feve f: aDisposition) {
 				// transformation
 				if (this.coutEnFeves.getCoutEnFeves(p, f) > 0.0) {
-					double fevesUtilisees = (this.stockFeves.getQuantiteEnStock(f)*0.9)*this.coutEnFeves.getCoutEnFeves(p, f); // on garde 10% du stocks de feves au cas ou
-					double nouveauChocolat = fevesUtilisees*2; // 50% cacao, 50% sucre
+					double fevesUtilisees = (this.stockFeves.getQuantiteEnStock(f)*0.9); // on garde 10% du stocks de feves au cas ou
+					double nouveauChocolat = fevesUtilisees/this.coutEnFeves.getCoutEnFeves(p, f); // on determine la quantité de choco en fonctions des feves utilisées et du cout en Feve
 				
 					
-					// update solde bancaire
+					// update solde bancaireE
 					this.soldeBancaire.retirer(this, nouveauChocolat*this.margeChocolats.getCoutProd(p));
 					// updater stocks feves
 					this.stockFeves.removeQuantiteEnStock(f, fevesUtilisees);
@@ -177,7 +169,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 			}
 		}
 		
-		// -------------------------- end eve
+		// -------------------------- end eve 
 	}
 	
 	// -------------------------------------------------------------------------------------------
@@ -228,7 +220,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 				IVendeurContratCadre<Feve> vendeur = vendeurs.get( (int)( Math.random()*vendeurs.size())); // ici tire au hasard plutot que de tenir compte des stocks en vente et des prix
 				// On determine la quantite qu'on peut esperer avec le reste de notre solde bancaire
 				this.journal.ajouter(" Determination de la quantite achetable avec une somme de "+String.format("%.3f",solde)); 
-				double quantite = 10000.0; // On ne cherche pas a faire de contrat pour moins de 500 tonnes
+				double quantite = 1000.0; // On ne cherche pas a faire de contrat pour moins de 1 tonne
 				double prix = vendeur.getPrix(f, quantite);
 				this.journal.ajouter("prix total = "+prix*quantite+" solde = "+solde);
 				if (prix*quantite<solde) {
@@ -243,7 +235,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 					this.journal.ajouter("vendeur de "+f+" trouve: quantite = "+quantite);
 				}
 				else {
-					this.journal.ajouter("solde = "+solde+" insuffisant pour un contrat cadre de plus de 500 tonnes");
+					this.journal.ajouter("solde = "+solde+" insuffisant pour un contrat cadre de plus de 1 tonne");
 				}
 			} else {
 				this.journal.ajouter("   Aucun vendeur trouve --> pas de nouveau contrat a ce step"); 
