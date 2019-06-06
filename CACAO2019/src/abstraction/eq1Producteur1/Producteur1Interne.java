@@ -61,7 +61,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 	protected HashMap<Feve, Double> prixAuKilo;
 	// END Pauline
 	// BEGIN ANTI
-	protected HashMap<Integer, ContratCadre<Feve>> historiqueContrats;
+	protected HashMap<Integer, ContratCadre<Feve>> historiqueContrats=new HashMap<Integer, ContratCadre<Feve>>();
 	// END ANTI
 
 	public Producteur1Interne() {
