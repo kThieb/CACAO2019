@@ -106,6 +106,7 @@ public class VendeurContratCadre extends Producteur1Interne implements IVendeurC
 	public void notifierVendeur(ContratCadre<Feve> cc) {
 
 		super.getHistoriqueContrats().put(cc.getNumero(), cc);
+		this.journal1.ajouter("Vente"+cc.getNumero());
 //END ANTI
 
 
