@@ -377,6 +377,6 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 			this.stock.enlever(chocolat, quantitevendue, this);
 			this.journal.ajouter("La quantité de " + chocolat + " vendue est : "+ quantite);
 			return quantitevendue;
-		} 
-	}
+		}
+	}	
 }
