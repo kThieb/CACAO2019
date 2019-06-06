@@ -197,6 +197,8 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		//END ANTI
 		//BEGINMANON
 		this.historiqueSoldeBancaire.add(this.getSoldeBancaire().getValeur());
+		for(Feve feve:this.getFeve()) {
+			this.journal1.ajouter("Prix de Vente"+ this.getPrixAuKilo().get(feve));}
 
 	}
 
