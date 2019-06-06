@@ -108,7 +108,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		Monde.LE_MONDE.ajouterIndicateur(this.soldeBancaire);
 		//Monde.LE_MONDE.ajouterActeur(new SuperviseurVentesCacaoAleatoires());
 		// BEGIN Manon
-		this.journal1 = new Journal("JEQ1");
+		this.journal1 = new Journal("Journal EQ1");
 		Monde.LE_MONDE.ajouterJournal(this.journal1);
 		System.out.println(" ajout du journal...");
 		// END Manon
