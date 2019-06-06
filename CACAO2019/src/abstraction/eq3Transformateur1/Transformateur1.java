@@ -182,9 +182,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 						this.iStockFeves.retirer(this, fevesParProduit);
 					}
 				}
-				
 			}
-			
 		} 
 		
 		// -------------------------- end eve 
