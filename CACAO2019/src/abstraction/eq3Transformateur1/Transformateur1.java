@@ -23,7 +23,6 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
  	private Indicateur iStockFeves;
  	private Indicateur iStockChocolat;
     private Indicateur soldeBancaire;
-	private int nbNextAvantEchange;
 	private Journal journal;
 
 	//begin Raph
@@ -40,11 +39,8 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	private List<ContratCadre<Feve>> contratsFeveEnCours;
 	//end sacha
 	//begin Raphael
-	private double facteurTransformation;
 	private Marge margeChocolats;
 	private CoutEnFeves coutEnFeves;
-	private Indicateur iMargeBrute;
-	private Indicateur iCoutsProd;
 	//end Raphael
 	
 	// begin eve : A MODIFIER
@@ -105,9 +101,6 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		this.margeChocolats.setMargeBrute(Chocolat.MG_E_SHP, 10);
 		this.margeChocolats.setCoutProd(Chocolat.MG_E_SHP, 4.5);
 
-		this.iMargeBrute = new Indicateur("EQ3 marge", this, 0);
-		this.iCoutsProd = new Indicateur("EQ3 couts de production", this, 0);
-
 		this.PRIX_VENTE_PAR_DEFAUT.put(Chocolat.MG_NE_HP,40.);
 		this.PRIX_VENTE_PAR_DEFAUT.put(Chocolat.MG_NE_SHP,40.);
 		this.PRIX_VENTE_PAR_DEFAUT.put(Chocolat.MG_E_SHP,40.);
@@ -128,7 +121,6 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		this.contratsFeveEnCours = new ArrayList<ContratCadre<Feve>>();
 		//end sacha
 		
-		this.nbNextAvantEchange = 0;
 
 	}
 	
