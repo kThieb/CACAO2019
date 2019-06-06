@@ -11,7 +11,7 @@ import abstraction.fourni.Journal;
 
 public class VendeurContratCadre extends Producteur1Interne implements IVendeurContratCadre<Feve> {
 	// ANTI
-	private StockEnVente<Feve> stockEnVente;
+	private StockEnVente<Feve> stockEnVente=new StockEnVente<Feve>();
 
 	
 	
@@ -20,7 +20,7 @@ public class VendeurContratCadre extends Producteur1Interne implements IVendeurC
 		for(Feve produit: this.getFeve()) {
 		this.stockEnVente.ajouter(produit, this.getStockI(produit).getValeur()); 
 		}
-		return stockEnVente;// ROMU. Prealablement stockEnVente; mais jamais initialisee...
+		return this.stockEnVente;// ROMU. Prealablement stockEnVente; mais jamais initialisee...
 	}
 
 	public double getPrix(Feve produit, Double quantite) {
