@@ -280,9 +280,13 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 	
 	/** 
 	 * @author Erine DUPONT
+	 * @author Imane : Ajout du journal 
 	 */
 	public void notifierAcheteur(ContratCadre cc) {
-		this.contratsEnCours.add(cc);
+		if (cc!=null) {
+			this.contratsEnCours.add(cc);
+			this.journal.ajouter("Le contrat n° " + cc.getNumero()+ " est signé");
+		}
 	}
 
 	/**@author Erine DUPONT / Imane ZRIAA 
