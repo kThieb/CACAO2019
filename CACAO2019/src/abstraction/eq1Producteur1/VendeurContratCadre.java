@@ -31,35 +31,16 @@ public class VendeurContratCadre extends Producteur1Interne implements IVendeurC
 //END MANON
 	public double getPrix(Feve produit, Double quantite) {
 		// BEGIN Pauline
-		Producteur1Interne prod = new Producteur1Interne();
 		if (produit == null || quantite <= 0.0) {
 			return Double.NaN;
 		} else if (quantite > this.getStockEnVente().get(produit)) {
 			return Double.NaN;
-			//BeginManon
 		} else {
-			if(this.getHistoriqueSoldeBancaire().size()<=1) {
-				
-				return prod.getPrixAuKilo().get(produit);}
-			
-			else{
-			if (this.getHistoriqueSoldeBancaire().get(this.getHistoriqueSoldeBancaire().size()-2)>this.getHistoriqueSoldeBancaire().get(this.getHistoriqueSoldeBancaire().size()-1)){
-				for(Feve feve: this.getFeve()) {
-					if(this.getStockEnVente().get(feve)==this.getStockI(feve).getValeur()) {
-						if(this.getStockI(feve).getValeur()*this.getPrixAuKilo().get(feve)-0.1>this.getCOUT_FIXE()/3+this.getStockI(feve).getValeur()*this.getCOUT_VARIABLE_STOCK())
-								this.prixAuKilo.put(feve, this.getPrixAuKilo().get(feve)-0.1);
-				}
-					else {return prod.getPrixAuKilo().get(produit);}
-			 }
-				
-				//END MANON
 			// utiliser Producteur1.getPrixAuKilo() pour savoir prix en fct du produit
-			
+			Producteur1Interne prod = new Producteur1Interne();
+			return prod.getPrixAuKilo().get(produit);
 		}
-			else {return prod.getPrixAuKilo().get(produit);}
-			}}
 		// END Pauline
-		return prod.getPrixAuKilo().get(produit);
 	}
 //Begin MANON ET PAULINE
 	public void proposerEcheancierVendeur(ContratCadre<Feve> cc) {
@@ -153,6 +134,7 @@ public class VendeurContratCadre extends Producteur1Interne implements IVendeurC
 	public void encaisser(double montant, ContratCadre<Feve> cc) {
 		super.soldeBancaire.ajouter(this ,  montant);
 		//cc.payer(montant);
+		journal1.ajouter("solde bancaire +" + Double.toString(montant));
 
 	}
 //
@@ -195,7 +177,7 @@ public class VendeurContratCadre extends Producteur1Interne implements IVendeurC
 		super.stockFeves.retirer(this, quantite);
 		getStockI(feve).retirer(this, quantite);
 		double quantite_a_enlever=quantite;
-		int next=DUREE_DE_VIE_FEVE-1;
+		int next=dureeDeVieFeve-1;
 		while (quantite_a_enlever>0 && next >0) {
 			if (getStock(feve).get(next)<quantite_a_enlever) {
 				quantite_a_enlever=quantite_a_enlever-getStock(feve).get(next);
