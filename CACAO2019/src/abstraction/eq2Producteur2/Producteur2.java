@@ -75,6 +75,7 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 
 	}
 
+// Begin Clément M
 	
 	public void next() {
 		retireVieuxContrats();
@@ -90,6 +91,8 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 
 		}
 	}
+
+// End Clément M
 	
 public void recolte(Feve f) {
 		if (this.numStep <= 6 || this.numStep >= 21 || (this.numStep >= 9 && this.numStep <= 14)) {
@@ -136,6 +139,8 @@ public void recolte(Feve f) {
 		return res;
 	}
 
+// Begin Elsa
+	
 	/**
 	 * Propose un nouvel echeancier au producteur
 	 */
@@ -196,12 +201,17 @@ public void recolte(Feve f) {
 		}
 	}
 
+
 	
 	//A modifier après détermination des couts de production
 	public double getCoutProduction(Feve f) {
 		return 0;		
 	}
 	
+// End Elsa
+	
+	
+// Begin Clément M	
 	
 	@Override
 	public void notifierVendeur(ContratCadre<Feve> cc) {
@@ -216,6 +226,8 @@ public void recolte(Feve f) {
 		}
 		this.soldeBancaire.ajouter(this, montant);
 	}
+
+
 
 	public double getPrix(Feve produit, Double quantite) {
 		// si tu peux voir ce message, c'est que ca a marche :)
@@ -258,17 +270,24 @@ public void recolte(Feve f) {
 		}
 	}
 
+	
 	@Override
 	public double livrer(Feve produit, double quantite, ContratCadre<Feve> cc) {
 		if (produit == null || !produit.equals(produit)) {
 			throw new IllegalArgumentException(
 					"Appel de la methode livrer de Producteur2 avec un produit ne correspondant pas aux feves produites");
 		}
+		
+		
+		
 		double livraison = Math.min(quantite, this.gestionnaireFeve.getStock(produit));
 		this.gestionnaireFeve.get(produit).getStockIndicateur().retirer(this, livraison);
+		
 		return livraison;
 	}
 
 	
 	
 }
+
+// End Clément M
