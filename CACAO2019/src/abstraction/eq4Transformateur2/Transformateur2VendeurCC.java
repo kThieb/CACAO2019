@@ -51,6 +51,7 @@ public class Transformateur2VendeurCC implements IVendeurContratCadre<Chocolat> 
 		return t2.stocksChocolat.getPrix(produit, qte) * (1.0 + MARGE_VISEE) / qte;
 	}
 
+	//Adrien
 	@Override
 	public void proposerEcheancierVendeur(ContratCadre<Chocolat> cc) {
 		if (Math.random() < 0.4) { // 40% de chances d'accepter l'échéancier
