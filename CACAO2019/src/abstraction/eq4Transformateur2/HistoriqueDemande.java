@@ -42,7 +42,7 @@ public class HistoriqueDemande {
 	// Adrien et Guillaume
 	private TasProduit<Chocolat> fusionTasProduit(TasProduit<Chocolat> tas1, TasProduit<Chocolat> tas2) {
 		double qteTotale = tas1.getQuantité() + tas2.getQuantité();
-		double prixPondere= (tas1.getPrixAuKilo() * tas1.getQuantité() + tas2.getPrixAuKilo() * tas2.getQuantité()) / qteTotale;
+		double prixPondere = (tas1.getPrixAuKilo() * tas1.getQuantité() + tas2.getPrixAuKilo() * tas2.getQuantité()) / qteTotale;
 		return new TasProduit<Chocolat>(qteTotale, prixPondere);
 	}
 }
