@@ -131,7 +131,7 @@ public class Transformateur2AcheteurCC implements IAcheteurContratCadre<Feve> {
 			cc.ajouterPrixAuKilo((prixVendeur - prixVendeur*Math.random()*REDUCTION_MAX));
 		}
 	}
-
+ 
 	@Override
 	public void notifierAcheteur(ContratCadre<Feve> cc) { 
 		t2.contratsFevesEnCours.add(cc);
