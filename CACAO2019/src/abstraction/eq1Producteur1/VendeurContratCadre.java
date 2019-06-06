@@ -75,10 +75,10 @@ public class VendeurContratCadre extends Producteur1Interne implements IVendeurC
 	public void proposerPrixVendeur(ContratCadre<Feve> cc) {
 
 		/* Si la liste est nulle on ajoute le prix initialement proposé */
-		if (cc.getListePrixAuKilo() == null) {
+		if (cc.getListePrixAuKilo().size()==0) {
 			cc.ajouterPrixAuKilo(this.getPrix(cc.getProduit(), cc.getQuantite()));
 		} else {
-			double prixVendeur = (double) cc.getListePrixAuKilo().get(-2);
+			double prixVendeur = (double) cc.getListePrixAuKilo().get(cc.getListePrixAuKilo().size()-2);
 			double prixAcheteur = cc.getPrixAuKilo();
 			/*
 			 * Si la différence de prix est inférieur à celle de 5% proposé on accepte le
@@ -125,7 +125,7 @@ public class VendeurContratCadre extends Producteur1Interne implements IVendeurC
 
 	public void encaisser(double montant, ContratCadre<Feve> cc) {
 		super.soldeBancaire.ajouter(this ,  montant);
-		cc.payer(montant);
+		//cc.payer(montant);
 	}
 //
 
@@ -148,13 +148,13 @@ public class VendeurContratCadre extends Producteur1Interne implements IVendeurC
 		      if (quantite>getStockI(produit).getValeur()) {
 		    	  double valeur_livre=getStockI(produit).getValeur();
 		    	  retirer(produit,valeur_livre);
-		    	  cc.livrer(valeur_livre);
+		    	  //cc.livrer(valeur_livre);
 		         return valeur_livre;
 		      }
 		      
 		      //END Nas
 		      else {
-		    	  cc.livrer(quantite);
+		    	  //cc.livrer(quantite);
 		    	  //super.stockFeves.retirer(this, quantite);
 		    	  retirer(produit,quantite);
 		         return quantite;
