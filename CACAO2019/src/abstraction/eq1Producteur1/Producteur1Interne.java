@@ -46,8 +46,8 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 	protected int criolloPlante = 33 ; 
 	protected int forasteroPlante = 33 ; 
 	protected int trinitarioPlante = 33 ;
-	public static int unAnEnSteps = 26 ; 
-	public static int troisAnsEnSteps = 78 ; 
+	public static int unAnEnSteps = 24 ; 
+	public static int troisAnsEnSteps = 72 ; 
 //END ANTI
 
 	protected int compteur_recolte = 0;
@@ -225,7 +225,9 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 					
 					if (stepDebut < unAnEnSteps) {
 						moyenne.set(0, moyenne.get(0)+echeancier.getQuantiteJusquA(unAnEnSteps));
-						if (stepFin < unAnEnSteps)
+						if (stepFin < unAnEnSteps) {
+							
+						}
 						stepDebut = unAnEnSteps ; 
 					}
 				}
