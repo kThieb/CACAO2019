@@ -169,16 +169,19 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 				double fevesParProduit = fevesUtilisees/aProduire.size();
 				for (Chocolat c: aProduire) {
 					double nouveauChocolat = fevesParProduit/this.coutEnFeves.getCoutEnFeves(c, f);
-					// update solde bancaire
-					this.soldeBancaire.retirer(this, nouveauChocolat*this.margeChocolats.getCoutProd(c));
-					// updater stocks chocolat
-					this.stockChocolat.addQuantiteEnStock(c, nouveauChocolat);
-					this.iStockChocolat.ajouter(this, nouveauChocolat);
+					double coutProduction = nouveauChocolat*this.margeChocolats.getCoutProd(c);
+					if (coutProduction<this.soldeBancaire.getValeur()) {
+						// update solde bancaire
+						this.soldeBancaire.retirer(this, nouveauChocolat*this.margeChocolats.getCoutProd(c));
+						// updater stocks chocolat
+						this.stockChocolat.addQuantiteEnStock(c, nouveauChocolat);
+						this.iStockChocolat.ajouter(this, nouveauChocolat);
+						// updater stocks feves
+						this.stockFeves.removeQuantiteEnStock(f, fevesParProduit);
+						this.journal.ajouter("Transformation de " + fevesParProduit + " de feves pour " + c.toString());
+						this.iStockFeves.retirer(this, fevesParProduit);
+					}
 				}
-				// updater stocks feves
-				this.stockFeves.removeQuantiteEnStock(f, fevesUtilisees);
-				this.journal.ajouter("Transformation de " + fevesUtilisees + " de feves");
-				this.iStockFeves.retirer(this, fevesUtilisees);
 				
 			}
 			
