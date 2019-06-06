@@ -302,6 +302,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		//end raphael et eve
 	}
 
+	
 	@Override
 	public void notifierAcheteur(ContratCadre<Feve> cc) {
 		// begin sacha
