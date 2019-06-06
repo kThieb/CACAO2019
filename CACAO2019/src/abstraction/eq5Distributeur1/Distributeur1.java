@@ -3,8 +3,11 @@ package abstraction.eq5Distributeur1;
 import java.util.ArrayList;
 import java.util.List;
 
+import abstraction.eq7Romu.acteurs.ProducteurRomu;
 import abstraction.eq7Romu.distributionChocolat.IDistributeurChocolat;
 import abstraction.eq7Romu.produits.Chocolat;
+import abstraction.eq7Romu.produits.Feve;
+import abstraction.eq7Romu.produits.Gamme;
 import abstraction.eq7Romu.ventesContratCadre.ContratCadre;
 import abstraction.eq7Romu.ventesContratCadre.Echeancier;
 import abstraction.eq7Romu.ventesContratCadre.IAcheteurContratCadre;
@@ -25,6 +28,7 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 	private Indicateur indicateurstock;
 	private Indicateur indicateursolde;
 	private List<ContratCadre<Chocolat>> contratsEnCours;
+	private Chocolat c ;
 
 
 	/**
@@ -57,6 +61,7 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 		this.journal = new Journal("Journal "+this.getNom());
 		Monde.LE_MONDE.ajouterJournal(this.journal);
 		this.contratsEnCours = new ArrayList<ContratCadre<Chocolat>>();
+		Monde.LE_MONDE.ajouterActeur(new ClientEuropeen(c, 100));
 	}
 
 	public String getNom() {
