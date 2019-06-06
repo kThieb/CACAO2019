@@ -251,15 +251,10 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 					if (stepFin > quatreAnsEnSteps && stepDebut < cinqAnsEnSteps ) {
 						moyenne.set(4, moyenne.get(4)+echeancier.getQuantiteJusquA(cinqAnsEnSteps) - echeancier.getQuantiteJusquA(stepDebut));
 						stepDebut = cinqAnsEnSteps ; 
-				}
-				
-				
-			}
-			
-			
-		}
-		
-	}
+				}	
+			 }	
+		   }
+	    }
 		double total = 0 ; 
 		for (Double qte : moyenne) {
 			total += qte ;
