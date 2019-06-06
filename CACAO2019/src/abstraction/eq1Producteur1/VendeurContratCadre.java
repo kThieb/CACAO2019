@@ -9,6 +9,7 @@ import abstraction.eq7Romu.ventesContratCadre.IVendeurContratCadre;
 import abstraction.eq7Romu.ventesContratCadre.StockEnVente;
 import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
+import static abstraction.fourni.Monde.*;
 
 public class VendeurContratCadre extends Producteur1Interne implements IVendeurContratCadre<Feve> {
 //BEGIN MANON		
@@ -200,7 +201,7 @@ public class VendeurContratCadre extends Producteur1Interne implements IVendeurC
 	
 	//BEGIN NAS
 	public void retirer(Feve feve, double quantite) {
-		super.stockFeves.retirer(this, quantite);
+		/*super.stockFeves.retirer(this, quantite);
 		getStockI(feve).retirer(this, quantite);
 		double quantite_a_enlever=quantite;
 		int next=dureeDeVieFeve-1;
@@ -215,8 +216,8 @@ public class VendeurContratCadre extends Producteur1Interne implements IVendeurC
 			}
 			next--;
 			
-		}
-		
+		}*/
+		getStock(feve).retrait(LE_MONDE.getStep(),quantite);
 		
 	}
 	//END NAS

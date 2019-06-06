@@ -9,34 +9,40 @@ import static abstraction.eq1Producteur1.Producteur1Interne.*;
 
 public class Stock{
 	private Indicateur ind;
-	private HashMap<Integer, Integer> stock;
-	private int alea;
+	private HashMap<Integer, Double> stock;
 	private IActeur act;
 	private int nextBorneInf=-(40-1)*unAnEnSteps;
 	
 	
-	public Stock(Feve feve,IActeur act) {
+	public Stock(Feve feve,IActeur act,int stockDepart) {
 		this.act=act;
-		ind=new Indicateur("EQ1 stock "+feve.getVariete(), act, 1000);
-		stock=new HashMap<Integer, Integer>();
+		ind=new Indicateur("EQ1 stock "+feve.getVariete(), act, stockDepart);
+		stock=new HashMap<Integer, Double>();
 		for (int an=0;an<40;an++) {
-			stock.put(-an*unAnEnSteps, 1000/40);
+			stock.put(-an*unAnEnSteps, (double)1000/40);
 		}
 		
 	}
 	
-	public void depot(int next,int quantite) {
+	public Stock(Feve feve,IActeur act) {
+		this(feve,act,1000);
+		
+	}
+	
+	public void depot(int next,double quantite) {
 		stock.put(next, quantite);
 		ind.ajouter(act, quantite);
 	}
 	
-	public int retrait(int nextCourant,int quantite) {
-		int quantiteAEnlever=quantite;
+	public double retrait(int nextCourant,double quantite) {
+		double quantiteAEnlever=quantite;
 		int nextAExplorer=nextBorneInf;
 		while (quantiteAEnlever>0 && nextAExplorer <=nextCourant) {
-			if (stock.get(nextAExplorer)<quantiteAEnlever) {
-				quantiteAEnlever=quantiteAEnlever-stock.get(nextAExplorer);
-				stock.put(nextAExplorer, 0);
+			if (stock.getOrDefault(nextAExplorer,(double)0)<quantiteAEnlever) {
+				if (stock.get(nextAExplorer)!=null) {
+					quantiteAEnlever=quantiteAEnlever-stock.get(nextAExplorer);
+					stock.put(nextAExplorer,(double) 0);
+				}
 				nextBorneInf=nextAExplorer;
 			} else {
 			
@@ -46,21 +52,34 @@ public class Stock{
 			nextAExplorer++;
 			
 		}
-		int quantiteRetire=quantite-quantiteAEnlever;
+		double quantiteRetire=quantite-quantiteAEnlever;
 		ind.retirer(act, quantiteRetire);
 		return quantiteRetire;
 		
 	}
 	
-	public void updateStock(int nextCourant,int recolte) {
-		stock.put(nextCourant,recolte);
+	public void retraitPerime(int nextCourant) {
 		int nextPerime=nextCourant-dureeDeVieFeve;
-		int stockPerime=stock.get(nextPerime);
-		stock.put(nextPerime, 0);
-		ind.retirer(act, stockPerime);
-		ind.ajouter(act, recolte);
+		if (stock.get(nextPerime)!=null) {
+			double stockPerime=stock.get(nextPerime);
+			stock.put(nextPerime, (double)0);
+			ind.retirer(act, stockPerime);
+		} 
 	}
 	
+	public void updateStock(int nextCourant,double recolte) {
+		depot(nextCourant,recolte);
+		retraitPerime(nextCourant);
+	}
+	
+	public Indicateur getInd() {
+		return ind;
+	}
+
+	public HashMap<Integer, Double> getStock() {
+		return stock;
+	}
+
 	public static void main(String[] args) {
 		System.out.println("EQ1 stock "+Feve.TRINITARIO_MG_NEQ.getVariete());
 		System.out.println(new Integer(-1));
