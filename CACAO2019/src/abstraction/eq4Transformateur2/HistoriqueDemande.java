@@ -11,37 +11,35 @@ public class HistoriqueDemande {
 	private HashMap<Integer, HashMap<Chocolat,TasProduit<Chocolat>>> historique;
 	
 	public HistoriqueDemande() {
-		int i=1;
-		while (i<24) {
-			historique.put(i, new HashMap());
-			i=i+1;
-		}
+		historique = new HashMap<Integer, HashMap<Chocolat, TasProduit<Chocolat>>>();
 	}
 	
-	public void ajouterDemande(int step,TasProduit<Chocolat> tas,Chocolat c) {
-		HashMap<Chocolat, TasProduit<Chocolat>> DemandeParProduit = new HashMap();
-		if (!historique.containsKey(step)) {
-			historique.put(step, new HashMap());
+	// Guillaume
+	public void ajouterDemande(int step, TasProduit<Chocolat> tas, Chocolat type) {
+		if(!historique.containsKey(step))
+			historique.put(step, new HashMap<Chocolat, TasProduit<Chocolat>>());
+		
+		
+		HashMap<Chocolat, TasProduit<Chocolat>> demandeParProduit = historique.get(step);
+		if(demandeParProduit.containsKey(type)) {
+			// TODO Merger le nouveau tas et le tas demandeParProduit.get(type)
+
 		}
-		else {
-			DemandeParProduit.put(c, tas);
-			historique.put(step,DemandeParProduit);	
-		}
+		else
+			demandeParProduit.put(type, tas);
 	}
-//Adrien
-	private  TasProduit<Chocolat> getDemande (int yearsBack, int stepInYear, Chocolat c) {
-		//renvoie la quantité demandée pour un chocolat donné à une step précise
-		int actualStep = Monde.LE_MONDE.getStep();
-		if (actualStep-yearsBack*24+stepInYear<=0) {
-			return null ;
-		}
-		HashMap<Chocolat,TasProduit<Chocolat>> demandeAncienne = historique.get(actualStep-yearsBack*24+stepInYear);
-		if (demandeAncienne.containsKey(c)){
-			TasProduit<Chocolat> tas = demandeAncienne.get(c);
-			return tas;
-			}
-		else {
+	
+	// Adrien
+	public TasProduit<Chocolat> getDemande (int yearsBack, int stepInYear, Chocolat type) {
+		// Renvoie la quantité demandée (et le prix associé) pour un chocolat donné à une step précise
+		int currentStep = Monde.LE_MONDE.getStep();
+		if(currentStep - yearsBack * Transformateur2.STEPS_PAR_ANNEE + stepInYear < 0)
 			return null;
-		}
+
+		HashMap<Chocolat,TasProduit<Chocolat>> demandeAncienne = historique.get(currentStep - yearsBack * Transformateur2.STEPS_PAR_ANNEE + stepInYear);
+		if(demandeAncienne.containsKey(type))
+			return demandeAncienne.get(type);
+		else
+			return null;
 	}	
 }

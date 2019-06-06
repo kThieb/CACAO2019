@@ -44,7 +44,7 @@ public class Transformateur2 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	protected StockEnVente<Chocolat> stockEnVente;
 	
 	// Constantes
-	private static final int STEPS_PAR_ANNEE = 24;
+	public static final int STEPS_PAR_ANNEE = 24;
 	private static final double MAX_PRODUCTION_PAR_STEP = 10e3; // Production max. de chocolats par step, en kg
 	
 	public Transformateur2() {
@@ -234,7 +234,7 @@ public class Transformateur2 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	}
 	
 	/** Renvoie le step actuel dans l'année en cours */
-	public static int getStepInAnnee() {
+	public static int getCurrentStepInAnnee() {
 		return Monde.LE_MONDE.getStep() % STEPS_PAR_ANNEE;
 	}
 	
