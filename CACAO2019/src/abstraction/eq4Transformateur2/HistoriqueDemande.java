@@ -1,12 +1,10 @@
 package abstraction.eq4Transformateur2;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import abstraction.eq7Romu.produits.Chocolat;
 import abstraction.fourni.Monde;
-//Guillaume
+
 public class HistoriqueDemande {
 	private HashMap<Integer, HashMap<Chocolat,TasProduit<Chocolat>>> historique;
 	
@@ -19,12 +17,10 @@ public class HistoriqueDemande {
 		if(!historique.containsKey(step))
 			historique.put(step, new HashMap<Chocolat, TasProduit<Chocolat>>());
 		
-		
 		HashMap<Chocolat, TasProduit<Chocolat>> demandeParProduit = historique.get(step);
-		if(demandeParProduit.containsKey(type)) {
-			// TODO Merger le nouveau tas et le tas demandeParProduit.get(type)
-
-		}
+		// Si on a déjà enregistré une demande de ce type de chocolat à ce step, on la fusionne avec la nouvelle demande
+		if(demandeParProduit.containsKey(type))
+			demandeParProduit.put(type, fusionTasProduit(tas, demandeParProduit.get(type)));
 		else
 			demandeParProduit.put(type, tas);
 	}
@@ -43,14 +39,12 @@ public class HistoriqueDemande {
 			return null;
 	}	
 	
-	//Adrien et Guillaume
-	private TasProduit<Chocolat> fusionTasProduit(TasProduit<Chocolat> tas1, TasProduit<Chocolat> tas2){
-		double quantiteFusionnee= tas1.getQuantité()+tas2.getQuantité();
-		double prixPondere= (tas1.getPrixAuKilo()*tas1.getQuantité()) + (tas2.getPrixAuKilo()*tas2.getQuantité())/quantiteFusionnee;
-		TasProduit<Chocolat> nouveauTas= new TasProduit<Chocolat>(quantiteFusionnee, prixPondere);
-		return nouveauTas;
+	// Adrien et Guillaume
+	private TasProduit<Chocolat> fusionTasProduit(TasProduit<Chocolat> tas1, TasProduit<Chocolat> tas2) {
+		double qteTotale = tas1.getQuantité() + tas2.getQuantité();
+		double prixPondere= (tas1.getPrixAuKilo() * tas1.getQuantité() + tas2.getPrixAuKilo() * tas2.getQuantité()) / qteTotale;
+		return new TasProduit<Chocolat>(qteTotale, prixPondere);
 	}
-	
 }
 
 
