@@ -21,10 +21,13 @@ import abstraction.eq7Romu.ventesContratCadre.Echeancier;
 
 public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire */ {
 
-	public static int COUT_FIXE = 500;
-	public static int COUT_VARIABLE_STOCK = 1;
-	public static int DUREE_DE_VIE_FEVE = 1 * 52 / 2; // durée de vie en nexts
+	public static int COUT_FIXE = 1000;
+	public static int COUT_VARIABLE_STOCK = 5;
+	
 	protected Indicateur stockFeves;
+	/*protected Stock stockCriollo=new Stock(Feve.CRIOLLO_HG_EQ);
+	protected Stock stockForastero=new Stock(Feve.FORASTERO_MG_NEQ);
+	protected Stock stockTrinitario=new Stock(Feve.TRINITARIO_MG_NEQ);*/
 	protected Indicateur stockCriolloI;
 	protected Indicateur stockForasteroI;
 	protected Indicateur stockTrinitarioI;
@@ -35,7 +38,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 	protected double recolteForastero = 33;
 	protected double recolteTrinitario = 33;
     protected List<ContratCadre<Feve>> contratEnCours;  //
-    protected List<Double> historiqueSoldeBancaire;
+    protected List<Double>historiqueSoldeBancaire;
 
 	//BEGIN ANTI 
 	protected Indicateur plantationCriolloI;
@@ -54,6 +57,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 	public static int troisAnsEnSteps = 72 ; 
 	public static int quatreAnsEnSteps = 96 ;
 	public static int cinqAnsEnSteps = 120 ;
+	public static int dureeDeVieFeve = unAnEnSteps; // durée de vie en nexts
 //END ANTI
 
 	protected int compteur_recolte = 0;
@@ -84,9 +88,8 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		this.stockForastero=new HashMap<Integer, Double>();
 		this.stockTrinitario=new HashMap<Integer, Double>();
 		this.contratEnCours= new ArrayList<ContratCadre<Feve>> ();
-		this.historiqueSoldeBancaire=new ArrayList<Double>();
 
-		for (int next = 0; next < DUREE_DE_VIE_FEVE - 1; next++) {
+		for (int next = 0; next < dureeDeVieFeve - 1; next++) {
 			stockCriollo.put(next, (double) 0);
 			stockForastero.put(next, (double) 0);
 			stockTrinitario.put(next , (double) 0);
@@ -186,8 +189,9 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		// END Nas
 		//BEGIN ANTI 
 		updatePlantation();
-		this.historiqueSoldeBancaire.add(this.getSoldeBancaire().getValeur());
 		//END ANTI
+		//BEGINMANON
+		this.historiqueSoldeBancaire.add(this.getSoldeBancaire().getValeur());
 
 	}
 
@@ -254,10 +258,15 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 					if (stepFin > quatreAnsEnSteps && stepDebut < cinqAnsEnSteps ) {
 						moyenne.set(4, moyenne.get(4)+echeancier.getQuantiteJusquA(cinqAnsEnSteps) - echeancier.getQuantiteJusquA(stepDebut));
 						stepDebut = cinqAnsEnSteps ; 
-				}	
-			 }	
-		   }
-	    }
+				}
+				
+				
+			}
+			
+			
+		}
+		
+	}
 		double total = 0 ; 
 		for (Double qte : moyenne) {
 			total += qte ;
@@ -312,7 +321,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		HashMap<Integer, Double> stockForasteroOld = new HashMap<Integer, Double>(stockForastero);
 		HashMap<Integer, Double> stockTrinitarioOld = new HashMap<Integer, Double>(stockTrinitario);
 	
-		for (int next = 0; next < DUREE_DE_VIE_FEVE - 1; next++) {
+		for (int next = 0; next < dureeDeVieFeve - 1; next++) {
 			stockCriollo.put(next + 1, stockCriolloOld.get(next));
 			stockForastero.put(next + 1, stockForasteroOld.get(next));
 			stockTrinitario.put(next + 1, stockTrinitarioOld.get(next));
@@ -328,7 +337,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		stockForasteroI.setValeur(this, 0);
 		stockTrinitarioI.setValeur(this, 0);
 
-		for (int next = 0; next < DUREE_DE_VIE_FEVE; next++) {
+		for (int next = 0; next < dureeDeVieFeve; next++) {
 			stockCriolloI.ajouter(this, stockCriollo.get(next));
 			;
 			stockForasteroI.ajouter(this, stockForastero.get(next));
@@ -391,17 +400,11 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 	public void setCOUT_FIXE(int cOUT_FIXE) {
 		COUT_FIXE = cOUT_FIXE;
 	}
-	public  int getCOUT_VARIABLE_STOCK() {
+	public int getCOUT_VARIABLE_STOCK() {
 		return COUT_VARIABLE_STOCK;
 	}
-	public void setCOUT_VARIABLE_STOCK(int cOUT_VARIABLE_STOCK) {
+	public  void setCOUT_VARIABLE_STOCK(int cOUT_VARIABLE_STOCK) {
 		COUT_VARIABLE_STOCK = cOUT_VARIABLE_STOCK;
-	}
-	public static int getDUREE_DE_VIE_FEVE() {
-		return DUREE_DE_VIE_FEVE;
-	}
-	public static void setDUREE_DE_VIE_FEVE(int dUREE_DE_VIE_FEVE) {
-		DUREE_DE_VIE_FEVE = dUREE_DE_VIE_FEVE;
 	}
 	public Indicateur getStockFeves() {
 		return stockFeves;
@@ -547,11 +550,35 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 	public static void setUnAnEnSteps(int unAnEnSteps) {
 		Producteur1Interne.unAnEnSteps = unAnEnSteps;
 	}
+	public static int getDeuxAnsEnSteps() {
+		return deuxAnsEnSteps;
+	}
+	public static void setDeuxAnsEnSteps(int deuxAnsEnSteps) {
+		Producteur1Interne.deuxAnsEnSteps = deuxAnsEnSteps;
+	}
 	public static int getTroisAnsEnSteps() {
 		return troisAnsEnSteps;
 	}
 	public static void setTroisAnsEnSteps(int troisAnsEnSteps) {
 		Producteur1Interne.troisAnsEnSteps = troisAnsEnSteps;
+	}
+	public static int getQuatreAnsEnSteps() {
+		return quatreAnsEnSteps;
+	}
+	public static void setQuatreAnsEnSteps(int quatreAnsEnSteps) {
+		Producteur1Interne.quatreAnsEnSteps = quatreAnsEnSteps;
+	}
+	public static int getCinqAnsEnSteps() {
+		return cinqAnsEnSteps;
+	}
+	public static void setCinqAnsEnSteps(int cinqAnsEnSteps) {
+		Producteur1Interne.cinqAnsEnSteps = cinqAnsEnSteps;
+	}
+	public static int getDureeDeVieFeve() {
+		return dureeDeVieFeve;
+	}
+	public static void setDureeDeVieFeve(int dureeDeVieFeve) {
+		Producteur1Interne.dureeDeVieFeve = dureeDeVieFeve;
 	}
 	public int getCompteur_recolte() {
 		return compteur_recolte;
@@ -580,6 +607,8 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 	public void setHistoriqueContrats(HashMap<Integer, ContratCadre<Feve>> historiqueContrats) {
 		this.historiqueContrats = historiqueContrats;
 	}
+	
+	
 	
 
 }

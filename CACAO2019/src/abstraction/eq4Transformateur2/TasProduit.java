@@ -1,24 +1,28 @@
 package abstraction.eq4Transformateur2;
 
-public class TasFeve {
-	/** Représente une livraison de fèves */
+// Kelian
+public class TasProduit<T> {
+	/** Représente une livraison de fèves ou de chocolats */
 	
 	private double quantité; // kg
-	private double prixUnitaire;
+	private double prixAuKilo; // €
 	private int datePeremption;
 	
-	public TasFeve(double quantité, double prixUnitaire) {
+	public TasProduit(double quantité, double prixAuKilo) {
 		this.quantité = quantité;
-		this.prixUnitaire = prixUnitaire;
+		this.prixAuKilo = prixAuKilo;
 	}
-	
 	
 	public double getQuantité() {
 		return quantité;
 	}
 	
-	public double getPrixUnitaire() {
-		return prixUnitaire;
+	public double getPrixAuKilo() {
+		return prixAuKilo;
+	}
+	
+	public int getDatePeremption() {
+		return datePeremption;
 	}
 	
 	public boolean prendre(double qte) {

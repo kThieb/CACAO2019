@@ -31,13 +31,13 @@ public class VendeurContratCadre extends Producteur1Interne implements IVendeurC
 //END MANON
 	public double getPrix(Feve produit, Double quantite) {
 		// BEGIN Pauline
-		Producteur1Interne prod = new Producteur1Interne();
+		Producteur1Interne prod= new Producteur1Interne();
 		if (produit == null || quantite <= 0.0) {
 			return Double.NaN;
 		} else if (quantite > this.getStockEnVente().get(produit)) {
 			return Double.NaN;
-			//BeginManon
 		} else {
+
 			if(this.getHistoriqueSoldeBancaire().size()<=1) {
 				
 				return prod.getPrixAuKilo().get(produit);}
@@ -53,13 +53,14 @@ public class VendeurContratCadre extends Producteur1Interne implements IVendeurC
 			 }
 				
 				//END MANON
+
 			// utiliser Producteur1.getPrixAuKilo() pour savoir prix en fct du produit
-			
-		}
+			}
 			else {return prod.getPrixAuKilo().get(produit);}
-			}}
+			}
+			return prod.getPrixAuKilo().get(produit);
+			}
 		// END Pauline
-		return prod.getPrixAuKilo().get(produit);
 	}
 //Begin MANON ET PAULINE
 	public void proposerEcheancierVendeur(ContratCadre<Feve> cc) {
@@ -153,6 +154,7 @@ public class VendeurContratCadre extends Producteur1Interne implements IVendeurC
 	public void encaisser(double montant, ContratCadre<Feve> cc) {
 		super.soldeBancaire.ajouter(this ,  montant);
 		//cc.payer(montant);
+		journal1.ajouter("solde bancaire +" + Double.toString(montant));
 
 	}
 //
@@ -195,7 +197,7 @@ public class VendeurContratCadre extends Producteur1Interne implements IVendeurC
 		super.stockFeves.retirer(this, quantite);
 		getStockI(feve).retirer(this, quantite);
 		double quantite_a_enlever=quantite;
-		int next=DUREE_DE_VIE_FEVE-1;
+		int next=dureeDeVieFeve-1;
 		while (quantite_a_enlever>0 && next >0) {
 			if (getStock(feve).get(next)<quantite_a_enlever) {
 				quantite_a_enlever=quantite_a_enlever-getStock(feve).get(next);
