@@ -278,6 +278,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 						cc.getEcheancier().getNbEcheances()+1,
 						cc.getQuantite()/(cc.getEcheancier().getNbEcheances()+1))); 
 			}
+			
 		}
 		//End Kevin
 	}
