@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import abstraction.eq1Producteur1.ventesCacaoAleatoires.SuperviseurVentesCacaoAleatoires;
+import abstraction.eq7Romu.produits.Chocolat;
 import abstraction.eq7Romu.produits.Feve;
 import abstraction.eq7Romu.ventesContratCadre.ContratCadre;
 import abstraction.eq7Romu.ventesContratCadre.Echeancier;
@@ -31,7 +33,7 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	private int numStep;
 	private GestionnaireFeve gestionnaireFeve;
 
-	
+
 	public Producteur2() {
 		this.gestionnaireFeve = new GestionnaireFeve(this);
 
@@ -47,18 +49,20 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 		this.numStep = 1;
 
 		this.gestionnaireFeve.setProduction(this, Feve.FORASTERO_MG_NEQ, 67500000);
-
 		this.gestionnaireFeve.setStock(this, Feve.FORASTERO_MG_NEQ, 200000000);
+		this.gestionnaireFeve.setPrix(this, Feve.FORASTERO_MG_NEQ, 1.5);
 
-		this.gestionnaireFeve.setProduction(this, Feve.FORASTERO_MG_EQ, 7500000); // TODO rectifier les productions des
-																					// autres feves
+		this.gestionnaireFeve.setProduction(this, Feve.FORASTERO_MG_EQ, 7500000); // TODO rectifier les productions des autres feves
 		this.gestionnaireFeve.setStock(this, Feve.FORASTERO_MG_EQ, 20000000);
-
-		this.gestionnaireFeve.setProduction(this, Feve.MERCEDES_MG_NEQ, 6750000);
-		this.gestionnaireFeve.setStock(this, Feve.FORASTERO_MG_NEQ, 20000000);
+		this.gestionnaireFeve.setPrix(this, Feve.FORASTERO_MG_EQ, 1.7);
+		
+		this.gestionnaireFeve.setProduction(this, Feve.MERCEDES_MG_NEQ, 7500000);
+		this.gestionnaireFeve.setStock(this, Feve.MERCEDES_MG_NEQ, 20000000);
+		this.gestionnaireFeve.setPrix(this, Feve.MERCEDES_MG_NEQ, 1.3);
 
 		this.gestionnaireFeve.setProduction(this, Feve.MERCEDES_MG_EQ, 750000);
 		this.gestionnaireFeve.setStock(this, Feve.MERCEDES_MG_EQ, 2000000);
+		this.gestionnaireFeve.setPrix(this, Feve.MERCEDES_MG_EQ, 1.4);
 
 	}
 

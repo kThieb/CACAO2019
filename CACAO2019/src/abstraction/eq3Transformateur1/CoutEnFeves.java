@@ -28,7 +28,13 @@ public class CoutEnFeves {
 	// -----------------------------------------------------------
 	
 	public double getCoutEnFeves(Chocolat chocolat, Feve feve) {
-		return this.cout.get(chocolat).get(feve);
+		if(!this.cout.containsKey(chocolat)) {
+			return 0.;
+		}else if(!this.cout.get(chocolat).containsKey(feve)){
+			return 0.;
+		}else {
+			return this.cout.get(chocolat).get(feve);
+		}
 	}
 
 	// -----------------------------------------------------------
