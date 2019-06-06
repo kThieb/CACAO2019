@@ -1,6 +1,9 @@
 package abstraction.eq1Producteur1;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 
 import abstraction.eq1Producteur1.ventesCacaoAleatoires.SuperviseurVentesCacaoAleatoires;
@@ -42,6 +45,9 @@ public class Producteur1 implements IActeur /* , IVendeurCacaoAleatoire */ {
 	protected int trinitarioPlante = 33 ;
 	public static int unAnEnSteps = 26 ; 
 	public static int troisAnsEnSteps = 78 ; 
+	protected HashMap<Integer, Integer> plantationExceptionnelleCriollo; 
+	protected HashMap<Integer, Integer> plantationExceptionnelleForastero; 
+	protected HashMap<Integer, Integer> plantationExceptionnelleTrinitario; 
 //END ANTI
 
 	protected int compteur_recolte = 0;
@@ -188,8 +194,38 @@ public class Producteur1 implements IActeur /* , IVendeurCacaoAleatoire */ {
 		return mapPrix;
 		// END Pauline
 	}
-	//BEGIN ANTI 
+	//BEGIN ANTI ET MANON <3 
 	
+	public HashMap<Integer, Double> getPicsDemandeCriollo(){
+		HashMap<Integer, Double> picsDemande = new HashMap<Integer,Double>();
+		List<Double> moyenne = new ArrayList<Double>();
+		moyenne = moyenneDemande();
+		
+		double mois1 = Collections.max(moyenne);
+		int index1 = moyenne.indexOf(mois1);
+		picsDemande.put(index1, mois1);
+		moyenne.remove(index1);
+		
+		double mois2 = Collections.max(moyenne);
+		int index2 = moyenne.indexOf(mois2);
+		picsDemande.put(index2, mois2);
+		moyenne.remove(index2);
+		
+		double mois3 = Collections.max(moyenne);
+		int index3 = moyenne.indexOf(mois3);
+		picsDemande.put(index3, mois3);
+		
+	
+			
+			
+		}
+	
+	
+	public void updatePlantationExceptionnelle() {
+		
+		
+	}
+	//BEGIN ANTI
 	public void updatePlantation() {
 		
 	
