@@ -184,10 +184,31 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 				}
 				
 			}
-			
+		retireVieuxContrats();	
 		} 
 		
 		// -------------------------- end eve 
+	}
+	
+	public void retireVieuxContrats() {
+		List<ContratCadre<Feve>> aEnlever = new ArrayList<ContratCadre<Feve>>();
+		for (ContratCadre<Feve> c : this.contratsFeveEnCours) {
+			if (c.getQuantiteRestantALivrer()<=0.0 && c.getMontantRestantARegler()<=0.0) {
+				aEnlever.add(c);
+			}
+		}
+		for (ContratCadre<Feve> c : aEnlever) {
+			this.contratsFeveEnCours.remove(c);
+		}
+		List<ContratCadre<Chocolat>> aEnleverC = new ArrayList<ContratCadre<Chocolat>>();
+		for (ContratCadre<Chocolat> c : this.contratsChocolatEnCours) {
+			if (c.getQuantiteRestantALivrer()<=0.0 && c.getMontantRestantARegler()<=0.0) {
+				aEnleverC.add(c);
+			}
+		}
+		for (ContratCadre<Chocolat> c : aEnleverC) {
+			this.contratsChocolatEnCours.remove(c);
+		}
 	}
 	
 	// -------------------------------------------------------------------------------------------
