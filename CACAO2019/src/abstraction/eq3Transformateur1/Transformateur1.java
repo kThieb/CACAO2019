@@ -391,6 +391,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 			return prix + this.margeChocolats.getCoutProd(chocolat)+this.margeChocolats.getMargeBrute(chocolat);
 		}	
 		//End Raph/Kevin
+		
 	}
 
 	@Override
