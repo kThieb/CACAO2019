@@ -177,7 +177,8 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 				}
 			}
 			this.journal.ajouter("La liste des vendeurs possibles est : " + vendeurs);
-			if (vendeurs.size()>1) { // On choisit le vendeur ayant le plus gros stock de produit
+
+			if (vendeurs.size()>=1) { 
 				IVendeurContratCadre<Chocolat> vendeur_choisi = vendeurs.get(0); 
 				double stock_vendeur = vendeur_choisi.getStockEnVente().get(produit);
 				double prix_vendeur = vendeur_choisi.getPrix(produit, stock_vendeur);
@@ -199,7 +200,7 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 				double quantite = vendeur_choisi.getStockEnVente().get(produit)*0.8; // On prend 80% de sa production
 				this.journal.ajouter("La quantité demandée est " + quantite);
 				ncc = new ContratCadre<Chocolat>(this, vendeur_choisi, produit, quantite);
-			} 
+			}  
 		} else {
 			this.journal.ajouter("   Il ne reste que "+solde+" une fois tous les contrats payes donc nous ne souhaitons "
 					+ "pas en créer d'autres pour l'instant");
@@ -225,8 +226,6 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 			}
 		}
 	}
-		
-
 
 	/**
 	 * @author Imane ZRIAA
@@ -259,18 +258,46 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 		/* ------------------------------------------------------------------------------------------
 		 V2 ERINE
 		 */
-		if (100 < prixVendeur && prixVendeur < 1000 && stock.get((Chocolat) cc.getProduit())<1000) {
-			cc.ajouterPrixAuKilo(prixVendeur*0.8);
-			this.journal.ajouter("Nous proposons un prix de " + prixVendeur*0.8);
-		} else if (100 < prixVendeur && prixVendeur < 1000 && stock.get((Chocolat) cc.getProduit())>=1000) {
-			cc.ajouterPrixAuKilo(prixVendeur*0.6);
-			this.journal.ajouter("Nous proposons un prix de " + prixVendeur*0.6);
-		} else if (prixVendeur <= 100) {
-			cc.ajouterPrixAuKilo(prixVendeur);
-			this.journal.ajouter("Nous proposons un prix de " + prixVendeur);
-		} else {
-			this.journal.ajouter("Nous refusons le prix de " + prixVendeur);
-		}	
+		if (cc.getProduit().equals(Chocolat.HG_E_SHP)) {
+			if (20 < prixVendeur && prixVendeur <= 70 && stock.get((Chocolat) cc.getProduit()) < 10000) {
+				cc.ajouterPrixAuKilo(prixVendeur*0.8);
+				this.journal.ajouter("Nous proposons un prix de " + prixVendeur*0.8);
+			} else if (20 < prixVendeur && prixVendeur <= 70 && stock.get((Chocolat) cc.getProduit())>=10000) {
+				cc.ajouterPrixAuKilo(prixVendeur*0.6);
+				this.journal.ajouter("Nous proposons un prix de " + prixVendeur*0.6);
+			} else if (prixVendeur <= 20) {
+				cc.ajouterPrixAuKilo(prixVendeur);
+				this.journal.ajouter("Nous proposons un prix de " + prixVendeur);
+			} else {
+				this.journal.ajouter("Nous refusons le prix de " + prixVendeur);
+			}	
+		} else if (cc.getProduit().equals(Chocolat.MG_E_SHP) || cc.getProduit().equals(Chocolat.MG_NE_SHP)) {
+			if (10 < prixVendeur && prixVendeur <= 50 && stock.get((Chocolat) cc.getProduit()) < 10000) {
+				cc.ajouterPrixAuKilo(prixVendeur*0.8);
+				this.journal.ajouter("Nous proposons un prix de " + prixVendeur*0.8);
+			} else if (10 < prixVendeur && prixVendeur <= 50 && stock.get((Chocolat) cc.getProduit())>=10000) {
+				cc.ajouterPrixAuKilo(prixVendeur*0.6);
+				this.journal.ajouter("Nous proposons un prix de " + prixVendeur*0.6);
+			} else if (prixVendeur <= 10) {
+				cc.ajouterPrixAuKilo(prixVendeur);
+				this.journal.ajouter("Nous proposons un prix de " + prixVendeur);
+			} else {
+				this.journal.ajouter("Nous refusons le prix de " + prixVendeur);
+			}	
+		} else if (cc.getProduit().equals(Chocolat.MG_NE_HP)) {
+			if (10 < prixVendeur && prixVendeur <= 40 && stock.get((Chocolat) cc.getProduit()) < 10000) {
+				cc.ajouterPrixAuKilo(prixVendeur*0.8);
+				this.journal.ajouter("Nous proposons un prix de " + prixVendeur*0.8);
+			} else if (10 < prixVendeur && prixVendeur <= 40 && stock.get((Chocolat) cc.getProduit())>=10000) {
+				cc.ajouterPrixAuKilo(prixVendeur*0.6);
+				this.journal.ajouter("Nous proposons un prix de " + prixVendeur*0.6);
+			} else if (prixVendeur <= 10) {
+				cc.ajouterPrixAuKilo(prixVendeur);
+				this.journal.ajouter("Nous proposons un prix de " + prixVendeur);
+			} else {
+				this.journal.ajouter("Nous refusons le prix de " + prixVendeur);
+			}	
+		}
 	}
 
 	/** 

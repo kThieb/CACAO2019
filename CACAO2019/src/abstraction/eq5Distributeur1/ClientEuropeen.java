@@ -21,6 +21,9 @@ public class ClientEuropeen implements IActeur {
 	private Journal journal;
 	private Chocolat uniqueProduit;
 	private int quantiteParStep;
+	private boolean equitable;
+	private boolean sansHuileDePalme;
+	private Gamme gamme;
 	
 	/** @author Erwann DEFOY */
 	public String getNom() {
@@ -29,6 +32,15 @@ public class ClientEuropeen implements IActeur {
 	
 	/** @author Erwann DEFOY */
 	public void initialiser() {
+	}
+
+	/** V2 @author Erwann DEFOY */
+	public ClientEuropeen() {
+		NB_CLIENT++;
+		int quantiteParStep = 100;
+		this.numero = NB_CLIENT;
+		this.journal = new Journal("Journal Européen");
+		Monde.LE_MONDE.ajouterJournal(this.journal);
 	}
 
 	/** @author Erwann DEFOY */
