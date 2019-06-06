@@ -139,11 +139,20 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 	 */
 	@Override
 	public void proposerEcheancierAcheteur(ContratCadre C) {
-		if (C.getEcheancier()==null) {//pas de contre-proposition
-			C.ajouterEcheancier(new Echeancier(Monde.LE_MONDE.getStep(), 20, C.getQuantite()/20));
+		if (C!=null) {
+			Echeancier e = C.getEcheancier() ;
+			if (e==null && C.getEcheancier().getNbEcheances() > 2) {//pas de contre-proposition
+			C.ajouterEcheancier(new Echeancier(Monde.LE_MONDE.getStep(), 5, C.getQuantite()/5));
 		} else {
-			C.ajouterEcheancier(new Echeancier(C.getEcheancier())); // accepter la contre-proposition
+			if( e.getQuantiteTotale() == C.getQuantite() && e.getStepDebut()> 5 ) {
+				C.ajouterEcheancier(new Echeancier(C.getEcheancier())); 
+			}	
+			this.journal.ajouter("Contrat n° " + C.getNumero() + " avec " + C.getEcheancier().getNbEcheances()+ " échéances");
+		
 		}
+			
+		}
+		
 	}
 
 	@Override
@@ -151,10 +160,11 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 	 * @author Imane ZRIAA
 	 * @author2 Erine DUPONT
 	 */
+	
 	public void proposerPrixAcheteur(ContratCadre cc) {
 		double prixVendeur = cc.getPrixAuKilo();
 		/* 
-		 * if (Math.random()<0.25) { // probabilite de 25% d'accepter
+		 * if (Math.random()<0.30) { 
 			cc.ajouterPrixAuKilo(cc.getPrixAuKilo());
 		} else {
 			cc.ajouterPrixAuKilo((prixVendeur*(0.9+Math.random()*0.1))); // Rabais de 10% max
