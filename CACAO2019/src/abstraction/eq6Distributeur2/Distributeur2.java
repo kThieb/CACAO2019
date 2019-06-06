@@ -401,48 +401,44 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 		return variations_produit;
 	}
 
-	//Caroline
-	private HashMap<Chocolat, Double> stockIdeal () {
-		//HashMap<Chocolat, Double> historique_vente = historique_vente() ;
-
-		//ETUDE DE MARCHÉ : Prendre en compte l'avis des clients les plus fidèles sur leur avis de produit ainsi que l'historique de leur demande 
-		/*
-		for (IActeur acteur : Monde.LE_MONDE.getActeurs()) {
-			if (! (acteur instanceof IVendeurContratCadre<?>) && ! (acteur instanceof IAcheteurContratCadre<?>)) {
-				Client1 c = (Client1)acteur;
-				c.Offres(Monde.LE_MONDE.getStep());
-			} 
-		}
-		 */
-		 
-		
-		//Temporalité 
-		
-		//Pour l'instant avec 4 clients qui veulent chaqun un produit different avec 7500 par step on prend : 
-
-		HashMap<Chocolat, Double> stockIdeal= new HashMap<Chocolat, Double>();
-		stockIdeal.put(Chocolat.MG_E_SHP, 15000.0);
-		stockIdeal.put(Chocolat.MG_NE_SHP, 15000.0);
-		stockIdeal.put(Chocolat.MG_NE_HP, 15000.0);
-		stockIdeal.put(Chocolat.HG_E_SHP, 15000.0);
+    private HashMap<Chocolat, Double> achatIdeal () {
+    	
+    	//ETUDE DE MARCHÉ : Prendre en compte l'avis des clients les plus fidèles sur leur avis de produit ainsi que l'historique de leur demande 
+    			/*
+    			for (IActeur acteur : Monde.LE_MONDE.getActeurs()) {
+    				if (! (acteur instanceof IVendeurContratCadre<?>) && ! (acteur instanceof IAcheteurContratCadre<?>)) {
+    					Client1 c = (Client1)acteur;
+    					c.Offres(Monde.LE_MONDE.getStep());
+    				} 
+    			}
+    			 */
+    			 
+    			
+    			//Temporalité 
+    	
+      	HashMap<Chocolat, Double> achatIdeal= new HashMap<Chocolat, Double>();
+    	achatIdeal.put(Chocolat.MG_E_SHP, 15000.0);
+    	achatIdeal.put(Chocolat.MG_NE_SHP, 15000.0);
+    	achatIdeal.put(Chocolat.MG_NE_HP, 15000.0);
+    	achatIdeal.put(Chocolat.HG_E_SHP, 15000.0);
+    	
 		//Il serait mieux de voir la quantite reçue par step afin de combler les écarts avec de nouveaux contrats 
 
 		//Travail sur le stock idéal par rapport aux ventes précédentes
 		
-		for (Chocolat c : stockIdeal.keySet() ) {
+		for (Chocolat c : achatIdeal.keySet() ) {
 			
 			if (derniereVente().get(c) < 5000) {
-				stockIdeal.put(c, 5000.0);
+				achatIdeal.put(c, 5000.0);
 			}
 			if (derniereVente().get(c) >= this.getIndicateurStock(c).getValeur()) {
-				stockIdeal.put(c, 20000.0);
+				achatIdeal.put(c, 20000.0);
 			}
 		}
 		 
-		return stockIdeal;
-	}
-
-
+		return achatIdeal;
+    	
+    }
 	public ContratCadre<Chocolat> getNouveauContrat() { //ILIAS et Caroline
 
 
