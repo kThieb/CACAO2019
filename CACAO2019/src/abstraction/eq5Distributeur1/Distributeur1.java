@@ -220,17 +220,16 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 			Echeancier e = C.getEcheancier() ;
 			if (e==null ) {//pas de contre-proposition
 				C.ajouterEcheancier(new Echeancier(Monde.LE_MONDE.getStep(), 5, C.getQuantite()/5));
-		} else {
-			if( e.getQuantiteTotale() > C.getQuantite() ) {
+			} else {
 				C.ajouterEcheancier(new Echeancier(C.getEcheancier())); 
 			}	
 			this.journal.ajouter("Contrat n° " + C.getNumero() + " avec " + C.getEcheancier().getNbEcheances()+ " échéances");
 		
 		}
 			
-		}
-		
 	}
+		
+
 
 	@Override
 	/**
