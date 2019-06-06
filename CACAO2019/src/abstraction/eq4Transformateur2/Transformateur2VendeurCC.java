@@ -9,6 +9,7 @@ import abstraction.eq7Romu.ventesContratCadre.ContratCadre;
 import abstraction.eq7Romu.ventesContratCadre.Echeancier;
 import abstraction.eq7Romu.ventesContratCadre.IVendeurContratCadre;
 import abstraction.eq7Romu.ventesContratCadre.StockEnVente;
+import abstraction.fourni.Monde;
 
 public class Transformateur2VendeurCC implements IVendeurContratCadre<Chocolat> {
 	// On tente de faire une marge de 30%
@@ -64,14 +65,14 @@ public class Transformateur2VendeurCC implements IVendeurContratCadre<Chocolat> 
 	public void proposerPrixVendeur(ContratCadre<Chocolat> cc) {
 		if(cc.getListePrixAuKilo().size()==0) {
 			cc.ajouterPrixAuKilo(getPrix(cc.getProduit(), cc.getQuantite()));
-		} 
+		}
 		else {
 			double coutProduction = t2.stocksChocolat.getPrix(cc.getProduit(), cc.getQuantite()) / cc.getQuantite();
 			double prixAcheteur = cc.getPrixAuKilo();
 			
 			if(prixAcheteur >= 0.80 * coutProduction) { // on ne fait une proposition que si l'acheteur ne demande pas un prix trop bas.
 				// Si le prix proposé nous permet de faire une marge, probabilité de 25% d'accepter
-				if(prixAcheteur > coutProduction && Math.random() < 0.25)
+				if(prixAcheteur > coutProduction && Math.random() < 0.25) // TODO Varier la probabilité selon la marge
 					cc.ajouterPrixAuKilo(cc.getPrixAuKilo());
 				else {
 					double prixSouhaite = coutProduction * MARGE_VISEE;
@@ -79,6 +80,7 @@ public class Transformateur2VendeurCC implements IVendeurContratCadre<Chocolat> 
 						cc.ajouterPrixAuKilo(cc.getPrixAuKilo()); 
 					else
 						cc.ajouterPrixAuKilo((prixAcheteur + prixSouhaite) / 2); // On propose un prix intermédiaire
+					// TODO Vérifier si différence suffisamment grande
 				}
 			}
 		}
@@ -96,6 +98,7 @@ public class Transformateur2VendeurCC implements IVendeurContratCadre<Chocolat> 
 		double livraison = Math.min(quantite, t2.iStockChocolat.getValeur());
 		t2.stocksChocolat.prendreProduits(produit, livraison);
 		t2.iStockChocolat.retirer(t2, livraison);
+		
 		return livraison;
 
 	}

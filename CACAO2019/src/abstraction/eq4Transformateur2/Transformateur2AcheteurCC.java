@@ -14,7 +14,7 @@ import abstraction.fourni.IActeur;
 import abstraction.fourni.Monde;
 
 public class Transformateur2AcheteurCC implements IAcheteurContratCadre<Feve> {
-	private static final double POIDS_MIN_CONTRAT_ACHAT = 150.0; // pas de contrats de moins de 150 kg
+	private static final double POIDS_MIN_CONTRAT_ACHAT = 10000.0; // poids min d'un contrat d'achat de fèves
 	private static final double DEPENSE_MAX_PAR_CC = 0.60; // on ne dépense pas plus de 60% de notre solde par CC
 	
 	private Transformateur2 t2;
@@ -118,6 +118,7 @@ public class Transformateur2AcheteurCC implements IAcheteurContratCadre<Feve> {
 
 	@Override
 	public void proposerPrixAcheteur(ContratCadre<Feve> cc) {
+		
 		// TODO Stocker le prix du dernier achat de ce produit et l'utiliser comme référence 
 		// (éviter d'acheter plus de 10% plus haut que l'achat le moins cher de ce produit, par exemple)
 		
@@ -130,7 +131,7 @@ public class Transformateur2AcheteurCC implements IAcheteurContratCadre<Feve> {
 			cc.ajouterPrixAuKilo((prixVendeur - prixVendeur*Math.random()*REDUCTION_MAX));
 		}
 	}
-
+ 
 	@Override
 	public void notifierAcheteur(ContratCadre<Feve> cc) { 
 		t2.contratsFevesEnCours.add(cc);
