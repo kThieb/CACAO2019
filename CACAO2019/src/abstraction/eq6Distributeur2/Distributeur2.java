@@ -284,9 +284,9 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
         public void ajustementPrix(ArrayList<Double> historique, Chocolat c ) {
                 // je récupère le chocoalt et l'historique des variations 
                 int n = historique.size();
-                System.out.println(n);
+                //System.out.println(n);
                 if (n>3) {
-                        System.out.println(historique.get(n-1) + historique.get(n-2) + historique.get(n-2)!= 0 );
+                        //System.out.println(historique.get(n-1) + historique.get(n-2) + historique.get(n-2) );
                         if ( Math.abs(historique.get(n-1)) > Math.abs(historique.get(n-2))*0.95
                                         && Math.abs(historique.get(n-1)) < Math.abs(historique.get(n-2))*1.05
                                         // encadrement de + ou- 5%
@@ -295,7 +295,7 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
                                         && (historique.get(n-1)!= 0 && historique.get(n-2)!=0 && historique.get(n-2)!= 0 )) {
                                 double nouveauprix = this.getPrix(c)*0.95;
                                 this.getPrixParProduit().put(c, nouveauprix);
-                                System.out.println(" "+c+" "+nouveauprix);
+                                //System.out.println(" "+c+" "+nouveauprix);
                         }
                 }
 
@@ -493,7 +493,7 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
                 
                 for (Chocolat c : stockIdeal.keySet() ) {
                         
-                        if (derniereVente().get(c) < 5000) {
+                        if (derniereVente().get(c) < 1000) {
                                 stockIdeal.put(c, 5000.0);
                         }
                         if (derniereVente().get(c) >= this.getIndicateurStock(c).getValeur()) {
@@ -565,6 +565,7 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
                                 quantite = 0;
                         }
                 }
+                System.out.println(quantite);
 
 
                 if (solde >10000) 
