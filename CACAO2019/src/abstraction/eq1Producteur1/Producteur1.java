@@ -1,6 +1,8 @@
 package abstraction.eq1Producteur1;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 
 import abstraction.eq1Producteur1.ventesCacaoAleatoires.SuperviseurVentesCacaoAleatoires;
@@ -27,6 +29,15 @@ public class Producteur1 implements IActeur /* , IVendeurCacaoAleatoire */ {
 	protected double recolteCriollo = 33;
 	protected double recolteForastero = 33;
 	protected double recolteTrinitario = 33;
+	//BEGIN MANON
+	protected double prixCriollo=3.5;
+	protected double prixFora_MG_EQ=2.5;
+	protected double prixFora_MG_NEQ=2;
+	protected double prixTrini_MG_EQ=2.2;
+	protected double prixTrini_MG_NEQ=1.5;
+	//END Manon
+	
+	
 
 	//BEGIN ANTI 
 	protected Indicateur plantationCriolloI;
@@ -185,6 +196,7 @@ public class Producteur1 implements IActeur /* , IVendeurCacaoAleatoire */ {
 		mapPrix.put(Feve.FORASTERO_MG_NEQ, 2.0);
 		mapPrix.put(Feve.TRINITARIO_MG_EQ, 2.2);
 		mapPrix.put(Feve.TRINITARIO_MG_NEQ, 1.5);
+		
 		return mapPrix;
 		// END Pauline
 	}
@@ -298,5 +310,15 @@ public class Producteur1 implements IActeur /* , IVendeurCacaoAleatoire */ {
 		return stockCriollo;
 	}
 	// END Nass
-
+	
+	//Begin Manon
+	public List<Feve> getFeve(){
+		ArrayList<Feve> typeFeve=new ArrayList<Feve>();
+		typeFeve.add(Feve.CRIOLLO_HG_EQ);
+		typeFeve.add(Feve.FORASTERO_MG_NEQ);
+		typeFeve.add(Feve.TRINITARIO_MG_NEQ);
+		return typeFeve;
+		
+	}
+//END MANON
 }

@@ -11,6 +11,12 @@ import abstraction.eq7Romu.ventesContratCadre.StockEnVente;
 public class VendeurContratCadre extends Producteur1 implements IVendeurContratCadre<Feve> {
 	// ANTI
 	private StockEnVente<Feve> stockEnVente;
+	
+	public VendeurContratCadre() {
+		for(Feve produit: this.getFeve()) {
+		this.stockEnVente.ajouter(produit, this.getStockI(produit).getValeur()); 
+		}
+	}
 
 
 	public StockEnVente<Feve> getStockEnVente() {
