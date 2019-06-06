@@ -273,7 +273,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 
 	@Override
 	public void proposerPrixAcheteur(ContratCadre<Feve> cc) {
-		//begin raphaelle
+		//begin raphael
 		double prixVendeur = cc.getListePrixAuKilo().get(0);
 		int nbAchatsMoyenne=Math.min(10,this.prixAchats.getHistorique().getTaille());//Nombre d'achats pris en compte pour le calcul de la moyenne (au plus 10)
 		double moyenneDerniersAchats=0;
@@ -304,13 +304,13 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 				throw new IllegalArgumentException("Appel de la methode receptionner de Transformateur1 avec un produit ne correspondant pas aux feves achetees par le transformateur");
 			}
 			if (quantite<=0.0) {
-				throw new IllegalArgumentException("Appel de la methode receptionner de Transformateur1 avec une quantite egale a "+quantite);
+				throw new IllegalArgumentException("Appel de la methode receptionner de Transformateur1 avec un montant négatif "+ quantite);
 			}
 			this.stockFeves.setQuantiteEnStock(produit, this.stockFeves.getQuantiteEnStock(produit) + quantite);
 		}
-		
+		//end sacha		
 	}
-//end sacha
+		
 	@Override
 	public double payer(double montant, ContratCadre<Feve> cc) {
 		// begin sacha
