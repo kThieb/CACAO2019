@@ -7,15 +7,20 @@ import abstraction.eq7Romu.ventesContratCadre.ContratCadre;
 import abstraction.eq7Romu.ventesContratCadre.Echeancier;
 import abstraction.eq7Romu.ventesContratCadre.IVendeurContratCadre;
 import abstraction.eq7Romu.ventesContratCadre.StockEnVente;
+import abstraction.fourni.Journal;
 
-public class VendeurContratCadre extends Producteur1 implements IVendeurContratCadre<Feve> {
+public class VendeurContratCadre extends Producteur1Interne implements IVendeurContratCadre<Feve> {
 	// ANTI
-	private StockEnVente<Feve> stockEnVente;
+	private StockEnVente<Feve> stockEnVente=new StockEnVente<Feve>();
 
-
+	
+	
 	public StockEnVente<Feve> getStockEnVente() {
-
-		return stockEnVente;
+        journal1.ajouter("stock en vente " +stockEnVente); // ROMU
+		for(Feve produit: this.getFeve()) {
+		this.stockEnVente.ajouter(produit, this.getStockI(produit).getValeur()); 
+		}
+		return this.stockEnVente;// ROMU. Prealablement stockEnVente; mais jamais initialisee...
 	}
 
 	public double getPrix(Feve produit, Double quantite) {
@@ -26,9 +31,10 @@ public class VendeurContratCadre extends Producteur1 implements IVendeurContratC
 			return Double.NaN;
 		} else {
 			// utiliser Producteur1.getPrixAuKilo() pour savoir prix en fct du produit
-			Producteur1 prod = new Producteur1();
+			Producteur1Interne prod = new Producteur1Interne();
 			return prod.getPrixAuKilo().get(produit);
 		}
+		// END Pauline
 	}
 //Begin MANON ET PAULINE
 	public void proposerEcheancierVendeur(ContratCadre<Feve> cc) {
@@ -69,10 +75,10 @@ public class VendeurContratCadre extends Producteur1 implements IVendeurContratC
 	public void proposerPrixVendeur(ContratCadre<Feve> cc) {
 
 		/* Si la liste est nulle on ajoute le prix initialement proposé */
-		if (cc.getListePrixAuKilo() == null) {
+		if (cc.getListePrixAuKilo().size()==0) {
 			cc.ajouterPrixAuKilo(this.getPrix(cc.getProduit(), cc.getQuantite()));
 		} else {
-			double prixVendeur = (double) cc.getListePrixAuKilo().get(-2);
+			double prixVendeur = (double) cc.getListePrixAuKilo().get(cc.getListePrixAuKilo().size()-2);
 			double prixAcheteur = cc.getPrixAuKilo();
 			/*
 			 * Si la différence de prix est inférieur à celle de 5% proposé on accepte le
@@ -100,6 +106,7 @@ public class VendeurContratCadre extends Producteur1 implements IVendeurContratC
 	public void notifierVendeur(ContratCadre<Feve> cc) {
 
 		super.getHistoriqueContrats().put(cc.getNumero(), cc);
+		this.journal1.ajouter("Vente"+cc.getNumero());
 //END ANTI
 
 
@@ -120,6 +127,8 @@ public class VendeurContratCadre extends Producteur1 implements IVendeurContratC
 	public void encaisser(double montant, ContratCadre<Feve> cc) {
 		super.soldeBancaire.ajouter(this ,  montant);
 		cc.payer(montant);
+		journal1.ajouter("solde bancaire +" + Double.toString(montant));
+
 	}
 //
 
@@ -142,13 +151,13 @@ public class VendeurContratCadre extends Producteur1 implements IVendeurContratC
 		      if (quantite>getStockI(produit).getValeur()) {
 		    	  double valeur_livre=getStockI(produit).getValeur();
 		    	  retirer(produit,valeur_livre);
-		    	  cc.livrer(valeur_livre);
+		    	  //cc.livrer(valeur_livre);
 		         return valeur_livre;
 		      }
 		      
 		      //END Nas
 		      else {
-		    	  cc.livrer(quantite);
+		    	  //cc.livrer(quantite);
 		    	  //super.stockFeves.retirer(this, quantite);
 		    	  retirer(produit,quantite);
 		         return quantite;
