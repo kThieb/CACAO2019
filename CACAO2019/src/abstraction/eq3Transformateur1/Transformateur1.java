@@ -146,29 +146,36 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	public void next() {
 		// -------------------------- begin eve
 		
-		// les quantites de cacao utilisees sont celles specifiees dans le cahier des charges v2
-		ArrayList<Chocolat> aProduire = this.stockChocolat.getProduitsEnStock();
+		// feves en stock = utilisables
 		ArrayList<Feve> aDisposition = this.stockFeves.getProduitsEnStock();
-		for (Chocolat p: aProduire) {
-			for (Feve f: aDisposition) {
-				// transformation
-				if (this.coutEnFeves.getCoutEnFeves(p, f) > 0.0) {
-					double fevesUtilisees = (this.stockFeves.getQuantiteEnStock(f)*0.9); // on garde 10% du stocks de feves au cas ou
-					double nouveauChocolat = fevesUtilisees/this.coutEnFeves.getCoutEnFeves(p, f); // on determine la quantité de choco en fonctions des feves utilisées et du cout en Feve
-				
-					
-					// update solde bancaireE
-					this.soldeBancaire.retirer(this, nouveauChocolat*this.margeChocolats.getCoutProd(p));
-					// updater stocks feves
-					this.stockFeves.removeQuantiteEnStock(f, fevesUtilisees);
-					this.journal.ajouter("Transformation de " + fevesUtilisees + " de feves");
-					this.iStockFeves.setValeur(this, this.stockFeves.getQuantiteEnStock(f));;
-					// updater stocks chocolat
-					this.stockChocolat.addQuantiteEnStock(p, nouveauChocolat);
-					this.iStockChocolat.setValeur(this, this.iStockChocolat.getValeur() + nouveauChocolat);
+		ArrayList<Chocolat> peutEtreProduit = new ArrayList<Chocolat>(Arrays.asList(Chocolat.values()));
+		for (Feve f: aDisposition) {
+			// on garde 10% des feves en cas de penurie
+			double fevesUtilisees = this.stockFeves.getQuantiteEnStock(f)*0.9;
 			
+			// chocolats qu'on peut produire avec cette feve
+			ArrayList<Chocolat> aProduire = new ArrayList<Chocolat>();
+			for (Chocolat c: peutEtreProduit) {
+				if (this.coutEnFeves.getCoutEnFeves(c, f)>0.0) {
+					aProduire.add(c);
 				}
 			}
+			
+			// on partage les feves entre les differents types de chocolat
+			double fevesParProduit = fevesUtilisees/aProduire.size();
+			for (Chocolat c: aProduire) {
+				double nouveauChocolat = fevesParProduit/this.coutEnFeves.getCoutEnFeves(c, f);
+				// update solde bancaire
+				this.soldeBancaire.retirer(this, nouveauChocolat*this.margeChocolats.getCoutProd(c));
+				// updater stocks chocolat
+				this.stockChocolat.addQuantiteEnStock(c, nouveauChocolat);
+				this.iStockChocolat.ajouter(this, nouveauChocolat);
+			}
+			// updater stocks feves
+			this.stockFeves.removeQuantiteEnStock(f, fevesUtilisees);
+			this.journal.ajouter("Transformation de " + fevesUtilisees + " de feves");
+			this.iStockFeves.retirer(this, fevesUtilisees);
+			
 		}
 		
 		// -------------------------- end eve 
