@@ -65,7 +65,7 @@ public class Transformateur2VendeurCC implements IVendeurContratCadre<Chocolat> 
 	public void proposerPrixVendeur(ContratCadre<Chocolat> cc) {
 		if(cc.getListePrixAuKilo().size()==0) {
 			cc.ajouterPrixAuKilo(getPrix(cc.getProduit(), cc.getQuantite()));
-		} 
+		}
 		else {
 			double coutProduction = t2.stocksChocolat.getPrix(cc.getProduit(), cc.getQuantite()) / cc.getQuantite();
 			double prixAcheteur = cc.getPrixAuKilo();
@@ -80,7 +80,7 @@ public class Transformateur2VendeurCC implements IVendeurContratCadre<Chocolat> 
 						cc.ajouterPrixAuKilo(cc.getPrixAuKilo()); 
 					else
 						cc.ajouterPrixAuKilo((prixAcheteur + prixSouhaite) / 2); // On propose un prix intermédiaire
-					// TODO Vérifier si différence suffisamment grande 
+					// TODO Vérifier si différence suffisamment grande
 				}
 			}
 		}
