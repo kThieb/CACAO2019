@@ -6,6 +6,7 @@ import java.util.List;
 
 import abstraction.eq7Romu.distributionChocolat.IDistributeurChocolat;
 import abstraction.eq7Romu.produits.Chocolat;
+import abstraction.eq7Romu.produits.Gamme;
 import abstraction.eq7Romu.ventesContratCadre.StockEnVente;
 import abstraction.fourni.IActeur;
 import abstraction.fourni.Journal;
@@ -64,7 +65,22 @@ public class Client1 implements IActeur{
 	
 	
 	
-	
+	//Nazim
+		public double getQualite(Chocolat c) {
+			int N = 0;
+			if (c.isEquitable()) {
+				N = N+1 ;
+			}
+			if (c.isSansHuileDePalme()) {
+				N = N+1 ;
+			}
+			if (c.getGamme() == Gamme.HAUTE ) {
+				N= N+2 ;
+			} else if (c.getGamme() == Gamme.MOYENNE) {
+				N = N+1 ;
+			}
+			return 10*N/4;
+		}
 	
 	public String getNom() {
 		return "CL"+this.numero;
@@ -117,7 +133,7 @@ public class Client1 implements IActeur{
 		ArrayList<Double> L = new ArrayList<Double>(); 
 		L.add(D.getPrix(c));
 		L.add(D.getStockEnVente().get(c));
-		L.add(c.getQualite());
+		L.add(getQualite(c));
 		return L;
 		
 	}
@@ -183,14 +199,13 @@ public class Client1 implements IActeur{
 
 	
 	public void next() {
-		IDistributeurChocolat D = null ;
+		/*IDistributeurChocolat D = null ;
 		int step = Monde.LE_MONDE.getStep();
 		double notemax =0.0;
 		List<Double> Notesfinales = new ArrayList<Double>();
 		List<Double> Notes = this.Offres(step);
-		ArrayList<ArrayList<String>>  Commandes = journal.getHist();
 		for (IDistributeurChocolat V: Distributeurs) {
-			for ( ArrayList<String> x: Commandes){
+			//for ( ArrayList<String> x: Commandes){
 				double t =0 ;
 				int i = 0 ;
 				if ("V" == x.get(1)) {
@@ -217,12 +232,7 @@ public class Client1 implements IActeur{
 		this.journal.ajouter(""+ D);
 		this.journal.ajouter("" +numero);
 		this.journal.ajouter(""+quantitemoyenne*temporalite.get(step));
-		
-		this.journal.ajout(step,""+step);
-		this.journal.ajout(step , ""+ D);
-		this.journal.ajout(step ,"" +numero);
-		this.journal.ajout(step , ""+quantitemoyenne*temporalite.get(step));
-		
+	*/
 	}
 
 }

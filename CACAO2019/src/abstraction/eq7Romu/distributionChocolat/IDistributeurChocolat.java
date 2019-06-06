@@ -1,7 +1,5 @@
 package abstraction.eq7Romu.distributionChocolat;
 
-import java.util.ArrayList;
-
 import abstraction.eq7Romu.produits.Chocolat;
 import abstraction.eq7Romu.ventesContratCadre.StockEnVente;
 
@@ -30,6 +28,5 @@ public interface IDistributeurChocolat {
 	 * - si il n'y a aucun stock de c en vente retourne 0.
 	 */
 	public double vendre(Chocolat c, double quantite);
-	
 	
 }
