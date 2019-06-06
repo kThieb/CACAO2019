@@ -312,6 +312,6 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		return typeFeve;
 		
 	}
-//END MANON
+	//END MANON
 
 }
