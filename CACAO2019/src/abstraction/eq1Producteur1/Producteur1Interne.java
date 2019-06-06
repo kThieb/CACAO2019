@@ -2,13 +2,17 @@ package abstraction.eq1Producteur1;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
+import java.util.Map.Entry;
 
 import abstraction.eq1Producteur1.ventesCacaoAleatoires.SuperviseurVentesCacaoAleatoires;
 import abstraction.eq7Romu.produits.Feve;
 import abstraction.eq7Romu.produits.Variete;
 import abstraction.eq7Romu.ventesContratCadre.ContratCadre;
+import abstraction.eq7Romu.ventesContratCadre.Echeancier;
 import abstraction.fourni.IActeur;
 import abstraction.fourni.Indicateur;
 import abstraction.fourni.Journal;
@@ -200,6 +204,40 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		// END Pauline
 	}
 	//BEGIN ANTI 
+	public Double moyenneDemande(){
+		List<Double> moyenne = new ArrayList<Double>() ; 
+		for (int i=0; i<5; i++) {
+			moyenne.add(0.0);
+		}
+		Set<Entry<Integer, ContratCadre<Feve>>> setHisto= historiqueContrats.entrySet();
+		Iterator<Entry<Integer, ContratCadre<Feve>>> it = setHisto.iterator();
+		while(it.hasNext()) {
+			Entry<Integer, ContratCadre<Feve>> e = it.next();
+			List<Echeancier> echeanciers = e.getValue().getEcheanciers();
+			
+			for(int i=0; i<echeanciers.size(); i++) {
+				Echeancier echeancier = echeanciers.get(i);
+				int stepDebut = echeancier.getStepDebut();
+				if (stepDebut <cinqAnsEnSteps) {
+					int stepFin = echeancier.getStepFin();
+					if (stepFin - stepDebut > cinqAnsEnSteps) {
+						stepFin = cinqAnsEnSteps; }
+					
+					if (stepDebut < unAnEnSteps) {
+						moyenne.set(0, moyenne.get(0)+echeancier.getQuantiteJusquA(unAnEnSteps));
+						if (stepFin < unAnEnSteps)
+						stepDebut = unAnEnSteps ; 
+					}
+				}
+				
+				
+			}
+			
+			
+		}
+		
+	}
+	
 	
 	public void updatePlantation() {
 		
