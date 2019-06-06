@@ -1,3 +1,4 @@
+//Begin Raph
 package abstraction.eq3Transformateur1;
 
 import java.util.ArrayList;
@@ -52,3 +53,4 @@ public class CoutEnFeves {
 		}
 	}
 }
+//End Raph

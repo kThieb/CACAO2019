@@ -150,11 +150,11 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 			for (Feve f: aDisposition) {
 				// transformation
 				if (this.coutEnFeves.getCoutEnFeves(p, f) > 0.0) {
-					double fevesUtilisees = (this.stockFeves.getQuantiteEnStock(f)*0.9)*this.coutEnFeves.getCoutEnFeves(p, f); // on garde 10% du stocks de feves au cas ou
-					double nouveauChocolat = fevesUtilisees*2; // 50% cacao, 50% sucre
+					double fevesUtilisees = (this.stockFeves.getQuantiteEnStock(f)*0.9); // on garde 10% du stocks de feves au cas ou
+					double nouveauChocolat = fevesUtilisees/this.coutEnFeves.getCoutEnFeves(p, f); // on determine la quantité de choco en fonctions des feves utilisées et du cout en Feve
 				
 					
-					// update solde bancaire
+					// update solde bancaireE
 					this.soldeBancaire.retirer(this, nouveauChocolat*this.margeChocolats.getCoutProd(p));
 					// updater stocks feves
 					this.stockFeves.removeQuantiteEnStock(f, fevesUtilisees);
