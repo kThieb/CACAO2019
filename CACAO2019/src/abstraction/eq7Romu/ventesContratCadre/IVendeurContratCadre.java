@@ -1,4 +1,4 @@
- package abstraction.eq7Romu.ventesContratCadre;
+package abstraction.eq7Romu.ventesContratCadre;
 
 public interface IVendeurContratCadre<I> {
 	
