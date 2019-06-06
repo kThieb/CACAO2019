@@ -27,7 +27,7 @@ public class HistoriqueDemande {
 	
 	// Adrien
 	public TasProduit<Chocolat> getDemande (int yearsBack, int stepInYear, Chocolat type) {
-		// Renvoie la quantité demandée (et le prix associé) pour un chocolat donné à une step précise
+		// Renvoie la quantité demandée (et le prix associé) pour un chocolat donné à un step précis
 		int currentStep = Monde.LE_MONDE.getStep();
 		if(currentStep - yearsBack * Transformateur2.STEPS_PAR_ANNEE + stepInYear < 0)
 			return null;
