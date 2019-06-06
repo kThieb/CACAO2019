@@ -1,6 +1,8 @@
 package abstraction.eq1Producteur1;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 
 import abstraction.eq1Producteur1.ventesCacaoAleatoires.SuperviseurVentesCacaoAleatoires;
@@ -305,5 +307,16 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		return stockCriollo;
 	}
 	// END Nass
+	
+	//Begin Manon
+	public List<Feve> getFeve(){
+		ArrayList<Feve> typeFeve=new ArrayList<Feve>();
+		typeFeve.add(Feve.CRIOLLO_HG_EQ);
+		typeFeve.add(Feve.FORASTERO_MG_NEQ);
+		typeFeve.add(Feve.TRINITARIO_MG_NEQ);
+		return typeFeve;
+		
+	}
+	//END MANON
 
 }

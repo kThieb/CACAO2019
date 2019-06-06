@@ -13,9 +13,13 @@ public class VendeurContratCadre extends Producteur1Interne implements IVendeurC
 	// ANTI
 	private StockEnVente<Feve> stockEnVente;
 
-
+	
+	
 	public StockEnVente<Feve> getStockEnVente() {
         journal1.ajouter("stock en vente " +stockEnVente); // ROMU
+		for(Feve produit: this.getFeve()) {
+		this.stockEnVente.ajouter(produit, this.getStockI(produit).getValeur()); 
+		}
 		return stockEnVente;// ROMU. Prealablement stockEnVente; mais jamais initialisee...
 	}
 
