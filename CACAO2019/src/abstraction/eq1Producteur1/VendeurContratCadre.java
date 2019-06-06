@@ -12,7 +12,7 @@ import abstraction.fourni.Monde;
 
 public class VendeurContratCadre extends Producteur1Interne implements IVendeurContratCadre<Feve> {
 	// ANTI
-	private StockEnVente<Feve> stockEnVente;
+	private StockEnVente<Feve> stockEnVente=new StockEnVente<Feve>();
 
 	
 	
