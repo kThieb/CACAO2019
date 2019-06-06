@@ -280,14 +280,18 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 	public void ajustementPrix(ArrayList<Double> historique, Chocolat c ) {
 		// je récupère le chocoalt et l'historique des variations 
 		int n = historique.size();
+		System.out.println(n);
 		if (n>3) {
-			if ( Math.abs(historique.get(n-1)) > Math.abs(historique.get(n-2)*0.95)
-					&& Math.abs(historique.get(n-1)) < Math.abs(historique.get(n-2)*1.05)
+			System.out.println(historique.get(n-1) + historique.get(n-2) + historique.get(n-2)!= 0 );
+			if ( Math.abs(historique.get(n-1)) > Math.abs(historique.get(n-2))*0.95
+					&& Math.abs(historique.get(n-1)) < Math.abs(historique.get(n-2))*1.05
 					// encadrement de + ou- 5%
-					&& Math.abs(historique.get(n-2)) > Math.abs(historique.get(n-3)*0.95)
-					&& Math.abs(historique.get(n-2)) < Math.abs(historique.get(n-3)*1.05) ) {
+					&& Math.abs(historique.get(n-2)) > Math.abs(historique.get(n-3))*0.95
+					&& Math.abs(historique.get(n-2)) < Math.abs(historique.get(n-3))*1.05
+					&& (historique.get(n-1)!= 0 && historique.get(n-2)!=0 && historique.get(n-2)!= 0 )) {
 				double nouveauprix = this.getPrix(c)*0.95;
 				this.getPrixParProduit().put(c, nouveauprix);
+				System.out.println(" "+c+" "+nouveauprix);
 			}
 		}
 	}
@@ -545,9 +549,8 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 
 		retireVieuxContrats();
 		
-		if (solde >10000 && quantite > 1000 ) 
+		if (solde >10000 ) 
 		{
-
 			List<IVendeurContratCadre<Chocolat>> vendeurs = new ArrayList<IVendeurContratCadre<Chocolat>>();
 			for (IActeur acteur : Monde.LE_MONDE.getActeurs()) {
 				if (acteur instanceof IVendeurContratCadre<?>) {
@@ -584,7 +587,6 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 			}
 
 		}
-		if (quantite > 1000) {this.journal.ajouter("La quantité de stock est suffisante");}
 		else {this.journal.ajouter(" Il ne reste que "+getArrondi(solde)+" euros une"
 				+ " fois tous les contrats payes donc nous ne souhaitons pas en creer d'autres pour l'instant");}
 		return res;
