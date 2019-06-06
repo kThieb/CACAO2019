@@ -75,6 +75,7 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 
 	}
 
+// Begin Clément M
 	
 	public void next() {
 		retireVieuxContrats();
@@ -90,6 +91,8 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 
 		}
 	}
+
+// End Clément M
 	
 public void recolte(Feve f) {
 		if (this.numStep <= 6 || this.numStep >= 21 || (this.numStep >= 9 && this.numStep <= 14)) {
@@ -135,6 +138,8 @@ public void recolte(Feve f) {
 		return res;
 	}
 
+// Begin Elsa
+	
 	/**
 	 * Propose un nouvel echeancier au producteur
 	 */
@@ -184,6 +189,10 @@ public void recolte(Feve f) {
 		}
 	}
 
+// End Elsa
+	
+// Begin Clément M	
+	
 	@Override
 	public void notifierVendeur(ContratCadre<Feve> cc) {
 		this.contratsEnCours.add(cc);
@@ -196,6 +205,8 @@ public void recolte(Feve f) {
 		}
 		this.soldeBancaire.ajouter(this, montant);
 	}
+
+
 
 	public double getPrix(Feve produit, Double quantite) {
 		// si tu peux voir ce message, c'est que ca a marche :)
@@ -238,6 +249,7 @@ public void recolte(Feve f) {
 		}
 	}
 
+	
 	@Override
 	public double livrer(Feve produit, double quantite, ContratCadre<Feve> cc) {
 		if (produit == null || !produit.equals(produit)) {
@@ -250,3 +262,5 @@ public void recolte(Feve f) {
 	}
 
 }
+
+// End Clément M
