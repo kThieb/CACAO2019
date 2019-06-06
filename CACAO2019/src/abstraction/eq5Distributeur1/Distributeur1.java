@@ -259,21 +259,44 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 		 V2 ERINE
 		 */
 		if (cc.getProduit().equals(Chocolat.HG_E_SHP)) {
-			if (30 < prixVendeur && prixVendeur < 70 && stock.get((Chocolat) cc.getProduit()) < 10000) {
+			if (20 < prixVendeur && prixVendeur <= 70 && stock.get((Chocolat) cc.getProduit()) < 10000) {
 				cc.ajouterPrixAuKilo(prixVendeur*0.8);
 				this.journal.ajouter("Nous proposons un prix de " + prixVendeur*0.8);
-			} else if (30 < prixVendeur && prixVendeur < 100 && stock.get((Chocolat) cc.getProduit())>=10000) {
+			} else if (20 < prixVendeur && prixVendeur <= 70 && stock.get((Chocolat) cc.getProduit())>=10000) {
 				cc.ajouterPrixAuKilo(prixVendeur*0.6);
 				this.journal.ajouter("Nous proposons un prix de " + prixVendeur*0.6);
-			} else if (prixVendeur <= 100) {
+			} else if (prixVendeur <= 20) {
 				cc.ajouterPrixAuKilo(prixVendeur);
 				this.journal.ajouter("Nous proposons un prix de " + prixVendeur);
 			} else {
 				this.journal.ajouter("Nous refusons le prix de " + prixVendeur);
 			}	
-		}
-		if (cc.getProduit().equals(Chocolat.MG_E_SHP) || cc.getProduit().equals(Chocolat.MG_NE_HP)) {
-			
+		} else if (cc.getProduit().equals(Chocolat.MG_E_SHP) || cc.getProduit().equals(Chocolat.MG_NE_SHP)) {
+			if (10 < prixVendeur && prixVendeur <= 50 && stock.get((Chocolat) cc.getProduit()) < 10000) {
+				cc.ajouterPrixAuKilo(prixVendeur*0.8);
+				this.journal.ajouter("Nous proposons un prix de " + prixVendeur*0.8);
+			} else if (10 < prixVendeur && prixVendeur <= 50 && stock.get((Chocolat) cc.getProduit())>=10000) {
+				cc.ajouterPrixAuKilo(prixVendeur*0.6);
+				this.journal.ajouter("Nous proposons un prix de " + prixVendeur*0.6);
+			} else if (prixVendeur <= 10) {
+				cc.ajouterPrixAuKilo(prixVendeur);
+				this.journal.ajouter("Nous proposons un prix de " + prixVendeur);
+			} else {
+				this.journal.ajouter("Nous refusons le prix de " + prixVendeur);
+			}	
+		} else if (cc.getProduit().equals(Chocolat.MG_NE_HP)) {
+			if (10 < prixVendeur && prixVendeur <= 40 && stock.get((Chocolat) cc.getProduit()) < 10000) {
+				cc.ajouterPrixAuKilo(prixVendeur*0.8);
+				this.journal.ajouter("Nous proposons un prix de " + prixVendeur*0.8);
+			} else if (10 < prixVendeur && prixVendeur <= 40 && stock.get((Chocolat) cc.getProduit())>=10000) {
+				cc.ajouterPrixAuKilo(prixVendeur*0.6);
+				this.journal.ajouter("Nous proposons un prix de " + prixVendeur*0.6);
+			} else if (prixVendeur <= 10) {
+				cc.ajouterPrixAuKilo(prixVendeur);
+				this.journal.ajouter("Nous proposons un prix de " + prixVendeur);
+			} else {
+				this.journal.ajouter("Nous refusons le prix de " + prixVendeur);
+			}	
 		}
 	}
 
