@@ -34,9 +34,9 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 	protected HashMap<Integer, Double> stockCriollo;
 	protected HashMap<Integer, Double> stockForastero;
 	protected HashMap<Integer, Double> stockTrinitario;
-	protected double recolteCriollo = 33;
-	protected double recolteForastero = 33;
-	protected double recolteTrinitario = 33;
+	protected double recolteCriollo ;
+	protected double recolteForastero ;
+	protected double recolteTrinitario ;
     protected List<ContratCadre<Feve>> contratEnCours;  //
     protected List<Double>historiqueSoldeBancaire;
 
@@ -105,6 +105,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		this.plantationCriollo = new HashMap<Integer, Integer>();
 		this.plantationForastero = new HashMap<Integer, Integer>(); 
 		this.plantationTrinitario = new HashMap<Integer, Integer>(); 
+		
 		
 		for (int next = 0; next < dureeDeVieCacaoyer - 1; next++) {
 			if ( next%unAnEnSteps == 0 ) {
@@ -403,6 +404,9 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		HashMap<Integer, Integer> plantationTrinitarioOld = new HashMap<Integer, Integer>(plantationTrinitario);
 		
 		for (int next = 0; next < dureeDeVieCacaoyer - 1; next++) {
+			recolteCriollo = 0;
+			recolteTrinitario = 0;
+			recolteForastero = 0;
 			plantationCriollo.put(next + 1 , plantationCriolloOld.get(next));
 			plantationForastero.put(next + 1 , plantationForasteroOld.get(next));
 			plantationTrinitario.put( next + 1 , plantationTrinitarioOld.get(next));
