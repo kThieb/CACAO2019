@@ -43,7 +43,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	private CoutEnFeves coutEnFeves;
 	//end Raphael
 	
-	// begin eve : A MODIFIER
+	// begin eve
 	private Stock<Chocolat> stockChocolat;
 	private Stock<Feve> stockFeves;
 	// end eve
