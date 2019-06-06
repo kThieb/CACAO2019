@@ -626,6 +626,13 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
         }
 
 
+		@Override
+		public void next() {
+			// TODO Auto-generated method stub
+			
+		}
+
+
 
 
 }
