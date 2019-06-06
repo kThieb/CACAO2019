@@ -17,6 +17,7 @@ public class HistoriqueDemande {
 			i=i+1;
 		}
 	}
+//Guillaume
 	
 	public void ajouterDemande(int step,TasProduit<Chocolat> tas,Chocolat c) {
 		HashMap<Chocolat, TasProduit<Chocolat>> DemandeParProduit = new HashMap();
