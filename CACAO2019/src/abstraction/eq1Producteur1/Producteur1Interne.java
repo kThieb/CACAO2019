@@ -79,7 +79,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 	// END ANTI
 
 	public Producteur1Interne() {
-		this.stockFeves = new Indicateur("EQ1 stock feves", this, 3000);
+		this.stockFeves = new Indicateur("EQ1 stock feves", this, 3000);  
 		// BEGIN Nas
 		this.stockCriolloI = new Indicateur("EQ1 stock criollo", this, 1000);
 		this.stockForasteroI = new Indicateur("EQ1 stock forastero", this, 1000);
