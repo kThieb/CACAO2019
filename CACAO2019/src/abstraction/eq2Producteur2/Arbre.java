@@ -18,10 +18,15 @@ public class Arbre {
 	}
 	
 	public void initialise() {
-		 this.nbArbres.put(Feve.FORASTERO_MG_NEQ, new ArrayList());
-		 this.nbArbres.put(Feve.FORASTERO_MG_EQ, new ArrayList());
-		 this.nbArbres.put(Feve.MERCEDES_MG_EQ, new ArrayList());
-		 this.nbArbres.put(Feve.MERCEDES_MG_NEQ, new ArrayList());
+		 this.nbArbres.put(Feve.FORASTERO_MG_NEQ, new ArrayList<Integer>());
+		 this.nbArbres.put(Feve.FORASTERO_MG_EQ, new ArrayList<Integer>());
+		 this.nbArbres.put(Feve.MERCEDES_MG_EQ, new ArrayList<Integer>());
+		 this.nbArbres.put(Feve.MERCEDES_MG_NEQ, new ArrayList<Integer>());
+		 
+		 this.nbtot.put(Feve.FORASTERO_MG_NEQ, 0);
+		 this.nbtot.put(Feve.FORASTERO_MG_EQ, 0);
+		 this.nbtot.put(Feve.MERCEDES_MG_EQ, 0);
+		 this.nbtot.put(Feve.MERCEDES_MG_NEQ, 0);
 		 
 		 for (Feve f : this.nbArbres.keySet()) {
 			 for(int i=0;i<37;i++) {

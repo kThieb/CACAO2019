@@ -130,7 +130,7 @@ public void payerCoutsProd() {
 		couts =+ getCoutProduction(f);
 	}
 	double newsolde = soldeBancaire.getValeur() - couts ;
-	soldeBancaire.replace( "EQ2 Solde", newsolde);
+	soldeBancaire.setValeur(this, newsolde);
 }
 	
 	
