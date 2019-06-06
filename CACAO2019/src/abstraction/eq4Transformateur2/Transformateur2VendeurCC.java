@@ -25,7 +25,7 @@ public class Transformateur2VendeurCC implements IVendeurContratCadre<Chocolat> 
 		// this.catalogueChocolat = new HashMap<Chocolat,Double>(); //Minh Tri
 	}
 	
-	
+	//Guillaume
 	public List<Chocolat> getProduitsEnVente() {
 		ArrayList<Chocolat> chocolat = new ArrayList<Chocolat>();
 		chocolat.addAll(t2.stockEnVente.getProduitsEnVente());
