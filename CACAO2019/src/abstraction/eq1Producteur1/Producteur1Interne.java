@@ -2,17 +2,13 @@ package abstraction.eq1Producteur1;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
-import java.util.Map.Entry;
 
 import abstraction.eq1Producteur1.ventesCacaoAleatoires.SuperviseurVentesCacaoAleatoires;
 import abstraction.eq7Romu.produits.Feve;
 import abstraction.eq7Romu.produits.Variete;
 import abstraction.eq7Romu.ventesContratCadre.ContratCadre;
-import abstraction.eq7Romu.ventesContratCadre.Echeancier;
 import abstraction.fourni.IActeur;
 import abstraction.fourni.Indicateur;
 import abstraction.fourni.Journal;
@@ -33,7 +29,6 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 	protected double recolteCriollo = 33;
 	protected double recolteForastero = 33;
 	protected double recolteTrinitario = 33;
-	protected List<ContratCadre<Feve>> contratEnCours;
 
 	//BEGIN ANTI 
 	protected Indicateur plantationCriolloI;
@@ -78,7 +73,6 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		this.stockCriollo=new HashMap<Integer, Double>();
 		this.stockForastero=new HashMap<Integer, Double>();
 		this.stockTrinitario=new HashMap<Integer, Double>();
-		this.contratEnCours=new ArrayList<ContratCadre<Feve>>();
 
 		for (int next = 0; next < DUREE_DE_VIE_FEVE - 1; next++) {
 			stockCriollo.put(next, (double) 0);
@@ -116,7 +110,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		Monde.LE_MONDE.ajouterIndicateur(this.soldeBancaire);
 		//Monde.LE_MONDE.ajouterActeur(new SuperviseurVentesCacaoAleatoires());
 		// BEGIN Manon
-		this.journal1 = new Journal("Journal EQ1");
+		this.journal1 = new Journal("JEQ1");
 		Monde.LE_MONDE.ajouterJournal(this.journal1);
 		System.out.println(" ajout du journal...");
 		// END Manon
@@ -127,19 +121,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		return this.historiqueContrats;
 	}
 	// END Anti
-	//Begin
-	public void retireVieuxContrats() {
-		List<ContratCadre<Feve>> aEnlever = new ArrayList<ContratCadre<Feve>>();
-		for (ContratCadre<Feve> c : this.contratEnCours) {
-			if (c.getQuantiteRestantALivrer()<=0.0 && c.getMontantRestantARegler()<=0.0) {
-				aEnlever.add(c);
-			}
-		}
-		for (ContratCadre<Feve> c : aEnlever) {
-			this.contratEnCours.remove(c);
-		}
-	}
-	//END
+
 	// BEGIN Nas
 	public double getRecolte(Feve feve) {
 		
@@ -217,42 +199,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		return mapPrix;
 		// END Pauline
 	}
-	
 	//BEGIN ANTI 
-	public Double moyenneDemande(){
-		List<Double> moyenne = new ArrayList<Double>() ; 
-		for (int i=0; i<5; i++) {
-			moyenne.add(0.0);
-		}
-		Set<Entry<Integer, ContratCadre<Feve>>> setHisto= historiqueContrats.entrySet();
-		Iterator<Entry<Integer, ContratCadre<Feve>>> it = setHisto.iterator();
-		while(it.hasNext()) {
-			Entry<Integer, ContratCadre<Feve>> e = it.next();
-			List<Echeancier> echeanciers = e.getValue().getEcheanciers();
-			
-			for(int i=0; i<echeanciers.size(); i++) {
-				Echeancier echeancier = echeanciers.get(i);
-				int stepDebut = echeancier.getStepDebut();
-				if (stepDebut <cinqAnsEnSteps) {
-					int stepFin = echeancier.getStepFin();
-					if (stepFin - stepDebut > cinqAnsEnSteps) {
-						stepFin = cinqAnsEnSteps; }
-					
-					if (stepDebut < unAnEnSteps) {
-						moyenne.set(0, moyenne.get(0)+echeancier.getQuantiteJusquA(unAnEnSteps));
-						if (stepFin < unAnEnSteps)
-						stepDebut = unAnEnSteps ; 
-					}
-				}
-				
-				
-			}
-			
-			
-		}
-		
-	}
-	
 	
 	public void updatePlantation() {
 		
