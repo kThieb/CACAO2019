@@ -97,9 +97,9 @@ public void recolte(Feve f) {
 			this.maladie_predateurs=-rand.nextInt(200)/1000;
 			this.meteo=rand.nextInt(200)/1000-1;
 			double qualitePRoduction=maladie_predateurs+meteo;
-			double qualiteProduction = (Math.random() - 0.5) / 2.5 + 1; // entre 0.8 et 1.2
+			//double qualiteProduction = (Math.random() - 0.5) / 2.5 + 1; // entre 0.8 et 1.2
 			double nouveauStock = this.gestionnaireFeve.getStock(f)
-						+ this.gestionnaireFeve.getProductionParStep(f) * qualiteProduction; 
+						+ this.gestionnaireFeve.getProductionParStep(f) * (1 + qualitePRoduction); 
 			this.gestionnaireFeve.setStock(this, f, nouveauStock);}}
 
 
@@ -127,10 +127,11 @@ public void recolte(Feve f) {
 				if (Monde.LE_MONDE != null) {
 					if (cc.getProduit() == feve) {
 						stockRestant = stockRestant - cc.getQuantiteRestantALivrer();
-						res.ajouter(feve, Math.max(0.0, stockRestant));
 					}
 				}
 			}
+			res.ajouter(feve, Math.max(0.0, stockRestant));
+
 		}
 		return res;
 	}
@@ -139,6 +140,7 @@ public void recolte(Feve f) {
 	 * Propose un nouvel echeancier au producteur
 	 */
 	public void proposerEcheancierVendeur(ContratCadre<Feve> cc) {
+		
 		if (contratsEnCours.contains(cc)) {
 			Echeancier e = cc.getEcheancier();
 		} else {
@@ -157,6 +159,7 @@ public void recolte(Feve f) {
 
 	@Override
 	public void proposerPrixVendeur(ContratCadre<Feve> cc) {
+		
 		if (cc.getListePrixAuKilo().size() == 0) { // On vérifie qu'on a un prix à proposer
 			cc.ajouterPrixAuKilo(getPrix(cc.getProduit(), cc.getQuantite()));
 		} else {
