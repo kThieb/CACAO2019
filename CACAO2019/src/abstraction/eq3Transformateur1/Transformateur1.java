@@ -217,7 +217,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 				IVendeurContratCadre<Feve> vendeur = vendeurs.get( (int)( Math.random()*vendeurs.size())); // ici tire au hasard plutot que de tenir compte des stocks en vente et des prix
 				// On determine la quantite qu'on peut esperer avec le reste de notre solde bancaire
 				this.journal.ajouter(" Determination de la quantite achetable avec une somme de "+String.format("%.3f",solde)); 
-				double quantite = 500000.0; // On ne cherche pas a faire de contrat pour moins de 500 tonnes
+				double quantite = 1000.0; // On ne cherche pas a faire de contrat pour moins de 1 tonne
 				double prix = vendeur.getPrix(f, quantite);
 				this.journal.ajouter("prix total = "+prix*quantite+" solde = "+solde);
 				if (prix*quantite<solde) {
@@ -231,7 +231,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 					this.journal.ajouter("vendeur de "+f+" trouve: quantite = "+quantite);
 				}
 				else {
-					this.journal.ajouter("solde = "+solde+" insuffisant pour un contrat cadre de plus de 500 tonnes");
+					this.journal.ajouter("solde = "+solde+" insuffisant pour un contrat cadre de plus de 1 tonne");
 				}
 			} else {
 				this.journal.ajouter("   Aucun vendeur trouve --> pas de nouveau contrat a ce step"); 
