@@ -19,21 +19,21 @@ public class Stock{
 	}
 	
 	public int retrait(int quantite,int nextCourant) {
-		int quantite_a_enlever=quantite;
+		int quantiteAEnlever=quantite;
 		int nextAExplorer=0;
-		while (quantite_a_enlever>0 && nextAExplorer <=nextCourant) {
-			if (stock.get(nextAExplorer)<quantite_a_enlever) {
-				quantite_a_enlever=quantite_a_enlever-stock.get(nextAExplorer);
+		while (quantiteAEnlever>0 && nextAExplorer <=nextCourant) {
+			if (stock.get(nextAExplorer)<quantiteAEnlever) {
+				quantiteAEnlever=quantiteAEnlever-stock.get(nextAExplorer);
 				stock.put(nextAExplorer, 0);
 			} else {
 			
-				stock.put(nextAExplorer, stock.get(nextAExplorer)-quantite_a_enlever);
-				quantite_a_enlever=0;
+				stock.put(nextAExplorer, stock.get(nextAExplorer)-quantiteAEnlever);
+				quantiteAEnlever=0;
 			}
 			nextAExplorer++;
 			
 		}
-		return quantite-quantite_a_enlever;
+		return quantite-quantiteAEnlever;
 		
 	}
 	
