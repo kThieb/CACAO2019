@@ -161,10 +161,11 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 					this.soldeBancaire.retirer(this, nouveauChocolat*this.margeChocolats.getCoutProd(p));
 					// updater stocks feves
 					this.stockFeves.removeQuantiteEnStock(f, fevesUtilisees);
+					this.journal.ajouter("Transformation de " + fevesUtilisees + " de feves");
 					this.iStockFeves.setValeur(this, this.stockFeves.getQuantiteEnStock(f));;
 					// updater stocks chocolat
 					this.stockChocolat.addQuantiteEnStock(p, nouveauChocolat);
-					this.iStockChocolat.setValeur(this, this.stockChocolat.getQuantiteEnStock(p));
+					this.iStockChocolat.setValeur(this, this.iStockChocolat.getValeur() + nouveauChocolat);
 			
 				}
 			}
@@ -215,7 +216,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 				if (acteur instanceof IVendeurContratCadre) {
 					IVendeurContratCadre <Feve> vacteur = (IVendeurContratCadre<Feve>)acteur;
 					StockEnVente<Feve> stock = vacteur.getStockEnVente();
-					if (stock.get(f)>=1000.0) {// on souhaite faire des contrats d'au moins 1 tonnes
+					if (stock.get(f)>=1000.0) {// on souhaite faire des contrats d'au moins 1 tonne
 						this.journal.ajouter("   "+(acteur.getNom())+" vend "+stock.get(f)+" de "+f);
 						vendeurs.add((IVendeurContratCadre<Feve>)vacteur);
 					} else {
