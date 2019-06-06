@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 public class Stock<T> {
 	
-	// ------------------------------ begin eve
+	// ------------------------------ begin eve 
 
 	// T est le chocolat ou la feve ; lui est associe une quantite en stock, en kg
 	private HashMap<T, Double> stock;
