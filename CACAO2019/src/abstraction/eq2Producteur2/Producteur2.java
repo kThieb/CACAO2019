@@ -43,6 +43,7 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 			Monde.LE_MONDE.ajouterIndicateur(gestionnaireFeve.get(f).getStockIndicateur());
 		}
 		this.soldeBancaire = new Indicateur(this.getNom() + " Solde", this, 100000);
+		
 		Monde.LE_MONDE.ajouterIndicateur(this.soldeBancaire);
 		this.contratsEnCours = new ArrayList<ContratCadre<Feve>>();
 		this.journal = new Journal("Journal " + this.getNom());
@@ -308,7 +309,6 @@ public void payerCoutsProd() {
 			throw new IllegalArgumentException(
 					"Appel de la methode livrer de Producteur2 avec un produit ne correspondant pas aux feves produites");
 		}
-		
 		
 		
 		double livraison = Math.min(quantite, this.gestionnaireFeve.getStock(produit));
