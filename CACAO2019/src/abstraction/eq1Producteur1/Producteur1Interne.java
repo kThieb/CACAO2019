@@ -29,6 +29,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 	protected double recolteCriollo = 33;
 	protected double recolteForastero = 33;
 	protected double recolteTrinitario = 33;
+    protected List<ContratCadre<Feve>> contratEnCours;  //
 
 	//BEGIN ANTI 
 	protected Indicateur plantationCriolloI;
