@@ -98,7 +98,7 @@ public void recolte(Feve f) {
 						+ this.gestionnaireFeve.getProductionParStep(f) * qualiteProduction; 
 			this.gestionnaireFeve.setStock(this, f, nouveauStock);}}
 
-	//update solde bancaire, livrer 
+
 	
 	
 	public void retireVieuxContrats() {
