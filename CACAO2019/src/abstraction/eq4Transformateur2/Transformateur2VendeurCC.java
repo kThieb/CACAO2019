@@ -62,6 +62,7 @@ public class Transformateur2VendeurCC implements IVendeurContratCadre<Chocolat> 
 		
 	}
 	@Override
+	//Guillaume
 	public void proposerPrixVendeur(ContratCadre<Chocolat> cc) {
 		if(cc.getListePrixAuKilo().size()==0) {
 			cc.ajouterPrixAuKilo(getPrix(cc.getProduit(), cc.getQuantite()));

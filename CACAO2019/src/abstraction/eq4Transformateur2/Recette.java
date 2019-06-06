@@ -5,7 +5,7 @@ import java.util.List;
 
 import abstraction.eq7Romu.produits.Chocolat;
 import abstraction.eq7Romu.produits.Feve;
-
+//Guillaume
 public enum Recette {
 	// Définition des recettes
 	HauteQ(Feve.CRIOLLO_HG_EQ, 1, 5,Chocolat.HG_E_SHP),
