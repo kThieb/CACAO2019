@@ -192,7 +192,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		ArrayList<Feve> choixFeve = new ArrayList<Feve>(Arrays.asList(Feve.values()));
 		for (Feve f: choixFeve) {
 			if (f.getGamme() != Gamme.MOYENNE) {
-				choixFeve.remove(f); 
+				choixFeve.remove(f);
 			}
 		}
 		Feve f = choixFeve.get(((int) Math.random())*choixFeve.size());
