@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Stock<T> {
+	
+	// ------------------------------ begin eve 
 
 	// T est le chocolat ou la feve ; lui est associe une quantite en stock, en kg
 	private HashMap<T, Double> stock;
@@ -21,7 +23,8 @@ public class Stock<T> {
 	// -----------------------------------------------------------
 	
 	public double getQuantiteEnStock(T produit) {
-		return this.stock.get(produit);
+		try { return this.stock.get(produit); }
+		catch (NullPointerException e) { return 0.; }
 	}
 	
 	public boolean estEnStock(T produit) {
@@ -41,9 +44,33 @@ public class Stock<T> {
 	//          SETTERS
 	// -----------------------------------------------------------
 	
-	public void setQuantiteEnStock(T produit, double quantite) {
-		if (quantite >= 0.) { this.stock.put(produit, quantite); }
-		else { this.stock.put(produit, 0.); }
+	public void addQuantiteEnStock(T produit, double quantite)
+			throws IllegalArgumentException {
+		if (quantite>=0.) {
+			double newQuantiteEnStock = getQuantiteEnStock(produit) + quantite;
+			this.stock.put(produit, newQuantiteEnStock);
+		}
+		else {
+			throw new IllegalArgumentException("Appel de addQuantiteEnStock avec quantite negative. Utiliser plutot removeQuantiteEnStock");
+		}
 	}
+	
+	public void removeQuantiteEnStock(T produit, double quantite)
+			throws IllegalArgumentException {
+		if (quantite<=0.) {
+			double newQuantiteEnStock = getQuantiteEnStock(produit) - quantite;
+			if (newQuantiteEnStock<0.) {
+				throw new IllegalArgumentException("Quantite retiree trop grande !");
+			}
+			else {
+				this.stock.put(produit, newQuantiteEnStock);
+			}
+		}
+		else {
+			throw new IllegalArgumentException("Appel de removeQuantiteEnStock avec quantite positive. Utiliser plutot addQuantiteEnStock");
+		}
+	}
+	
+	// ------------------------------ end eve
 
 }

@@ -1,6 +1,7 @@
 package abstraction.eq3Transformateur1;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import abstraction.eq3Transformateur1.Stock;
@@ -57,30 +58,21 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 
 
 		// stock de feves
-		ArrayList<Feve> feves = new ArrayList<Feve>();
-		feves.add(Feve.CRIOLLO_HG_EQ);
-		feves.add(Feve.FORASTERO_MG_EQ);
-		feves.add(Feve.FORASTERO_MG_NEQ);
-		feves.add(Feve.MERCEDES_MG_EQ);
-		feves.add(Feve.TRINITARIO_MG_EQ);
-		feves.add(Feve.TRINITARIO_MG_NEQ);
+		ArrayList<Feve> feves = new ArrayList<Feve>(Arrays.asList(Feve.values()));
 		this.stockFeves = new Stock<Feve>(feves);
 		for (Feve f: feves) {
-			this.stockFeves.setQuantiteEnStock(f, 1000);
+			this.stockFeves.addQuantiteEnStock(f, 1000);
 		}
 		this.iStockFeves = new Indicateur("EQ3 stock feves", this, feves.size()*1000);
 
 
 		// stock de chocolat
-		ArrayList<Chocolat> chocolat = new ArrayList<Chocolat>();
-		chocolat.add(Chocolat.MG_NE_HP);
-		chocolat.add(Chocolat.MG_NE_SHP);
-		chocolat.add(Chocolat.MG_E_SHP);
-		this.stockChocolat = new Stock<Chocolat>(chocolat);
-		for (Chocolat c: chocolat) {
-			this.stockChocolat.setQuantiteEnStock(c, 1000000);
+		ArrayList<Chocolat> chocolats = new ArrayList<Chocolat>(Arrays.asList(Chocolat.values()));
+		this.stockChocolat = new Stock<Chocolat>(chocolats);
+		for (Chocolat c: chocolats) {
+			this.stockChocolat.addQuantiteEnStock(c, 1000000);
 		}
-		this.iStockChocolat = new Indicateur("EQ3 stock chocolat", this, chocolat.size()*1000000);
+		this.iStockChocolat = new Indicateur("EQ3 stock chocolat", this, chocolats.size()*1000000);
 
 		// --------------------------------- end eve
 
@@ -90,7 +82,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 
 
 
-		this.coutEnFeves = new CoutEnFeves(chocolat,feves);
+		this.coutEnFeves = new CoutEnFeves(chocolats,feves);
 
 
 		this.coutEnFeves.setCoutEnFeves(Chocolat.MG_NE_HP, Feve.FORASTERO_MG_NEQ, 0.5);
@@ -105,7 +97,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 
 
 		// Marges sur chocolat
-		this.margeChocolats = new Marge(chocolat);
+		this.margeChocolats = new Marge(chocolats);
 		this.margeChocolats.setMargeBrute(Chocolat.MG_NE_HP, 5.);
 		this.margeChocolats.setCoutProd(Chocolat.MG_NE_HP, 3.);
 		this.margeChocolats.setMargeBrute(Chocolat.MG_NE_SHP, 10);
@@ -173,10 +165,10 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 					// update solde bancaire
 					this.soldeBancaire.retirer(this, nouveauChocolat*this.margeChocolats.getCoutProd(p));
 					// updater stocks feves
-					this.stockFeves.setQuantiteEnStock(f, this.stockFeves.getQuantiteEnStock(f) - fevesUtilisees);
+					this.stockFeves.removeQuantiteEnStock(f, fevesUtilisees);
 					this.iStockFeves.setValeur(this, this.stockFeves.getQuantiteEnStock(f));;
 					// updater stocks chocolat
-					this.stockChocolat.setQuantiteEnStock(p, this.stockChocolat.getQuantiteEnStock(p) + nouveauChocolat);
+					this.stockChocolat.addQuantiteEnStock(p, nouveauChocolat);
 					this.iStockChocolat.setValeur(this, this.stockChocolat.getQuantiteEnStock(p));
 			
 				}
@@ -320,7 +312,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		if (quantite<=0.0) {
 			throw new IllegalArgumentException("Appel de la methode receptionner de Transformateur1 avec une quantite egale a "+quantite);
 		}
-		this.stockFeves.setQuantiteEnStock(produit, this.stockFeves.getQuantiteEnStock(produit) + quantite);
+		this.stockFeves.addQuantiteEnStock(produit, quantite);
 	}
 //end sacha et eve
 	
@@ -442,7 +434,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 			throw new IllegalArgumentException("Appel de la methode livrer de Transformateur1 avec un produit ne correspondant pas à un des chocolats produits");
 		}
 		double livraison = Math.min(quantite, this.stockChocolat.getQuantiteEnStock(produit));
-		this.stockChocolat.setQuantiteEnStock(produit, this.stockChocolat.getQuantiteEnStock(produit) - livraison);;
+		this.stockChocolat.removeQuantiteEnStock(produit, livraison);;
 		return livraison;
 		//End Raph/Kevin
 	}
