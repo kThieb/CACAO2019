@@ -162,7 +162,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 					double nouveauChocolat = fevesUtilisees/this.coutEnFeves.getCoutEnFeves(p, f); // on determine la quantité de choco en fonctions des feves utilisées et du cout en Feve
 				
 					
-					// update solde bancaireE
+					// update solde bancaire
 					this.soldeBancaire.retirer(this, nouveauChocolat*this.margeChocolats.getCoutProd(p));
 					// updater stocks feves
 					this.stockFeves.removeQuantiteEnStock(f, fevesUtilisees);
