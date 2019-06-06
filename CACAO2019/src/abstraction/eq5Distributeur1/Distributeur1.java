@@ -42,9 +42,9 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 		this.marge = marge;   // La marge doit être en pourcentage !!! 5% > 0.05
 		this.stock = new Stock();
 		stock.ajouter(Chocolat.HG_E_SHP, 150000.0, this);
-		stock.ajouter(Chocolat.MG_E_SHP, 0.0, this);
-		stock.ajouter(Chocolat.MG_NE_HP, 0.0, this);
-		stock.ajouter(Chocolat.MG_NE_SHP, 0.0, this);
+		stock.ajouter(Chocolat.MG_E_SHP, 150000.0, this);
+		stock.ajouter(Chocolat.MG_NE_HP, 150000.0, this);
+		stock.ajouter(Chocolat.MG_NE_SHP, 150000.0, this);
 		this.soldeBancaire = new CompteBancaire(this.getNom(), this, soldeInitial);
 		this.indicateursolde = new Indicateur ("EQ5 solde bancaire",this, soldeBancaire.getCompteBancaire());
 		Monde.LE_MONDE.ajouterIndicateur(indicateursolde);
