@@ -65,16 +65,17 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 		this.gestionnaireFeve.setPrix(this, Feve.MERCEDES_MG_EQ, 1.4);
 
 	}
-
+	
+	
 	public String getNom() {
 		return "EQ2";
-
 	}
 
 	public void initialiser() {
 
 	}
 
+// Begin Clément M
 	
 	public void next() {
 		retireVieuxContrats();
@@ -90,6 +91,8 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 
 		}
 	}
+
+// End Clément M
 	
 public void recolte(Feve f) {
 		if (this.numStep <= 6 || this.numStep >= 21 || (this.numStep >= 9 && this.numStep <= 14)) {
@@ -113,7 +116,8 @@ public void recolte(Feve f) {
 			}
 		}
 		for (ContratCadre<Feve> c : aEnlever) {
-			this.contratsEnCours.remove(c);}}
+			this.contratsEnCours.remove(c);}
+	    }
 
 
 
@@ -136,6 +140,8 @@ public void recolte(Feve f) {
 		return res;
 	}
 
+// Begin Elsa
+	
 	/**
 	 * Propose un nouvel echeancier au producteur
 	 */
@@ -146,7 +152,7 @@ public void recolte(Feve f) {
 		} else {
 			contratsEnCours.add(cc);
 			Echeancier e = cc.getEcheancier();
-			if (e.getQuantiteTotale() > this.getStockEnVente().get(cc.getProduit())) { // On s assure que la quantitée
+			if (e.getQuantiteTotale() > this.getStockEnVente().get(cc.getProduit())) { // On s assure que la quantité
 																						// demandée est en stock
 				throw new IllegalArgumentException("La quantité demandée n est pas disponible");
 			} else {
@@ -165,33 +171,57 @@ public void recolte(Feve f) {
 		} else {
 			double prixVendeur = cc.getListePrixAuKilo().get(cc.getListePrixAuKilo().size() - 1);
 			double prixAcheteur = cc.getPrixAuKilo();
-			cc.ajouterPrixAuKilo(prixVendeur); // Le premier prix proposé est la prix au kilo initial
+			cc.ajouterPrixAuKilo(prixVendeur); // Le premier prix proposé est le prix au kilo initial
 
-			if ((prixVendeur - prixAcheteur) < 0.05 * prixVendeur) { // On arrête la négociation si la différence de
+			if (prixVendeur == getCoutProduction(cc.getProduit()) * 1.01) { //On pose une marge minimale de 1% du cout de production
+				cc.getListePrixAuKilo().add(prixVendeur);
+			} else {
+				if ((prixVendeur - prixAcheteur) < 0.05 * prixVendeur) { // On arrête la négociation si la différence de
 																		// prix est suffisamment faible (5% du
 																		// prixVendeur)
 				prixVendeur = prixAcheteur;
 				cc.getListePrixAuKilo().add(prixVendeur);
-			} else {
+				} else {
 
-				if (prixAcheteur >= 0.75 * prixVendeur) { // on ne fait une proposition que si l'acheteur ne demande pas
+					if (prixAcheteur >= 0.75 * prixVendeur) { // on ne fait une proposition que si l'acheteur ne demande pas
 															// un prix trop bas.
 					prixVendeur = prixAcheteur * 1.1; // on augmente le prix proposé par l'acheteur de 10%
 					cc.getListePrixAuKilo().add(prixVendeur);
 
-				} else {
-					prixVendeur *= 0.90; // On diminue le prix proposé de 10%
-					cc.getListePrixAuKilo().add(prixVendeur);
+					} else {
+						if (prixVendeur * 0.90 < getCoutProduction(cc.getProduit)) {
+							prixVendeur = getCoutProduction(cc.getProduit()) * 1.01;
+						
+						} else {
+							prixVendeur *= 0.90; // On diminue le prix proposé de 10%
+							cc.getListePrixAuKilo().add(prixVendeur);
+						}
+					}
 				}
 			}
+			
+			
 		}
 	}
 
+
+	
+	//A modifier après détermination des couts de production
+	public double getCoutProduction(Feve f) {
+		return 0;		
+	}
+	
+// End Elsa
+	
+	
+// Begin Clément M	
+	
 	@Override
 	public void notifierVendeur(ContratCadre<Feve> cc) {
 		this.contratsEnCours.add(cc);
 	}
 
+	
 	@Override
 	public void encaisser(double montant, ContratCadre<Feve> cc) {
 		if (montant < 0.0) {
@@ -199,6 +229,8 @@ public void recolte(Feve f) {
 		}
 		this.soldeBancaire.ajouter(this, montant);
 	}
+
+
 
 	public double getPrix(Feve produit, Double quantite) {
 		// si tu peux voir ce message, c'est que ca a marche :)
@@ -241,15 +273,24 @@ public void recolte(Feve f) {
 		}
 	}
 
+	
 	@Override
 	public double livrer(Feve produit, double quantite, ContratCadre<Feve> cc) {
 		if (produit == null || !produit.equals(produit)) {
 			throw new IllegalArgumentException(
 					"Appel de la methode livrer de Producteur2 avec un produit ne correspondant pas aux feves produites");
 		}
+		
+		
+		
 		double livraison = Math.min(quantite, this.gestionnaireFeve.getStock(produit));
 		this.gestionnaireFeve.get(produit).getStockIndicateur().retirer(this, livraison);
+		
 		return livraison;
 	}
 
+	
+	
 }
+
+// End Clément M

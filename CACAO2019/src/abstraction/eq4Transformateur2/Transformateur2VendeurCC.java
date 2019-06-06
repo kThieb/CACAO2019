@@ -38,8 +38,6 @@ public class Transformateur2VendeurCC implements IVendeurContratCadre<Chocolat> 
 	//Minh Tri
 	@Override
 	public double getPrix(Chocolat produit, Double quantite) {
-		if(!catalogueChocolat.containsKey(produit))
-			return Double.MAX_VALUE;
 		return catalogueChocolat.get(produit)*quantite;
 	}
 
@@ -75,26 +73,20 @@ public class Transformateur2VendeurCC implements IVendeurContratCadre<Chocolat> 
 
 	@Override
 	public void notifierVendeur(ContratCadre<Chocolat> cc) {
-		t2.contratsChocolatEnCours.add(cc);
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
 	public double livrer(Chocolat produit, double quantite, ContratCadre<Chocolat> cc) {
-		if (produit==null || t2.getStockEnVente().get(produit) == 0) {
-			System.out.println(cc.getAcheteur());
-			throw new IllegalArgumentException("Appel de la methode livrer de Transformateur2 avec un produit ne correspondant pas au chocolat produit");
-		}
-		double livraison = Math.min(quantite, t2.iStockChocolat.getValeur());
-		t2.iStockChocolat.retirer(t2, livraison);
-		return livraison;
-
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	@Override
 	public void encaisser(double montant, ContratCadre<Chocolat> cc) {
-		if (montant<0.0) {
-			throw new IllegalArgumentException("Appel de la methode encaisser de Transformateur2 avec un montant negatif");
-		}
-		t2.soldeBancaire.ajouter(t2,  montant);
+		// TODO Auto-generated method stub
+		
 	}
+
 }

@@ -164,11 +164,11 @@ public class Monde extends Observable {
 		this.setChanged();
 		this.notifyObservers("step");
 		for (IActeur a : this.acteurs) {
-			//System.out.println("Step "+this.getStep()+" : "+a.getNom()+".next()");
+			System.out.println("Step "+this.getStep()+" : "+a.getNom()+".next()");
 			a.next();
-			//System.out.println("Step "+this.getStep()+" : "+a.getNom()+".next() termine");
+			System.out.println("Step "+this.getStep()+" : "+a.getNom()+".next() termine");
 		}
-		//System.out.println("Step "+this.getStep()+" : appels a next() effectues");
+		System.out.println("Step "+this.getStep()+" : appels a next() effectues");
 		for (Journal j : journaux) {
 			j.notifyObservers("endNext");
 		}

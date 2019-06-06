@@ -10,17 +10,17 @@ import abstraction.fourni.IActeur;
 public class GestionnaireFeve extends HashMap<Feve, IndicateurFeve>{
 	
 	public GestionnaireFeve(IActeur acteur) {
-		this.put(Feve.FORASTERO_MG_NEQ, new IndicateurFeve(acteur,Feve.FORASTERO_MG_NEQ));
-		this.put(Feve.FORASTERO_MG_EQ, new IndicateurFeve(acteur,Feve.FORASTERO_MG_EQ));
-		this.put(Feve.MERCEDES_MG_EQ, new IndicateurFeve(acteur,Feve.MERCEDES_MG_EQ));
-		this.put(Feve.MERCEDES_MG_NEQ, new IndicateurFeve(acteur,Feve.MERCEDES_MG_NEQ));
+		this.put(Feve.FORASTERO_MG_NEQ, new IndicateurFeve(acteur));
+		this.put(Feve.FORASTERO_MG_EQ, new IndicateurFeve(acteur));
+		this.put(Feve.MERCEDES_MG_EQ, new IndicateurFeve(acteur));
+		this.put(Feve.MERCEDES_MG_NEQ, new IndicateurFeve(acteur));
 	}	
 	
 
 	
 	public double getStock(Feve feve){	return this.get(feve).getStock();	}
 	public double getPrixVente(Feve feve) {	return this.get(feve).getPrixVente();	}
-	public double getProductionParStep(Feve feve) {	return this.get(feve).getProductionParStep();	}
+	public double getProductionParStep(Feve feve) {	return this.get("feve").getProductionParStep();	}
 	
 
 	public void setStock(IActeur acteur,Feve feve, double stock) {	this.get(feve).setStock(acteur, stock);	}

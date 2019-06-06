@@ -16,20 +16,20 @@ import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 
 public class Transformateur2 implements IActeur, IAcheteurContratCadre<Feve>, IVendeurContratCadre<Chocolat> {
-	protected Indicateur iStockFeves;
-	protected Indicateur iStockChocolat;
+	private Indicateur iStockFeves;
+	private Indicateur iStockChocolat;
 	
 	protected Indicateur soldeBancaire;
 
 	private Journal journal;
 	
 	protected HashMap<Chocolat, Stock> stocksChocolat;
-	protected HashMap<Feve, StockFeve> stockFeves;
-	
+	protected HashMap<Feve, Stock> stockFeves;
 	
 	
 	private Transformateur2AcheteurCC acheteurCC;
 	private Transformateur2VendeurCC vendeurCC;
+	
 	protected List<ContratCadre<Feve>> contratsFevesEnCours;
 	protected List<ContratCadre<Chocolat>> contratsChocolatEnCours;
 	protected HashMap<Chocolat,Double> stockEnVente;
@@ -62,11 +62,11 @@ public class Transformateur2 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		
 		// Initialisation des stocks
 		stocksChocolat = new HashMap<Chocolat, Stock>();
-		stockFeves = new HashMap<Feve, StockFeve>();
+		stockFeves = new HashMap<Feve, Stock>();
 		for(int i = 0; i < Chocolat.values().length; i++)
 			stocksChocolat.put(Chocolat.values()[i], new Stock());
 		for(int i = 0; i < Feve.values().length; i++)
-			stockFeves.put(Feve.values()[i], new StockFeve());
+			stockFeves.put(Feve.values()[i], new Stock());
 	}
 
 	public void next() {
@@ -77,14 +77,6 @@ public class Transformateur2 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		this.soldeBancaire.retirer(this, quantiteTransformee*1.0234); // sucre, main d'oeuvre, autres frais
 	}
 
-	public double calculerPrixProdReel(Chocolat c, double qte) {
-		// TODO
-		// Trouver la recette produisant ce chocolat
-		// Obtenir le prix des matieres premieres en remontant au bon stock de feves (renvoyer infini si pas assez)
-		
-		return 0;
-	}
-	
 	/** Fonctions relatives à IAcheteurContratCadre<Feve> */
 	public ContratCadre<Feve> getNouveauContrat() {return acheteurCC.getNouveauContrat();}
 	public void proposerEcheancierAcheteur(ContratCadre<Feve> cc) {acheteurCC.proposerEcheancierAcheteur(cc);}
