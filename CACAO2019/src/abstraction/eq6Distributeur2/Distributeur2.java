@@ -48,7 +48,7 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 
         public Distributeur2() {
 
-                //NORDIN et Caroline
+                //NORDIN et Carolinecar
 
 
 
@@ -284,18 +284,14 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
         public void ajustementPrix(ArrayList<Double> historique, Chocolat c ) {
                 // je récupère le chocoalt et l'historique des variations 
                 int n = historique.size();
-                //System.out.println(n);
                 if (n>3) {
-                        //System.out.println(historique.get(n-1) + historique.get(n-2) + historique.get(n-2) );
-                        if ( Math.abs(historique.get(n-1)) > Math.abs(historique.get(n-2))*0.95
-                                        && Math.abs(historique.get(n-1)) < Math.abs(historique.get(n-2))*1.05
+                        if ( Math.abs(historique.get(n-1)) > Math.abs(historique.get(n-2)*0.95)
+                                        && Math.abs(historique.get(n-1)) < Math.abs(historique.get(n-2)*1.05)
                                         // encadrement de + ou- 5%
-                                        && Math.abs(historique.get(n-2)) > Math.abs(historique.get(n-3))*0.95
-                                        && Math.abs(historique.get(n-2)) < Math.abs(historique.get(n-3))*1.05
-                                        && (historique.get(n-1)!= 0 && historique.get(n-2)!=0 && historique.get(n-2)!= 0 )) {
+                                        && Math.abs(historique.get(n-2)) > Math.abs(historique.get(n-3)*0.95)
+                                        && Math.abs(historique.get(n-2)) < Math.abs(historique.get(n-3)*1.05) ) {
                                 double nouveauprix = this.getPrix(c)*0.95;
                                 this.getPrixParProduit().put(c, nouveauprix);
-                                //System.out.println(" "+c+" "+nouveauprix);
                         }
                 }
 
@@ -355,7 +351,7 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 
 
         /** 
-         * Retire de la liste des contrats en cours les contrats pour lesquels la quantite a livrer 
+         * Retire de la liste des contrats en cours les contrats pour lesquels la quantite a livrer
          * est nulle et le montant a regler est egalement nul (toutes les livraisons et tous les paiements
          * ont ete effectues).
          */
@@ -476,10 +472,7 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 
         //Caroline
         private HashMap<Chocolat, Double> stockIdeal () {
-                //HashMap<Chocolat, Double> historique_vente = historique_vente() ;
 
-                
-                
                 //Pour l'instant avec 4 clients qui veulent chaqun un produit different avec 7500 par step on prend : 
 
                 HashMap<Chocolat, Double> stockIdeal= new HashMap<Chocolat, Double>();
@@ -561,15 +554,17 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 
                 else 
                 {   quantite =  Math.max(this.stockIdeal().get(produit) - (variations_produit.get(produit)+this.getStockEnVente().get(produit)),0.0);
-                        if (quantite <500) {
+                }
+                
+                if (quantite <500) {
                                 quantite = 0;
                         }
-                }
-                System.out.println(quantite);
+                
 
-
+                
                 if (solde >10000) 
                 {
+
                         List<IVendeurContratCadre<Chocolat>> vendeurs = new ArrayList<IVendeurContratCadre<Chocolat>>();
                         for (IActeur acteur : Monde.LE_MONDE.getActeurs()) {
                                 if (acteur instanceof IVendeurContratCadre<?>) {
@@ -591,6 +586,7 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
                                 if (v.getPrix(produit, Math.min(v.getStockEnVente().get(produit),quantite)) < meilleurprix) 
                                 {
                                         vendeur = v;
+                                        meilleurprix = v.getPrix(produit, Math.min(v.getStockEnVente().get(produit),quantite));
                                 }
                         }
 
@@ -607,8 +603,10 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
                         }
 
                 }
+
                 else {this.journal.ajouter(" Il ne reste que "+getArrondi(solde)+" euros une"
                                 + " fois tous les contrats payes donc nous ne souhaitons pas en creer d'autres pour l'instant");}
+                
                 return res;
 
         }
