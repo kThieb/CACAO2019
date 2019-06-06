@@ -23,8 +23,11 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 
 	public static int COUT_FIXE = 1000;
 	public static int COUT_VARIABLE_STOCK = 5;
-	public static int DUREE_DE_VIE_FEVE = 1 * 52 / 2; // durée de vie en nexts
+	
 	protected Indicateur stockFeves;
+	/*protected Stock stockCriollo=new Stock(Feve.CRIOLLO_HG_EQ);
+	protected Stock stockForastero=new Stock(Feve.FORASTERO_MG_NEQ);
+	protected Stock stockTrinitario=new Stock(Feve.TRINITARIO_MG_NEQ);*/
 	protected Indicateur stockCriolloI;
 	protected Indicateur stockForasteroI;
 	protected Indicateur stockTrinitarioI;
@@ -53,6 +56,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 	public static int troisAnsEnSteps = 72 ; 
 	public static int quatreAnsEnSteps = 96 ;
 	public static int cinqAnsEnSteps = 120 ;
+	public static int dureeDeVieFeve = unAnEnSteps; // durée de vie en nexts
 //END ANTI
 
 	protected int compteur_recolte = 0;
@@ -84,7 +88,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		this.stockTrinitario=new HashMap<Integer, Double>();
 		this.contratEnCours= new ArrayList<ContratCadre<Feve>> ();
 
-		for (int next = 0; next < DUREE_DE_VIE_FEVE - 1; next++) {
+		for (int next = 0; next < dureeDeVieFeve - 1; next++) {
 			stockCriollo.put(next, (double) 0);
 			stockForastero.put(next, (double) 0);
 			stockTrinitario.put(next , (double) 0);
@@ -435,7 +439,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		HashMap<Integer, Double> stockForasteroOld = new HashMap<Integer, Double>(stockForastero);
 		HashMap<Integer, Double> stockTrinitarioOld = new HashMap<Integer, Double>(stockTrinitario);
 	
-		for (int next = 0; next < DUREE_DE_VIE_FEVE - 1; next++) {
+		for (int next = 0; next < dureeDeVieFeve - 1; next++) {
 			stockCriollo.put(next + 1, stockCriolloOld.get(next));
 			stockForastero.put(next + 1, stockForasteroOld.get(next));
 			stockTrinitario.put(next + 1, stockTrinitarioOld.get(next));
@@ -451,7 +455,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		stockForasteroI.setValeur(this, 0);
 		stockTrinitarioI.setValeur(this, 0);
 
-		for (int next = 0; next < DUREE_DE_VIE_FEVE; next++) {
+		for (int next = 0; next < dureeDeVieFeve; next++) {
 			stockCriolloI.ajouter(this, stockCriollo.get(next));
 			;
 			stockForasteroI.ajouter(this, stockForastero.get(next));
@@ -508,5 +512,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		
 	}
 	//END MANON
+	
+	
 
 }

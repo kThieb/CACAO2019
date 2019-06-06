@@ -177,7 +177,7 @@ public class VendeurContratCadre extends Producteur1Interne implements IVendeurC
 		super.stockFeves.retirer(this, quantite);
 		getStockI(feve).retirer(this, quantite);
 		double quantite_a_enlever=quantite;
-		int next=DUREE_DE_VIE_FEVE-1;
+		int next=dureeDeVieFeve-1;
 		while (quantite_a_enlever>0 && next >0) {
 			if (getStock(feve).get(next)<quantite_a_enlever) {
 				quantite_a_enlever=quantite_a_enlever-getStock(feve).get(next);
