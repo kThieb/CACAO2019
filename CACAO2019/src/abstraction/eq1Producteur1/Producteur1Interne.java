@@ -12,11 +12,12 @@ import abstraction.eq1Producteur1.ventesCacaoAleatoires.SuperviseurVentesCacaoAl
 import abstraction.eq7Romu.produits.Feve;
 import abstraction.eq7Romu.produits.Variete;
 import abstraction.eq7Romu.ventesContratCadre.ContratCadre;
-import abstraction.eq7Romu.ventesContratCadre.Echeancier;
 import abstraction.fourni.IActeur;
 import abstraction.fourni.Indicateur;
 import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
+import abstraction.eq7Romu.ventesContratCadre.Echeancier;
+
 
 public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire */ {
 
@@ -33,6 +34,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 	protected double recolteCriollo = 33;
 	protected double recolteForastero = 33;
 	protected double recolteTrinitario = 33;
+    protected List<ContratCadre<Feve>> contratEnCours;  //
 
 	//BEGIN ANTI 
 	protected Indicateur plantationCriolloI;
@@ -80,6 +82,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		this.stockCriollo=new HashMap<Integer, Double>();
 		this.stockForastero=new HashMap<Integer, Double>();
 		this.stockTrinitario=new HashMap<Integer, Double>();
+		this.contratEnCours= new ArrayList<ContratCadre<Feve>> ();
 
 		for (int next = 0; next < DUREE_DE_VIE_FEVE - 1; next++) {
 			stockCriollo.put(next, (double) 0);
@@ -117,7 +120,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		Monde.LE_MONDE.ajouterIndicateur(this.soldeBancaire);
 		//Monde.LE_MONDE.ajouterActeur(new SuperviseurVentesCacaoAleatoires());
 		// BEGIN Manon
-		this.journal1 = new Journal("Journal EQ1");
+		this.journal1 = new Journal("JEQ1");
 		Monde.LE_MONDE.ajouterJournal(this.journal1);
 		System.out.println(" ajout du journal...");
 		// END Manon
@@ -207,6 +210,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		// END Pauline
 	}
 	//BEGIN ANTI 
+
 	public Double moyenneDemande(){
 		List<Double> moyenne = new ArrayList<Double>() ; 
 		for (int i=0; i<5; i++) {
@@ -264,6 +268,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		
 				
 	
+
 	
 	public void updatePlantation() {
 		

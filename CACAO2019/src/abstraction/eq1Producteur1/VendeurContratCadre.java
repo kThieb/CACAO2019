@@ -8,21 +8,27 @@ import abstraction.eq7Romu.ventesContratCadre.Echeancier;
 import abstraction.eq7Romu.ventesContratCadre.IVendeurContratCadre;
 import abstraction.eq7Romu.ventesContratCadre.StockEnVente;
 import abstraction.fourni.Journal;
+import abstraction.fourni.Monde;
 
 public class VendeurContratCadre extends Producteur1Interne implements IVendeurContratCadre<Feve> {
-	// ANTI
-	private StockEnVente<Feve> stockEnVente=new StockEnVente<Feve>();
-
-	
-	
+//BEGIN MANON		
 	public StockEnVente<Feve> getStockEnVente() {
-        journal1.ajouter("stock en vente " +stockEnVente); // ROMU
-		for(Feve produit: this.getFeve()) {
-		this.stockEnVente.ajouter(produit, this.getStockI(produit).getValeur()); 
+        
+        StockEnVente<Feve> stockEnVente= new StockEnVente<Feve>();
+        for(Feve feve: this.getFeve()) {
+        	double stocktotal= this.getStockI(feve).getValeur();
+        	for (ContratCadre<Feve> cc : this.contratEnCours) {
+			if (Monde.LE_MONDE!=null) {
+				stocktotal-= cc.getQuantiteRestantALivrer();
+			}
 		}
-		return this.stockEnVente;// ROMU. Prealablement stockEnVente; mais jamais initialisee...
+		
+		stockEnVente.ajouter(feve, Math.max(0.0, stocktotal));
+        }
+        //journal1.ajouter("stock en vente " +stockEnVente); // ROMU
+		return stockEnVente;// ROMU. Prealablement stockEnVente; mais jamais initialisee...
 	}
-
+//END MANON
 	public double getPrix(Feve produit, Double quantite) {
 		// BEGIN Pauline
 		if (produit == null || quantite <= 0.0) {
@@ -106,6 +112,7 @@ public class VendeurContratCadre extends Producteur1Interne implements IVendeurC
 	public void notifierVendeur(ContratCadre<Feve> cc) {
 
 		super.getHistoriqueContrats().put(cc.getNumero(), cc);
+		super.contratEnCours.add(cc);
 		this.journal1.ajouter("Vente"+cc.getNumero());
 //END ANTI
 
@@ -126,7 +133,7 @@ public class VendeurContratCadre extends Producteur1Interne implements IVendeurC
 
 	public void encaisser(double montant, ContratCadre<Feve> cc) {
 		super.soldeBancaire.ajouter(this ,  montant);
-		cc.payer(montant);
+		//cc.payer(montant);
 		journal1.ajouter("solde bancaire +" + Double.toString(montant));
 
 	}

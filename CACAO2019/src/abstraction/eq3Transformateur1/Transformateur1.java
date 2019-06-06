@@ -307,15 +307,15 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	@Override
 	public void receptionner(Feve produit, double quantite, ContratCadre<Feve> cc) {
 		// begin sacha
-		for (Feve f:this.stockFeves.getProduitsEnStock()) {
-			if (produit==null || !produit.equals(f)) {
-				throw new IllegalArgumentException("Appel de la methode receptionner de Transformateur1 avec un produit ne correspondant pas aux feves achetees par le transformateur");
-			}
+	//	for (Feve f:this.stockFeves.getProduitsEnStock()) {
+	//		if (produit==null || !produit.equals(f)) {
+	//			throw new IllegalArgumentException("Appel de la methode receptionner de Transformateur1 avec un produit ne correspondant pas aux feves achetees par le transformateur");
+	//		}
 			if (quantite<=0.0) {
 				throw new IllegalArgumentException("Appel de la methode receptionner de Transformateur1 avec une quantite egale a "+quantite);
 			}
 			this.stockFeves.setQuantiteEnStock(produit, this.stockFeves.getQuantiteEnStock(produit) + quantite);
-		}
+	//	}
 		
 	}
 //end sacha
