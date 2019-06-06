@@ -3,8 +3,11 @@ package abstraction.eq5Distributeur1;
 import java.util.ArrayList;
 import java.util.List;
 
+import abstraction.eq7Romu.acteurs.ProducteurRomu;
 import abstraction.eq7Romu.distributionChocolat.IDistributeurChocolat;
 import abstraction.eq7Romu.produits.Chocolat;
+import abstraction.eq7Romu.produits.Feve;
+import abstraction.eq7Romu.produits.Gamme;
 import abstraction.eq7Romu.ventesContratCadre.ContratCadre;
 import abstraction.eq7Romu.ventesContratCadre.Echeancier;
 import abstraction.eq7Romu.ventesContratCadre.IAcheteurContratCadre;
@@ -57,6 +60,8 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 		this.journal = new Journal("Journal "+this.getNom());
 		Monde.LE_MONDE.ajouterJournal(this.journal);
 		this.contratsEnCours = new ArrayList<ContratCadre<Chocolat>>();
+		Monde.LE_MONDE.ajouterActeur(new ClientEuropeen(Chocolat.HG_E_SHP, 100));
+		Monde.LE_MONDE.ajouterActeur(new ClientEuropeen(Chocolat.MG_E_SHP, 100));
 	}
 
 	public String getNom() {
@@ -211,11 +216,20 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 	 */
 	@Override
 	public void proposerEcheancierAcheteur(ContratCadre C) {
-		if (C.getEcheancier()==null) {//pas de contre-proposition
-			C.ajouterEcheancier(new Echeancier(Monde.LE_MONDE.getStep(), 20, C.getQuantite()/20));
+		if (C!=null) {
+			Echeancier e = C.getEcheancier() ;
+			if (e==null ) {//pas de contre-proposition
+				C.ajouterEcheancier(new Echeancier(Monde.LE_MONDE.getStep(), 5, C.getQuantite()/5));
 		} else {
-			C.ajouterEcheancier(new Echeancier(C.getEcheancier())); // accepter la contre-proposition
+			if( e.getQuantiteTotale() > C.getQuantite() ) {
+				C.ajouterEcheancier(new Echeancier(C.getEcheancier())); 
+			}	
+			this.journal.ajouter("Contrat n° " + C.getNumero() + " avec " + C.getEcheancier().getNbEcheances()+ " échéances");
+		
 		}
+			
+		}
+		
 	}
 
 	@Override
@@ -223,11 +237,12 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 	 * @author Imane ZRIAA
 	 * @author2 Erine DUPONT
 	 */
+	
 	public void proposerPrixAcheteur(ContratCadre cc) {
 		double prixVendeur = cc.getPrixAuKilo();
 		/* ------------------------------------------------------------------------------------------
 		 * VERSION IMANE
-		 * if (Math.random()<0.25) { // probabilité de 25% d'accepter
+		 * if (Math.random()<0.30) { 
 			cc.ajouterPrixAuKilo(cc.getPrixAuKilo());
 		} else {
 			cc.ajouterPrixAuKilo((prixVendeur*(0.9+Math.random()*0.1))); // Rabais de 10% max
@@ -270,7 +285,7 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 		this.contratsEnCours.add(cc);
 	}
 
-	/**@author Erine DUPONT
+	/**@author Erine DUPONT / Imane ZRIAA 
 	 */
 	public void receptionner(Object produit, double quantite, ContratCadre cc) {
 		if (produit==null || !produit.equals(cc.getProduit())) {
@@ -279,7 +294,9 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 		if (quantite<=0.0) {
 			throw new IllegalArgumentException("Appel de la methode receptionner de DistributeurRomu avec une quantite egale a "+quantite);
 		}
-		this.stock.ajouter((Chocolat) produit, quantite);
+		if (cc.getProduit().equals(produit)) { 
+			this.stock.ajouter((Chocolat) produit, quantite);
+		}
 		this.journal.ajouter("Réception de "+ quantite + "kg de" + produit);
 	}
 
