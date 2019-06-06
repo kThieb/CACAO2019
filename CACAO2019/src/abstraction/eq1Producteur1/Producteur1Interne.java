@@ -88,6 +88,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		this.stockForastero=new HashMap<Integer, Double>();
 		this.stockTrinitario=new HashMap<Integer, Double>();
 		this.contratEnCours= new ArrayList<ContratCadre<Feve>> ();
+		this.historiqueSoldeBancaire= new ArrayList<Double> ();
 
 		for (int next = 0; next < dureeDeVieFeve - 1; next++) {
 			stockCriollo.put(next, (double) 0);
