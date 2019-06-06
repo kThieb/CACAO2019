@@ -11,24 +11,24 @@ import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 
 public class VendeurContratCadre extends Producteur1Interne implements IVendeurContratCadre<Feve> {
-	// ANTI
-	private StockEnVente<Feve> stockEnVente=new StockEnVente<Feve>();
-
-	
-	
+//BEGIN MANON		
 	public StockEnVente<Feve> getStockEnVente() {
-        journal1.ajouter("stock en vente " +stockEnVente); // ROMU
-		for(Feve produit: this.getFeve()) {
-		this.stockEnVente.ajouter(produit, this.getStockI(produit).getValeur()); 
-		}
-		Double stockRestant = this.stock.getValeur();
-		for (ContratCadre<Feve> cc : this.contratsEnCours) {
+        
+        StockEnVente<Feve> stockEnVente= new StockEnVente<Feve>();
+        for(Feve feve: this.getFeve()) {
+        	double stocktotal= this.getStockI(feve).getValeur();
+        	for (ContratCadre<Feve> cc : this.contratEnCours) {
 			if (Monde.LE_MONDE!=null) {
-				stockRestant = stockRestant - cc.getQuantiteRestantALivrer();
+				stocktotal-= cc.getQuantiteRestantALivrer();
 			}
-		return this.stockEnVente;// ROMU. Prealablement stockEnVente; mais jamais initialisee...
+		}
+		
+		stockEnVente.ajouter(feve, stocktotal);
+        }
+        journal1.ajouter("stock en vente " +stockEnVente); // ROMU
+		return stockEnVente;// ROMU. Prealablement stockEnVente; mais jamais initialisee...
 	}
-
+//END MANON
 	public double getPrix(Feve produit, Double quantite) {
 		// BEGIN Pauline
 		if (produit == null || quantite <= 0.0) {
@@ -112,6 +112,7 @@ public class VendeurContratCadre extends Producteur1Interne implements IVendeurC
 	public void notifierVendeur(ContratCadre<Feve> cc) {
 
 		super.getHistoriqueContrats().put(cc.getNumero(), cc);
+		super.contratEnCours.add(cc);
 //END ANTI
 
 

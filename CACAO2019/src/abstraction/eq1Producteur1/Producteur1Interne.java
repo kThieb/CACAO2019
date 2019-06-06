@@ -29,6 +29,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 	protected double recolteCriollo = 33;
 	protected double recolteForastero = 33;
 	protected double recolteTrinitario = 33;
+	protected List<ContratCadre<Feve>> contratEnCours;
 
 	//BEGIN ANTI 
 	protected Indicateur plantationCriolloI;
@@ -73,6 +74,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		this.stockCriollo=new HashMap<Integer, Double>();
 		this.stockForastero=new HashMap<Integer, Double>();
 		this.stockTrinitario=new HashMap<Integer, Double>();
+		this.contratEnCours=new ArrayList<ContratCadre<Feve>>();
 
 		for (int next = 0; next < DUREE_DE_VIE_FEVE - 1; next++) {
 			stockCriollo.put(next, (double) 0);
@@ -121,7 +123,19 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		return this.historiqueContrats;
 	}
 	// END Anti
-
+	//Begin
+	public void retireVieuxContrats() {
+		List<ContratCadre<Feve>> aEnlever = new ArrayList<ContratCadre<Feve>>();
+		for (ContratCadre<Feve> c : this.contratEnCours) {
+			if (c.getQuantiteRestantALivrer()<=0.0 && c.getMontantRestantARegler()<=0.0) {
+				aEnlever.add(c);
+			}
+		}
+		for (ContratCadre<Feve> c : aEnlever) {
+			this.contratEnCours.remove(c);
+		}
+	}
+	//END
 	// BEGIN Nas
 	public double getRecolte(Feve feve) {
 		
@@ -199,6 +213,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		return mapPrix;
 		// END Pauline
 	}
+	
 	//BEGIN ANTI 
 	
 	public void updatePlantation() {
