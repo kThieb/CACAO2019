@@ -8,6 +8,7 @@ import abstraction.eq7Romu.ventesContratCadre.Echeancier;
 import abstraction.eq7Romu.ventesContratCadre.IVendeurContratCadre;
 import abstraction.eq7Romu.ventesContratCadre.StockEnVente;
 import abstraction.fourni.Journal;
+import abstraction.fourni.Monde;
 
 public class VendeurContratCadre extends Producteur1Interne implements IVendeurContratCadre<Feve> {
 	// ANTI
@@ -20,6 +21,11 @@ public class VendeurContratCadre extends Producteur1Interne implements IVendeurC
 		for(Feve produit: this.getFeve()) {
 		this.stockEnVente.ajouter(produit, this.getStockI(produit).getValeur()); 
 		}
+		Double stockRestant = this.stock.getValeur();
+		for (ContratCadre<Feve> cc : this.contratsEnCours) {
+			if (Monde.LE_MONDE!=null) {
+				stockRestant = stockRestant - cc.getQuantiteRestantALivrer();
+			}
 		return this.stockEnVente;// ROMU. Prealablement stockEnVente; mais jamais initialisee...
 	}
 
