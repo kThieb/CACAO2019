@@ -32,6 +32,7 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	private List<ContratCadre<Feve>> contratsEnCours;
 	private int numStep;
 	private GestionnaireFeve gestionnaireFeve;
+	private Arbre arbres;
 
 
 	public Producteur2() {
@@ -47,6 +48,9 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 		this.journal = new Journal("Journal " + this.getNom());
 		Monde.LE_MONDE.ajouterJournal(this.journal);
 		this.numStep = 1;
+		
+		arbres = new Arbre();
+		arbres.initialise();
 
 		this.gestionnaireFeve.setProduction(this, Feve.FORASTERO_MG_NEQ, 67500000);
 		this.gestionnaireFeve.setStock(this, Feve.FORASTERO_MG_NEQ, 200000000);
@@ -75,10 +79,11 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 
 	}
 
-// Begin Clément M
+// Begin Clément M 
 	
 	public void next() {
 		retireVieuxContrats();
+		payerCoutsProd();
 		for (Feve f : gestionnaireFeve.getFeves()) {
 			this.recolte(f);
 			this.journal.ajouter(
@@ -86,6 +91,8 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 		}
 		if (this.numStep == 24) {
 			this.numStep = 1;
+			arbres.actualise();
+			this.actualisationProduction();
 		} else {			
 			this.numStep++;
 
@@ -93,6 +100,16 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	}
 
 // End Clément M
+	
+	public void actualisationProduction() {
+		for (Feve feve : this.gestionnaireFeve.keySet()) {
+			if ( feve == Feve.FORASTERO_MG_EQ || feve == Feve.FORASTERO_MG_NEQ) {
+			this.gestionnaireFeve.setProduction(this, feve, this.arbres.getNbArbres(feve)*1000);}
+			if ( feve == Feve.MERCEDES_MG_EQ || feve == Feve.MERCEDES_MG_NEQ) {
+				this.gestionnaireFeve.setProduction(this, feve, this.arbres.getNbArbres(feve)*1000*2);
+			}
+		}
+	}
 	
 public void recolte(Feve f) {
 		if (this.numStep <= 6 || this.numStep >= 21 || (this.numStep >= 9 && this.numStep <= 14)) {
@@ -106,6 +123,14 @@ public void recolte(Feve f) {
 			this.gestionnaireFeve.setStock(this, f, nouveauStock);}}
 
 
+public void payerCoutsProd() {
+	double couts  =  0.0;
+	for (Feve f : gestionnaireFeve.getFeves()) {
+		couts =+ getCoutProduction(f);
+	}
+	double newsolde = soldeBancaire.getValeur() - couts ;
+	soldeBancaire.replace( "EQ2 Solde", newsolde);
+}
 	
 	
 	public void retireVieuxContrats() {
@@ -189,7 +214,7 @@ public void recolte(Feve f) {
 					cc.getListePrixAuKilo().add(prixVendeur);
 
 					} else {
-						if (prixVendeur * 0.90 < getCoutProduction(cc.getProduit)) {
+						if (prixVendeur * 0.90 < getCoutProduction(cc.getProduit())) {
 							prixVendeur = getCoutProduction(cc.getProduit()) * 1.01;
 						
 						} else {
@@ -208,10 +233,13 @@ public void recolte(Feve f) {
 	
 	//A modifier après détermination des couts de production
 	public double getCoutProduction(Feve f) {
-		return 0;		
+		return 1800000;	
+		
+		
 	}
 	
 // End Elsa
+	
 	
 	
 // Begin Clément M	
