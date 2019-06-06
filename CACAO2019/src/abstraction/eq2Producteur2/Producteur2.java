@@ -23,15 +23,11 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	private static final double PRIX_MIN = 0.800;
 	private static final double PRIX_MAX = 2.500;
 
-	
-	
 	private Indicateur soldeBancaire;
 	private Journal journal;
 	private double meteo = 0;
 	private double maladie_predateurs = 0;
 
-	
-	
 	private int numero ;
 	private List<ContratCadre<Feve>> contratsEnCours;
 	private int numStep;
@@ -57,17 +53,14 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 		this.gestionnaireFeve.setStock(this, Feve.FORASTERO_MG_NEQ, 200000000);
 		this.gestionnaireFeve.setPrix(this, Feve.FORASTERO_MG_NEQ, 1.5);
 
-		
 		this.gestionnaireFeve.setProduction(this, Feve.FORASTERO_MG_EQ, 7500000); // TODO rectifier les productions des autres feves
 		this.gestionnaireFeve.setStock(this, Feve.FORASTERO_MG_EQ, 20000000);
 		this.gestionnaireFeve.setPrix(this, Feve.FORASTERO_MG_EQ, 1.7);
-		
 		
 		this.gestionnaireFeve.setProduction(this, Feve.MERCEDES_MG_NEQ, 7500000);
 		this.gestionnaireFeve.setStock(this, Feve.MERCEDES_MG_NEQ, 20000000);
 		this.gestionnaireFeve.setPrix(this, Feve.MERCEDES_MG_NEQ, 1.3);
 
-		
 		this.gestionnaireFeve.setProduction(this, Feve.MERCEDES_MG_EQ, 750000);
 		this.gestionnaireFeve.setStock(this, Feve.MERCEDES_MG_EQ, 2000000);
 		this.gestionnaireFeve.setPrix(this, Feve.MERCEDES_MG_EQ, 1.4);
@@ -197,7 +190,7 @@ public void recolte(Feve f) {
 					cc.getListePrixAuKilo().add(prixVendeur);
 
 					} else {
-						if (prixVendeur * 0.90 < getCoutProduction(cc.getProduit)) {
+						if (prixVendeur * 0.90 < getCoutProduction(cc.getProduit())) {
 							prixVendeur = getCoutProduction(cc.getProduit()) * 1.01;
 						
 						} else {
@@ -288,7 +281,6 @@ public void recolte(Feve f) {
 			throw new IllegalArgumentException(
 					"Appel de la methode livrer de Producteur2 avec un produit ne correspondant pas aux feves produites");
 		}
-		
 		
 		
 		double livraison = Math.min(quantite, this.gestionnaireFeve.getStock(produit));
