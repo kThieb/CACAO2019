@@ -495,7 +495,8 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 				}
 			}
 
-
+			
+    
 			//VENDEUR
 			double meilleurprix = 5000000;
 			IVendeurContratCadre<Chocolat> vendeur = null;
