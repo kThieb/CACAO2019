@@ -32,6 +32,7 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	private List<ContratCadre<Feve>> contratsEnCours;
 	private int numStep;
 	private GestionnaireFeve gestionnaireFeve;
+	private Arbre arbres;
 
 
 	public Producteur2() {
@@ -42,11 +43,15 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 			Monde.LE_MONDE.ajouterIndicateur(gestionnaireFeve.get(f).getStockIndicateur());
 		}
 		this.soldeBancaire = new Indicateur(this.getNom() + " Solde", this, 100000);
+		
 		Monde.LE_MONDE.ajouterIndicateur(this.soldeBancaire);
 		this.contratsEnCours = new ArrayList<ContratCadre<Feve>>();
 		this.journal = new Journal("Journal " + this.getNom());
 		Monde.LE_MONDE.ajouterJournal(this.journal);
 		this.numStep = 1;
+		
+		arbres = new Arbre();
+		arbres.initialise();
 
 		this.gestionnaireFeve.setProduction(this, Feve.FORASTERO_MG_NEQ, 67500000);
 		this.gestionnaireFeve.setStock(this, Feve.FORASTERO_MG_NEQ, 200000000);
@@ -75,10 +80,11 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 
 	}
 
-// Begin Clément M
+// Begin Clément M 
 	
 	public void next() {
 		retireVieuxContrats();
+		payerCoutsProd();
 		for (Feve f : gestionnaireFeve.getFeves()) {
 			this.recolte(f);
 			this.journal.ajouter(
@@ -86,6 +92,8 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 		}
 		if (this.numStep == 24) {
 			this.numStep = 1;
+			arbres.actualise();
+			this.actualisationProduction();
 		} else {			
 			this.numStep++;
 
@@ -94,18 +102,36 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 
 // End Clément M
 	
+	public void actualisationProduction() {
+		for (Feve feve : this.gestionnaireFeve.keySet()) {
+			if ( feve == Feve.FORASTERO_MG_EQ || feve == Feve.FORASTERO_MG_NEQ) {
+			this.gestionnaireFeve.setProduction(this, feve, this.arbres.getNbArbres(feve)*1000);}
+			if ( feve == Feve.MERCEDES_MG_EQ || feve == Feve.MERCEDES_MG_NEQ) {
+				this.gestionnaireFeve.setProduction(this, feve, this.arbres.getNbArbres(feve)*1000*2);
+			}
+		}
+	}
+	
 public void recolte(Feve f) {
 		if (this.numStep <= 6 || this.numStep >= 21 || (this.numStep >= 9 && this.numStep <= 14)) {
 			Random rand=new Random();
 			this.maladie_predateurs=-rand.nextInt(200)/1000;
 			this.meteo=rand.nextInt(200)/1000-1;
 			double qualitePRoduction=maladie_predateurs+meteo;
-			double qualiteProduction = (Math.random() - 0.5) / 2.5 + 1; // entre 0.8 et 1.2
+			//double qualiteProduction = (Math.random() - 0.5) / 2.5 + 1; // entre 0.8 et 1.2
 			double nouveauStock = this.gestionnaireFeve.getStock(f)
-						+ this.gestionnaireFeve.getProductionParStep(f) * qualiteProduction; 
+						+ this.gestionnaireFeve.getProductionParStep(f) * (1 + qualitePRoduction); 
 			this.gestionnaireFeve.setStock(this, f, nouveauStock);}}
 
 
+public void payerCoutsProd() {
+	double couts  =  0.0;
+	for (Feve f : gestionnaireFeve.getFeves()) {
+		couts =+ getCoutProduction(f);
+	}
+	double newsolde = soldeBancaire.getValeur() - couts ;
+	soldeBancaire.setValeur(this, newsolde);
+}
 	
 	
 	public void retireVieuxContrats() {
@@ -131,10 +157,11 @@ public void recolte(Feve f) {
 				if (Monde.LE_MONDE != null) {
 					if (cc.getProduit() == feve) {
 						stockRestant = stockRestant - cc.getQuantiteRestantALivrer();
-						res.ajouter(feve, Math.max(0.0, stockRestant));
 					}
 				}
 			}
+			res.ajouter(feve, Math.max(0.0, stockRestant));
+
 		}
 		return res;
 	}
@@ -146,14 +173,17 @@ public void recolte(Feve f) {
 	 * Propose un nouvel echeancier au producteur
 	 */
 	public void proposerEcheancierVendeur(ContratCadre<Feve> cc) {
+		
 		if (contratsEnCours.contains(cc)) {
 			Echeancier e = cc.getEcheancier();
 		} else {
 			contratsEnCours.add(cc);
 			Echeancier e = cc.getEcheancier();
-			if (e.getQuantiteTotale() > this.getStockEnVente().get(cc.getProduit())) { 
-				// On s assure que la quantité demandée est en stock
-				throw new IllegalArgumentException("La quantité demandée n est pas disponible");
+			if (e.getQuantiteTotale() > this.getStockEnVente().get(cc.getProduit())) { // On s assure que la quantité
+																						// demandée est en stock
+				int echSuppl = (int) ((e.getQuantiteTotale() - this.getStockEnVente().get(cc.getProduit())))/75000 ;
+				cc.ajouterEcheancier(new Echeancier (e.getStepDebut(), e.getNbEcheances() + echSuppl, cc.getQuantite()/(cc.getEcheancier().getNbEcheances()+echSuppl)));;
+
 			} else {
 				cc.ajouterEcheancier(new Echeancier(e)); // on accepte la proposition de l'acheteur car on a la quantite
 															// en stock
@@ -196,6 +226,7 @@ public void recolte(Feve f) {
 
 					} else {
 						if (prixVendeur * 0.90 < getCoutProduction(cc.getProduit())) {
+
 							//On s'assure de conserver notre marge minimale
 							prixVendeur = getCoutProduction(cc.getProduit()) * 1.01;
 						
@@ -212,10 +243,13 @@ public void recolte(Feve f) {
 	
 	//A modifier après détermination des couts de production
 	public double getCoutProduction(Feve f) {
-		return 0;		
+		return 1800000;	
+		
+		
 	}
 	
 // End Elsa
+	
 	
 	
 // Begin Clément M	
@@ -284,7 +318,6 @@ public void recolte(Feve f) {
 			throw new IllegalArgumentException(
 					"Appel de la methode livrer de Producteur2 avec un produit ne correspondant pas aux feves produites");
 		}
-		
 		
 		
 		double livraison = Math.min(quantite, this.gestionnaireFeve.getStock(produit));

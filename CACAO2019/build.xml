@@ -68,7 +68,7 @@
     </target>
     <target name="FenetrePrincipaleTest">
         <mkdir dir="${junit.output.dir}"/>
-        <junit fork="yes" printsummary="withOutAndErr">
+        <junit fork="yes" printsummary="withOutAndErr" haltonfailure="true">
             <formatter type="xml"/>
             <test name="presentation.FenetrePrincipaleTest" todir="${junit.output.dir}"/>
             <jvmarg line="-ea"/>
@@ -77,7 +77,7 @@
     </target>
     <target name="MondeV1Test">
         <mkdir dir="${junit.output.dir}"/>
-        <junit fork="yes" printsummary="withOutAndErr">
+        <junit fork="yes" printsummary="withOutAndErr" haltonfailure="true">
             <formatter type="xml"/>
             <test name="abstraction.MondeV1Test" todir="${junit.output.dir}"/>
             <jvmarg line="-ea"/>

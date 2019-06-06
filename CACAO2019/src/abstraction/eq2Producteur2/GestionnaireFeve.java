@@ -20,7 +20,7 @@ public class GestionnaireFeve extends HashMap<Feve, IndicateurFeve>{
 	
 	public double getStock(Feve feve){	return this.get(feve).getStock();	}
 	public double getPrixVente(Feve feve) {	return this.get(feve).getPrixVente();	}
-	public double getProductionParStep(Feve feve) {	return this.get("feve").getProductionParStep();	}
+	public double getProductionParStep(Feve feve) {	return this.get(feve).getProductionParStep();	}
 	
 
 	public void setStock(IActeur acteur,Feve feve, double stock) {	this.get(feve).setStock(acteur, stock);	}
