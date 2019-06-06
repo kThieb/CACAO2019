@@ -14,6 +14,7 @@ public class Stock{
 	public Stock(Feve feve) {
 		ind=new Indicateur("EQ1 stock "+feve.getVariete(), new Producteur1(), 1000);
 		stock=new HashMap<Integer, Integer>();
+		//for ()
 		
 	}
 	
@@ -43,17 +44,17 @@ public class Stock{
 	public void updateStock(int nextCourant,int recolte) {
 		stock.put(nextCourant,recolte);
 		int nextPerime=nextCourant-Producteur1Interne.dureeDeVieFeve;
-		if (nextPerime>0) {
-			int stockPerime=stock.get(nextPerime);
-			stock.put(nextPerime, 0);
-			ind.retirer(new Producteur1(), stockPerime);
-		}
+		int stockPerime=stock.get(nextPerime);
+		stock.put(nextPerime, 0);
+		ind.retirer(new Producteur1(), stockPerime);
 		ind.ajouter(new Producteur1(), recolte);
 	}
 	
 	public static void main(String[] args) {
 		System.out.println("EQ1 stock "+Feve.TRINITARIO_MG_NEQ.getVariete());
 		System.out.println(new Integer(-1));
+		HashMap<Integer, Integer> toast = new HashMap<Integer, Integer>();
+		System.out.println(toast.get(0));
 	}
 
 }
