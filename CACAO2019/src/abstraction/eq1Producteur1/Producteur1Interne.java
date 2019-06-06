@@ -570,24 +570,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 	public void setStockTrinitario(HashMap<Integer, Double> stockTrinitario) {
 		this.stockTrinitario = stockTrinitario;
 	}
-	public double getRecolteCriollo() {
-		return recolteCriollo;
-	}
-	public void setRecolteCriollo(double recolteCriollo) {
-		this.recolteCriollo = recolteCriollo;
-	}
-	public double getRecolteForastero() {
-		return recolteForastero;
-	}
-	public void setRecolteForastero(double recolteForastero) {
-		this.recolteForastero = recolteForastero;
-	}
-	public double getRecolteTrinitario() {
-		return recolteTrinitario;
-	}
-	public void setRecolteTrinitario(double recolteTrinitario) {
-		this.recolteTrinitario = recolteTrinitario;
-	}
+	
 	public List<ContratCadre<Feve>> getContratEnCours() {
 		return contratEnCours;
 	}
