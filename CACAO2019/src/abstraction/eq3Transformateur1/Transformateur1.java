@@ -434,8 +434,9 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	public void notifierVendeur(ContratCadre<Chocolat> cc) {
 		//Begin Kevin
 		this.contratsChocolatEnCours.add(cc);
-		//End Kevin
+		//End Kevin.
 	}
+
 
 	
 	
@@ -448,6 +449,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		this.stockChocolat.removeQuantiteEnStock(produit, livraison);;
 		return livraison;
 		//End Raph/Kevin
+		
 	}
 
 	
