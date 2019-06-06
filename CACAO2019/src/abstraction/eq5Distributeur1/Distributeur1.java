@@ -78,6 +78,8 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 	 * @author Erine DUPONT
 	 */
 	public ContratCadre<Chocolat> getNouveauContrat() {
+		/* -----------------------------------------------------------------------------------------
+		 * V1 ERINE
 		// On va créer un nouveau contrat cadre 
 		ContratCadre<Chocolat> ncc = null;
 		// Au préalable, il faut identifier produit, quantité, vendeur, acheteur
@@ -131,7 +133,77 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 			}
 		}
 		//Création Contrat
-		return ncc;
+		return ncc; 
+		*/
+		/* --------------------------------------------------------------------------------------------------------
+		 * V2 ERINE
+		 */
+		// On va créer un nouveau contrat cadre 
+				ContratCadre<Chocolat> ncc = null;
+				// Au préalable, il faut identifier produit, quantité, vendeur, acheteur
+
+				// On détermine combien il resterait sur le compte si on soldait tous les contrats en cours.
+				double solde = this.soldeBancaire.getCompteBancaire();
+				for (ContratCadre<Chocolat> cc : this.contratsEnCours) {
+					solde = solde - cc.getMontantRestantARegler();
+				}
+
+				// On ne cherche pas a établir d'autres contrats d'achat si le compte bancaire est trop bas
+				if (solde>5000.0) { 
+
+					//Choix du produit : on choisit le produit pour lequel on a le moins de stock
+					Chocolat produit = this.stock.getProduitsEnVente().get(0);
+					for (Chocolat nouvproduit : this.stock.getProduitsEnVente()) {
+						if (this.stock.get(nouvproduit)<this.stock.get(produit)) {
+							produit = nouvproduit;
+						}
+						if (this.stock.get(nouvproduit) == this.stock.get(produit)) { 
+							/*Si deux produits ont le moins de stock, on en choisit un des 2 au hasard */
+							ArrayList<Chocolat> liste = new ArrayList<Chocolat>();
+							liste.add(produit);
+							liste.add(nouvproduit);
+							produit = liste.get((int)Math.random()*2);
+						}
+					}
+					
+					//Choix quantité : on choisit le vendeur ayant le meilleur rapport quantité/prix du produit
+					//Choix acteur
+					List<IVendeurContratCadre<Chocolat>> vendeurs = new ArrayList<IVendeurContratCadre<Chocolat>>();
+					for (IActeur acteur : Monde.LE_MONDE.getActeurs()) {
+						if (acteur instanceof IVendeurContratCadre) {
+							IVendeurContratCadre vacteur = (IVendeurContratCadre) acteur;
+							StockEnVente<Chocolat> stock = vacteur.getStockEnVente();
+							if (stock.get(produit)>100.0) { // on souhaite faire des contrats d'au moins 100kg
+								vendeurs.add((IVendeurContratCadre<Chocolat>)vacteur);
+							}
+						}
+					}
+					if (vendeurs.size()>1) { // On choisit le vendeur ayant le plus gros stock de produit
+						IVendeurContratCadre<Chocolat> vendeur_choisi = vendeurs.get(0); 
+						double stock_vendeur = vendeur_choisi.getStockEnVente().get(produit);
+						double prix_vendeur = vendeur_choisi.getPrix(produit, stock_vendeur);
+						double meilleur_rapport_qp = stock_vendeur/prix_vendeur;
+						for (IVendeurContratCadre<Chocolat> vendeur : vendeurs) {
+							double stock = vendeur.getStockEnVente().get(produit);
+							double prix = vendeur.getPrix(produit, stock);
+							double rapport_qp = stock/prix;
+							if (rapport_qp > meilleur_rapport_qp) {
+								vendeur_choisi = vendeur;
+								meilleur_rapport_qp = rapport_qp;
+							}
+						}
+						double quantite = vendeur_choisi.getStockEnVente().get(produit)*0.8; // On prend 80% de sa production
+						ncc = new ContratCadre<Chocolat>(this, vendeur_choisi, produit, quantite);
+						this.journal.ajouter("Nouveau contrat cadre signé avec " + vendeur_choisi + 
+								". Chocolat: "+ produit+ "/ Quantité: "+ quantite);
+					} 
+				} else {
+						this.journal.ajouter("   Il ne reste que "+solde+" une fois tous les contrats payes donc nous ne souhaitons "
+								+ "pas en créer d'autres pour l'instant");
+					}
+		
+				//Création Contrat
+				return ncc; 
 	}
 
 	/**
@@ -153,24 +225,42 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 	 */
 	public void proposerPrixAcheteur(ContratCadre cc) {
 		double prixVendeur = cc.getPrixAuKilo();
-		/* VERSION IMANE
-		 * if (Math.random()<0.25) { // probabilite de 25% d'accepter
+		/* ------------------------------------------------------------------------------------------
+		 * VERSION IMANE
+		 * if (Math.random()<0.25) { // probabilité de 25% d'accepter
 			cc.ajouterPrixAuKilo(cc.getPrixAuKilo());
 		} else {
 			cc.ajouterPrixAuKilo((prixVendeur*(0.9+Math.random()*0.1))); // Rabais de 10% max
 		}*/
-		if (100 < prixVendeur && prixVendeur < 1000 && stock.get((Chocolat) cc.getProduit())<1000) {
+		/* ------------------------------------------------------------------------------------------
+		 * V1 ERINE
+		 if (5 < prixVendeur && prixVendeur < 10 && stock.get((Chocolat) cc.getProduit())<1000) {
 			cc.ajouterPrixAuKilo(prixVendeur*0.8);
 			this.journal.ajouter("Nous proposons un prix de " + prixVendeur*0.8);
-		} else if (100 < prixVendeur && prixVendeur < 1000 && stock.get((Chocolat) cc.getProduit())>=1000) {
+		} else if (5 < prixVendeur && prixVendeur < 10 && stock.get((Chocolat) cc.getProduit())>=1000) {
 			cc.ajouterPrixAuKilo(prixVendeur*0.6);
 			this.journal.ajouter("Nous proposons un prix de " + prixVendeur*0.6);
-		} else if (prixVendeur <= 100) {
+		} else if (prixVendeur <= 5) {
 			cc.ajouterPrixAuKilo(prixVendeur);
 			this.journal.ajouter("Nous proposons un prix de " + prixVendeur);
 		} else {
 			this.journal.ajouter("Nous refusons le prix de " + prixVendeur);
-		}
+		} */
+		/* ------------------------------------------------------------------------------------------
+		 V2 ERINE
+		 */
+		 if (100 < prixVendeur && prixVendeur < 1000 && stock.get((Chocolat) cc.getProduit())<1000) {
+				cc.ajouterPrixAuKilo(prixVendeur*0.8);
+				this.journal.ajouter("Nous proposons un prix de " + prixVendeur*0.8);
+			} else if (100 < prixVendeur && prixVendeur < 1000 && stock.get((Chocolat) cc.getProduit())>=1000) {
+				cc.ajouterPrixAuKilo(prixVendeur*0.6);
+				this.journal.ajouter("Nous proposons un prix de " + prixVendeur*0.6);
+			} else if (prixVendeur <= 100) {
+				cc.ajouterPrixAuKilo(prixVendeur);
+				this.journal.ajouter("Nous proposons un prix de " + prixVendeur);
+			} else {
+				this.journal.ajouter("Nous refusons le prix de " + prixVendeur);
+			}	
 	}
 	
 	/** 
