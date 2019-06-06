@@ -80,7 +80,7 @@ public class Transformateur2VendeurCC implements IVendeurContratCadre<Chocolat> 
 						cc.ajouterPrixAuKilo(cc.getPrixAuKilo()); 
 					else
 						cc.ajouterPrixAuKilo((prixAcheteur + prixSouhaite) / 2); // On propose un prix intermédiaire
-					// TODO Vérifier si différence suffisamment grande
+					// TODO Vérifier si différence suffisamment grande 
 				}
 			}
 		}
