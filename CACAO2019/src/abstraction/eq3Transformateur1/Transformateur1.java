@@ -176,7 +176,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 			this.journal.ajouter("Transformation de " + fevesUtilisees + " de feves");
 			this.iStockFeves.retirer(this, fevesUtilisees);
 			
-		}
+		} 
 		
 		// -------------------------- end eve 
 	}
