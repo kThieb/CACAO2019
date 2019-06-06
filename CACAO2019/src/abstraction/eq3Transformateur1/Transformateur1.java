@@ -177,6 +177,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	// 			ACHETEUR
 	// -------------------------------------------------------------------------------------------
 
+	
 	// -------------------------- begin eve
 	public double quantiteDesiree(double quantiteEnVente, double prix) {
 		double possible = Math.max(0.0, soldeBancaire.getValeur()/prix);
