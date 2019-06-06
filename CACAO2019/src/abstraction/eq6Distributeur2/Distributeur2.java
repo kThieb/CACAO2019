@@ -254,6 +254,10 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 	}
 	//nordin
 	public void next() {
+
+		this.getSoldeBancaire().retirer(this, this.fraisStockage());
+		retireVieuxContrats();
+
 		// On incrémente les historiques 
 		HashMap<Chocolat, Double> derniereVente = derniereVente();
 		for (Chocolat c : derniereVente.keySet()) {
@@ -294,6 +298,7 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 				System.out.println(" "+c+" "+nouveauprix);
 			}
 		}
+
 	}
 		
 		
@@ -301,10 +306,10 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 
 	private double fraisStockage() {
 		double cout =0;
-		cout+= this.getStockHG_E_SHP().getValeur();
-		cout+= this.getStockMG_E_SHP().getValeur();
-		cout+= this.getStockMG_NE_HP().getValeur();
-		cout+= this.getStockMG_NE_SHP().getValeur();
+		cout+= 0.001*this.getStockHG_E_SHP().getValeur();
+		cout+= 0.001*this.getStockMG_E_SHP().getValeur();
+		cout+= 0.001*this.getStockMG_NE_HP().getValeur();
+		cout+= 0.001*this.getStockMG_NE_SHP().getValeur();
 		return cout;
 	}
 	
@@ -315,8 +320,8 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 		}
 		/*this.prixParProduit==null ? Double.MAX_VALUE */ 
 		return	(getPrixParProduit().containsKey(c)? getPrixParProduit().get(c) : 0.0);
-
 	}
+	
 	public int getArrondi(double d) {
 		double d_2 = d*100;
 		int i = (int) d_2;
@@ -418,7 +423,6 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 		} else {
 			vente_stockHG_E_SHP=0;}
 
-
 		vente_produit.put(Chocolat.MG_E_SHP, vente_stockMG_E_SHP);
 		vente_produit.put(Chocolat.MG_NE_HP, vente_stockMG_NE_HP);
 		vente_produit.put(Chocolat.MG_NE_SHP, vente_stockMG_NE_SHP);
@@ -474,18 +478,9 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 	private HashMap<Chocolat, Double> stockIdeal () {
 		//HashMap<Chocolat, Double> historique_vente = historique_vente() ;
 
-		//ETUDE DE MARCHÉ : Prendre en compte l'avis des clients les plus fidèles sur leur avis de produit ainsi que l'historique de leur demande 
-		/*
-				for (IActeur acteur : Monde.LE_MONDE.getActeurs()) {
-					if (acteur instanceof Client1) {
-						Client1 c = (Client1)acteur;
-						c.Offres(Monde.LE_MONDE.getStep());
-					} 
-				}
-		 
-		 */
 		
-		//Pour l'instant avec 4 clients qui veulent chaquun un produit different avec 7500 par step on prend : 
+		
+		//Pour l'instant avec 4 clients qui veulent chaqun un produit different avec 7500 par step on prend : 
 
 		HashMap<Chocolat, Double> stockIdeal= new HashMap<Chocolat, Double>();
 		stockIdeal.put(Chocolat.MG_E_SHP, 15000.0);
@@ -501,7 +496,7 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 			if (derniereVente().get(c) < 5000) {
 				stockIdeal.put(c, 5000.0);
 			}
-			if (derniereVente().get(c) > 10000) {
+			if (derniereVente().get(c) >= this.getIndicateurStock(c).getValeur()) {
 				stockIdeal.put(c, 20000.0);
 			}
 		}
@@ -509,7 +504,31 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 		return stockIdeal;
 	}
 
+    private HashMap<Chocolat, Double> achatIdeal () {
+    	
+      	HashMap<Chocolat, Double> achatIdeal= new HashMap<Chocolat, Double>();
+    	achatIdeal.put(Chocolat.MG_E_SHP, 15000.0);
+    	achatIdeal.put(Chocolat.MG_NE_SHP, 15000.0);
+    	achatIdeal.put(Chocolat.MG_NE_HP, 15000.0);
+    	achatIdeal.put(Chocolat.HG_E_SHP, 15000.0);
+    	
+		//Il serait mieux de voir la quantite reçue par step afin de combler les écarts avec de nouveaux contrats 
 
+		//Travail sur le stock idéal par rapport aux ventes précédentes
+		
+		for (Chocolat c : achatIdeal.keySet() ) {
+			
+			if (derniereVente().get(c) < 5000) {
+				achatIdeal.put(c, 5000.0);
+			}
+			if (derniereVente().get(c) >= this.getIndicateurStock(c).getValeur()) {
+				achatIdeal.put(c, 20000.0);
+			}
+		}
+		 
+		return achatIdeal;
+    	
+    }
 	public ContratCadre<Chocolat> getNouveauContrat() { //ILIAS et Caroline
 
 
@@ -547,9 +566,8 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 			}
 		}
 
-		retireVieuxContrats();
-		
-		if (solde >10000 ) 
+
+		if (solde >10000) 
 		{
 			List<IVendeurContratCadre<Chocolat>> vendeurs = new ArrayList<IVendeurContratCadre<Chocolat>>();
 			for (IActeur acteur : Monde.LE_MONDE.getActeurs()) {
@@ -562,7 +580,8 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 				}
 			}
 
-
+			
+    
 			//VENDEUR
 			double meilleurprix = 5000000;
 			IVendeurContratCadre<Chocolat> vendeur = null;
