@@ -13,10 +13,14 @@ public class VendeurContratCadre extends Producteur1Interne implements IVendeurC
 	// ANTI
 	private StockEnVente<Feve> stockEnVente;
 
-
+	
+	
 	public StockEnVente<Feve> getStockEnVente() {
         journal1.ajouter("stock en vente " +stockEnVente); // ROMU
-		return new StockEnVente<Feve>();// ROMU. Prealablement stockEnVente; mais jamais initialisee...
+		for(Feve produit: this.getFeve()) {
+		this.stockEnVente.ajouter(produit, this.getStockI(produit).getValeur()); 
+		}
+		return stockEnVente;// ROMU. Prealablement stockEnVente; mais jamais initialisee...
 	}
 
 	public double getPrix(Feve produit, Double quantite) {
@@ -30,6 +34,7 @@ public class VendeurContratCadre extends Producteur1Interne implements IVendeurC
 			Producteur1Interne prod = new Producteur1Interne();
 			return prod.getPrixAuKilo().get(produit);
 		}
+		// END Pauline
 	}
 //Begin MANON ET PAULINE
 	public void proposerEcheancierVendeur(ContratCadre<Feve> cc) {
