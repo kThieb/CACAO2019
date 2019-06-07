@@ -15,17 +15,14 @@ public class Transformateur2VendeurCC implements IVendeurContratCadre<Chocolat> 
 	// On tente de faire une marge de 30%
 	private static final double MARGE_VISEE = 0.3;
 	
-	
 	private Transformateur2 t2;
-	//protected HashMap<Chocolat,Double> catalogueChocolat;//Minh tri
 	
 	// Initialise Transformateur2VendeurCC avec un catalogue vide
 	public Transformateur2VendeurCC(Transformateur2 trans2) {
 		this.t2 = trans2;
-		// this.catalogueChocolat = new HashMap<Chocolat,Double>(); //Minh Tri
 	}
 	
-	
+	// Guillaume
 	public List<Chocolat> getProduitsEnVente() {
 		ArrayList<Chocolat> chocolat = new ArrayList<Chocolat>();
 		chocolat.addAll(t2.stockEnVente.getProduitsEnVente());
@@ -51,6 +48,7 @@ public class Transformateur2VendeurCC implements IVendeurContratCadre<Chocolat> 
 		return t2.stocksChocolat.getPrix(produit, qte) * (1.0 + MARGE_VISEE) / qte;
 	}
 
+	//Adrien
 	@Override
 	public void proposerEcheancierVendeur(ContratCadre<Chocolat> cc) {
 		if (Math.random() < 0.4) { // 40% de chances d'accepter l'échéancier
@@ -62,6 +60,7 @@ public class Transformateur2VendeurCC implements IVendeurContratCadre<Chocolat> 
 		
 	}
 	@Override
+	//Guillaume
 	public void proposerPrixVendeur(ContratCadre<Chocolat> cc) {
 		if(cc.getListePrixAuKilo().size()==0) {
 			cc.ajouterPrixAuKilo(getPrix(cc.getProduit(), cc.getQuantite()));
@@ -89,8 +88,16 @@ public class Transformateur2VendeurCC implements IVendeurContratCadre<Chocolat> 
 	@Override
 	public void notifierVendeur(ContratCadre<Chocolat> cc) {
 		t2.contratsChocolatEnCours.add(cc);
+
+		// Ajout de la demande à l'historique (Minh Tri)
+		Echeancier e = cc.getEcheancier();
+		for(int s = e.getStepDebut(); s <= e.getStepFin(); s++) {
+			TasProduit<Chocolat> tas = new TasProduit<>(e.getQuantite(s), cc.getPrixAuKilo());
+			t2.historiqueDemande.ajouterDemande(Monde.LE_MONDE.getStep() + s, tas, cc.getProduit());
+		}
 	}
 
+	// Kelian
 	@Override
 	public double livrer(Chocolat produit, double quantite, ContratCadre<Chocolat> cc) {
 		if (produit==null || t2.getStockEnVente().get(produit) == 0)
@@ -100,12 +107,12 @@ public class Transformateur2VendeurCC implements IVendeurContratCadre<Chocolat> 
 		t2.iStockChocolat.retirer(t2, livraison);
 		
 		return livraison;
-
 	}
 
+	// Kelian
 	@Override
 	public void encaisser(double montant, ContratCadre<Chocolat> cc) {
-		if (montant<0.0) {
+		if (montant < 0.0) {
 			throw new IllegalArgumentException("Appel de la methode encaisser de Transformateur2 avec un montant negatif");
 		}
 		t2.soldeBancaire.ajouter(t2,  montant);

@@ -43,8 +43,11 @@ public class Transformateur2 implements IActeur, IAcheteurContratCadre<Feve>, IV
 
 	protected StockEnVente<Chocolat> stockEnVente;
 	
+	// Historique des demandes (utilisée pour définir notre stratégie d'achat de fèves)
+	public HistoriqueDemande historiqueDemande;
+	
 	// Constantes
-	private static final int STEPS_PAR_ANNEE = 24;
+	public static final int STEPS_PAR_ANNEE = 24;
 	private static final double MAX_PRODUCTION_PAR_STEP = 10e3; // Production max. de chocolats par step, en kg
 	
 	public Transformateur2() {
@@ -90,6 +93,9 @@ public class Transformateur2 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		// Initialisation des stocks
 		stocksChocolat = new StockProduit<Chocolat>(CHOCOLATS_VENTE);
 		stockFeves = new StockProduit<Feve>(FEVES_ACHAT);
+		
+		// Initialisation de l'historique des demandes
+		historiqueDemande = new HistoriqueDemande();
 	}
 
 	public void next() {
@@ -233,8 +239,9 @@ public class Transformateur2 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		/* TODO Attention : produire toute la qté nécessaire pour le CC d'un coup n'est pas forcément une bonne idée vis à vis de la péremption */
 	}
 	
+	// Kelian
 	/** Renvoie le step actuel dans l'année en cours */
-	public static int getStepInAnnee() {
+	public static int getCurrentStepInAnnee() {
 		return Monde.LE_MONDE.getStep() % STEPS_PAR_ANNEE;
 	}
 	
