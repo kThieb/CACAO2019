@@ -352,8 +352,9 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 
 	@Override
 	public void receptionner(Feve produit, double quantite, ContratCadre<Feve> cc) {
+
 		// begin sacha et eve
-		
+
 		this.journal.ajouter("Receptionner " + produit + ", quantite = " + quantite);
 		ArrayList<Feve> produitsEnStock = this.stockFeves.getProduitsEnStock();
 		if (produit==null || !(produitsEnStock.contains(produit))) {
