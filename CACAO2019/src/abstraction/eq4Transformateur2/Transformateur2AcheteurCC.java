@@ -23,6 +23,7 @@ public class Transformateur2AcheteurCC implements IAcheteurContratCadre<Feve> {
 		this.t2 = trans2;
 	}
 	
+	// Kelian
 	@Override
 	public ContratCadre<Feve> getNouveauContrat() {
 		// Calcul du solde que l'on peut dépenser en fonction des contrats sortants et entrants
@@ -137,6 +138,7 @@ public class Transformateur2AcheteurCC implements IAcheteurContratCadre<Feve> {
 		t2.contratsFevesEnCours.add(cc);
 	}
 
+	// Kelian
 	@Override
 	public void receptionner(Feve produit, double quantite, ContratCadre<Feve> cc) {
 		if(quantite <= 0.0)
@@ -146,6 +148,7 @@ public class Transformateur2AcheteurCC implements IAcheteurContratCadre<Feve> {
 		t2.iStockFeves.ajouter(t2, quantite);
 	}
 
+	// Kelian
 	@Override
 	public double payer(double montant, ContratCadre<Feve> cc) {
 		if(montant <= 0.0)
