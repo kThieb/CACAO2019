@@ -66,7 +66,12 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 
 
 		// stock de feves
-		ArrayList<Feve> feves = new ArrayList<Feve>(Arrays.asList(Feve.values()));
+		ArrayList<Feve> feves = new ArrayList<Feve>();
+		for (Feve f: Arrays.asList(Feve.values())) {
+			if (f.getGamme() == Gamme.MOYENNE) {
+				feves.add(f);
+			}
+		}
 		this.stockFeves = new Stock<Feve>(feves);
 		for (Feve f: feves) {
 			this.stockFeves.addQuantiteEnStock(f, 1000);
@@ -75,7 +80,10 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 
 
 		// stock de chocolat
-		ArrayList<Chocolat> chocolats = new ArrayList<Chocolat>(Arrays.asList(Chocolat.values()));
+		ArrayList<Chocolat> chocolats = new ArrayList<Chocolat>();
+		chocolats.add(Chocolat.MG_NE_HP);
+		chocolats.add(Chocolat.MG_NE_SHP);
+		chocolats.add(Chocolat.MG_E_SHP);
 		this.stockChocolat = new Stock<Chocolat>(chocolats);
 		for (Chocolat c: chocolats) {
 			this.stockChocolat.addQuantiteEnStock(c, 1000000);
@@ -562,18 +570,19 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	
 	public double livrer(Chocolat produit, double quantite, ContratCadre<Chocolat> cc) {
 		//Begin Raph/Kevin
-		System.out.println("livraison de " + produit + " avec quantite " + quantite);
+		this.journal.ajouter("demande de livraison de " + produit + " avec quantite " + quantite);
 		if (produit==null || !stockChocolat.getProduitsEnStock().contains(produit)) {
+			this.journal.ajouter("Livraison " + produit + "rien");
 			return 0.0 ;
 		}
 		else if (!stockChocolat.estEnStock(produit)) {
 			return 0.0;
 		}
 		else {
-			this.journal.ajouter("Livraison " + produit + ", quantite = " + quantite);
 			double livraison = Math.min(quantite, this.stockChocolat.getQuantiteEnStock(produit));
 			this.stockChocolat.removeQuantiteEnStock(produit, livraison);
 			this.iStockChocolat.retirer(this, livraison);
+			this.journal.ajouter("Livraison " + produit + ", quantite = " + livraison + ", stock restant = " + this.stockChocolat.getQuantiteEnStock(produit));
 			return livraison;
 		}
 		//End Raph/Kevin
