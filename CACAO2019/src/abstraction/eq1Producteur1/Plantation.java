@@ -62,6 +62,18 @@ public class Plantation {
 		} 
 	}
 	
+	public double getRecolte(int stepCourant) {
+		int stepAExplorer=getStepBorneInf();
+		double recolte=0;
+		while (stepAExplorer <=stepCourant-troisAnsEnSteps) { 
+			recolte += getPlantation().get(stepAExplorer);
+			stepAExplorer++;
+			
+		}
+		return recolte;
+	}
+	
+	
 	public Double moyenneDemande(){
 		return Double.NaN;
 	}
