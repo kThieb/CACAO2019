@@ -61,4 +61,27 @@ public class Plantation {
 			getInd().retirer(getAct(), ArbresAges);
 		} 
 	}
+	
+	public double getRecolte(int stepCourant) {
+		int stepAExplorer=getStepBorneInf();
+		double recolte=0;
+		while (stepAExplorer <=stepCourant-troisAnsEnSteps) { 
+			recolte += getPlantation().get(stepAExplorer);
+			stepAExplorer++;
+			
+		}
+		return recolte;
+	}
+	
+	
+	public Double moyenneDemande(){
+		return Double.NaN;
+	}
+	
+	public void updatePlantation(int stepCourant,double plantation) {
+		planter(stepCourant,plantation); 
+		retraitArbresAges(stepCourant);
+	}
+	
+	
 }
