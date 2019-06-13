@@ -42,7 +42,9 @@ public class Stock<T> {
 	public ArrayList<T> getProduitsEnStock() {
 		ArrayList<T> resultat = new ArrayList<T>();
 		for (T p: this.stock.keySet()) {
-			resultat.add(p);
+				if (this.getQuantiteEnStock(p) > 0.) {
+					resultat.add(p);
+				}
 		}
 		return resultat;
 	}
