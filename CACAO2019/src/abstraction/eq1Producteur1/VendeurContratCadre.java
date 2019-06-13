@@ -67,7 +67,8 @@ public class VendeurContratCadre extends Producteur1Interne implements IVendeurC
 			// utiliser Producteur1.getPrixAuKilo() pour savoir prix en fct du produit
 			}
 			
-			}		
+			}
+			}
 					
 
 			}

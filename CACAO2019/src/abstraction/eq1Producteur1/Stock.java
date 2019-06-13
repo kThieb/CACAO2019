@@ -30,20 +30,20 @@ public class Stock{
 	}
 	
 	public void depot(int next,double quantite) {
-		getStock().put(next, quantite);
-		getInd().ajouter(getAct(), quantite);
+		getStock().put(next, quantite); //maj du stock
+		getInd().ajouter(getAct(), quantite); //maj de l'indicateur
 	}
 	
 	public double retrait(int nextCourant,double quantite) {
 		double quantiteAEnlever=quantite;
 		int nextAExplorer=getNextBorneInf();
-		while (quantiteAEnlever>0 && nextAExplorer <=nextCourant) {
+		while (quantiteAEnlever>0 && nextAExplorer <=nextCourant) { //maj du stock en retirant les feves les plus agées d'abord
 			if (getStock().getOrDefault(nextAExplorer,(double)0)<quantiteAEnlever) {
 				if (getStock().get(nextAExplorer)!=null) {
 					quantiteAEnlever=quantiteAEnlever-getStock().get(nextAExplorer);
 					getStock().put(nextAExplorer,(double) 0);
 				}
-				setNextBorneInf(nextAExplorer);
+				setNextBorneInf(nextAExplorer); //maj 
 			} else {
 			
 				getStock().put(nextAExplorer, getStock().get(nextAExplorer)-quantiteAEnlever);
@@ -53,7 +53,7 @@ public class Stock{
 			
 		}
 		double quantiteRetire=quantite-quantiteAEnlever;
-		getInd().retirer(getAct(), quantiteRetire);
+		getInd().retirer(getAct(), quantiteRetire); //maj de l'indicateur
 		return quantiteRetire;
 		
 	}
