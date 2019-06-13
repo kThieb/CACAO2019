@@ -45,8 +45,8 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
         private HashMap<Chocolat,Double> prixParProduit;
         private StockEnVente<Chocolat> stockEnVente;
         
-        private double massesalariale = 100000 ;
-        private double coutstructure = 10000 ; 
+        private double massesalariale = 100000; //à harmoniser avec le sscond distributeur
+        private double coutstructure = 10000 ; //à harmoniser avec le sscond distributeur
         private double tva = 1.2 ;
         
         public void quantitevendu () {
