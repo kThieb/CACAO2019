@@ -554,6 +554,9 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		if (produit==null || !stockChocolat.getProduitsEnStock().contains(produit)) {
 			return 0.0 ;
 		}
+		else if (!stockChocolat.estEnStock(produit)) {
+			return 0.0;
+		}
 		else {
 			this.journal.ajouter("Livraison " + produit + ", quantite = " + quantite);
 			double livraison = Math.min(quantite, this.stockChocolat.getQuantiteEnStock(produit));
