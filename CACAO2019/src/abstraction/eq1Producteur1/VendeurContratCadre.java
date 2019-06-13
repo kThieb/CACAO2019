@@ -45,6 +45,12 @@ public class VendeurContratCadre extends Producteur1Interne implements IVendeurC
 				return prod.getPrixAuKilo().get(produit);}
 			
 			else{
+				if(this.moyenneDemande(produit)>this.getStockI(produit).getValeur() ) {
+					this.prixAuKilo.put(produit, this.getPrixAuKilo().get(produit)+0.2);
+					getJournal1().ajouter("Prix de Vente"+ prod.getPrixAuKilo().get(produit));
+					return prod.getPrixAuKilo().get(produit);}
+				
+				else {
 
 			if (this.getHistoriqueSoldeBancaire().get(this.getHistoriqueSoldeBancaire().size()-2)>this.getHistoriqueSoldeBancaire().get(this.getHistoriqueSoldeBancaire().size()-1)){//On regarde si le solde bancaire diminue
 					if(this.getStockEnVente().get(produit)==this.getStockI(produit).getValeur()) {
@@ -60,7 +66,7 @@ public class VendeurContratCadre extends Producteur1Interne implements IVendeurC
 					return prod.getPrixAuKilo().get(produit);}
 			 }else {this.journal1.ajouter("Prix de Vente"+ prod.getPrixAuKilo().get(produit));
 				 return prod.getPrixAuKilo().get(produit);}
-				
+				}
 				//END MANON
 
 			// utiliser Producteur1.getPrixAuKilo() pour savoir prix en fct du produit
