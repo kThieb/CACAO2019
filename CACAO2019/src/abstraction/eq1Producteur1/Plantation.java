@@ -16,7 +16,7 @@ import abstraction.fourni.Indicateur;
 import static abstraction.eq1Producteur1.Producteur1Interne.*;
 
 
-
+//BEGIN Nas et Anti
 public class Plantation {
 	private Indicateur ind;
 	private HashMap<Integer, Double> plantation;//clé=step de stockage, objet=quantité
@@ -138,3 +138,4 @@ public class Plantation {
 	
 	
 }
+//END Nas et Anti
