@@ -72,7 +72,7 @@ public class Plantation {
 			getInd().retirer(getAct(), ArbresAges);
 		} 
 	}
-<<<<<<< HEAD
+
 	public Double moyenneDemandeCriollo(){
 		Double moyenne = 0.0;
 		Set<Entry<Integer, ContratCadre<Feve>>> setHisto= historiqueContrats.entrySet();
@@ -90,13 +90,14 @@ public class Plantation {
 					if (stepFin > cinqAnsEnSteps) {
 						stepFin = cinqAnsEnSteps;
 					}
-					moyenne += echeancier.getQuantiteJusquA(stepFin);
-					if (stepFin - stepDebut > cinqAnsEnSteps) {
-						stepFin = cinqAnsEnSteps; }
+					moyenne += echeancier.getQuantiteJusquA(stepFin);}}}
+			}
+		return moyenne /5 ;
+					
 			
 		}
 		
-=======
+
 	
 	public double getRecolte(int stepCourant) {
 		int stepAExplorer=getStepBorneInf();
@@ -110,13 +111,6 @@ public class Plantation {
 	}
 	
 	
-	public Double moyenneDemande(){
-		return Double.NaN;
->>>>>>> branch 'master' of https://github.com/n18abdel/CACAO2019.git
-	}
-		}
-		 
-		}return moyenne / 5 ;}
 	
 	public Double moyenneDemandeForastero(){
 		Double moyenne = 0.0;
@@ -136,8 +130,7 @@ public class Plantation {
 						stepFin = cinqAnsEnSteps;
 					}
 					moyenne += echeancier.getQuantiteJusquA(stepFin);
-					if (stepFin - stepDebut > cinqAnsEnSteps) {
-						stepFin = cinqAnsEnSteps; }
+					
 			
 		}
 		
@@ -163,8 +156,7 @@ public class Plantation {
 						stepFin = cinqAnsEnSteps;
 					}
 					moyenne += echeancier.getQuantiteJusquA(stepFin);
-					if (stepFin - stepDebut > cinqAnsEnSteps) {
-						stepFin = cinqAnsEnSteps; }
+					
 			
 		}
 		
