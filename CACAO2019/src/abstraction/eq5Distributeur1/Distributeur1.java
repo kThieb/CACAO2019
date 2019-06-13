@@ -48,10 +48,10 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 		this.coutsvariables = 0;	
 		this.coutsdestockage = 0;
 		this.stock = new Stock();
-		stock.ajouter(Chocolat.HG_E_SHP, 150000.0, this);
-		stock.ajouter(Chocolat.MG_E_SHP, 150000.0, this);
-		stock.ajouter(Chocolat.MG_NE_HP, 150000.0, this);
-		stock.ajouter(Chocolat.MG_NE_SHP, 150000.0, this);
+		stock.ajouter(Chocolat.HG_E_SHP, 15000.0, this);
+		stock.ajouter(Chocolat.MG_E_SHP, 15000.0, this);
+		stock.ajouter(Chocolat.MG_NE_HP, 15000.0, this);
+		stock.ajouter(Chocolat.MG_NE_SHP, 15000.0, this);
 
 		this.soldeBancaire = new CompteBancaire(this.getNom(), this, soldeInitial);
 		this.indicateursolde = new Indicateur ("EQ5 solde bancaire",this, soldeBancaire.getCompteBancaire());
