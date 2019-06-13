@@ -148,12 +148,12 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 		 */
 		// On va créer un nouveau contrat cadre 
 		ContratCadre<Chocolat> ncc = null;
-		this.journal.ajouter("Démarrage d'un nouveau contrat cadre");
+		this.journal.ajouter("-------------------------------------Démarrage d'un nouveau contrat cadre ------------------------------------------------");
 		// Au préalable, il faut identifier produit, quantité, vendeur, acheteur
 
 		// On détermine combien il resterait sur le compte si on soldait tous les contrats en cours.
 		double solde = this.soldeBancaire.getCompteBancaire();
-		this.journal.ajouter("Le solde actuel est de " + solde + " €");
+		this.journal.ajouter("Le solde actuel est de " + solde);
 		for (ContratCadre<Chocolat> cc : this.contratsEnCours) {
 			solde = solde - cc.getMontantRestantARegler();
 		}
@@ -225,7 +225,7 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 						quantite = vendeur_choisi.getStockEnVente().get(produit);
 					}
 				}
-				this.journal.ajouter("La quantité demandée est " + quantite + " kg");
+				this.journal.ajouter("La quantité demandée est " + quantite);
 				ncc = new ContratCadre<Chocolat>(this, vendeur_choisi, produit, quantite);
 			}  
 		} else {
@@ -239,11 +239,8 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 
 	/**
 	 * @author Imane ZRIAA
-	 * @author2 Erine DUPONT
 	 */
 	public void proposerEcheancierAcheteur(ContratCadre C) {
-		/*-------------------------------------------------------------------------
-		 V1 IMANE
 		if (C!=null) {
 			Echeancier e = C.getEcheancier() ;
 			if (e==null ) {//pas de contre-proposition
@@ -252,11 +249,9 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 				if( e.getQuantiteTotale() > C.getQuantite() ) {
 					C.ajouterEcheancier(new Echeancier(C.getEcheancier())); 
 				}	
-				this.journal.ajouter("Contrat n° " + C.getNumero() + " avec " + C.getEcheancier().getNbEcheances()+ 
-						" échéances");
+				this.journal.ajouter("Contrat n° " + C.getNumero() + " avec " + C.getEcheancier().getNbEcheances()+ " échéances");
 			}
 		}
-		 */
 		/* -------------------------------------------------------------------------- 
 		 * V2 ERINE
 		 */
@@ -269,97 +264,99 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 			double qcc = 0.0;
 			for (ContratCadre cc : this.contratsEnCours) {
 				qcc += cc.getQuantiteRestantALivrer();
-				if (qcc + quantite <= 0.25*stock) {
-					this.journal.ajouter("La quantité demandée ajoutée à la quantité restant à livrer est inférieure "
-							+ "à 25% du stock");
-					ArrayList<Integer> e1 = new ArrayList<Integer>();
-					e1.add(1);
-					e1.add(2);
-					e1.add(3);
-					e1.add(4);
-					e1.add(5);
-					int echeance = e1.get((int)Math.random()*5);
-					Echeancier e_possible = new Echeancier(Monde.LE_MONDE.getStep(), echeance, 
-							C.getQuantite()/echeance);
-					if (e_vendeur != null && e_vendeur.getNbEcheances() >= e_possible.getNbEcheances()) {
-						C.ajouterEcheancier(e_vendeur);
-						this.journal.ajouter("On accepte l'échéancier du vendeur");
-					} else if (e_vendeur != null && e_vendeur.getNbEcheances() < e_possible.getNbEcheances()) {
-						C.ajouterEcheancier(e_possible);
-						this.journal.ajouter("L'échéancier proposé par le vendeur est trop court, on propose " 
-								+ e_possible.toString());
-					} else if (e_vendeur == null){
-						C.ajouterEcheancier(e_possible);
-						this.journal.ajouter("On propose "+ e_possible.toString());
-					}
-				} else if (quantite + qcc <= 0.5*stock) {
-					this.journal.ajouter("La quantité demandée ajoutée à la quantité restant à livrer est inférieure "
-							+ "à 50% du stock");
-					ArrayList<Integer> e2 = new ArrayList<Integer>();
-					e2.add(6);
-					e2.add(7);
-					e2.add(8);
-					e2.add(9);
-					e2.add(10);
-					int echeance = e2.get((int)Math.random()*5);
-					Echeancier e_possible = new Echeancier(Monde.LE_MONDE.getStep(), echeance, 
-							C.getQuantite()/echeance);
-					if (e_vendeur != null && e_vendeur.getNbEcheances() >= e_possible.getNbEcheances()) {
-						C.ajouterEcheancier(e_vendeur);
-						this.journal.ajouter("On accepte l'échéancier du vendeur");
-					} else if (e_vendeur != null && e_vendeur.getNbEcheances() < e_possible.getNbEcheances()){
-						C.ajouterEcheancier(e_possible);
-						this.journal.ajouter("L'échéancier proposé par le vendeur est trop court, on propose " 
-								+ e_possible.toString());
-					} else if (e_vendeur == null) {
-						C.ajouterEcheancier(e_possible);
-						this.journal.ajouter("On propose "+ e_possible.toString());
-					}
-				} else {
-					this.journal.ajouter("La quantité demandée ajoutée à la quantité restant à livrer est supérieure "
-							+ "à 50% du stock");
-					ArrayList<Integer> e3 = new ArrayList<Integer>();
-					e3.add(8);
-					e3.add(9);
-					e3.add(10);
-					e3.add(11);
-					e3.add(12);
-					int echeance = e3.get((int)Math.random()*5);
-					Echeancier e_possible = new Echeancier(Monde.LE_MONDE.getStep(), echeance, 
-							C.getQuantite()/echeance);
-					if (e_vendeur != null && e_vendeur.getNbEcheances() >= e_possible.getNbEcheances()) {
-						C.ajouterEcheancier(e_vendeur);
-						this.journal.ajouter("On accepte l'échéancier du vendeur");
-					} else if (e_vendeur != null && e_vendeur.getNbEcheances() >= e_possible.getNbEcheances()){
-						C.ajouterEcheancier(e_possible);
-						this.journal.ajouter("L'échéancier proposé par le vendeur est trop court, on propose " 
-								+ e_possible.toString());
-					} else if (e_vendeur == null) {
-						C.ajouterEcheancier(e_possible);
-						this.journal.ajouter("On propose "+ e_possible.toString());
-					}
+			}
+			this.journal.ajouter("La quantité de " + produit + " restant à livrer pour les autres contrats est " + qcc + " kg");
+			if (qcc + quantite <= 0.25*stock) {
+				this.journal.ajouter("La quantité demandée ajoutée à la quantité restant à livrer (" + qcc +") est inférieure "
+						+ "à 25% du stock ("+ stock + ")");
+				ArrayList<Integer> e1 = new ArrayList<Integer>();
+				e1.add(1);
+				e1.add(2);
+				e1.add(3);
+				e1.add(4);
+				e1.add(5);
+				int echeance = e1.get((int)Math.random()*5);
+				Echeancier e_possible = new Echeancier(Monde.LE_MONDE.getStep(), echeance, 
+						C.getQuantite()/echeance);
+				if (e_vendeur != null && e_vendeur.getNbEcheances() >= e_possible.getNbEcheances()) {
+					C.ajouterEcheancier(e_vendeur);
+					this.journal.ajouter("On accepte l'échéancier du vendeur");
+				} else if (e_vendeur != null && e_vendeur.getNbEcheances() < e_possible.getNbEcheances()) {
+					C.ajouterEcheancier(e_possible);
+					this.journal.ajouter("L'échéancier proposé par le vendeur est trop court, on propose " 
+							+ e_possible.toString());
+				} else if (e_vendeur == null){
+					C.ajouterEcheancier(e_possible);
+					this.journal.ajouter("On propose "+ e_possible.toString());
+				}
+			} else if (quantite + qcc <= 0.5*stock) {
+				this.journal.ajouter("La quantité demandée ajoutée à la quantité restant à livrer " + qcc + " est inférieure "
+						+ "à 50% du stock ("+ stock + ")");
+				ArrayList<Integer> e2 = new ArrayList<Integer>();
+				e2.add(6);
+				e2.add(7);
+				e2.add(8);
+				e2.add(9);
+				e2.add(10);
+				int echeance = e2.get((int)Math.random()*5);
+				Echeancier e_possible = new Echeancier(Monde.LE_MONDE.getStep(), echeance, 
+						C.getQuantite()/echeance);
+				if (e_vendeur != null && e_vendeur.getNbEcheances() >= e_possible.getNbEcheances()) {
+					C.ajouterEcheancier(e_vendeur);
+					this.journal.ajouter("On accepte l'échéancier du vendeur");
+				} else if (e_vendeur != null && e_vendeur.getNbEcheances() < e_possible.getNbEcheances()){
+					C.ajouterEcheancier(e_possible);
+					this.journal.ajouter("L'échéancier proposé par le vendeur est trop court, on propose " 
+							+ e_possible.toString());
+				} else if (e_vendeur == null) {
+					C.ajouterEcheancier(e_possible);
+					this.journal.ajouter("On propose "+ e_possible.toString());
+				}
+			} else {
+				this.journal.ajouter("La quantité demandée ajoutée à la quantité restant à livrer (" + qcc + ") est supérieure "
+						+ "à 50% du stock (" + stock + ")");
+				ArrayList<Integer> e3 = new ArrayList<Integer>();
+				e3.add(8);
+				e3.add(9);
+				e3.add(10);
+				e3.add(11);
+				e3.add(12);
+				int echeance = e3.get((int)Math.random()*5);
+				Echeancier e_possible = new Echeancier(Monde.LE_MONDE.getStep(), echeance, 
+						C.getQuantite()/echeance);
+				if (e_vendeur != null && e_vendeur.getNbEcheances() >= e_possible.getNbEcheances()) {
+					C.ajouterEcheancier(e_vendeur);
+					this.journal.ajouter("On accepte l'échéancier du vendeur");
+				} else if (e_vendeur != null && e_vendeur.getNbEcheances() >= e_possible.getNbEcheances()){
+					C.ajouterEcheancier(e_possible);
+					this.journal.ajouter("L'échéancier proposé par le vendeur est trop court, on propose " 
+							+ e_possible.toString());
+				} else if (e_vendeur == null) {
+					C.ajouterEcheancier(e_possible);
+					this.journal.ajouter("On propose "+ e_possible.toString());
 				}
 			}
 		}
-
 	}
 
-	/**
-	 * @author Imane ZRIAA
-	 * @author2 Erine DUPONT
-	 */
 
-	public void proposerPrixAcheteur(ContratCadre cc) {
-		double prixVendeur = cc.getPrixAuKilo();
-		/* ------------------------------------------------------------------------------------------
-		 * VERSION IMANE
-		 * if (Math.random()<0.30) { 
+
+		/**
+		 * @author Imane ZRIAA
+		 * @author2 Erine DUPONT
+		 */
+
+		public void proposerPrixAcheteur(ContratCadre cc) {
+			double prixVendeur = cc.getPrixAuKilo();
+			/* ------------------------------------------------------------------------------------------
+			 * VERSION IMANE
+			 * if (Math.random()<0.30) { 
 			cc.ajouterPrixAuKilo(cc.getPrixAuKilo());
 		} else {
 			cc.ajouterPrixAuKilo((prixVendeur*(0.9+Math.random()*0.1))); // Rabais de 10% max
 		}*/
-		/* ------------------------------------------------------------------------------------------
-		 * V1 ERINE
+			/* ------------------------------------------------------------------------------------------
+			 * V1 ERINE
 		 if (5 < prixVendeur && prixVendeur < 10 && stock.get((Chocolat) cc.getProduit())<1000) {
 			cc.ajouterPrixAuKilo(prixVendeur*0.8);
 			this.journal.ajouter("Nous proposons un prix de " + prixVendeur*0.8);
@@ -372,161 +369,193 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 		} else {
 			this.journal.ajouter("Nous refusons le prix de " + prixVendeur);
 		} */
-		/* ------------------------------------------------------------------------------------------
+			/* ------------------------------------------------------------------------------------------
 		 V2 ERINE
-		 */
-		if (cc.getProduit().equals(Chocolat.HG_E_SHP)) {
-			if (20 < prixVendeur && prixVendeur <= 70 && stock.get((Chocolat) cc.getProduit()) < 10000) {
-				cc.ajouterPrixAuKilo(prixVendeur*0.95);
-				this.journal.ajouter("Nous proposons un prix de " + prixVendeur*0.95);
-			} else if (20 < prixVendeur && prixVendeur <= 70 && stock.get((Chocolat) cc.getProduit())>=10000) {
-				cc.ajouterPrixAuKilo(prixVendeur*0.8);
-				this.journal.ajouter("Nous proposons un prix de " + prixVendeur*0.8);
-			} else if (prixVendeur <= 20) {
-				cc.ajouterPrixAuKilo(prixVendeur);
-				this.journal.ajouter("Nous proposons un prix de " + prixVendeur);
-			} else {
-				this.journal.ajouter("Nous refusons le prix de " + prixVendeur);
-			}	
-		} else if (cc.getProduit().equals(Chocolat.MG_E_SHP) || cc.getProduit().equals(Chocolat.MG_NE_SHP)) {
-			if (10 < prixVendeur && prixVendeur <= 50 && stock.get((Chocolat) cc.getProduit()) < 10000) {
-				cc.ajouterPrixAuKilo(prixVendeur*0.8);
-				this.journal.ajouter("Nous proposons un prix de " + prixVendeur*0.8);
-			} else if (10 < prixVendeur && prixVendeur <= 50 && stock.get((Chocolat) cc.getProduit())>=10000) {
-				cc.ajouterPrixAuKilo(prixVendeur*0.6);
-				this.journal.ajouter("Nous proposons un prix de " + prixVendeur*0.6);
-			} else if (prixVendeur <= 10) {
-				cc.ajouterPrixAuKilo(prixVendeur);
-				this.journal.ajouter("Nous proposons un prix de " + prixVendeur);
-			} else {
-				this.journal.ajouter("Nous refusons le prix de " + prixVendeur);
-			}	
-		} else if (cc.getProduit().equals(Chocolat.MG_NE_HP)) {
-			if (10 < prixVendeur && prixVendeur <= 40 && stock.get((Chocolat) cc.getProduit()) < 10000) {
-				cc.ajouterPrixAuKilo(prixVendeur*0.8);
-				this.journal.ajouter("Nous proposons un prix de " + prixVendeur*0.8);
-			} else if (10 < prixVendeur && prixVendeur <= 40 && stock.get((Chocolat) cc.getProduit())>=10000) {
-				cc.ajouterPrixAuKilo(prixVendeur*0.6);
-				this.journal.ajouter("Nous proposons un prix de " + prixVendeur*0.6);
-			} else if (prixVendeur <= 10) {
-				cc.ajouterPrixAuKilo(prixVendeur);
-				this.journal.ajouter("Nous proposons un prix de " + prixVendeur);
-			} else {
-				this.journal.ajouter("Nous refusons le prix de " + prixVendeur);
-			}	
-		}
-	}
-
-	/** 
-	 * @author Erine DUPONT
-	 * @author2 Imane : Ajout du journal 
-	 */
-	public void notifierAcheteur(ContratCadre cc) {
-		if (cc!=null) {
-			this.contratsEnCours.add(cc);
-			this.journal.ajouter("Le contrat n° " + cc.getNumero()+ " est signé");
-		}
-	}
-
-	/**@author Erine DUPONT / Imane ZRIAA 
-	 */
-	public void receptionner(Object produit, double quantite, ContratCadre cc) {
-		if (produit==null || !produit.equals(cc.getProduit())) {
-			throw new IllegalArgumentException("Appel de la methode receptionner de Distributeur1 avec un produit ne correspondant pas au produit distribue par le distributeur");
-		}
-		if (quantite<=0.0) {
-			throw new IllegalArgumentException("Appel de la methode receptionner de Distributeur1 avec une quantite egale a "+quantite);
-		}
-		if (cc.getProduit().equals(produit)) { 
-			this.stock.ajouter((Chocolat) produit, quantite, this);
-		}
-		this.journal.ajouter("Réception de "+ quantite + " kg de" + produit);
-	}
-
-	/**
-	 * @author Erwann DEFOY
-	 * @author2 Erine DUPONT : ajout du journal
-	 */
-	public double payer(double montant, ContratCadre cc) {
-		if (montant<=0.0) {
-			throw new IllegalArgumentException("Appel de la methode payer de Distributeur1 avec un montant negatif = "+montant);
-		}
-		double quantitepaye = soldeBancaire.Payer((IActeur)(cc.getVendeur()), montant);
-		this.indicateursolde.retirer(this, quantitepaye);
-		this.journal.ajouter("Paiement de " + montant + " €");
-		return quantitepaye;
-	}
-
-	// ---------------------------------------------------------------------------------------------------------
-	// VENDEUR CLIENT
-	// ---------------------------------------------------------------------------------------------------------
-
-	/**
-	 * @author Estelle BONNET
-	 */
-	public StockEnVente<Chocolat> getStockEnVente() {
-		StockEnVente<Chocolat> res = new StockEnVente<Chocolat>();
-		List<Chocolat> produits = this.stock.getProduitsEnVente();
-		for (int i =0; i< produits.size(); i++) {
-			res.ajouter(produits.get(i), stock.get(produits.get(i)));
-		}
-		return res;
-	}
-
-	/**
-	 * @author Estelle BONNET
-	 * @author2 Erine DUPONT
-	 */
-	public double getPrix(Chocolat c) {
-		boolean vendu = false;
-		List<Chocolat> produits =this.stock.getProduitsEnVente();
-		for (int i=0; i<produits.size();i++) {
-			if (c.equals(produits.get(i))) {
-				vendu = true;
+			 */
+			if (cc.getProduit().equals(Chocolat.HG_E_SHP)) {
+				if (20 < prixVendeur && prixVendeur <= 70 && stock.get((Chocolat) cc.getProduit()) < 10000) {
+					cc.ajouterPrixAuKilo(prixVendeur*0.95);
+					this.journal.ajouter("Nous proposons un prix de " + prixVendeur*0.95);
+				} else if (20 < prixVendeur && prixVendeur <= 70 && stock.get((Chocolat) cc.getProduit())>=10000) {
+					cc.ajouterPrixAuKilo(prixVendeur*0.8);
+					this.journal.ajouter("Nous proposons un prix de " + prixVendeur*0.8);
+				} else if (prixVendeur <= 20) {
+					cc.ajouterPrixAuKilo(prixVendeur);
+					this.journal.ajouter("Nous proposons un prix de " + prixVendeur);
+				} else {
+					this.journal.ajouter("Nous refusons le prix de " + prixVendeur);
+				}	
+			} else if (cc.getProduit().equals(Chocolat.MG_E_SHP) || cc.getProduit().equals(Chocolat.MG_NE_SHP)) {
+				if (10 < prixVendeur && prixVendeur <= 50 && stock.get((Chocolat) cc.getProduit()) < 10000) {
+					cc.ajouterPrixAuKilo(prixVendeur*0.8);
+					this.journal.ajouter("Nous proposons un prix de " + prixVendeur*0.8);
+				} else if (10 < prixVendeur && prixVendeur <= 50 && stock.get((Chocolat) cc.getProduit())>=10000) {
+					cc.ajouterPrixAuKilo(prixVendeur*0.6);
+					this.journal.ajouter("Nous proposons un prix de " + prixVendeur*0.6);
+				} else if (prixVendeur <= 10) {
+					cc.ajouterPrixAuKilo(prixVendeur);
+					this.journal.ajouter("Nous proposons un prix de " + prixVendeur);
+				} else {
+					this.journal.ajouter("Nous refusons le prix de " + prixVendeur);
+				}	
+			} else if (cc.getProduit().equals(Chocolat.MG_NE_HP)) {
+				if (10 < prixVendeur && prixVendeur <= 40 && stock.get((Chocolat) cc.getProduit()) < 10000) {
+					cc.ajouterPrixAuKilo(prixVendeur*0.8);
+					this.journal.ajouter("Nous proposons un prix de " + prixVendeur*0.8);
+				} else if (10 < prixVendeur && prixVendeur <= 40 && stock.get((Chocolat) cc.getProduit())>=10000) {
+					cc.ajouterPrixAuKilo(prixVendeur*0.6);
+					this.journal.ajouter("Nous proposons un prix de " + prixVendeur*0.6);
+				} else if (prixVendeur <= 10) {
+					cc.ajouterPrixAuKilo(prixVendeur);
+					this.journal.ajouter("Nous proposons un prix de " + prixVendeur);
+				} else {
+					this.journal.ajouter("Nous refusons le prix de " + prixVendeur);
+				}	
 			}
 		}
-		if (!vendu) {
-			return Double.MAX_VALUE;
+
+		/** 
+		 * @author Erine DUPONT
+		 * @author2 Imane : Ajout du journal 
+		 */
+		public void notifierAcheteur(ContratCadre cc) {
+			if (cc!=null) {
+				this.contratsEnCours.add(cc);
+				this.journal.ajouter("Le contrat n° " + cc.getNumero()+ " est signé");
+			}
 		}
 
-		if (this.contratsEnCours.size()==0) {
-			return 50;
-		} else {
+		/**@author Erine DUPONT / Imane ZRIAA 
+		 */
+		public void receptionner(Object produit, double quantite, ContratCadre cc) {
+			if (produit==null || !produit.equals(cc.getProduit())) {
+				throw new IllegalArgumentException("Appel de la methode receptionner de Distributeur1 avec un produit ne correspondant pas au produit distribue par le distributeur");
+			}
+			if (quantite<=0.0) {
+				throw new IllegalArgumentException("Appel de la methode receptionner de Distributeur1 avec une quantite egale a "+quantite);
+			}
+			if (cc.getProduit().equals(produit)) { 
+				this.stock.ajouter((Chocolat) produit, quantite, this);
+			}
+			this.journal.ajouter("----------------------------------------- RECEPTION ------------------------------------------------------------------------------------");
+			this.journal.ajouter("Réception de "+ quantite + " kg de" + produit);
+		}
 
-			double somme = 0;
-			int nbproduits = 0;
-			for (ContratCadre<Chocolat> cc : this.contratsEnCours) {
-				if (cc.getProduit()==c) {
-					somme += cc.getPrixAuKilo();
-					nbproduits += 1;
+		/**
+		 * @author Erwann DEFOY
+		 * @author2 Erine DUPONT : ajout du journal
+		 */
+		public double payer(double montant, ContratCadre cc) {
+			if (montant<=0.0) {
+				throw new IllegalArgumentException("Appel de la methode payer de Distributeur1 avec un montant negatif = "+montant);
+			}
+			double quantitepaye = soldeBancaire.Payer((IActeur)(cc.getVendeur()), montant);
+			this.indicateursolde.retirer(this, quantitepaye);
+			this.journal.ajouter("------------------------------------------ PAIEMENT -------------------------------------------------------------------------------------");
+			this.journal.ajouter("Paiement de " + montant + " €");
+			return quantitepaye;
+		}
+
+		// ---------------------------------------------------------------------------------------------------------
+		// VENDEUR CLIENT
+		// ---------------------------------------------------------------------------------------------------------
+
+		/**
+		 * @author Estelle BONNET
+		 */
+		public StockEnVente<Chocolat> getStockEnVente() {
+			StockEnVente<Chocolat> res = new StockEnVente<Chocolat>();
+			List<Chocolat> produits = this.stock.getProduitsEnVente();
+			for (int i =0; i< produits.size(); i++) {
+				res.ajouter(produits.get(i), stock.get(produits.get(i)));
+			}
+			return res;
+		}
+
+		/**
+		* @author Estelle BONNET
+		* @author2 Erine DUPONT
+		*/
+		public double getPrix(Chocolat c) {
+			boolean vendu = false;
+			List<Chocolat> produits =this.stock.getProduitsEnVente();
+			for (int i=0; i<produits.size();i++) {
+				if (c.equals(produits.get(i))) {
+					vendu = true;
 				}
 			}
-			if (nbproduits == 0) {
-				return 50;
+			if (!vendu) {
+				return Double.MAX_VALUE;
+			}
+			if (this.contratsEnCours.size()==0) {
+				if (c == Chocolat.HG_E_SHP) {
+					return 60;
+				}
+				if (c == Chocolat.MG_E_SHP) {
+					return 10;
+				}
+				if (c == Chocolat.MG_NE_SHP || c == Chocolat.MG_NE_HP) {
+					return 7;
+				}
+				else {
+					return 50;
+				}
 			}
 			else {
-				double prixMoyen = somme/ nbproduits;
-				return prixMoyen *(1.0+this.marge);
+				double somme = 0;
+				int nbproduits = 0;
+				for (ContratCadre<Chocolat> cc : this.contratsEnCours) {
+					if (cc.getProduit()==c) {
+						somme += cc.getPrixAuKilo();
+						nbproduits += 1;
+					}
+				}
+				if (nbproduits == 0) {
+					if (c == Chocolat.HG_E_SHP) {
+						return 60;
+					}
+					if (c == Chocolat.MG_E_SHP) {
+						return 10;
+					}
+					if (c == Chocolat.MG_NE_SHP || c == Chocolat.MG_NE_HP) {
+						return 7;
+					}
+					else {
+						return 50;
+					}
+				}
+				else {
+					double prixMoyen = somme/ nbproduits;
+					if (prixMoyen <60 & c == Chocolat.HG_E_SHP) {
+						return 60;
+					}
+					if (prixMoyen <7 & (c == Chocolat.MG_E_SHP|| c == Chocolat.MG_NE_SHP || c == Chocolat.MG_NE_HP)) {
+						return 7;
+					}
+					else {
+						return prixMoyen *(1.0+this.marge);
+					}
+				}
 			}
 		}
-	}
 
-	/**
-	 * @author Erine DUPONT 
-	 */
-	public double vendre(Chocolat chocolat, double quantite) {
-		double stock = this.getStockEnVente().get(chocolat);
-		if (quantite < 0.0) {
-			throw new IllegalArgumentException("Appel de vendre(chocolat, quantité) de "
-					+ "Distributeur1 avec quantité<0.0 (=="+quantite+")");
-		} else {
-			double quantitevendue = Math.min(stock, quantite);
-			soldeBancaire.RecevoirPaiement(this, quantitevendue*getPrix(chocolat));
-			this.indicateursolde.ajouter(this, quantitevendue*getPrix(chocolat));
-			//this.journal.ajouter("vendre : solde bancaire affecte a "+quantitevendue*getPrix(chocolat)+" getprix="+getPrix(chocolat));
-			this.stock.enlever(chocolat, quantitevendue, this);
-			this.journal.ajouter("La quantité de " + chocolat + " vendue est : "+ quantite + " kg");
-			return quantitevendue;
+		/**
+		 * @author Erine DUPONT 
+		 */
+		public double vendre(Chocolat chocolat, double quantite) {
+			double stock = this.getStockEnVente().get(chocolat);
+			if (quantite < 0.0) {
+				throw new IllegalArgumentException("Appel de vendre(chocolat, quantité) de "
+						+ "Distributeur1 avec quantité<0.0 (=="+quantite+")");
+			} else {
+				double quantitevendue = Math.min(stock, quantite);
+				soldeBancaire.RecevoirPaiement(this, quantitevendue*getPrix(chocolat));
+				this.indicateursolde.ajouter(this, quantitevendue*getPrix(chocolat));
+				//this.journal.ajouter("vendre : solde bancaire affecte a "+quantitevendue*getPrix(chocolat)+" getprix="+getPrix(chocolat));
+				this.stock.enlever(chocolat, quantitevendue, this);
+				this.journal.ajouter("-------------------------------------------------------- VENTE ----------------------------------------------------------------------------");
+				this.journal.ajouter("La quantité de " + chocolat + " vendue est : "+ quantite + " kg");
+				return quantitevendue;
+			}
+		}	
 		}
-	}	
-}
