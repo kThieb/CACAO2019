@@ -9,9 +9,9 @@ import static abstraction.eq1Producteur1.Producteur1Interne.*;
 //BEGIN Nas
 public class Stock{
 	private Indicateur ind;
-	private HashMap<Integer, Double> stock;
+	private HashMap<Integer, Double> stock; //clé=step de stockage, objet=quantité
 	private IActeur act;
-	private int nextBorneInf=-(40-1)*unAnEnSteps;
+	private int stepBorneInf=-(40-1)*unAnEnSteps; //borne inf à partir de laquelle on explore (si rien n'a été stocké pour un step<stepCourant, rien n'y sera plus jamais planté)
 	
 	
 	public Stock(Feve feve,IActeur act,int stockDepart) {
@@ -19,7 +19,7 @@ public class Stock{
 		ind=new Indicateur("EQ1 stock "+feve.getVariete(), act, stockDepart);
 		stock=new HashMap<Integer, Double>();
 		for (int an=0;an<40;an++) {
-			stock.put(-an*unAnEnSteps, (double)1000/40);
+			stock.put(-an*unAnEnSteps, (double)1000/40);//stock initial avant le step de départ
 		}
 		
 	}
@@ -29,27 +29,27 @@ public class Stock{
 		
 	}
 	
-	public void depot(int next,double quantite) {
-		getStock().put(next, quantite); //maj du stock
+	public void depot(int step,double quantite) {
+		getStock().put(step, quantite); //maj du stock
 		getInd().ajouter(getAct(), quantite); //maj de l'indicateur
 	}
 	
-	public double retrait(int nextCourant,double quantite) {
+	public double retrait(int stepCourant,double quantite) {
 		double quantiteAEnlever=quantite;
-		int nextAExplorer=getNextBorneInf();
-		while (quantiteAEnlever>0 && nextAExplorer <=nextCourant) { //maj du stock en retirant les feves les plus agées d'abord
-			if (getStock().getOrDefault(nextAExplorer,(double)0)<quantiteAEnlever) {
-				if (getStock().get(nextAExplorer)!=null) {
-					quantiteAEnlever=quantiteAEnlever-getStock().get(nextAExplorer);
-					getStock().put(nextAExplorer,(double) 0);
+		int stepAExplorer=getStepBorneInf();
+		while (quantiteAEnlever>0 && stepAExplorer <=stepCourant) { //maj du stock en retirant les feves les plus agées d'abord
+			if (getStock().getOrDefault(stepAExplorer,(double)0)<quantiteAEnlever) {
+				if (getStock().get(stepAExplorer)!=null) {
+					quantiteAEnlever=quantiteAEnlever-getStock().get(stepAExplorer);
+					getStock().put(stepAExplorer,(double) 0);
 				}
-				setNextBorneInf(nextAExplorer); //maj 
-			} else {
+				setStepBorneInf(stepAExplorer); //maj de la borne inf d'exploration seulement si toutes les feves du step exploré sont consommées
+			} else {// cas où le stock du step exploré peut fournir toute la quantité à enlever 
 			
-				getStock().put(nextAExplorer, getStock().get(nextAExplorer)-quantiteAEnlever);
+				getStock().put(stepAExplorer, getStock().get(stepAExplorer)-quantiteAEnlever);
 				quantiteAEnlever=0;
 			}
-			nextAExplorer++;
+			stepAExplorer++;
 			
 		}
 		double quantiteRetire=quantite-quantiteAEnlever;
@@ -58,18 +58,18 @@ public class Stock{
 		
 	}
 	
-	public void retraitPerime(int nextCourant) {
-		int nextPerime=nextCourant-dureeDeVieFeve;
-		if (getStock().get(nextPerime)!=null) {
-			double stockPerime=getStock().get(nextPerime);
-			getStock().put(nextPerime, (double)0);
+	public void retraitPerime(int stepCourant) {
+		int stepPerime=stepCourant-dureeDeVieFeve;
+		if (getStock().get(stepPerime)!=null) {
+			double stockPerime=getStock().get(stepPerime);
+			getStock().put(stepPerime, (double)0);
 			getInd().retirer(getAct(), stockPerime);
 		} 
 	}
 	
-	public void updateStock(int nextCourant,double recolte) {
-		depot(nextCourant,recolte);
-		retraitPerime(nextCourant);
+	public void updateStock(int stepCourant,double recolte) { //méthode appelée à chaque next
+		depot(stepCourant,recolte); 
+		retraitPerime(stepCourant);
 	}
 	
 	public Indicateur getInd() {
@@ -80,8 +80,8 @@ public class Stock{
 		return stock;
 	}
 
-	public int getNextBorneInf() {
-		return nextBorneInf;
+	public int getStepBorneInf() {
+		return stepBorneInf;
 	}
 	
 	
@@ -90,8 +90,8 @@ public class Stock{
 		return act;
 	}
 
-	public void setNextBorneInf(int nextBorneInf) {
-		this.nextBorneInf = nextBorneInf;
+	public void setStepBorneInf(int stepBorneInf) { 
+		this.stepBorneInf = stepBorneInf;
 	}
 
 	public static void main(String[] args) {
