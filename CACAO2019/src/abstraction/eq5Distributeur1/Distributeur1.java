@@ -148,7 +148,7 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 		 */
 		// On va créer un nouveau contrat cadre 
 		ContratCadre<Chocolat> ncc = null;
-		this.journal.ajouter("-------------------------------------Démarrage d'un nouveau contrat cadre ------------------------------------------------");
+		this.journal.ajouter("------------------------------------- Démarrage d'un nouveau contrat cadre ------------------------------------------------");
 		// Au préalable, il faut identifier produit, quantité, vendeur, acheteur
 
 		// On détermine combien il resterait sur le compte si on soldait tous les contrats en cours.
