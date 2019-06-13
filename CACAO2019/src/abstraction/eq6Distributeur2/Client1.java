@@ -51,16 +51,13 @@ public class Client1 implements IActeur{
 		
 	}
 	
-	
-	
-	
+	public ArrayList<Double> getTemporalite (){
+		return temporalite;
+	}
 	
 	public HashMap<IDistributeurChocolat, Double> getHist() {
 		return hist;
 	}
-
-
-
 
 
 	public void setHist(IDistributeurChocolat D, Double oc) {
