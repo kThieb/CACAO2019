@@ -19,7 +19,7 @@ public class Stock{
 		ind=new Indicateur("EQ1 stock "+feve.getVariete(), act, stockDepart);
 		stock=new HashMap<Integer, Double>();
 		for (int an=0;an<40;an++) {
-			stock.put(-an*unAnEnSteps, (double)1000/40);//stock initial avant le step de départ
+			stock.put(-an*unAnEnSteps, (double)stockDepart/40);//stock initial avant le step de départ
 		}
 		
 	}
