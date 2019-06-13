@@ -226,6 +226,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	}
 	// -------------------------- end eve
 	
+	
 	@Override
 	public ContratCadre<Feve> getNouveauContrat() {
 		// begin eve
