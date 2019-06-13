@@ -364,6 +364,24 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		return total / moyenne.size() ;}
 		
 	//END ANTI
+	//BEGIN MANON
+	public double moyenneDemande(Feve feve) {
+		if (feve.getVariete()== Variete.CRIOLLO) {
+	    	  
+	    	  return this.moyenneDemandeCriollo();
+	      }
+	      if (feve.getVariete()== Variete.FORASTERO) {
+	    	  
+	    	  return this.moyenneDemandeForastero();
+	      }
+	      if (feve.getVariete()== Variete.TRINITARIO) {
+	    	  
+	    	  return this.moyenneDemandeTrinitario();
+	      }
+		return 0;
+	}
+	
+	//END MANON
 	//BEGIN ANTI
 	
 
