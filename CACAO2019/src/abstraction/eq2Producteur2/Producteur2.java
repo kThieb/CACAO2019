@@ -243,7 +243,7 @@ public void payerCoutsProd() {
 	
 	//A modifier après détermination des couts de production
 	public double getCoutProduction(Feve f) {
-		return 1800000;	
+		return 0;	
 		
 		
 	}
