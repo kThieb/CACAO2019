@@ -203,7 +203,7 @@ public void payerCoutsProd() {
 			cc.ajouterPrixAuKilo(getPrix(cc.getProduit(), cc.getQuantite()));
 		} else {
 		//On définit prixVendeur et prixAcheteur pour cette étape de négociation
-		double prixVendeur = cc.getListePrixAuKilo().get(cc.getListePrixAuKilo().size() - 1); //On récupère le dernier prix proposé
+		double prixVendeur = cc.getListePrixAuKilo().get(cc.getListePrixAuKilo().size() - 2); //On récupère le dernier prix proposé
 		double prixAcheteur = cc.getPrixAuKilo();
 		cc.ajouterPrixAuKilo(prixVendeur); // Le premier prix proposé est le prix au kilo initial
 		cc.getListePrixAuKilo().add(prixVendeur);
@@ -261,6 +261,7 @@ public void payerCoutsProd() {
 	
 	@Override
 	public void notifierVendeur(ContratCadre<Feve> cc) {
+		System.out.println(cc);
 		this.contratsEnCours.add(cc);
 		System.out.println("le contrat cadre a été ajouté donc c'est bizarre");
 	}
@@ -268,6 +269,7 @@ public void payerCoutsProd() {
 	
 	@Override
 	public void encaisser(double montant, ContratCadre<Feve> cc) {
+		System.out.println("encaisser montant"+montant);
 		if (montant < 0.0) {
 			throw new IllegalArgumentException("Appel de la methode encaisser de Producteur2 avec un montant negatif");
 		}
