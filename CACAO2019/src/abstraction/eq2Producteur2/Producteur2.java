@@ -193,7 +193,6 @@ public void payerCoutsProd() {
 
 			}
 		}
-		System.out.println("propostion d'échéancier");
 	}
 
 	@Override
@@ -274,7 +273,6 @@ public void payerCoutsProd() {
 			throw new IllegalArgumentException("Appel de la methode encaisser de Producteur2 avec un montant negatif");
 		}
 		this.soldeBancaire.ajouter(this, montant);
-		System.out.println("appel encaisser");
 	}
 
 
