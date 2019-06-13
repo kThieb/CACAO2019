@@ -198,7 +198,7 @@ public void payerCoutsProd() {
 		//Négociation avec l'acheteur
 		if (cc.getListePrixAuKilo().size() == 0) { // On vérifie qu'on a un prix à proposer
 			cc.ajouterPrixAuKilo(getPrix(cc.getProduit(), cc.getQuantite()));
-		} 
+		} else {
 		//On définit prixVendeur et prixAcheteur pour cette étape de négociation
 		double prixVendeur = cc.getListePrixAuKilo().get(cc.getListePrixAuKilo().size() - 1); //On récupère le dernier prix proposé
 		double prixAcheteur = cc.getPrixAuKilo();
@@ -240,7 +240,8 @@ public void payerCoutsProd() {
 				}
 			}
 		}
-	}
+		System.out.println(cc.toString());
+	}}
 	
 
 	
@@ -269,6 +270,7 @@ public void payerCoutsProd() {
 			throw new IllegalArgumentException("Appel de la methode encaisser de Producteur2 avec un montant negatif");
 		}
 		this.soldeBancaire.ajouter(this, montant);
+		System.out.println("appel encaisser");
 	}
 
 
