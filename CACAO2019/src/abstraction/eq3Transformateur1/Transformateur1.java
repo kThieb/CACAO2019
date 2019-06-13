@@ -153,7 +153,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		// produits specifies dans le cahier des charges
 		peutEtreProduit.add(Chocolat.MG_NE_HP);
 		peutEtreProduit.add(Chocolat.MG_NE_SHP);
-		peutEtreProduit.add(Chocolat.MG_E_SHP);
+		peutEtreProduit.add(Chocolat.MG_E_SHP); 
 		for (Feve f: aDisposition) {
 			
 			// on ne transforme que si on a assez de stock
