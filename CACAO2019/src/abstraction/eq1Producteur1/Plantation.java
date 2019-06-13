@@ -1,17 +1,28 @@
 package abstraction.eq1Producteur1;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import java.util.Map.Entry;
 
 import abstraction.eq7Romu.produits.Feve;
+import abstraction.eq7Romu.produits.Variete;
+import abstraction.eq7Romu.ventesContratCadre.ContratCadre;
+import abstraction.eq7Romu.ventesContratCadre.Echeancier;
 import abstraction.fourni.IActeur;
 import abstraction.fourni.Indicateur;
 import static abstraction.eq1Producteur1.Producteur1Interne.*;
+
+
 
 public class Plantation {
 	private Indicateur ind;
 	private HashMap<Integer, Double> plantation;//clé=step de stockage, objet=quantité
 	private IActeur act;
 	private int stepBorneInf=-(40-1)*unAnEnSteps;
+	protected HashMap<Integer, ContratCadre<Feve>> historiqueContrats;
 	
 	public Plantation(Feve feve,IActeur act,int plantationDepart) {
 		this.act=act;
@@ -19,10 +30,7 @@ public class Plantation {
 		plantation=new HashMap<Integer, Double>();
 		for (int an=0;an<40;an++) {
 			plantation.put(-an*unAnEnSteps, (double)plantationDepart/40);//plantation initial avant le step de départ
-		}
-		
-		
-		
+		}	
 	}
 	
 	public Plantation(Feve feve,IActeur act) {
@@ -62,7 +70,34 @@ public class Plantation {
 		} 
 	}
 	
-	public double getRecolte(int stepCourant) {
+	public Double moyenneDemandeCriollo(){
+		Double moyenne = 0.0;
+		Set<Entry<Integer, ContratCadre<Feve>>> setHisto= historiqueContrats.entrySet();
+		Iterator<Entry<Integer, ContratCadre<Feve>>> it = setHisto.iterator();
+		while(it.hasNext()) {
+			Entry<Integer, ContratCadre<Feve>> e = it.next();
+			if (e.getValue().getProduit().getVariete() == Variete.CRIOLLO) {
+			List<Echeancier> echeanciers = e.getValue().getEcheanciers();
+			
+			for(int i=0; i<echeanciers.size(); i++) {
+				Echeancier echeancier = echeanciers.get(i);
+				int stepDebut = echeancier.getStepDebut();
+				if (stepDebut <cinqAnsEnSteps) {
+					int stepFin = echeancier.getStepFin();
+					if (stepFin > cinqAnsEnSteps) {
+						stepFin = cinqAnsEnSteps;
+					}
+					moyenne += echeancier.getQuantiteJusquA(stepFin);
+					if (stepFin - stepDebut > cinqAnsEnSteps) {
+						stepFin = cinqAnsEnSteps; }
+				}
+				}
+				}
+			}
+		return moyenne/5 ;}
+		
+
+	public double getRecolte(int stepCourant){
 		int stepAExplorer=getStepBorneInf();
 		double recolte=0;
 		while (stepAExplorer <=stepCourant-troisAnsEnSteps) { 
@@ -74,9 +109,84 @@ public class Plantation {
 	}
 	
 	
-	public Double moyenneDemande(){
-		return Double.NaN;
+
+	
+	public Double moyenneDemandeForastero(){
+		Double moyenne = 0.0;
+		Set<Entry<Integer, ContratCadre<Feve>>> setHisto= historiqueContrats.entrySet();
+		Iterator<Entry<Integer, ContratCadre<Feve>>> it = setHisto.iterator();
+		while(it.hasNext()) {
+			Entry<Integer, ContratCadre<Feve>> e = it.next();
+			if (e.getValue().getProduit().getVariete() == Variete.CRIOLLO) {
+			List<Echeancier> echeanciers = e.getValue().getEcheanciers();
+			
+			for(int i=0; i<echeanciers.size(); i++) {
+				Echeancier echeancier = echeanciers.get(i);
+				int stepDebut = echeancier.getStepDebut();
+				if (stepDebut <cinqAnsEnSteps) {
+					int stepFin = echeancier.getStepFin();
+					if (stepFin > cinqAnsEnSteps) {
+						stepFin = cinqAnsEnSteps;
+					}
+					moyenne += echeancier.getQuantiteJusquA(stepFin);
+					if (stepFin - stepDebut > cinqAnsEnSteps) {
+						stepFin = cinqAnsEnSteps; }
+			
+		}
+		
+	}}
+			 }
+		return moyenne/5 ;}
+	
+	public Double moyenneDemandeTrinitario(){
+		Double moyenne = 0.0;
+		Set<Entry<Integer, ContratCadre<Feve>>> setHisto= historiqueContrats.entrySet();
+		Iterator<Entry<Integer, ContratCadre<Feve>>> it = setHisto.iterator();
+		while(it.hasNext()) {
+			Entry<Integer, ContratCadre<Feve>> e = it.next();
+			if (e.getValue().getProduit().getVariete() == Variete.CRIOLLO) {
+			List<Echeancier> echeanciers = e.getValue().getEcheanciers();
+			
+			for(int i=0; i<echeanciers.size(); i++) {
+				Echeancier echeancier = echeanciers.get(i);
+				int stepDebut = echeancier.getStepDebut();
+				if (stepDebut <cinqAnsEnSteps) {
+					int stepFin = echeancier.getStepFin();
+					if (stepFin > cinqAnsEnSteps) {
+						stepFin = cinqAnsEnSteps;
+					}
+					moyenne += echeancier.getQuantiteJusquA(stepFin);
+					if (stepFin - stepDebut > cinqAnsEnSteps) {
+						stepFin = cinqAnsEnSteps; }
+			
+		}
+		
 	}
+				}
+				
+				
+			}
+		return moyenne/5 ; 
+		
+			
+			
+		}
+		
+	
+		
+	public Double moyenneDemande(Feve feve ){
+		if (feve.getVariete()== Variete.CRIOLLO) {
+			return this.moyenneDemandeCriollo();
+		      }
+		if (feve.getVariete()== Variete.FORASTERO) {
+			return this.moyenneDemandeForastero();
+		      }
+		if (feve.getVariete()== Variete.TRINITARIO) {
+			return this.moyenneDemandeTrinitario();
+		      }
+			return 0.0;
+		}
+	
 	
 	public void updatePlantation(int stepCourant,double plantation) {
 		planter(stepCourant,plantation); 

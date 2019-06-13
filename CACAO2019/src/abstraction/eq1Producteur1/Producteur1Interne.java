@@ -93,6 +93,13 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		this.plantationTrinitario = new HashMap<Integer, Integer>(); 
 		this.historiqueContrats=new HashMap<Integer, ContratCadre<Feve>>();
 		
+		this.prixAuKilo = new HashMap<Feve, Double>();
+		prixAuKilo.put(Feve.CRIOLLO_HG_EQ, 3.5);
+		prixAuKilo.put(Feve.FORASTERO_MG_EQ, 2.5);
+		prixAuKilo.put(Feve.FORASTERO_MG_NEQ, 2.0);
+		prixAuKilo.put(Feve.TRINITARIO_MG_EQ, 2.2);
+		prixAuKilo.put(Feve.TRINITARIO_MG_NEQ, 1.5);
+		
 		
 		for (int next = 0; next < dureeDeVieCacaoyer - 1; next++) {
 			if ( next%unAnEnSteps == 0 ) {
@@ -196,12 +203,6 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 
 	public HashMap<Feve, Double> getPrixAuKilo() {
 		// BEGIN Pauline
-		this.prixAuKilo = new HashMap<Feve, Double>();
-		prixAuKilo.put(Feve.CRIOLLO_HG_EQ, 3.5);
-		prixAuKilo.put(Feve.FORASTERO_MG_EQ, 2.5);
-		prixAuKilo.put(Feve.FORASTERO_MG_NEQ, 2.0);
-		prixAuKilo.put(Feve.TRINITARIO_MG_EQ, 2.2);
-		prixAuKilo.put(Feve.TRINITARIO_MG_NEQ, 1.5);
 		return prixAuKilo;
 		// END Pauline
 	}
