@@ -50,4 +50,3 @@ public class CreateurRomu implements IActeur {
 	public void next() {
 	}
 }
-
