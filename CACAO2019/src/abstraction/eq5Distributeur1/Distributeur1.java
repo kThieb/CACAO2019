@@ -455,7 +455,7 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 			this.indicateursolde.ajouter(this, quantitevendue*getPrix(chocolat));
 			//this.journal.ajouter("vendre : solde bancaire affecte a "+quantitevendue*getPrix(chocolat)+" getprix="+getPrix(chocolat));
 			this.stock.enlever(chocolat, quantitevendue, this);
-			this.journal.ajouter("La quantité de " + chocolat + " vendue est : "+ quantite+"vendue a"+ getPrix(chocolat));
+			this.journal.ajouter("La quantité de " + chocolat + " vendue est : "+ quantite);
 			return quantitevendue;
 		}
 	}	
