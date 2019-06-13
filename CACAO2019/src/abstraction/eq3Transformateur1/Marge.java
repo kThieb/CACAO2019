@@ -1,10 +1,13 @@
-//Begin Raph
 package abstraction.eq3Transformateur1;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import abstraction.eq7Romu.produits.Chocolat;
-
+/** 
+ * 
+ * @author Raph
+ *
+ */
 public class Marge {
 
 private HashMap<Chocolat, Double> coutProd;
@@ -55,4 +58,3 @@ private HashMap<Chocolat, Double> margeBrute;
 		}
 	}
 }
-//End Raph
