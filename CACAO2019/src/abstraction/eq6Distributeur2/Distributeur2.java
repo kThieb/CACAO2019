@@ -50,47 +50,60 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
         private double tva = 1.2 ;
         
         public double coutfMGES () { // cout de structure a pendre en compte lors de la vente d'un produit
-        	int i = Monde.LE_MONDE.getStep()%24;
+        	int i = Monde.LE_MONDE.getStep()%24 - 1;
         	int t = Monde.LE_MONDE.getStep();
         	double qv=0;
-        	for (int j = 24*i; j <48*i ; j++) {
-				qv = qv + stockMG_E_SHP.getHistorique().get(stockMG_E_SHP.getHistorique().getTaille() -t+j).getValeur();
-			}
+        	if (i != 0) {
+        		for (int j = 24*i; j <24*i+24 ; j++) {
+        			qv = qv + stockMG_E_SHP.getHistorique().get(stockMG_E_SHP.getHistorique().getTaille() -t+j).getValeur();
+        			}
+        		}
         	double c = (coutstructure+massesalariale)*.25/qv;
         	return c;
         }
         
         public double coutfMGNES () { // cout de structure a pendre en compte lors de la vente d'un produit
-        	int i = Monde.LE_MONDE.getStep()%24;
+        	int i = Monde. LE_MONDE.getStep()%24 - 1;
         	int t = Monde.LE_MONDE.getStep();
         	double qv=0;
-        	for (int j = 24*i; j <48*i ; j++) {
-				qv = qv + stockMG_NE_SHP.getHistorique().get(stockMG_NE_SHP.getHistorique().getTaille() -t+j).getValeur();
-			}
+        	if (i != 0) {
+        		for (int j = 24*i; j <24*i+24 ; j++) {
+        			qv = qv + stockMG_NE_SHP.getHistorique().get(stockMG_NE_SHP.getHistorique().getTaille() -t+j).getValeur();
+				}
+        	}
         	double c = (coutstructure+massesalariale)*.25/qv;
         	return c;
         }
         
         public double coutfMGNE () { // cout de structure a pendre en compte lors de la vente d'un produit
-        	int i = Monde.LE_MONDE.getStep()%24;
+        	int i = Monde.LE_MONDE.getStep()%24 - 1;
         	int t = Monde.LE_MONDE.getStep();
         	double qv=0;
-        	for (int j = 24*i; j <48*i ; j++) {
-				qv = qv + stockMG_NE_HP.getHistorique().get(stockMG_NE_HP.getHistorique().getTaille() -t+j).getValeur();
-			}
+        	if (i != 0) {
+        		for (int j = 24*i; j <24*i+24 ; j++) {
+        			qv = qv + stockMG_NE_HP.getHistorique().get(stockMG_NE_HP.getHistorique().getTaille() -t+j).getValeur();
+        		}
+        	}
         	double c = (coutstructure+massesalariale)*.25/qv;
         	return c;
         }
         
         public double coutfHGES () { // cout de structure a pendre en compte lors de la vente d'un produit
-        	int i = Monde.LE_MONDE.getStep()%24;
+        	int i = Monde.LE_MONDE.getStep()%24 - 1;
         	int t = Monde.LE_MONDE.getStep();
-        	double qv=0;
-        	for (int j = 24*i; j <48*i ; j++) {
-				qv = qv + stockHG_E_SHP.getHistorique().get(stockHG_E_SHP.getHistorique().getTaille() -t+j).getValeur();
-			}
+        	double qv=0; 
+        	if (i != 0) {
+        		for (int j = 24*i; j <24*i+24 ; j++) {
+        			qv = qv + stockHG_E_SHP.getHistorique().get(stockHG_E_SHP.getHistorique().getTaille() -t+j).getValeur();
+        		}
+        	}
         	double c = (coutstructure+massesalariale)*.25/qv;
         	return c;
+        }
+        
+        public double prouditajeter() { // produit arrivé à date de peremption
+        	
+        	return 0;
         }
         
         public Distributeur2() {
