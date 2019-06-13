@@ -73,11 +73,9 @@ public class Plantation {
 			getInd().retirer(getAct(), ArbresAges);
 		} 
 	}
-	
-	
-		
 
 	public double getRecolte(int stepCourant){
+
 		int stepAExplorer=getStepBorneInf();
 		double recolte=0;
 		while (stepAExplorer <=stepCourant-troisAnsEnSteps) { 
@@ -88,6 +86,7 @@ public class Plantation {
 		return recolte;
 	}
 	
+
 	
 	
 	public Feve getFeve() {
@@ -98,8 +97,11 @@ public class Plantation {
 		return this.historiqueContrats;
 	}
 
+
+
 	
 	public Double moyenneDemande(){
+
 		Double moyenne = 0.0;
 		//System.out.println(getHistoriqueContrats());//ROMU
 		Set<Entry<Integer, ContratCadre<Feve>>> setHisto= getHistoriqueContrats().entrySet();
@@ -118,13 +120,14 @@ public class Plantation {
 						stepFin = cinqAnsEnSteps;
 					}
 					moyenne += echeancier.getQuantiteJusquA(stepFin);
-			
+
 		}
 		
 	}}
 			 }
 		return moyenne/5 ;}
 	
+
 	
 	
 	

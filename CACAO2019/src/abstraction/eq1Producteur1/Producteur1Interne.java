@@ -50,6 +50,10 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 	protected HashMap<Integer, Integer> plantationForastero;
 	protected HashMap<Integer, Integer> plantationTrinitario; 
 	*/
+	protected HashMap<Double, Boolean> prixCriolloAboutissantAcc;
+	protected HashMap<Double, Boolean> prixTrinitarioAboutissantAcc;
+	protected HashMap<Double, Boolean> prixForasteroAboutissantAcc;
+
 	protected int compteurSteps = 0 ;
 	public static int dureeDeVieCacaoyer = 960 ; 
 	protected int criolloPlante ; 
@@ -82,6 +86,9 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 	// END ANTI
 
 	public Producteur1Interne() {
+		this.prixCriolloAboutissantAcc=new HashMap<Double, Boolean>();
+		this.prixForasteroAboutissantAcc=new HashMap<Double, Boolean>();
+		this.prixTrinitarioAboutissantAcc=new HashMap<Double, Boolean>();
 		this.stockFeves = new Indicateur("EQ1 stock feves", this, 3000);  
 		this.contratEnCours= new ArrayList<ContratCadre<Feve>> ();
 		this.historiqueSoldeBancaire= new ArrayList<Double> ();
@@ -205,6 +212,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 	public void next() {
 		// BEGIN Nas
 		updateStock();
+		this.updatePrix();
 		getSoldeBancaire().retirer(this, COUT_FIXE + COUT_VARIABLE_STOCK * stockFeves.getValeur());
 		// END Nas
 		//BEGIN ANTI 
@@ -222,6 +230,19 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		return prixAuKilo;
 		// END Pauline
 	}
+	//BEGIN MANON
+	public HashMap<Double, Boolean> getPrixAboutissantAcc(Feve feve){
+		if (feve.getVariete() == Variete.CRIOLLO) {
+			return prixCriolloAboutissantAcc;
+		} else if (feve.getVariete() == Variete.FORASTERO) {
+			return prixForasteroAboutissantAcc;
+		} else if (feve.getVariete() == Variete.TRINITARIO) {
+			return prixTrinitarioAboutissantAcc ;
+		}
+		
+		return null;
+	}
+	//END MANON
 	//BEGIN ANTI 
 
 	/*public Double moyenneDemandeCriollo(){
@@ -401,6 +422,41 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		return getPlantation(feve).moyenneDemande();
 	}
 	
+	public double moyennePrixNonAccepte(Feve feve) {
+		HashMap<Double, Boolean> liste=this.getPrixAboutissantAcc(feve); // HashMap de tous les prix proposé pour la fève avec False en deuxième valeur si pas de négociation derrière
+        int i =0;
+        double moyenne=0;
+		for (Double d : liste.keySet()) {
+        	if (liste.get(d)==false) {
+        		moyenne+=d;
+        		i+=1;
+        	}
+        }
+		moyenne=moyenne/i;
+		return moyenne;
+	}
+	
+	public void updatePrix() {	
+		for (Feve produit: this.getFeve()) {
+	if(this.getHistoriqueSoldeBancaire().size()>2) { // On regarde si on est pas au premier ou deuxième step
+			if(this.moyenneDemande(produit)*2>this.getStockI(produit).getValeur() ) {
+				this.prixAuKilo.put(produit, this.getPrixAuKilo().get(produit)+0.1);}
+			
+			else {
+				//if(this.moyennePrixNonAccepte(produit)>this.getPrixAuKilo().get(produit)) {
+					if(this.getStockI(produit).getValeur()*(this.getPrixAuKilo().get(produit)-0.1)>this.getCOUT_FIXE()/3+this.getStockI(produit).getValeur()*this.getCOUT_VARIABLE_STOCK()
+							||this.getStockI(produit).getValeur()*(this.getPrixAuKilo().get(produit)-0.1)>0) {// On vérifie qu'on ne vend pas à perte
+	//	System.out.println("put "+(this.getPrixAuKilo().get(produit)-0.1));
+	//	if (this.getPrixAuKilo().get(produit)-0.1<0.0) {
+	//		System.exit(0);
+	//	}
+						this.prixAuKilo.put(produit, this.getPrixAuKilo().get(produit)-0.1);
+							}
+					else {
+					this.getPrixAboutissantAcc(produit).put(this.getPrixAuKilo().get(produit), false);}
+			}  
+	}
+	}}
 	//END MANON
 	//BEGIN ANTI
 	
