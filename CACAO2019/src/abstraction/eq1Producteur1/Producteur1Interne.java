@@ -511,7 +511,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		for (Feve feve:getFeve()) {
 			setRecolte(feve,getPlantation(feve).getRecolte(LE_MONDE.getStep()));
 			if(LE_MONDE.getStep()%unAnEnSteps == 0){
-				getPlantation(feve).updatePlantation(LE_MONDE.getStep(),getPlantation(feve).moyenneDemande());
+				getPlantation(feve).updatePlantation(LE_MONDE.getStep(),getPlantation(feve).moyenneDemande()*1/40);
 			} else{
 				getPlantation(feve).updatePlantation(LE_MONDE.getStep(),0);
 			}
