@@ -242,22 +242,21 @@ public void payerCoutsProd() {
 						}
 					}
 				}
-			}}}
+			}}
 		}
+	}
 
 	
 	public double getCoutProduction(Feve f) { //Calcul des couts de production par step au kilo
 		double cout = 0.0;
 		//Ajout masse salariale
-		cout += getSalaire();
+		//cout += getSalaire();
 		//Ajout prix arbres
-		for (Feve f in gestionnaireFeve.getFeves()) {
-			cout += Arbre.getPrixParStep/gestionnaireFeve.getProductionParStep(f);
-		}
+		//for (Feve f in gestionnaireFeve.getFeves()) {
+		//	cout += Arbre.getPrixParStep/gestionnaireFeve.getProductionParStep(f);
+		//}
 		//Ajout 
 		return cout;	
-		
-		
 	}
 	
 // End Elsa
