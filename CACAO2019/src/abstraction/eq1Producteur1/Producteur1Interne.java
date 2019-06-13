@@ -29,6 +29,11 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 	protected Stock stockCriollo=new Stock(Feve.CRIOLLO_HG_EQ,this);
 	protected Stock stockForastero=new Stock(Feve.FORASTERO_MG_NEQ,this);
 	protected Stock stockTrinitario=new Stock(Feve.TRINITARIO_MG_NEQ,this);
+	/*
+	protected Plantation plantationCriollo=new Plantation(Feve.CRIOLLO_HG_EQ,this);
+	protected Plantation plantationForastero=new Plantation(Feve.FORASTERO_MG_NEQ,this);
+	protected Plantation plantationTrinitario=new Plantation(Feve.TRINITARIO_MG_NEQ,this);
+	 */
 	protected double recolteCriollo ;
 	protected double recolteForastero ;
 	protected double recolteTrinitario ;
@@ -138,6 +143,16 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		
 		return Double.NaN;
 	}
+	/*
+	 public void setRecolte(Feve feve,double recolte){
+	 	if (feve.getVariete() == Variete.CRIOLLO) {
+			recolteCriollo=recolte;
+		} else if (feve.getVariete() == Variete.FORASTERO) {
+			recolteForastero=recolte;
+		} else if (feve.getVariete() == Variete.TRINITARIO) {
+			recolteTrinitario=recolte;
+		}
+	 */
 
 	
 	public void genereAlea() {
@@ -429,6 +444,21 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 			
 		}
 	}
+	
+	/*
+	 public void updatePlantation() {
+		for (Feve feve:getFeve()) {
+			setRecolte(feve,getPlantation(feve).getRecolte(LE_MONDE.getStep()));
+			if(LE_MONDE.getStep()%unAnEnSteps == 0){
+				getPlantation(feve).updatePlantation(LE_MONDE.getStep(),getPlantation(feve).moyenneDemande());
+			} else{
+				getPlantation(feve).updatePlantation(LE_MONDE.getStep(),0);
+			}
+		}
+	}
+	
+		
+	 */
 	// END ANTI 
 
 	// BEGIN Nas
@@ -462,6 +492,23 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 	      }
 		return null;
 	}
+	/*
+	protected Plantation getPlantation(Feve feve){
+		if (feve.getVariete()== Variete.CRIOLLO) {
+	    	  
+	    	  return plantationCriollo;
+	      }
+	      if (feve.getVariete()== Variete.FORASTERO) {
+	    	  
+	    	  return plantationForastero;
+	      }
+	      if (feve.getVariete()== Variete.TRINITARIO) {
+	    	  
+	    	  return plantationTrinitario;
+	      }
+		return null;
+	}
+	 */
 	// END Nass
 	
 	//Begin Manon
