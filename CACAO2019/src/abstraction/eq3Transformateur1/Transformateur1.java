@@ -149,7 +149,11 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		// feves en stock = utilisables
 		
 		ArrayList<Feve> aDisposition = this.stockFeves.getProduitsEnStock();
-		ArrayList<Chocolat> peutEtreProduit = new ArrayList<Chocolat>(Arrays.asList(Chocolat.values()));
+		ArrayList<Chocolat> peutEtreProduit = new ArrayList<Chocolat>();
+		// produits specifies dans le cahier des charges
+		peutEtreProduit.add(Chocolat.MG_NE_HP);
+		peutEtreProduit.add(Chocolat.MG_NE_SHP);
+		peutEtreProduit.add(Chocolat.MG_E_SHP);
 		for (Feve f: aDisposition) {
 			
 			// on ne transforme que si on a assez de stock
@@ -551,6 +555,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	
 	public double livrer(Chocolat produit, double quantite, ContratCadre<Chocolat> cc) {
 		//Begin Raph/Kevin
+		System.out.println("livraison de " + produit + " avec quantite " + quantite);
 		if (produit==null || !stockChocolat.getProduitsEnStock().contains(produit)) {
 			throw new IllegalArgumentException("Appel de la methode livrer de Transformateur1 avec un produit ne correspondant pas à un des chocolats produits");
 		}
