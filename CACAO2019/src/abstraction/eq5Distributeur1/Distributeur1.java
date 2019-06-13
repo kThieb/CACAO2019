@@ -27,7 +27,6 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 	private Indicateur indicateursolde;
 	private List<ContratCadre<Chocolat>> contratsEnCours;
 	private int coutfixe;
-	private int coutsvariables;
 	private int coutsdestockage;
 
 
@@ -44,8 +43,7 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 	public Distributeur1(double marge, Double soldeInitial) {
 		
 		this.marge = marge;   // La marge doit être en pourcentage !!! 5% > 0.05
-		this.coutfixe = 0;
-		this.coutsvariables = 0;	
+		this.coutfixe = 0;	
 		this.coutsdestockage = 0;
 		this.stock = new Stock();
 		stock.ajouter(Chocolat.HG_E_SHP, 150000.0, this);
