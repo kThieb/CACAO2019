@@ -332,7 +332,6 @@ public void payerCoutsProd() {
 	}
 
 	
-	
 }
 
 // End Clément M
