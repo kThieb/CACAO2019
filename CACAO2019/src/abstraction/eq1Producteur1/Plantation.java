@@ -72,6 +72,7 @@ public class Plantation {
 			getInd().retirer(getAct(), ArbresAges);
 		} 
 	}
+<<<<<<< HEAD
 	public Double moyenneDemandeCriollo(){
 		Double moyenne = 0.0;
 		Set<Entry<Integer, ContratCadre<Feve>>> setHisto= historiqueContrats.entrySet();
@@ -95,6 +96,23 @@ public class Plantation {
 			
 		}
 		
+=======
+	
+	public double getRecolte(int stepCourant) {
+		int stepAExplorer=getStepBorneInf();
+		double recolte=0;
+		while (stepAExplorer <=stepCourant-troisAnsEnSteps) { 
+			recolte += getPlantation().get(stepAExplorer);
+			stepAExplorer++;
+			
+		}
+		return recolte;
+	}
+	
+	
+	public Double moyenneDemande(){
+		return Double.NaN;
+>>>>>>> branch 'master' of https://github.com/n18abdel/CACAO2019.git
 	}
 		}
 		 
