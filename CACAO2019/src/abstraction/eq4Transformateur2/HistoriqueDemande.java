@@ -10,7 +10,7 @@ import abstraction.fourni.Monde;
 public class HistoriqueDemande {
 	private HashMap<Integer, HashMap<Chocolat,TasProduit<Chocolat>>> historique;
 	
-	// Mémoire de notre estimateur de demande (en années). On utilise les n dernières années pour estimer les demandes futures.
+	// Mémoire de notre estimateur de demande (en années). On utilise les n dernières années pour estimer les demandes futures
 	private static final int MEMOIRE_ESTIMATEUR_ANNEES = 5; 
 	
 	public HistoriqueDemande() {

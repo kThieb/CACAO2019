@@ -71,5 +71,4 @@ public enum Recette {
 		return getCoutTransformationParKg() * qte; // TODO ajouter coût fixe
 	}
 
-	
 }

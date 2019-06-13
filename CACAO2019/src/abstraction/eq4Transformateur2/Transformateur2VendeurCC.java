@@ -12,7 +12,7 @@ import abstraction.eq7Romu.ventesContratCadre.StockEnVente;
 import abstraction.fourni.Monde;
 
 public class Transformateur2VendeurCC implements IVendeurContratCadre<Chocolat> {
-	// On tente de faire une marge de 30%
+	// On tente de faire une marge de 30%.
 	private static final double MARGE_VISEE = 0.3;
 	// On ne propose pas un prix si la différence avec le prix proposé est inférieure à 5% (on accepte)
 	private static final double SEUIL_ACCEPTATION_FORCEE = 0.05;

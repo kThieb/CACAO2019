@@ -14,7 +14,7 @@ import abstraction.fourni.IActeur;
 import abstraction.fourni.Monde;
 
 public class Transformateur2AcheteurCC implements IAcheteurContratCadre<Feve> {
-	private static final double POIDS_MIN_CONTRAT_ACHAT = 10000.0; // poids min d'un contrat d'achat de fèves
+	private static final double POIDS_MIN_CONTRAT_ACHAT = 10000.0; // poids min d'un contrat d'achat de fèves.
 	private static final double DEPENSE_MAX_PAR_CC = 0.60; // on ne dépense pas plus de 60% de notre solde par CC
 	
 	private Transformateur2 t2;

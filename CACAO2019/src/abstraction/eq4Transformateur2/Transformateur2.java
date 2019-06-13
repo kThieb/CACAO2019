@@ -274,7 +274,6 @@ public class Transformateur2 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		return Monde.LE_MONDE.getStep() % STEPS_PAR_ANNEE;
 	}
 	
-	
 	/** Fonctions relatives à IAcheteurContratCadre<Feve> */
 	public ContratCadre<Feve> getNouveauContrat() {return acheteurCC.getNouveauContrat();}
 	public void proposerEcheancierAcheteur(ContratCadre<Feve> cc) {acheteurCC.proposerEcheancierAcheteur(cc);}

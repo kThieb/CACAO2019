@@ -28,6 +28,4 @@ public class PlanningStock<T> {
 			return 0;
 		return plannings.get(sousType).getQuantite(step);
 	}
-	
-	
 }
