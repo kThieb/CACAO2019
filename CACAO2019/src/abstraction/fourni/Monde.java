@@ -174,6 +174,3 @@ public class Monde extends Observable {
 		}
 	}
 }
-
-
-
