@@ -128,7 +128,8 @@ public void recolte(Feve f) {
 public void payerCoutsProd() {
 	double couts  =  0.0;
 	for (Feve f : gestionnaireFeve.getFeves()) {
-		couts =+ getCoutProduction(f);
+		
+		couts =+ getCoutProduction(f)*gestionnaireFeve.getProductionParStep(f);
 	}
 	double newsolde = soldeBancaire.getValeur() - couts ;
 	soldeBancaire.setValeur(this, newsolde);
@@ -241,10 +242,12 @@ public void payerCoutsProd() {
 						}
 					}
 				}
-			}}}
+			}}
 		}
+	}
 
 	
+
 	//A modifier après détermination des couts de production
 	//prix au kg
 	public double getCoutProduction(Feve f) {
@@ -288,15 +291,12 @@ public void payerCoutsProd() {
 	
 	@Override
 	public void notifierVendeur(ContratCadre<Feve> cc) {
-		System.out.println(cc);
 		this.contratsEnCours.add(cc);
-		System.out.println("le contrat cadre a été ajouté donc c'est bizarre");
 	}
 
 	
 	@Override
 	public void encaisser(double montant, ContratCadre<Feve> cc) {
-		System.out.println("encaisser montant"+montant);
 		if (montant < 0.0) {
 			throw new IllegalArgumentException("Appel de la methode encaisser de Producteur2 avec un montant negatif");
 		}
