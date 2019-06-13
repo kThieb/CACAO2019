@@ -251,7 +251,6 @@ public class Transformateur2 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	/** Estime les quantités de chocolat à stocker sur les prochains steps en utilisant des estimations calculées à partir des années précédentes. */
 	private void estimerPlanningStockChocolat() {
 		int step = Monde.LE_MONDE.getStep();
-		// On commence par utiliser les estimations disponibles pour définir les stocks
 		for(Chocolat c : CHOCOLATS_VENTE) {
 			for(int i = 1; i <= STEPS_ESTIMATION_DEMANDE_FUTURE; i++) {
 				double demandeEstimee = historiqueDemande.estimerDemande(i, c);
@@ -261,7 +260,6 @@ public class Transformateur2 implements IActeur, IAcheteurContratCadre<Feve>, IV
 					planningStockChocolats.setQuantite(c, step + i, demandeEstimee * (1 + MARGE_STOCK_CHOCOLAT));
 			}
 		}
-		
 	}
 	
 	// Kelian

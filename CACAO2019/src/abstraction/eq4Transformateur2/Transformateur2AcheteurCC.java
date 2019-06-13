@@ -1,6 +1,7 @@
 package abstraction.eq4Transformateur2;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import abstraction.eq7Romu.produits.Chocolat;
@@ -19,8 +20,15 @@ public class Transformateur2AcheteurCC implements IAcheteurContratCadre<Feve> {
 	
 	private Transformateur2 t2;
 	
+	private HashMap<Feve,Double> dernierPrixAchat;
+	
 	public Transformateur2AcheteurCC(Transformateur2 trans2) {
 		this.t2 = trans2;
+		
+		// Adrien et Guillaume
+		dernierPrixAchat = new HashMap<Feve,Double>();
+		for (Feve f : t2.FEVES_ACHAT)
+			dernierPrixAchat.put(f, 0.0);
 	}
 	
 	// Kelian
@@ -136,6 +144,7 @@ public class Transformateur2AcheteurCC implements IAcheteurContratCadre<Feve> {
 	@Override
 	public void notifierAcheteur(ContratCadre<Feve> cc) { 
 		t2.contratsFevesEnCours.add(cc);
+		dernierPrixAchat.put(cc.getProduit(), cc.getPrixAuKilo());
 	}
 
 	// Kelian
@@ -157,5 +166,10 @@ public class Transformateur2AcheteurCC implements IAcheteurContratCadre<Feve> {
 		double paiement = Math.min(montant,  t2.soldeBancaire.getValeur());
 		t2.soldeBancaire.retirer(t2,  paiement);
 		return paiement;
+	}
+	
+	// Guillaume
+	public double getDernierPrixAchat(Feve f) {
+		return dernierPrixAchat.get(f);
 	}
 }
