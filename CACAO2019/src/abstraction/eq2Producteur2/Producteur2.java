@@ -128,7 +128,8 @@ public void recolte(Feve f) {
 public void payerCoutsProd() {
 	double couts  =  0.0;
 	for (Feve f : gestionnaireFeve.getFeves()) {
-		couts =+ getCoutProduction(f);
+		
+		couts =+ getCoutProduction(f)*gestionnaireFeve.getProductionParStep(f);
 	}
 	double newsolde = soldeBancaire.getValeur() - couts ;
 	soldeBancaire.setValeur(this, newsolde);
@@ -244,9 +245,16 @@ public void payerCoutsProd() {
 
 
 	
-	//A modifier après détermination des couts de production
-	public double getCoutProduction(Feve f) {
-		return 0;	
+	public double getCoutProduction(Feve f) { //Calcul des couts de production par step au kilo
+		double cout = 0.0;
+		//Ajout masse salariale
+		cout += getSalaire();
+		//Ajout prix arbres
+		for (Feve f in gestionnaireFeve.getFeves()) {
+			cout += Arbre.getPrixParStep/gestionnaireFeve.getProductionParStep(f);
+		}
+		//Ajout 
+		return cout;	
 		
 		
 	}
