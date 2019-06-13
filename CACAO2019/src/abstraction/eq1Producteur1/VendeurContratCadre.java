@@ -39,7 +39,7 @@ public class VendeurContratCadre extends Producteur1Interne implements IVendeurC
 		} else {
 			//BEGIN MAnon
 
-			if(this.getHistoriqueSoldeBancaire().size()<=1) { // On regarde si on est pas au premier ou deuxième step
+			/*if(this.getHistoriqueSoldeBancaire().size()<=1) { // On regarde si on est pas au premier ou deuxième step
 				this.journal1.ajouter("Prix de Vente"+ this.getPrixAuKilo().get(produit));
 				this.getPrixAboutissantAcc(produit).put(this.getPrixAuKilo().get(produit), false);
 				return this.getPrixAuKilo().get(produit);}
@@ -53,7 +53,7 @@ public class VendeurContratCadre extends Producteur1Interne implements IVendeurC
 				
 				else {
 					//if(this.moyennePrixNonAccepte(produit)>this.getPrixAuKilo().get(produit)) {
-						if(this.getStockI(produit).getValeur()*this.getPrixAuKilo().get(produit)-0.1>this.getCOUT_FIXE()/3+this.getStockI(produit).getValeur()*this.getCOUT_VARIABLE_STOCK()) {// On vérifie qu'on ne vend pas à perte
+						if(this.getStockI(produit).getValeur()*this.getPrixAuKilo().get(produit)-0.1>this.getCOUT_FIXE()/3+this.getStockI(produit).getValeur()*this.getCOUT_VARIABLE_STOCK()||this.getStockI(produit).getValeur()*this.getPrixAuKilo().get(produit)-0.1>0) {// On vérifie qu'on ne vend pas à perte
 								this.prixAuKilo.put(produit, this.getPrixAuKilo().get(produit)-0.1);
 								getJournal1().ajouter("Prix de Vente"+ this.getPrixAuKilo().get(produit));
 								this.getPrixAboutissantAcc(produit).put(this.getPrixAuKilo().get(produit), false);
@@ -61,7 +61,7 @@ public class VendeurContratCadre extends Producteur1Interne implements IVendeurC
 						
 						else {
 						this.getPrixAboutissantAcc(produit).put(this.getPrixAuKilo().get(produit), false);
-						getJournal1().ajouter("Prix de Vente"+ this.getPrixAuKilo().get(produit));
+						*/this.getPrixAboutissantAcc(produit).put(this.getPrixAuKilo().get(produit), false);
 						return this.getPrixAuKilo().get(produit);}
 				}  
 					//else {this.journal1.ajouter("Prix de Vente"+ this.getPrixAuKilo().get(produit));
@@ -70,13 +70,8 @@ public class VendeurContratCadre extends Producteur1Interne implements IVendeurC
 				//END MANON
 
 			// utiliser Producteur1.getPrixAuKilo() pour savoir prix en fct du produit
-			}
-			
-			}
 
-					
 
-			}
 		// END Pauline
 	
 //Begin MANON ET PAULINE

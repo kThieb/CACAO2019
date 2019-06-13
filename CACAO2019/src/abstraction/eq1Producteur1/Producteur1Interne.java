@@ -180,6 +180,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 	public void next() {
 		// BEGIN Nas
 		updateStock();
+		this.updatePrix();
 		getSoldeBancaire().retirer(this, COUT_FIXE + COUT_VARIABLE_STOCK * stockFeves.getValeur());
 		// END Nas
 		//BEGIN ANTI 
@@ -414,6 +415,22 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		moyenne=moyenne/i;
 		return moyenne;
 	}
+	
+	public void updatePrix() {	
+		for (Feve produit: this.getFeve()) {
+	if(this.getHistoriqueSoldeBancaire().size()>2) { // On regarde si on est pas au premier ou deuxième step
+			if(this.moyenneDemande(produit)*2>this.getStockI(produit).getValeur() ) {
+				this.prixAuKilo.put(produit, this.getPrixAuKilo().get(produit)+0.1);}
+			
+			else {
+				//if(this.moyennePrixNonAccepte(produit)>this.getPrixAuKilo().get(produit)) {
+					if(this.getStockI(produit).getValeur()*this.getPrixAuKilo().get(produit)-0.1>this.getCOUT_FIXE()/3+this.getStockI(produit).getValeur()*this.getCOUT_VARIABLE_STOCK()||this.getStockI(produit).getValeur()*this.getPrixAuKilo().get(produit)-0.1>0) {// On vérifie qu'on ne vend pas à perte
+							this.prixAuKilo.put(produit, this.getPrixAuKilo().get(produit)-0.1);}
+					else {
+					this.getPrixAboutissantAcc(produit).put(this.getPrixAuKilo().get(produit), false);}
+			}  
+	}
+	}}
 	//END MANON
 	//BEGIN ANTI
 	
