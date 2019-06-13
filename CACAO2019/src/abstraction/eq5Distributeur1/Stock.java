@@ -78,9 +78,9 @@ public class Stock {
 	}
 	
 	/** @author Estelle BONNET */
-	public Double getStockTotal(Stock stock) {
+	public Double getStockTotal() {
 		double stocktotal =0 ;
-		for (Chocolat produit : stock.getProduitsEnVente()) {
+		for (Chocolat produit : this.getProduitsEnVente()) {
 			stocktotal += (this.stock.containsKey(produit)? this.stock.get(produit) : 0.0);
 		}
 		return stocktotal;

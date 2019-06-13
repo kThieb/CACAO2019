@@ -73,8 +73,14 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 	 * @author Estelle Bonnet
 	 */
 	public void next() {
+		//Prise en compte de coût fixe
 		this.soldeBancaire.retirer(this, this.coutfixe);
 		this.indicateursolde.retirer(this, coutfixe);
+		//Prise en compte du coût du stock
+		this.soldeBancaire.retirer(this, this.coutsdestockage*this.stock.getStockTotal());
+		this.indicateursolde.retirer(this, this.coutsdestockage*this.stock.getStockTotal());
+		
+		
 	}
 
 	// ------------------------------------------------------------------------------------------------------
