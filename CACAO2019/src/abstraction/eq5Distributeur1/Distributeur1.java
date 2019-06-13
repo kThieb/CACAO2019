@@ -59,7 +59,11 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 		this.journal = new Journal("Journal "+this.getNom());
 		Monde.LE_MONDE.ajouterJournal(this.journal);
 		this.contratsEnCours = new ArrayList<ContratCadre<Chocolat>>();
-		Monde.LE_MONDE.ajouterActeur(new ClientEuropeen(100));
+		//Monde.LE_MONDE.ajouterActeur(new ClientEuropeen(1000));
+		Monde.LE_MONDE.ajouterActeur(new ClientFidele(this, Chocolat.MG_E_SHP, 1000));
+		Monde.LE_MONDE.ajouterActeur(new ClientFidele(this, Chocolat.MG_NE_HP, 1000));
+		Monde.LE_MONDE.ajouterActeur(new ClientFidele(this, Chocolat.MG_NE_SHP, 1000));
+		//Monde.LE_MONDE.ajouterActeur(new ClientFidele(this, Chocolat.HG_E_SHP, 1000));
 	}
 
 	public String getNom() {

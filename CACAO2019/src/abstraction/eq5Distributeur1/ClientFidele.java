@@ -25,7 +25,7 @@ public class ClientFidele implements IActeur {
 
 	/** @author Erwann DEFOY */
 	public String getNom() {
-		return "CL"+this.numero;
+		return "Client Fidele "+this.numero;
 	}
 
 	/** @author Erwann DEFOY */
@@ -33,20 +33,41 @@ public class ClientFidele implements IActeur {
 	}
 
 	/** @author Erwann DEFOY */
-	public ClientFidele(IDistributeurChocolat dist, int quantiteParStep) {
+	public ClientFidele(IDistributeurChocolat dist, Chocolat uniqueProduit, int quantiteParStep) {
 		NB_CLIENT++;
 		this.numero = NB_CLIENT;
 		this.quantiteParStep = quantiteParStep;
+		this.uniqueProduit = uniqueProduit;
 		this.dist = dist;
 		this.journal = new Journal("Journal "+this.getNom());
 		Monde.LE_MONDE.ajouterJournal(this.journal);
 	}
-	
+
 	/** @author Erwann DEFOY */
 	public void next() {
-		this.journal.ajouter("Step "+Monde.LE_MONDE.getStep()+" : Tentative d'achat de "+quantiteParStep+" de chocolat a "+dist);
+		this.journal.ajouter("Step "+Monde.LE_MONDE.getStep()+" : Tentative d'achat de "+quantiteParStep+" de chocolat a "+((IActeur)dist).getNom());
 		double quantiteAchetee = 0.0;
-		Chocolat produitQ = null;
 		double quantiteEnVente = 0.0;
+		double quantiteAVendre = 0.0;
+		do {
+			quantiteAVendre = 0.0;
+			StockEnVente<Chocolat> s = dist.getStockEnVente();
+			if (s.getProduitsEnVente().contains(this.uniqueProduit)) {
+				quantiteEnVente = s.get(this.uniqueProduit);
+				this.journal.ajouter("Step "+Monde.LE_MONDE.getStep()+" : "+((IActeur)dist).getNom()+" vend la quantite de "+quantiteEnVente+" a "+dist.getPrix(this.uniqueProduit));
+				if (quantiteEnVente>0.0) { // dist vend le chocolat recherche
+					if (dist.getPrix(this.uniqueProduit)<60) {
+						quantiteAVendre = quantiteEnVente;
+					}
+				} 
+			}
+			if (quantiteAchetee<this.quantiteParStep) {
+				double quantiteCommandee = Math.min(this.quantiteParStep-quantiteAchetee, quantiteAVendre);
+				double quantiteVendue = dist.vendre(this.uniqueProduit, quantiteCommandee);
+				quantiteAchetee+=quantiteVendue;
+				this.journal.ajouter("Step "+Monde.LE_MONDE.getStep()+" : Achat de "+uniqueProduit+" a la quantite de "+quantiteVendue+" chez "+((IActeur)dist).getNom()+" au prix de "+dist.getPrix(this.uniqueProduit));
+			}
+			//			Clavier.lireString();
+		} while (quantiteAchetee<this.quantiteParStep);
 	}
 }
