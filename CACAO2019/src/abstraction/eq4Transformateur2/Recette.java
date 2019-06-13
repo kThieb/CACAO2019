@@ -59,17 +59,16 @@ public enum Recette {
 		return inputQteParKilo;
 	}
 
-	public double getCoutTransformation() {
-		return coutTransformation;
-	}
-
 	public Chocolat getOutput() {
 		return output;
 	}
 	
-	public double calculCout(double qte) {
-		return getCoutTransformation() * qte; // TODO ajouter coût fixe
-		// TODO URGENT prendre en compte le prix d'achat des feves ici ?
+	public double getCoutTransformationParKg() {
+		return coutTransformation;
+	}
+	
+	public double calculCoutTransformation(double qte) {
+		return getCoutTransformationParKg() * qte; // TODO ajouter coût fixe
 	}
 
 	

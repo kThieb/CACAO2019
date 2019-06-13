@@ -14,6 +14,10 @@ import abstraction.fourni.Monde;
 public class Transformateur2VendeurCC implements IVendeurContratCadre<Chocolat> {
 	// On tente de faire une marge de 30%
 	private static final double MARGE_VISEE = 0.3;
+	// On ne propose pas un prix si la différence avec le prix proposé est inférieure à 5% (on accepte)
+	private static final double SEUIL_ACCEPTATION_FORCEE = 0.05;
+	// On ne continue pas les négociations de prix si le prix proposé est inférieur à 80% du coût de production
+	private static final double SEUIL_REFUS_FORCE = 0.80;
 	
 	private Transformateur2 t2;
 	
@@ -60,26 +64,33 @@ public class Transformateur2VendeurCC implements IVendeurContratCadre<Chocolat> 
 		
 	}
 	@Override
-	//Guillaume
+	// Guillaume et Kelian
 	public void proposerPrixVendeur(ContratCadre<Chocolat> cc) {
-		if(cc.getListePrixAuKilo().size()==0) {
+		if(cc.getListePrixAuKilo().size() == 0) {
 			cc.ajouterPrixAuKilo(getPrix(cc.getProduit(), cc.getQuantite()));
+			return;
 		}
-		else {
-			double coutProduction = t2.stocksChocolat.getPrix(cc.getProduit(), cc.getQuantite()) / cc.getQuantite();
-			double prixAcheteur = cc.getPrixAuKilo();
-			
-			if(prixAcheteur >= 0.80 * coutProduction) { // on ne fait une proposition que si l'acheteur ne demande pas un prix trop bas.
-				// Si le prix proposé nous permet de faire une marge, probabilité de 25% d'accepter
-				if(prixAcheteur > coutProduction && Math.random() < 0.25) // TODO Varier la probabilité selon la marge
-					cc.ajouterPrixAuKilo(cc.getPrixAuKilo());
+		
+		double coutProduction = t2.stocksChocolat.getPrix(cc.getProduit(), cc.getQuantite()) / cc.getQuantite();
+		double prixAcheteur = cc.getPrixAuKilo();
+		double marge = (prixAcheteur - coutProduction) / coutProduction;
+		
+		// On ne fait une proposition que si l'acheteur ne demande pas un prix trop bas.
+		if(prixAcheteur >= SEUIL_REFUS_FORCE * coutProduction) { 
+			// Si le prix proposé nous permet de faire une marge, probabilité d'accepter dépendant de cette marge
+			if(marge > 0 && Math.random() < 2 * marge) // Ex : marge de 10% => probabilité de 20% d'accepter directement
+				cc.ajouterPrixAuKilo(cc.getPrixAuKilo());
+			else {
+				double prixSouhaite = coutProduction * MARGE_VISEE;
+				if(prixAcheteur >= prixSouhaite) // Si le prix est suffisant pour la marge que l'on souhaite, on accepte
+					cc.ajouterPrixAuKilo(cc.getPrixAuKilo()); 
 				else {
-					double prixSouhaite = coutProduction * MARGE_VISEE;
-					if(prixAcheteur > prixSouhaite) // Si le prix est suffisant pour la marge que l'on souhaite, on accepte
-						cc.ajouterPrixAuKilo(cc.getPrixAuKilo()); 
-					else
-						cc.ajouterPrixAuKilo((prixAcheteur + prixSouhaite) / 2); // On propose un prix intermédiaire
-					// TODO Vérifier si différence suffisamment grande
+					double prixIntermediaire = (prixAcheteur + prixSouhaite) / 2;
+					// Si la différence de prix entre le prix de l'acheteur et le prix que l'on veut proposer est inférieure au seuil, on accepte
+					if((prixIntermediaire - prixAcheteur) / prixAcheteur < SEUIL_ACCEPTATION_FORCEE) 
+						cc.ajouterPrixAuKilo(cc.getPrixAuKilo());
+					else // Sinon, on propose un prix intermédiaire
+						cc.ajouterPrixAuKilo(prixIntermediaire);
 				}
 			}
 		}
