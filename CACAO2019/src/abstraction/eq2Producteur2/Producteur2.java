@@ -121,9 +121,9 @@ public void recolte(Feve f) {
 			//double qualiteProduction = (Math.random() - 0.5) / 2.5 + 1; // entre 0.8 et 1.2
 			double nouveauStock = this.gestionnaireFeve.getStock(f)
 						+ this.gestionnaireFeve.getProductionParStep(f) * (1 + qualitePRoduction); 
-			this.gestionnaireFeve.setStock(this, f, nouveauStock);
-			System.out.println(nouveauStock);}}
-
+			this.gestionnaireFeve.setStock(this, f, nouveauStock);}
+		System.out.println("recolte : "+this.gestionnaireFeve.getStock(f));}
+	
 
 public void payerCoutsProd() {
 	double couts  =  0.0;
@@ -154,6 +154,7 @@ public void payerCoutsProd() {
 		List<Feve> feves = gestionnaireFeve.getFeves();
 		for (Feve feve : feves) {
 			double stockRestant = this.gestionnaireFeve.getStock(feve);
+			
 			for (ContratCadre<Feve> cc : this.contratsEnCours) {
 				if (Monde.LE_MONDE != null) {
 					if (cc.getProduit() == feve) {
@@ -161,9 +162,10 @@ public void payerCoutsProd() {
 					}
 				}
 			}
+			//System.out.println(stockRestant);
 			res.ajouter(feve, Math.max(0.0, stockRestant));
 
-		}
+		} 
 		return res;
 	}
 
@@ -191,6 +193,7 @@ public void payerCoutsProd() {
 
 			}
 		}
+		System.out.println("propostion d'échéancier");
 	}
 
 	@Override
@@ -203,7 +206,7 @@ public void payerCoutsProd() {
 		double prixVendeur = cc.getListePrixAuKilo().get(cc.getListePrixAuKilo().size() - 1); //On récupère le dernier prix proposé
 		double prixAcheteur = cc.getPrixAuKilo();
 		cc.ajouterPrixAuKilo(prixVendeur); // Le premier prix proposé est le prix au kilo initial
-		
+		cc.getListePrixAuKilo().add(prixVendeur);
 		if (prixVendeur == getCoutProduction(cc.getProduit()) * 1.01) { 
 			//On pose une marge minimale de 1% du cout de production
 			cc.getListePrixAuKilo().add(prixVendeur);
@@ -230,7 +233,7 @@ public void payerCoutsProd() {
 
 							//On s'assure de conserver notre marge minimale
 							prixVendeur = getCoutProduction(cc.getProduit()) * 1.01;
-						
+							cc.getListePrixAuKilo().add(prixVendeur);
 						} else {
 							prixVendeur *= 0.90; // On diminue le prix proposé de 10%
 							cc.getListePrixAuKilo().add(prixVendeur);
@@ -239,6 +242,7 @@ public void payerCoutsProd() {
 				}
 			}
 		}
+		System.out.println("proposition de prix : "+ cc.getListePrixAuKilo());
 	}
 
 	
@@ -258,6 +262,7 @@ public void payerCoutsProd() {
 	@Override
 	public void notifierVendeur(ContratCadre<Feve> cc) {
 		this.contratsEnCours.add(cc);
+		System.out.println("le contrat cadre a été ajouté donc c'est bizarre");
 	}
 
 	
