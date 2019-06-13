@@ -486,7 +486,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 					
 				}
 			}
-		// begin sacha ___ évolution du prix en fonction du stock en chocolat
+		// begin Sacha ___ évolution du prix en fonction du stock en chocolat
 		if (this.iStockChocolat.getValeur() < 60000000.0) {
 			return prix + this.margeChocolats.getCoutProd(chocolat)+this.margeChocolats.getMargeBrute(chocolat);
 			
