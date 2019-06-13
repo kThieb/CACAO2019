@@ -251,22 +251,17 @@ public void payerCoutsProd() {
 	//A modifier après détermination des couts de production
 	//prix au kg
 	public double getCoutProduction(Feve f) {
-		
-		double salaire = getSalaire();
-		double coutsarbres = arbres.getPrixParStep();
-		
-		return (salaire + coutsarbres)/getProduction() ;	}
+		double salaire = getSalaire(f);
+		double coutsarbres = arbres.getPrixParStep(f);
+		return (salaire + coutsarbres)/gestionnaireFeve.getProductionParStep(f) ;	
+		}
 	
-	
-	public double getSalaire() {
-		
+	public double getSalaire(Feve f) {
 		double cout=0;
-		for(Feve f:this.gestionnaireFeve.getFeves()) {
-			if (f.isEquitable()) {
-				cout+=this.gestionnaireFeve.getProductionParStep(f)*salaire;
-			}else {
-				cout+=this.gestionnaireFeve.getProductionParStep(f)*2*salaire;
-			}
+		if (f.isEquitable()) {
+			cout+=this.gestionnaireFeve.getProductionParStep(f)*2*salaire;
+		}else {
+			cout+=this.gestionnaireFeve.getProductionParStep(f)*salaire;
 		}
 		return cout; //750 francs CFA=1.29 US dollar
 	}
@@ -274,6 +269,7 @@ public void payerCoutsProd() {
 	public boolean greve() {
 		return true;
 	}
+	
 	public double getProduction() {
 		double production=0;
 		for(Feve f:this.gestionnaireFeve.getFeves()) {
