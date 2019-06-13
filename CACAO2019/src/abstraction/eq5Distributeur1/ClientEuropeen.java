@@ -58,7 +58,7 @@ public class ClientEuropeen implements IActeur {
 					StockEnVente<Chocolat> s = dist.getStockEnVente();
 					for (Chocolat c : s.getProduitsEnVente()) {
 						quantiteEnVente = s.get(c);
-						this.journal.ajouter("Step "+Monde.LE_MONDE.getStep()+" : "+((IActeur)dist).getNom()+" vend la quantite de "+quantiteEnVente+" a "+dist.getPrix(c)+" avec une qualite de "+getNoteQualite(dist, c));
+						this.journal.ajouter("Step "+Monde.LE_MONDE.getStep()+" : "+((IActeur)dist).getNom()+" vend "+ c +" a la quantite de "+quantiteEnVente+" a "+dist.getPrix(c)+" avec une qualite de "+getNoteQualite(dist, c));
 						if (quantiteEnVente>0.0) { // dist vend le chocolat recherche
 							if ((distributeurDeQualite==null || getNoteQualite(dist, c)>meilleureQualite) && dist.getPrix(c) < 10 ) { // recherche si le produit est de meilleur qualité
 								distributeurDeQualite = dist;
