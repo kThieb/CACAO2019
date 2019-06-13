@@ -276,7 +276,6 @@ public void payerCoutsProd() {
 
 
 	public double getPrix(Feve produit, Double quantite) {
-		// si tu peux voir ce message, c'est que ca a marche :)
 		double prixAPayer = 0;
 
 		if (produit == null || quantite <= 0.0 || this.getStockEnVente().get(produit) < quantite) {
