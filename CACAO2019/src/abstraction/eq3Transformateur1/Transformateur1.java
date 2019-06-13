@@ -228,6 +228,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	}
 	// -------------------------- end eve
 	
+	
 	@Override
 	public ContratCadre<Feve> getNouveauContrat() {
 		// begin eve
@@ -244,6 +245,39 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		double solde = this.soldeBancaire.getValeur();
 		this.journal.ajouter("Determination du solde une fois tous les contrats en cours payes");
 		this.journal.ajouter("- solde="+solde);
+		
+		//Begin Kevin 
+		//On calcule le cout de production du chocolat à ce step
+		//C'est très similaire au next car je ne savais pas comment accéder à l'information du cout de production (calculé dans le next)
+		//autrement qu'en faisant le calcul ici. C'est dû au fait que ce soit le superviseur qui appel les fonctions.
+		ArrayList<Feve> aDisposition = this.stockFeves.getProduitsEnStock();
+		ArrayList<Chocolat> peutEtreProduit = new ArrayList<Chocolat>(Arrays.asList(Chocolat.values()));
+		for (Feve fe: aDisposition) {
+			// on ne transforme que si on a assez de stock
+			if (this.stockFeves.getQuantiteEnStock(fe) > 100) {
+				
+				// on garde 10% des feves en cas de penurie
+				double fevesUtilisees = this.stockFeves.getQuantiteEnStock(fe)*0.9;
+				
+				// chocolats qu'on peut produire avec cette feve
+				ArrayList<Chocolat> aProduire = new ArrayList<Chocolat>();
+				for (Chocolat c: peutEtreProduit) {
+					if (this.coutEnFeves.getCoutEnFeves(c, fe)>0.0) {
+						aProduire.add(c);
+					}
+				}
+				
+				// on partage les feves entre les differents types de chocolat
+				double fevesParProduit = fevesUtilisees/aProduire.size();
+				for (Chocolat c: aProduire) {
+					double nouveauChocolat = fevesParProduit/this.coutEnFeves.getCoutEnFeves(c, f);
+					double coutProduction = nouveauChocolat*this.margeChocolats.getCoutProd(c);
+					solde = solde - coutProduction ;
+				}
+			}
+		}
+		//End Kevin
+		
 		for (ContratCadre<Feve> cc : this.contratsFeveEnCours) {
 //			this.journal.ajouter("- contrat #"+cc.getNumero()+" restant a regler ="+cc.getMontantRestantARegler());
 			solde = solde - cc.getMontantRestantARegler();
@@ -267,13 +301,22 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 
 			}
 			if (vendeurs.size()>=1) {
-				IVendeurContratCadre<Feve> vendeur = vendeurs.get( (int)( Math.random()*vendeurs.size())); // ici tire au hasard plutot que de tenir compte des stocks en vente et des prix
+				
+				IVendeurContratCadre<Feve> vendeur = vendeurs.get( (int)( Math.random()*vendeurs.size()));// ici tire au hasard plutot que de tenir compte des stocks en vente et des prix
+				double quantitetot  = vendeur.getStockEnVente().get(f);
+				for (IVendeurContratCadre<Feve> v : vendeurs) {
+					if (v.getStockEnVente().get(f) < quantitetot) {
+						vendeur = v ;
+						this.journal.ajouter("Le vendeurs" + vendeur + "vend plus de fèves");
+					}
+				
+				}
 				// On determine la quantite qu'on peut esperer avec le reste de notre solde bancaire
-				this.journal.ajouter(" Determination de la quantite achetable avec une somme de "+String.format("%.3f",solde)); 
-				this.journal.ajouter(" "); 
+//				this.journal.ajouter(" Determination de la quantite achetable avec une somme de "+String.format("%.3f",solde)); 
+//				this.journal.ajouter(" "); 
 				double quantite = 1000.0; // On ne cherche pas a faire de contrat pour moins de 1 tonne
 				double prix = vendeur.getPrix(f, quantite);
-				this.journal.ajouter("prix total = "+prix*quantite+" solde = "+solde);
+//				this.journal.ajouter("prix total = "+prix*quantite+" solde = "+solde);
 				if (prix*quantite<solde) {
 
 					while (!Double.isNaN(prix) && prix*quantite<solde ) {
@@ -283,17 +326,17 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 					}
 					quantite = quantite/1.5;
 					res = new ContratCadre<Feve>(this, vendeur, f, quantite);
-					this.journal.ajouter("vendeur de "+f+" trouve: quantite = "+quantite);
+//					this.journal.ajouter("vendeur de "+f+" trouve: quantite = "+quantite);
 				}
 				else {
-					this.journal.ajouter("solde = "+solde+" insuffisant pour un contrat cadre de plus de 1 tonne");
+//					this.journal.ajouter("solde = "+solde+" insuffisant pour un contrat cadre de plus de 1 tonne");
 				}
 			} else {
-				this.journal.ajouter("   Aucun vendeur trouve --> pas de nouveau contrat a ce step"); 
+//				this.journal.ajouter("   Aucun vendeur trouve --> pas de nouveau contrat a ce step"); 
 			}
 
 		} else {
-			this.journal.ajouter("   Il ne reste que "+solde+" une fois tous les contrats payes donc nous ne souhaitons pas en creer d'autres pour l'instant");
+//			this.journal.ajouter("   Il ne reste que "+solde+" une fois tous les contrats payes donc nous ne souhaitons pas en creer d'autres pour l'instant");
 		}
 		return res;
 	}
@@ -354,8 +397,9 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 
 	@Override
 	public void receptionner(Feve produit, double quantite, ContratCadre<Feve> cc) {
+
 		// begin sacha et eve
-		
+
 		this.journal.ajouter("Receptionner " + produit + ", quantite = " + quantite);
 		ArrayList<Feve> produitsEnStock = this.stockFeves.getProduitsEnStock();
 		if (produit==null || !(produitsEnStock.contains(produit))) {

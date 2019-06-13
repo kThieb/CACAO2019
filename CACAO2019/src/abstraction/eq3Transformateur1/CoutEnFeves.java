@@ -1,4 +1,3 @@
-//Begin Raph
 package abstraction.eq3Transformateur1;
 
 import java.util.ArrayList;
@@ -6,7 +5,11 @@ import java.util.HashMap;
 
 import abstraction.eq7Romu.produits.Chocolat;
 import abstraction.eq7Romu.produits.Feve;
-
+/** 
+ * 
+ * @author eve
+ *
+ */
 public class CoutEnFeves {
 	
 	private HashMap<Chocolat, HashMap<Feve, Double>> cout;
@@ -53,4 +56,3 @@ public class CoutEnFeves {
 		}
 	}
 }
-//End Raph

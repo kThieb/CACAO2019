@@ -147,9 +147,11 @@ public class TransformateurRomu implements IActeur, IAcheteurContratCadre<Feve>,
 				if (acteur instanceof IVendeurContratCadre) {
 					IVendeurContratCadre vacteur = (IVendeurContratCadre)acteur;
 					StockEnVente stock = vacteur.getStockEnVente();
-					if (stock.get(this.fevesAchetees)>=100.0) {// on souhaite faire des contrats d'au moins 100kg
+					if (stock!=null && stock.get(this.fevesAchetees)>=100.0) {// on souhaite faire des contrats d'au moins 100kg
 						this.journal.ajouter("   "+(acteur.getNom())+" vend "+stock.get(this.fevesAchetees)+" de "+this.fevesAchetees);
 						vendeurs.add((IVendeurContratCadre<Feve>)vacteur);
+					} else if (stock==null) {
+						this.journal.ajouter("   "+(acteur.getNom())+" retourne null pour stock mis en vente");
 					} else {
 						this.journal.ajouter("   "+(acteur.getNom())+" ne vend que "+stock.toHtml());
 					}
