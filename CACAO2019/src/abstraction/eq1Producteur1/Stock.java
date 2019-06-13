@@ -6,7 +6,7 @@ import abstraction.eq7Romu.produits.Feve;
 import abstraction.fourni.IActeur;
 import abstraction.fourni.Indicateur;
 import static abstraction.eq1Producteur1.Producteur1Interne.*;
-
+//BEGIN Nas
 public class Stock{
 	private Indicateur ind;
 	private HashMap<Integer, Double> stock;
@@ -30,40 +30,40 @@ public class Stock{
 	}
 	
 	public void depot(int next,double quantite) {
-		stock.put(next, quantite);
-		ind.ajouter(act, quantite);
+		getStock().put(next, quantite);
+		getInd().ajouter(getAct(), quantite);
 	}
 	
 	public double retrait(int nextCourant,double quantite) {
 		double quantiteAEnlever=quantite;
-		int nextAExplorer=nextBorneInf;
+		int nextAExplorer=getNextBorneInf();
 		while (quantiteAEnlever>0 && nextAExplorer <=nextCourant) {
-			if (stock.getOrDefault(nextAExplorer,(double)0)<quantiteAEnlever) {
-				if (stock.get(nextAExplorer)!=null) {
-					quantiteAEnlever=quantiteAEnlever-stock.get(nextAExplorer);
-					stock.put(nextAExplorer,(double) 0);
+			if (getStock().getOrDefault(nextAExplorer,(double)0)<quantiteAEnlever) {
+				if (getStock().get(nextAExplorer)!=null) {
+					quantiteAEnlever=quantiteAEnlever-getStock().get(nextAExplorer);
+					getStock().put(nextAExplorer,(double) 0);
 				}
-				nextBorneInf=nextAExplorer;
+				setNextBorneInf(nextAExplorer);
 			} else {
 			
-				stock.put(nextAExplorer, stock.get(nextAExplorer)-quantiteAEnlever);
+				getStock().put(nextAExplorer, getStock().get(nextAExplorer)-quantiteAEnlever);
 				quantiteAEnlever=0;
 			}
 			nextAExplorer++;
 			
 		}
 		double quantiteRetire=quantite-quantiteAEnlever;
-		ind.retirer(act, quantiteRetire);
+		getInd().retirer(getAct(), quantiteRetire);
 		return quantiteRetire;
 		
 	}
 	
 	public void retraitPerime(int nextCourant) {
 		int nextPerime=nextCourant-dureeDeVieFeve;
-		if (stock.get(nextPerime)!=null) {
-			double stockPerime=stock.get(nextPerime);
-			stock.put(nextPerime, (double)0);
-			ind.retirer(act, stockPerime);
+		if (getStock().get(nextPerime)!=null) {
+			double stockPerime=getStock().get(nextPerime);
+			getStock().put(nextPerime, (double)0);
+			getInd().retirer(getAct(), stockPerime);
 		} 
 	}
 	
@@ -80,6 +80,20 @@ public class Stock{
 		return stock;
 	}
 
+	public int getNextBorneInf() {
+		return nextBorneInf;
+	}
+	
+	
+
+	public IActeur getAct() {
+		return act;
+	}
+
+	public void setNextBorneInf(int nextBorneInf) {
+		this.nextBorneInf = nextBorneInf;
+	}
+
 	public static void main(String[] args) {
 		System.out.println("EQ1 stock "+Feve.TRINITARIO_MG_NEQ.getVariete());
 		System.out.println(new Integer(-1));
@@ -88,3 +102,4 @@ public class Stock{
 	}
 
 }
+//END Nas

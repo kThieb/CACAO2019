@@ -166,13 +166,13 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 	public void next() {
 		// BEGIN Nas
 		updateStock();
-		this.soldeBancaire.retirer(this, COUT_FIXE + COUT_VARIABLE_STOCK * stockFeves.getValeur());
+		getSoldeBancaire().retirer(this, COUT_FIXE + COUT_VARIABLE_STOCK * stockFeves.getValeur());
 		// END Nas
 		//BEGIN ANTI 
 		updatePlantation();
 		//END ANTI
 		//BEGINMANON
-		this.historiqueSoldeBancaire.add(this.getSoldeBancaire().getValeur());
+		this.getHistoriqueSoldeBancaire().add(this.getSoldeBancaire().getValeur());
 		for(Feve feve:this.getFeve()) {
 			this.journal1.ajouter("Prix de Vente"+ this.getPrixAuKilo().get(feve));}
 
@@ -414,10 +414,10 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 
 	// BEGIN Nas
 	private void updateStock() {
-		stockFeves.setValeur(this, 0);
+		getStockFeves().setValeur(this, 0);
 		for (Feve feve:getFeve()) {
 			getStock(feve).updateStock(LE_MONDE.getStep(),(int)getRecolte(feve));
-			stockFeves.ajouter(this,getStockI(feve).getValeur());
+			getStockFeves().ajouter(this,getStockI(feve).getValeur());
 		}
 		
 		genereAlea();		
