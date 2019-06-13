@@ -22,8 +22,8 @@ import static abstraction.fourni.Monde.*;
 
 public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire */ {
 
-	public static int COUT_FIXE = 1000;
-	public static int COUT_VARIABLE_STOCK = 5;
+	public static int COUT_FIXE = 00;
+	public static int COUT_VARIABLE_STOCK = 0;
 	
 	protected Indicateur stockFeves;
 	protected Stock stockCriollo=new Stock(Feve.CRIOLLO_HG_EQ,this);
