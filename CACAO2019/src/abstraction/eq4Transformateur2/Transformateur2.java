@@ -118,7 +118,10 @@ public class Transformateur2 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		} while(lastQteTransformee != 0 && qteTransformee < MAX_PRODUCTION_PAR_STEP);
 		
 		/** Prévision des stocks */ // TODO Ne pas le faire à chaque step
-		actualiserPlanningStockChocolat();
+		estimerPlanningStockChocolat();
+		verifierPlanningStockChocolat();
+		calculerPlanningStockFeves();
+		
 	}
 
 	// Kelian
@@ -245,7 +248,8 @@ public class Transformateur2 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	}
 	
 	// Kelian
-	private void actualiserPlanningStockChocolat() {
+	/** Estime les quantités de chocolat à stocker sur les prochains steps en utilisant des estimations calculées à partir des années précédentes. */
+	private void estimerPlanningStockChocolat() {
 		int step = Monde.LE_MONDE.getStep();
 		// On commence par utiliser les estimations disponibles pour définir les stocks
 		for(Chocolat c : CHOCOLATS_VENTE) {
@@ -257,7 +261,14 @@ public class Transformateur2 implements IActeur, IAcheteurContratCadre<Feve>, IV
 					planningStockChocolats.setQuantite(c, step + i, demandeEstimee * (1 + MARGE_STOCK_CHOCOLAT));
 			}
 		}
-		// On s'assure ensuite que le planning suffit à satisfaire les CCs en cours
+		
+	}
+	
+	// Kelian
+	/** Cette fonction adapte le stock de chocolat préalablement calculer pour s'assurer qu'il satisfait tous les contrats en cours. */
+	private void verifierPlanningStockChocolat() {
+		int step = Monde.LE_MONDE.getStep();
+		// TODO : Attention, s'il y a 2 CC sur le même chocolat on ne va considérer que la plus grande quantité
 		for(ContratCadre<Chocolat> cc : contratsChocolatEnCours) {
 			for(int i = 1; i <= STEPS_ESTIMATION_DEMANDE_FUTURE; i++) {
 				double qteRequise = cc.getEcheancier().getQuantite(step + i);
@@ -265,7 +276,47 @@ public class Transformateur2 implements IActeur, IAcheteurContratCadre<Feve>, IV
 					planningStockChocolats.setQuantite(cc.getProduit(), step + i, qteRequise);
 				}
 			}
+		}	
+	}
+	
+	// Kelian
+	/** Utilise le planning de stock de chocolats pour définir les quantités de fèves à stocker sur les prochains steps */
+	private void calculerPlanningStockFeves() {
+		int step = Monde.LE_MONDE.getStep();
+		
+		for(Chocolat c : CHOCOLATS_VENTE) {
+			double qteChocolatEnStock = stocksChocolat.getQuantiteTotale(c);
+			Recette r = getRecetteMoindreCout(c);
+			planningStockFeves.reset(r.getInputFeve());
+			
+			for(int i = 1; i <= STEPS_ESTIMATION_DEMANDE_FUTURE; i++) {
+				double qteChocolatNecessaire = planningStockChocolats.getQuantite(c, step + i);
+				// Prise en compte du chocolat déjà présent dans notre stock
+				double utilisationStock = Math.min(qteChocolatEnStock, qteChocolatNecessaire);
+				qteChocolatEnStock -= utilisationStock;
+				qteChocolatNecessaire -= utilisationStock;
+				
+				double qteFevesNecessaire = r.getInputQteParKilo() * qteChocolatNecessaire;
+				planningStockFeves.addQuantite(r.getInputFeve(), step + i, qteFevesNecessaire);
+			}
 		}
+		
+	}
+	
+	// Kelian
+	/** Renvoie la recette que l'on doit utiliser pour produire un type de chocolat au moindre coût, à l'aide du dernier prix d'achat de chaque fève. */
+	private Recette getRecetteMoindreCout(Chocolat c) {
+		List<Recette> recettes = Recette.getRecettes(c);
+		double minPrix = Double.MAX_VALUE;
+		Recette minPrixRecette = null;
+		for(Recette r : recettes) {
+			double prix = r.getInputQteParKilo() * acheteurCC.getDernierPrixAchat(r.getInputFeve());
+			if(prix < minPrix) {
+				minPrix = prix;
+				minPrixRecette = r;
+			}
+		}
+		return minPrixRecette;
 	}
 	
 	// Kelian
