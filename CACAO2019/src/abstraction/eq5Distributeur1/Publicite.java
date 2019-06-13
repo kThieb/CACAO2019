@@ -6,6 +6,9 @@ public class Publicite {
 	private double budget;
 	private Chocolat produit;
 	
+	/**
+	 * @author Erine DUPONT
+	 */
 	public Publicite (Chocolat produit, double budget) throws IllegalArgumentException {
 		this.produit = produit;
 		if (budget < 0) {

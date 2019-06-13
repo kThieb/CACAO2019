@@ -30,7 +30,6 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 	private int coutsvariables;
 	private int coutsdestockage;
 
-
 	/**
 	 * @author Erine DUPONT & Estelle BONNET
 	 */
