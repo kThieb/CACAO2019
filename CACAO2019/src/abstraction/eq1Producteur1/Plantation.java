@@ -90,11 +90,10 @@ public class Plantation {
 
 					moyenne += echeancier.getQuantiteJusquA(stepFin);}}}
 			}
-		return moyenne /5 ;
-		}
 
-					
-				
+		return moyenne /5 ;}
+
+
 
 
 	public double getRecolte(int stepCourant){
@@ -109,9 +108,7 @@ public class Plantation {
 		return recolte;
 	}
 	
-	
 
-	
 	public Double moyenneDemandeForastero(){
 		Double moyenne = 0.0;
 		Set<Entry<Integer, ContratCadre<Feve>>> setHisto= historiqueContrats.entrySet();
@@ -130,8 +127,6 @@ public class Plantation {
 						stepFin = cinqAnsEnSteps;
 					}
 					moyenne += echeancier.getQuantiteJusquA(stepFin);
-					
-			
 		}
 		
 	}}
@@ -165,10 +160,7 @@ public class Plantation {
 				
 				
 			}
-		return moyenne/5 ; 
-		
-			
-			
+		return moyenne/5 ; 	
 		}
 		
 	
