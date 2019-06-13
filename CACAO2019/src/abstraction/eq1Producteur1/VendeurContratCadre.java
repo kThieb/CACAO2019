@@ -7,15 +7,16 @@ import abstraction.eq7Romu.ventesContratCadre.ContratCadre;
 import abstraction.eq7Romu.ventesContratCadre.Echeancier;
 import abstraction.eq7Romu.ventesContratCadre.IVendeurContratCadre;
 import abstraction.eq7Romu.ventesContratCadre.StockEnVente;
+import abstraction.fourni.Journal;
 
-public class VendeurContratCadre extends Producteur1 implements IVendeurContratCadre<Feve> {
+public class VendeurContratCadre extends Producteur1Interne implements IVendeurContratCadre<Feve> {
 	// ANTI
 	private StockEnVente<Feve> stockEnVente;
 
 
 	public StockEnVente<Feve> getStockEnVente() {
-
-		return stockEnVente;
+        journal1.ajouter("stock en vente " +stockEnVente); // ROMU
+		return new StockEnVente<Feve>();// ROMU. Prealablement stockEnVente; mais jamais initialisee...
 	}
 
 	public double getPrix(Feve produit, Double quantite) {
@@ -26,7 +27,7 @@ public class VendeurContratCadre extends Producteur1 implements IVendeurContratC
 			return Double.NaN;
 		} else {
 			// utiliser Producteur1.getPrixAuKilo() pour savoir prix en fct du produit
-			Producteur1 prod = new Producteur1();
+			Producteur1Interne prod = new Producteur1Interne();
 			return prod.getPrixAuKilo().get(produit);
 		}
 	}
