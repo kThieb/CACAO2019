@@ -70,7 +70,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 	protected HashMap<Feve, Double> prixAuKilo;
 	// END Pauline
 	// BEGIN ANTI
-	protected HashMap<Integer, ContratCadre<Feve>> historiqueContrats=new HashMap<Integer, ContratCadre<Feve>>();
+	protected HashMap<Integer, ContratCadre<Feve>> historiqueContrats;
 	// END ANTI
 
 	public Producteur1Interne() {
@@ -86,6 +86,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		this.plantationCriollo = new HashMap<Integer, Integer>();
 		this.plantationForastero = new HashMap<Integer, Integer>(); 
 		this.plantationTrinitario = new HashMap<Integer, Integer>(); 
+		this.historiqueContrats=new HashMap<Integer, ContratCadre<Feve>>();
 		
 		
 		for (int next = 0; next < dureeDeVieCacaoyer - 1; next++) {

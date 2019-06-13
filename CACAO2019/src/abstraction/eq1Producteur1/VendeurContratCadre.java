@@ -38,12 +38,15 @@ public class VendeurContratCadre extends Producteur1Interne implements IVendeurC
 		} else if (quantite > this.getStockEnVente().get(produit)) {
 			return Double.NaN;
 		} else {
+			//BEGIN MAnon
+
 
 			if(this.getHistoriqueSoldeBancaire().size()<=1) {
 				getJournal1().ajouter("Prix de Vente"+ prod.getPrixAuKilo().get(produit));
 				return prod.getPrixAuKilo().get(produit);}
 			
 			else{
+
 			if (this.getHistoriqueSoldeBancaire().get(this.getHistoriqueSoldeBancaire().size()-2)>this.getHistoriqueSoldeBancaire().get(this.getHistoriqueSoldeBancaire().size()-1)){
 					if(this.getStockEnVente().get(produit)==this.getStockI(produit).getValeur()) {
 						if(this.getStockI(produit).getValeur()*this.getPrixAuKilo().get(produit)-0.1>this.getCOUT_FIXE()/3+this.getStockI(produit).getValeur()*this.getCOUT_VARIABLE_STOCK())
