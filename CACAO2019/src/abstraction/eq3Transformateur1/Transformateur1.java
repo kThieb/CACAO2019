@@ -552,13 +552,15 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	public double livrer(Chocolat produit, double quantite, ContratCadre<Chocolat> cc) {
 		//Begin Raph/Kevin
 		if (produit==null || !stockChocolat.getProduitsEnStock().contains(produit)) {
-			throw new IllegalArgumentException("Appel de la methode livrer de Transformateur1 avec un produit ne correspondant pas à un des chocolats produits");
+			return 0.0 ;
 		}
-		this.journal.ajouter("Livraison " + produit + ", quantite = " + quantite);
-		double livraison = Math.min(quantite, this.stockChocolat.getQuantiteEnStock(produit));
-		this.stockChocolat.removeQuantiteEnStock(produit, livraison);
-		this.iStockChocolat.retirer(this, livraison);
-		return livraison;
+		else {
+			this.journal.ajouter("Livraison " + produit + ", quantite = " + quantite);
+			double livraison = Math.min(quantite, this.stockChocolat.getQuantiteEnStock(produit));
+			this.stockChocolat.removeQuantiteEnStock(produit, livraison);
+			this.iStockChocolat.retirer(this, livraison);
+			return livraison;
+		}
 		//End Raph/Kevin
 		
 	}
