@@ -189,6 +189,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	}
 	
 	public void retireVieuxContrats() {
+		//Begin Kevin
 		List<ContratCadre<Feve>> aEnlever = new ArrayList<ContratCadre<Feve>>();
 		for (ContratCadre<Feve> c : this.contratsFeveEnCours) {
 			if (c.getQuantiteRestantALivrer()<=0.0 && c.getMontantRestantARegler()<=0.0) {
@@ -207,12 +208,15 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		for (ContratCadre<Chocolat> c : aEnleverC) {
 			this.contratsChocolatEnCours.remove(c);
 		}
+		//End Kevin
 	}
+	
 	
 	// -------------------------------------------------------------------------------------------
 	// 			ACHETEUR
 	// -------------------------------------------------------------------------------------------
 
+	
 	
 	// -------------------------- begin eve
 	public double quantiteDesiree(double quantiteEnVente, double prix) {
