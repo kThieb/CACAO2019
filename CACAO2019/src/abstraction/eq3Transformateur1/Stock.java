@@ -31,7 +31,7 @@ public class Stock<T> {
 	}
 	
 	public boolean estEnStock(T produit) {
-		return this.stock.containsKey(produit) && (this.stock.get(produit) > 0.);
+		return this.stock.containsKey(produit) && (this.stock.get(produit) > 1.);
 	}
 	
 	public ArrayList<T> getProduitsEnStock() {
