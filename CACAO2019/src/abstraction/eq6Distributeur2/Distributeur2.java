@@ -42,7 +42,7 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 
         private Journal journal;
 
-        private HashMap<Chocolat,Double> prixParProduit;
+        private HashMap<Chocolat,Double> coutsParProduit;
         private StockEnVente<Chocolat> stockEnVente; 
 
 
@@ -86,17 +86,17 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 
                 this.contratsEnCours = new ArrayList<ContratCadre<Chocolat>>();
                 this.margeParProduit = new HashMap<Chocolat, Double>();
-                this.margeParProduit.put(Chocolat.HG_E_SHP, 1.5);
-                this.margeParProduit.put(Chocolat.MG_E_SHP, 1.5);
-                this.margeParProduit.put(Chocolat.MG_NE_SHP,1.5);
-                this.margeParProduit.put(Chocolat.MG_NE_HP, 1.5);
+                this.margeParProduit.put(Chocolat.HG_E_SHP, 1.2);
+                this.margeParProduit.put(Chocolat.MG_E_SHP, 1.2);
+                this.margeParProduit.put(Chocolat.MG_NE_SHP,1.2);
+                this.margeParProduit.put(Chocolat.MG_NE_HP, 1.2);
 
                 
-                this.prixParProduit =  new HashMap<Chocolat,Double>();
-                this.prixParProduit.put(Chocolat.HG_E_SHP, this.getPrixHG_E_SHP().getValeur());
-                this.prixParProduit.put(Chocolat.MG_E_SHP, this.getPrixMG_E_SHP().getValeur());
-                this.prixParProduit.put(Chocolat.MG_NE_SHP,this.getPrixMG_NE_SHP().getValeur());
-                this.prixParProduit.put(Chocolat.MG_NE_HP, this.getPrixMG_NE_HP().getValeur());
+                this.coutsParProduit =  new HashMap<Chocolat,Double>();
+                this.coutsParProduit.put(Chocolat.HG_E_SHP, this.getPrixHG_E_SHP().getValeur());
+                this.coutsParProduit.put(Chocolat.MG_E_SHP, this.getPrixMG_E_SHP().getValeur());
+                this.coutsParProduit.put(Chocolat.MG_NE_SHP,this.getPrixMG_NE_SHP().getValeur());
+                this.coutsParProduit.put(Chocolat.MG_NE_HP, this.getPrixMG_NE_HP().getValeur());
                 // initialisation des historiques
                 historiqueMG_E_SHP = new ArrayList<Double> ();
                 historiqueMG_NE_SHP = new ArrayList<Double> (); 
@@ -104,7 +104,10 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
                 historiqueHG_E_SHP = new ArrayList<Double> (); 
         }
 
-
+        public void setCoutsParProduit() {
+        	
+        	
+        }
         public ArrayList<Double> getHistoriqueMG_E_SHP() {
                 return historiqueMG_E_SHP;
         }
@@ -229,8 +232,8 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
         }
         
 
-        public HashMap<Chocolat,Double> getPrixParProduit () {        
-                return this.prixParProduit;
+        public HashMap<Chocolat,Double> getCoutsParProduit () {        
+                return this.coutsParProduit;
         }
 
         public StockEnVente<Chocolat> getStockEnVente() {
@@ -239,7 +242,7 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
         }
 
         private double getMargeParProduit(Chocolat c) {
-                if  (!getPrixParProduit().containsKey(c)) {
+                if  (!this.margeParProduit.containsKey(c)) {
                         return Double.NaN;
                 }
                 return (this.margeParProduit.containsKey(c)? this.margeParProduit.get(c) : 0.0);
@@ -262,20 +265,28 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
                 HashMap<Chocolat, Double> derniereVente = derniereVente();
                 for (Chocolat c : derniereVente.keySet()) {
                         if (c.getGamme()==Gamme.MOYENNE && (c.isEquitable()) && (c.isSansHuileDePalme())) {
-                                getHistoriqueMG_E_SHP().add(derniereVente.get(c));
+                        		double prixactuel = getCoutsParProduit().get(c)*this.getMargeParProduit(c);
+                        		getIndicateurPrix(c).ajouter(this, prixactuel);
+                        		getHistoriqueMG_E_SHP().add(derniereVente.get(c));
                                 ajustementPrix(getHistoriqueMG_E_SHP(), c);
                         }
                         if (c.getGamme()==Gamme.MOYENNE && !(c.isEquitable()) && (c.isSansHuileDePalme())) {
-                                getHistoriqueMG_NE_SHP().add(derniereVente.get(c));
+                        		double prixactuel = getCoutsParProduit().get(c)*this.getMargeParProduit(c);
+                        		getIndicateurPrix(c).ajouter(this, prixactuel);
+                        		getHistoriqueMG_NE_SHP().add(derniereVente.get(c));
                                 ajustementPrix(getHistoriqueMG_NE_SHP(), c);
                         }
                         if (c.getGamme()==Gamme.MOYENNE && !(c.isEquitable()) && !(c.isSansHuileDePalme())){ 
-                                getHistoriqueMG_NE_HP().add(derniereVente.get(c));
-                                ajustementPrix(getHistoriqueMG_NE_SHP(), c);
+                        	double prixactuel = getCoutsParProduit().get(c)*this.getMargeParProduit(c);
+                    		getIndicateurPrix(c).ajouter(this, prixactuel);
+                        	getHistoriqueMG_NE_HP().add(derniereVente.get(c));
+                            ajustementPrix(getHistoriqueMG_NE_SHP(), c);
                         }
                         if (c.getGamme()==Gamme.HAUTE && (c.isEquitable()) && (c.isSansHuileDePalme())){
-                                getHistoriqueHG_E_SHP().add(derniereVente.get(c));
-                                ajustementPrix(getHistoriqueHG_E_SHP(), c);
+                        	double prixactuel = getCoutsParProduit().get(c)*this.getMargeParProduit(c);
+                    		getIndicateurPrix(c).ajouter(this, prixactuel);
+                        	getHistoriqueHG_E_SHP().add(derniereVente.get(c));
+                            ajustementPrix(getHistoriqueHG_E_SHP(), c);
                         }
                 }
                         
@@ -285,13 +296,15 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
                 // je récupère le chocoalt et l'historique des variations 
                 int n = historique.size();
                 if (n>3) {
+
+                    System.out.println(historique.get(n-1)+historique.get(n-2)+historique.get(n-3));
                         if ( Math.abs(historique.get(n-1)) > Math.abs(historique.get(n-2)*0.95)
                                         && Math.abs(historique.get(n-1)) < Math.abs(historique.get(n-2)*1.05)
                                         // encadrement de + ou- 5%
                                         && Math.abs(historique.get(n-2)) > Math.abs(historique.get(n-3)*0.95)
                                         && Math.abs(historique.get(n-2)) < Math.abs(historique.get(n-3)*1.05) ) {
-                                double nouveauprix = this.getPrix(c)*0.95;
-                                this.getPrixParProduit().put(c, nouveauprix);
+                                double nouvellemarge = this.getMargeParProduit(c)*0.95;
+                                this.margeParProduit.put(c, nouvellemarge);
                         }
                 }
 
@@ -311,11 +324,12 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
         
         //Nordin
         public double getPrix(Chocolat c) {
-                if (!getPrixParProduit().containsKey(c)) {
+                if (!getCoutsParProduit().containsKey(c)) {
                         return Double.NaN;
                 }
                 /*this.prixParProduit==null ? Double.MAX_VALUE */ 
-                return        (getPrixParProduit().containsKey(c)? getPrixParProduit().get(c) : 0.0);
+                double prix =  this.getCoutsParProduit().get(c)*getMargeParProduit(c);	
+                return prix; 
         }
         
         public int getArrondi(double d) {
@@ -667,7 +681,7 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
                         } else {
                                 
                                 if (cc.getListePrixAuKilo().size() >= 2) {
-                                        if (cc.getListePrixAuKilo().get(cc.getListePrixAuKilo().size() -2)*1.02 < this.prixParProduit.get(cc.getProduit())) {
+                                        if (cc.getListePrixAuKilo().get(cc.getListePrixAuKilo().size() -2)*1.02 < this.getPrix(cc.getProduit())) {
                                                 cc.ajouterPrixAuKilo(cc.getListePrixAuKilo().get(cc.getListePrixAuKilo().size() -2)*1.02);
                                         } 
                                 }else {
@@ -724,8 +738,7 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 
                 return montantpaye;
         }
-
-
+// m
 
 
 }
