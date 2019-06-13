@@ -23,9 +23,18 @@ public class PlanningStock<T> {
 		plannings.get(sousType).set(step, qte);
 	}
 	
+	public void addQuantite(T sousType, int step, double qte) {
+		setQuantite(sousType, step, getQuantite(sousType, step) + qte);
+	}
+	
 	public double getQuantite(T sousType, int step) {
 		if(!plannings.containsKey(sousType))
 			return 0;
 		return plannings.get(sousType).getQuantite(step);
+	}
+
+	/** Réinitialise le planning pour un sous-type donné */
+	public void reset(T sousType) {
+		plannings.put(sousType, new Echeancier(0));
 	}
 }
