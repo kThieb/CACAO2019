@@ -241,6 +241,7 @@ public void payerCoutsProd() {
 			}
 		}
 	}
+	
 
 	
 	//A modifier après détermination des couts de production
