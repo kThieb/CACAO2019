@@ -27,7 +27,7 @@ public class VendeurContratCadre extends Producteur1Interne implements IVendeurC
 		stockEnVente.ajouter(feve, Math.max(0.0, stocktotal));
         }
         //journal1.ajouter("stock en vente " +stockEnVente); // ROMU
-		return stockEnVente;// ROMU. Prealablement stockEnVente; mais jamais initialisee...
+		return stockEnVente;
 	}
 //END MANON
 	public double getPrix(Feve produit, Double quantite) {
@@ -40,9 +40,12 @@ public class VendeurContratCadre extends Producteur1Interne implements IVendeurC
 		} else {
 			//BEGIN MAnon
 
+			if(this.getHistoriqueSoldeBancaire().size()<=1) { // On regarde si on est pas au premier ou deuxième step
+				this.journal1.ajouter("Prix de Vente"+ prod.getPrixAuKilo().get(produit));
 
 			if(this.getHistoriqueSoldeBancaire().size()<=1) {
 				getJournal1().ajouter("Prix de Vente"+ prod.getPrixAuKilo().get(produit));
+
 				return prod.getPrixAuKilo().get(produit);}
 			
 			else{
