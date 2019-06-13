@@ -116,13 +116,19 @@ public void recolte(Feve f) {
 		if (this.numStep <= 6 || this.numStep >= 21 || (this.numStep >= 9 && this.numStep <= 14)) {
 			Random rand=new Random();
 			this.maladie_predateurs=-rand.nextInt(200)/1000;
-			this.meteo=rand.nextInt(200)/1000-1;
-			double qualitePRoduction=maladie_predateurs+meteo;
+			this.meteo=rand.nextInt(200)/1000-0.1;
+			double qualitePRoduction = maladie_predateurs+meteo;
 			//double qualiteProduction = (Math.random() - 0.5) / 2.5 + 1; // entre 0.8 et 1.2
 			double nouveauStock = this.gestionnaireFeve.getStock(f)
+<<<<<<< HEAD
 						+ this.gestionnaireFeve.getProductionParStep(f) * (1 + qualitePRoduction);
 			
 			this.gestionnaireFeve.setStock(this, f, nouveauStock);}}
+=======
+						+ this.gestionnaireFeve.getProductionParStep(f) * (1 + qualitePRoduction); 
+			this.gestionnaireFeve.setStock(this, f, nouveauStock);
+			System.out.println(nouveauStock);}}
+>>>>>>> branch 'master' of https://github.com/Clementmagnin/CACAO2019.git
 
 
 public void payerCoutsProd() {
