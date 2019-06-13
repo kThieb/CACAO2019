@@ -442,7 +442,7 @@ public void receptionner(Object produit, double quantite, ContratCadre cc) {
 	if (cc.getProduit().equals(produit)) { 
 		this.stock.ajouter((Chocolat) produit, quantite, this);
 	}
-	this.journal.ajouter("----------------------------------------- RECEPTION --------------------------------------------------------------------------------");
+	this.journal.ajouter("----------------------------------------- RECEPTION ------------------------------------------------------------------------------------");
 	this.journal.ajouter("Réception de "+ quantite + " kg de" + produit);
 }
 
@@ -456,7 +456,7 @@ public double payer(double montant, ContratCadre cc) {
 	}
 	double quantitepaye = soldeBancaire.Payer((IActeur)(cc.getVendeur()), montant);
 	this.indicateursolde.retirer(this, quantitepaye);
-	this.journal.ajouter("------------------------------------------ PAIEMENT --------------------------------------------------------------------------------");
+	this.journal.ajouter("------------------------------------------ PAIEMENT -------------------------------------------------------------------------------------");
 	this.journal.ajouter("Paiement de " + montant + " €");
 	return quantitepaye;
 }
@@ -529,6 +529,7 @@ public double vendre(Chocolat chocolat, double quantite) {
 		this.indicateursolde.ajouter(this, quantitevendue*getPrix(chocolat));
 		//this.journal.ajouter("vendre : solde bancaire affecte a "+quantitevendue*getPrix(chocolat)+" getprix="+getPrix(chocolat));
 		this.stock.enlever(chocolat, quantitevendue, this);
+		this.journal.ajouter("-------------------------------------------------------- VENTE ----------------------------------------------------------------------------");
 		this.journal.ajouter("La quantité de " + chocolat + " vendue est : "+ quantite + " kg");
 		return quantitevendue;
 	}
