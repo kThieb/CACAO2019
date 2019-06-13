@@ -15,15 +15,12 @@ import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 
 public class ClientEuropeen implements IActeur {
-	private static int NB_CLIENT = 0;
-	
-	private int numero;
 	private Journal journal;
 	private int quantiteParStep;
 	
 	/** @author Erwann DEFOY */
 	public String getNom() {
-		return "Client Europeen"+this.numero;
+		return "Client Europeen";
 	}
 	
 	/** @author Erwann DEFOY */
@@ -32,8 +29,6 @@ public class ClientEuropeen implements IActeur {
 
 	/** @author Erwann DEFOY */
 	public ClientEuropeen(int quantiteParStep) {
-		NB_CLIENT++;
-		this.numero = NB_CLIENT;
 		this.quantiteParStep = quantiteParStep;
 		this.journal = new Journal("Journal "+this.getNom());
 		Monde.LE_MONDE.ajouterJournal(this.journal);
@@ -41,7 +36,7 @@ public class ClientEuropeen implements IActeur {
 
 	/** @author Erwann DEFOY */
 	public void next() {
-		this.journal.ajouter("Step "+Monde.LE_MONDE.getStep()+" : Tentative d'achat de "+quantiteParStep+" du meilleur choclat ____________");
+		this.journal.ajouter("Step "+Monde.LE_MONDE.getStep()+" : Tentative d'achat de "+quantiteParStep+" du meilleur chocolat ____________");
 		double quantiteAchetee = 0.0;
 		Chocolat produitQ = null;
 		IDistributeurChocolat distributeurDeQualite = null;
@@ -60,14 +55,14 @@ public class ClientEuropeen implements IActeur {
 						quantiteEnVente = s.get(c);
 						this.journal.ajouter("Step "+Monde.LE_MONDE.getStep()+" : "+((IActeur)dist).getNom()+" vend "+ c +" a la quantite de "+quantiteEnVente+" a "+dist.getPrix(c)+" avec une qualite de "+getNoteQualite(dist, c));
 						if (quantiteEnVente>0.0) { // dist vend le chocolat recherche
-							if ((distributeurDeQualite==null || getNoteQualite(dist, c)>meilleureQualite) && dist.getPrix(c) < 10 ) { // recherche si le produit est de meilleur qualité
+							if ((distributeurDeQualite==null || getNoteQualite(dist, c)>meilleureQualite) && dist.getPrix(c) < 50 ) { // recherche si le produit est de meilleur qualité
 								distributeurDeQualite = dist;
 								produitQ = c;
 								quantiteEnVenteMeilleur = quantiteEnVente;
 								meilleureQualite = getNoteQualite(dist, c);
 								meilleurPrix = dist.getPrix(c);
 							} else if ((distributeurDeQualite==null || (getNoteQualite(dist, c) == meilleureQualite 
-									&& dist.getPrix(c) < meilleurPrix)) && dist.getPrix(c) < 10) { // prend le meilleur prix si qualité identique
+									&& dist.getPrix(c) < meilleurPrix)) && dist.getPrix(c) < 50) { // prend le meilleur prix si qualité identique
 								distributeurDeQualite = dist;
 								produitQ = c;
 								quantiteEnVenteMeilleur = quantiteEnVente;
