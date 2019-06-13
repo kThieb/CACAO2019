@@ -19,7 +19,6 @@ public class ClientEuropeen implements IActeur {
 	
 	private int numero;
 	private Journal journal;
-	private Chocolat uniqueProduit;
 	private int quantiteParStep;
 	
 	/** @author Erwann DEFOY */
@@ -31,20 +30,10 @@ public class ClientEuropeen implements IActeur {
 	public void initialiser() {
 	}
 
-	/** V2 @author Erwann DEFOY */
-	public ClientEuropeen() {
-		NB_CLIENT++;
-		int quantiteParStep = 100;
-		this.numero = NB_CLIENT;
-		this.journal = new Journal("Journal Européen");
-		Monde.LE_MONDE.ajouterJournal(this.journal);
-	}
-
 	/** @author Erwann DEFOY */
-	public ClientEuropeen(Chocolat uniqueProduit, int quantiteParStep) {
+	public ClientEuropeen(int quantiteParStep) {
 		NB_CLIENT++;
 		this.numero = NB_CLIENT;
-		this.uniqueProduit = uniqueProduit;
 		this.quantiteParStep = quantiteParStep;
 		this.journal = new Journal("Journal "+this.getNom());
 		Monde.LE_MONDE.ajouterJournal(this.journal);
@@ -52,7 +41,7 @@ public class ClientEuropeen implements IActeur {
 
 	/** @author Erwann DEFOY */
 	public void next() {
-		this.journal.ajouter("Step "+Monde.LE_MONDE.getStep()+" : tentative d'achat de "+quantiteParStep+" de "+this.uniqueProduit+" ____________");
+		this.journal.ajouter("Step "+Monde.LE_MONDE.getStep()+" : Tentative d'achat de "+quantiteParStep+" du meilleur choclat ____________");
 		double quantiteAchetee = 0.0;
 		Chocolat produitQ = null;
 		IDistributeurChocolat distributeurDeQualite = null;
@@ -67,21 +56,23 @@ public class ClientEuropeen implements IActeur {
 				if (acteur instanceof IDistributeurChocolat) { // recherche des distributeurs
 					IDistributeurChocolat dist = (IDistributeurChocolat)acteur;
 					StockEnVente<Chocolat> s = dist.getStockEnVente();
-					if (s.getProduitsEnVente().contains(this.uniqueProduit)) { // recherche si le produit est dans le stock du distributeur sélectionné
-						quantiteEnVente = s.get(this.uniqueProduit);
-						this.journal.ajouter("Step "+Monde.LE_MONDE.getStep()+" : "+((IActeur)dist).getNom()+" vend la quantite de "+quantiteEnVente+" a "+dist.getPrix(this.uniqueProduit));
+					for (Chocolat c : s.getProduitsEnVente()) {
+						quantiteEnVente = s.get(c);
+						this.journal.ajouter("Step "+Monde.LE_MONDE.getStep()+" : "+((IActeur)dist).getNom()+" vend la quantite de "+quantiteEnVente+" a "+dist.getPrix(c)+" avec une qualite de "+getNoteQualite(dist, c));
 						if (quantiteEnVente>0.0) { // dist vend le chocolat recherche
-							if ((distributeurDeQualite==null || getNoteQualite(dist, this.uniqueProduit)>meilleureQualite) && dist.getPrix(this.uniqueProduit) < 10 ) { // recherche si le produit est de meilleur qualité
+							if ((distributeurDeQualite==null || getNoteQualite(dist, c)>meilleureQualite) && dist.getPrix(c) < 10 ) { // recherche si le produit est de meilleur qualité
 								distributeurDeQualite = dist;
+								produitQ = c;
 								quantiteEnVenteMeilleur = quantiteEnVente;
-								meilleureQualite = getNoteQualite(dist, this.uniqueProduit);
-								meilleurPrix = dist.getPrix(this.uniqueProduit);
-							} else if ((distributeurDeQualite==null || (getNoteQualite(dist, this.uniqueProduit) == meilleureQualite 
-									&& dist.getPrix(this.uniqueProduit) < meilleurPrix)) && dist.getPrix(this.uniqueProduit) < 10) { // prend le meilleur prix si qualité identique
+								meilleureQualite = getNoteQualite(dist, c);
+								meilleurPrix = dist.getPrix(c);
+							} else if ((distributeurDeQualite==null || (getNoteQualite(dist, c) == meilleureQualite 
+									&& dist.getPrix(c) < meilleurPrix)) && dist.getPrix(c) < 10) { // prend le meilleur prix si qualité identique
 								distributeurDeQualite = dist;
+								produitQ = c;
 								quantiteEnVenteMeilleur = quantiteEnVente;
-								meilleureQualite = getNoteQualite(dist, this.uniqueProduit);
-								meilleurPrix = dist.getPrix(this.uniqueProduit);
+								meilleureQualite = getNoteQualite(dist, c);
+								meilleurPrix = dist.getPrix(c);
 							}
 						}
 					}
@@ -89,9 +80,9 @@ public class ClientEuropeen implements IActeur {
 			}
 			if (quantiteAchetee<this.quantiteParStep && distributeurDeQualite!=null) {
 				double quantiteCommandee = Math.min(this.quantiteParStep-quantiteAchetee, quantiteEnVenteMeilleur);
-				double quantiteVendue = distributeurDeQualite.vendre(this.uniqueProduit, quantiteCommandee);
+				double quantiteVendue = distributeurDeQualite.vendre(produitQ, quantiteCommandee);
 				quantiteAchetee+=quantiteVendue;
-				this.journal.ajouter("Step "+Monde.LE_MONDE.getStep()+" : Achat de "+quantiteVendue+" chez "+((IActeur)distributeurDeQualite).getNom()+" au prix de "+meilleurPrix);
+				this.journal.ajouter("Step "+Monde.LE_MONDE.getStep()+" : Achat de "+ produitQ +" de "+quantiteVendue+" chez "+((IActeur)distributeurDeQualite).getNom()+" au prix de "+meilleurPrix);
 			}
 		} while (quantiteAchetee<this.quantiteParStep && distributeurDeQualite!=null);
 	}
