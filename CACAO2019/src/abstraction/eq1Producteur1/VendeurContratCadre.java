@@ -140,8 +140,8 @@ public class VendeurContratCadre extends Producteur1Interne implements IVendeurC
 	public void notifierVendeur(ContratCadre<Feve> cc) {
 
 		super.getHistoriqueContrats().put(cc.getNumero(), cc);
-		super.contratEnCours.add(cc);
-		this.journal1.ajouter("Vente"+cc.getNumero());
+		super.getContratEnCours().add(cc);
+		this.getJournal1().ajouter("Vente"+cc.getNumero());
 //END ANTI
 
 
@@ -160,9 +160,9 @@ public class VendeurContratCadre extends Producteur1Interne implements IVendeurC
 
 
 	public void encaisser(double montant, ContratCadre<Feve> cc) {
-		super.soldeBancaire.ajouter(this ,  montant);
+		super.getSoldeBancaire().ajouter(this ,  montant);
 		//cc.payer(montant);
-		journal1.ajouter("solde bancaire +" + Double.toString(montant));
+		getJournal1().ajouter("solde bancaire +" + Double.toString(montant));
 
 	}
 //
@@ -187,7 +187,7 @@ public class VendeurContratCadre extends Producteur1Interne implements IVendeurC
 		    	  double valeur_livre=getStockI(produit).getValeur();
 		    	  retirer(produit,valeur_livre);
 		    	  //cc.livrer(valeur_livre);
-		    	  this.journal1.ajouter("Valeur livré"+ valeur_livre);
+		    	  this.getJournal1().ajouter("Valeur livré"+ valeur_livre);
 		         return valeur_livre;
 		      }
 		      
@@ -196,7 +196,7 @@ public class VendeurContratCadre extends Producteur1Interne implements IVendeurC
 		    	  //cc.livrer(quantite);
 		    	  //super.stockFeves.retirer(this, quantite);
 		    	  retirer(produit,quantite);
-		    	  this.journal1.ajouter("Valeur livré"+ quantite);
+		    	  this.getJournal1().ajouter("Valeur livré"+ quantite);
 		         return quantite;
 		      }
 		   
