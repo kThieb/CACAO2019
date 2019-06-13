@@ -49,8 +49,19 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	private Stock<Feve> stockFeves;
 	// end eve
 	
+	private List<Chocolat> peutEtreProduit;
+	
+	
+	
 	public Transformateur1() {
 
+		//Begin Kevin
+		this.peutEtreProduit = new ArrayList<Chocolat>();
+		// produits specifies dans le cahier des charges
+		this.peutEtreProduit.add(Chocolat.MG_NE_HP);
+		this.peutEtreProduit.add(Chocolat.MG_NE_SHP);
+		this.peutEtreProduit.add(Chocolat.MG_E_SHP);
+		//End Kevin
 		// --------------------------------- begin eve
 
 
@@ -149,11 +160,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		// feves en stock = utilisables
 		
 		ArrayList<Feve> aDisposition = this.stockFeves.getProduitsEnStock();
-		ArrayList<Chocolat> peutEtreProduit = new ArrayList<Chocolat>();
-		// produits specifies dans le cahier des charges
-		peutEtreProduit.add(Chocolat.MG_NE_HP);
-		peutEtreProduit.add(Chocolat.MG_NE_SHP);
-		peutEtreProduit.add(Chocolat.MG_E_SHP);
+		
 		for (Feve f: aDisposition) {
 			
 			// on ne transforme que si on a assez de stock
@@ -164,7 +171,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 				
 				// chocolats qu'on peut produire avec cette feve
 				ArrayList<Chocolat> aProduire = new ArrayList<Chocolat>();
-				for (Chocolat c: peutEtreProduit) {
+				for (Chocolat c: this.peutEtreProduit) {
 					if (this.coutEnFeves.getCoutEnFeves(c, f)>0.0) {
 						aProduire.add(c);
 						System.out.println("c'est le prix" + this.getPrix(c, 1000.0));
@@ -255,7 +262,6 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		//C'est très similaire au next car je ne savais pas comment accéder à l'information du cout de production (calculé dans le next)
 		//autrement qu'en faisant le calcul ici. C'est dû au fait que ce soit le superviseur qui appel les fonctions.
 		ArrayList<Feve> aDisposition = this.stockFeves.getProduitsEnStock();
-		ArrayList<Chocolat> peutEtreProduit = new ArrayList<Chocolat>(Arrays.asList(Chocolat.values()));
 		for (Feve fe: aDisposition) {
 			// on ne transforme que si on a assez de stock
 			if (this.stockFeves.getQuantiteEnStock(fe) > 100) {
@@ -265,7 +271,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 				
 				// chocolats qu'on peut produire avec cette feve
 				ArrayList<Chocolat> aProduire = new ArrayList<Chocolat>();
-				for (Chocolat c: peutEtreProduit) {
+				for (Chocolat c: this.peutEtreProduit) {
 					if (this.coutEnFeves.getCoutEnFeves(c, fe)>0.0) {
 						aProduire.add(c);
 					}
@@ -274,9 +280,10 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 				// on partage les feves entre les differents types de chocolat
 				double fevesParProduit = fevesUtilisees/aProduire.size();
 				for (Chocolat c: aProduire) {
-					double nouveauChocolat = fevesParProduit/this.coutEnFeves.getCoutEnFeves(c, f);
+					double nouveauChocolat = fevesParProduit/this.coutEnFeves.getCoutEnFeves(c, fe);
 					double coutProduction = nouveauChocolat*this.margeChocolats.getCoutProd(c);
 					solde = solde - coutProduction ;
+					this.journal.ajouter("solde intermédiaire =" + solde);
 				}
 			}
 		}
@@ -286,7 +293,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 //			this.journal.ajouter("- contrat #"+cc.getNumero()+" restant a regler ="+cc.getMontantRestantARegler());
 			solde = solde - cc.getMontantRestantARegler();
 		}
-		this.journal.ajouter("--> solde="+solde);
+		this.journal.ajouter("--> solde =" + solde);
 
 		if (solde>10000.0) { // On ne cherche pas a etablir d'autres contrats d'achat si le compte bancaire est trop bas
 			List<IVendeurContratCadre<Feve>> vendeurs = new ArrayList<IVendeurContratCadre<Feve>>();
