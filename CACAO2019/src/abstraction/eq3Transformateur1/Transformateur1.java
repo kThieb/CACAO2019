@@ -480,7 +480,6 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	@Override
 	public double getPrix(Chocolat chocolat, Double quantite) {
 		//Begin Raph/Kevin
-		
 		double prix=0.;
 		
 		if (chocolat==null || quantite<=0.0 || this.getStockEnVente().get(chocolat)<quantite) {
