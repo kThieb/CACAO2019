@@ -251,7 +251,6 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		ArrayList<Feve> aDisposition = this.stockFeves.getProduitsEnStock();
 		ArrayList<Chocolat> peutEtreProduit = new ArrayList<Chocolat>(Arrays.asList(Chocolat.values()));
 		for (Feve fe: aDisposition) {
-			
 			// on ne transforme que si on a assez de stock
 			if (this.stockFeves.getQuantiteEnStock(fe) > 100) {
 				
