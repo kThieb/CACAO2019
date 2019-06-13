@@ -240,8 +240,8 @@ public void payerCoutsProd() {
 				}
 			}
 		}
-	}
-	}
+	}}
+
 
 	
 	//A modifier après détermination des couts de production
@@ -271,6 +271,7 @@ public void payerCoutsProd() {
 			throw new IllegalArgumentException("Appel de la methode encaisser de Producteur2 avec un montant negatif");
 		}
 		this.soldeBancaire.ajouter(this, montant);
+		System.out.println("appel encaisser");
 	}
 
 
