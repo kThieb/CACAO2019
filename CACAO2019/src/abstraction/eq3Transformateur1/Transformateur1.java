@@ -49,13 +49,29 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	private Stock<Feve> stockFeves;
 	// end eve
 	
+	private List<Chocolat> peutEtreProduit;
+	
+	
+	
 	public Transformateur1() {
 
+		//Begin Kevin
+		this.peutEtreProduit = new ArrayList<Chocolat>();
+		// produits specifies dans le cahier des charges
+		this.peutEtreProduit.add(Chocolat.MG_NE_HP);
+		this.peutEtreProduit.add(Chocolat.MG_NE_SHP);
+		this.peutEtreProduit.add(Chocolat.MG_E_SHP);
+		//End Kevin
 		// --------------------------------- begin eve
 
 
 		// stock de feves
-		ArrayList<Feve> feves = new ArrayList<Feve>(Arrays.asList(Feve.values()));
+		ArrayList<Feve> feves = new ArrayList<Feve>();
+		for (Feve f: Arrays.asList(Feve.values())) {
+			if (f.getGamme() == Gamme.MOYENNE) {
+				feves.add(f);
+			}
+		}
 		this.stockFeves = new Stock<Feve>(feves);
 		for (Feve f: feves) {
 			this.stockFeves.addQuantiteEnStock(f, 1000);
@@ -64,7 +80,10 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 
 
 		// stock de chocolat
-		ArrayList<Chocolat> chocolats = new ArrayList<Chocolat>(Arrays.asList(Chocolat.values()));
+		ArrayList<Chocolat> chocolats = new ArrayList<Chocolat>();
+		chocolats.add(Chocolat.MG_NE_HP);
+		chocolats.add(Chocolat.MG_NE_SHP);
+		chocolats.add(Chocolat.MG_E_SHP);
 		this.stockChocolat = new Stock<Chocolat>(chocolats);
 		for (Chocolat c: chocolats) {
 			this.stockChocolat.addQuantiteEnStock(c, 1000000);
@@ -147,8 +166,9 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		// -------------------------- begin eve
 		
 		// feves en stock = utilisables
+		
 		ArrayList<Feve> aDisposition = this.stockFeves.getProduitsEnStock();
-		ArrayList<Chocolat> peutEtreProduit = new ArrayList<Chocolat>(Arrays.asList(Chocolat.values()));
+		
 		for (Feve f: aDisposition) {
 			
 			// on ne transforme que si on a assez de stock
@@ -159,9 +179,10 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 				
 				// chocolats qu'on peut produire avec cette feve
 				ArrayList<Chocolat> aProduire = new ArrayList<Chocolat>();
-				for (Chocolat c: peutEtreProduit) {
+				for (Chocolat c: this.peutEtreProduit) {
 					if (this.coutEnFeves.getCoutEnFeves(c, f)>0.0) {
 						aProduire.add(c);
+						System.out.println("c'est le prix" + this.getPrix(c, 1000.0));
 					}
 				}
 				
@@ -243,11 +264,44 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		double solde = this.soldeBancaire.getValeur();
 		this.journal.ajouter("Determination du solde une fois tous les contrats en cours payes");
 		this.journal.ajouter("- solde="+solde);
+		
+		//Begin Kevin 
+		//On calcule le cout de production du chocolat à ce step
+		//C'est très similaire au next car je ne savais pas comment accéder à l'information du cout de production (calculé dans le next)
+		//autrement qu'en faisant le calcul ici. C'est dû au fait que ce soit le superviseur qui appel les fonctions.
+		ArrayList<Feve> aDisposition = this.stockFeves.getProduitsEnStock();
+		for (Feve fe: aDisposition) {
+			// on ne transforme que si on a assez de stock
+			if (this.stockFeves.getQuantiteEnStock(fe) > 100) {
+				
+				// on garde 10% des feves en cas de penurie
+				double fevesUtilisees = this.stockFeves.getQuantiteEnStock(fe)*0.9;
+				
+				// chocolats qu'on peut produire avec cette feve
+				ArrayList<Chocolat> aProduire = new ArrayList<Chocolat>();
+				for (Chocolat c: this.peutEtreProduit) {
+					if (this.coutEnFeves.getCoutEnFeves(c, fe)>0.0) {
+						aProduire.add(c);
+					}
+				}
+				
+				// on partage les feves entre les differents types de chocolat
+				double fevesParProduit = fevesUtilisees/aProduire.size();
+				for (Chocolat c: aProduire) {
+					double nouveauChocolat = fevesParProduit/this.coutEnFeves.getCoutEnFeves(c, fe);
+					double coutProduction = nouveauChocolat*this.margeChocolats.getCoutProd(c);
+					solde = solde - coutProduction ;
+					this.journal.ajouter("solde intermédiaire =" + solde);
+				}
+			}
+		}
+		//End Kevin
+		
 		for (ContratCadre<Feve> cc : this.contratsFeveEnCours) {
 //			this.journal.ajouter("- contrat #"+cc.getNumero()+" restant a regler ="+cc.getMontantRestantARegler());
 			solde = solde - cc.getMontantRestantARegler();
 		}
-		this.journal.ajouter("--> solde="+solde);
+		this.journal.ajouter("--> solde =" + solde);
 
 		if (solde>10000.0) { // On ne cherche pas a etablir d'autres contrats d'achat si le compte bancaire est trop bas
 			List<IVendeurContratCadre<Feve>> vendeurs = new ArrayList<IVendeurContratCadre<Feve>>();
@@ -266,13 +320,22 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 
 			}
 			if (vendeurs.size()>=1) {
-				IVendeurContratCadre<Feve> vendeur = vendeurs.get( (int)( Math.random()*vendeurs.size())); // ici tire au hasard plutot que de tenir compte des stocks en vente et des prix
+				
+				IVendeurContratCadre<Feve> vendeur = vendeurs.get( (int)( Math.random()*vendeurs.size()));// ici tire au hasard plutot que de tenir compte des stocks en vente et des prix
+				double quantitetot  = vendeur.getStockEnVente().get(f);
+				for (IVendeurContratCadre<Feve> v : vendeurs) {
+					if (v.getStockEnVente().get(f) < quantitetot) {
+						vendeur = v ;
+						this.journal.ajouter("Le vendeurs" + vendeur + "vend plus de fèves");
+					}
+				
+				}
 				// On determine la quantite qu'on peut esperer avec le reste de notre solde bancaire
-				this.journal.ajouter(" Determination de la quantite achetable avec une somme de "+String.format("%.3f",solde)); 
-				this.journal.ajouter(" "); 
+//				this.journal.ajouter(" Determination de la quantite achetable avec une somme de "+String.format("%.3f",solde)); 
+//				this.journal.ajouter(" "); 
 				double quantite = 1000.0; // On ne cherche pas a faire de contrat pour moins de 1 tonne
 				double prix = vendeur.getPrix(f, quantite);
-				this.journal.ajouter("prix total = "+prix*quantite+" solde = "+solde);
+//				this.journal.ajouter("prix total = "+prix*quantite+" solde = "+solde);
 				if (prix*quantite<solde) {
 
 					while (!Double.isNaN(prix) && prix*quantite<solde ) {
@@ -282,17 +345,17 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 					}
 					quantite = quantite/1.5;
 					res = new ContratCadre<Feve>(this, vendeur, f, quantite);
-					this.journal.ajouter("vendeur de "+f+" trouve: quantite = "+quantite);
+//					this.journal.ajouter("vendeur de "+f+" trouve: quantite = "+quantite);
 				}
 				else {
-					this.journal.ajouter("solde = "+solde+" insuffisant pour un contrat cadre de plus de 1 tonne");
+//					this.journal.ajouter("solde = "+solde+" insuffisant pour un contrat cadre de plus de 1 tonne");
 				}
 			} else {
-				this.journal.ajouter("   Aucun vendeur trouve --> pas de nouveau contrat a ce step"); 
+//				this.journal.ajouter("   Aucun vendeur trouve --> pas de nouveau contrat a ce step"); 
 			}
 
 		} else {
-			this.journal.ajouter("   Il ne reste que "+solde+" une fois tous les contrats payes donc nous ne souhaitons pas en creer d'autres pour l'instant");
+//			this.journal.ajouter("   Il ne reste que "+solde+" une fois tous les contrats payes donc nous ne souhaitons pas en creer d'autres pour l'instant");
 		}
 		return res;
 	}
@@ -418,8 +481,10 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	public double getPrix(Chocolat chocolat, Double quantite) {
 		//Begin Raph/Kevin
 		double prix=0.;
+		
 		if (chocolat==null || quantite<=0.0 || this.getStockEnVente().get(chocolat)<quantite) {
 			return Double.NaN;
+			
 		}
 		if (this.contratsFeveEnCours.size()==0) {
 			return PRIX_VENTE_PAR_DEFAUT.get(chocolat);
@@ -427,6 +492,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		else {
 			HashMap<Feve,Double> prixMoyenFeves = new HashMap<Feve,Double>();
 			HashMap<Feve, Double> qttTotaleFeves = new HashMap<Feve,Double>();
+			
 			for (ContratCadre<Feve> cc : this.contratsFeveEnCours) {
 				prixMoyenFeves.put(cc.getProduit(), cc.getQuantiteRestantALivrer()*cc.getPrixAuKilo());
 				qttTotaleFeves.put(cc.getProduit(), cc.getQuantiteRestantALivrer());
@@ -434,12 +500,25 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 			for(Feve feve : qttTotaleFeves.keySet()) {
 				prixMoyenFeves.put(feve,prixMoyenFeves.get(feve)/qttTotaleFeves.get(feve));
 				prix+=prixMoyenFeves.get(feve)*coutEnFeves.getCoutEnFeves(chocolat,feve);
+			
+					
+				}
 			}
+		// begin Sacha ___ évolution du prix en fonction du stock en chocolat
+		if (this.iStockChocolat.getValeur() < 60000000.0) {
 			return prix + this.margeChocolats.getCoutProd(chocolat)+this.margeChocolats.getMargeBrute(chocolat);
-		}	
+			
+		}
+		else {
+			
+			return prix + this.margeChocolats.getCoutProd(chocolat) +this.margeChocolats.getMargeBrute(chocolat)/(2*this.iStockChocolat.getValeur()/60000000.0) ;
+		}
+		// end Sacha
+	}
+	
 		//End Raph/Kevin
 		
-	}
+	
 
 	@Override
 	public void proposerEcheancierVendeur(ContratCadre<Chocolat> cc) {
@@ -490,14 +569,21 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	
 	public double livrer(Chocolat produit, double quantite, ContratCadre<Chocolat> cc) {
 		//Begin Raph/Kevin
+		this.journal.ajouter("demande de livraison de " + produit + " avec quantite " + quantite);
 		if (produit==null || !stockChocolat.getProduitsEnStock().contains(produit)) {
-			throw new IllegalArgumentException("Appel de la methode livrer de Transformateur1 avec un produit ne correspondant pas à un des chocolats produits");
+			this.journal.ajouter("Livraison " + produit + "rien");
+			return 0.0 ;
 		}
-		this.journal.ajouter("Livraison " + produit + ", quantite = " + quantite);
-		double livraison = Math.min(quantite, this.stockChocolat.getQuantiteEnStock(produit));
-		this.stockChocolat.removeQuantiteEnStock(produit, livraison);
-		this.iStockChocolat.retirer(this, livraison);
-		return livraison;
+		else if (!stockChocolat.estEnStock(produit)) {
+			return 0.0;
+		}
+		else {
+			double livraison = Math.min(quantite, this.stockChocolat.getQuantiteEnStock(produit));
+			this.stockChocolat.removeQuantiteEnStock(produit, livraison);
+			this.iStockChocolat.retirer(this, livraison);
+			this.journal.ajouter("Livraison " + produit + ", quantite = " + livraison + ", stock restant = " + this.stockChocolat.getQuantiteEnStock(produit));
+			return livraison;
+		}
 		//End Raph/Kevin
 		
 	}
