@@ -147,6 +147,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		// -------------------------- begin eve
 		
 		// feves en stock = utilisables
+		
 		ArrayList<Feve> aDisposition = this.stockFeves.getProduitsEnStock();
 		ArrayList<Chocolat> peutEtreProduit = new ArrayList<Chocolat>(Arrays.asList(Chocolat.values()));
 		for (Feve f: aDisposition) {
@@ -162,6 +163,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 				for (Chocolat c: peutEtreProduit) {
 					if (this.coutEnFeves.getCoutEnFeves(c, f)>0.0) {
 						aProduire.add(c);
+						System.out.println("c'est le prix" + this.getPrix(c, 1000.0));
 					}
 				}
 				
@@ -415,9 +417,12 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	@Override
 	public double getPrix(Chocolat chocolat, Double quantite) {
 		//Begin Raph/Kevin
+		
 		double prix=0.;
+		
 		if (chocolat==null || quantite<=0.0 || this.getStockEnVente().get(chocolat)<quantite) {
 			return Double.NaN;
+			
 		}
 		if (this.contratsFeveEnCours.size()==0) {
 			return PRIX_VENTE_PAR_DEFAUT.get(chocolat);
@@ -425,6 +430,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		else {
 			HashMap<Feve,Double> prixMoyenFeves = new HashMap<Feve,Double>();
 			HashMap<Feve, Double> qttTotaleFeves = new HashMap<Feve,Double>();
+			
 			for (ContratCadre<Feve> cc : this.contratsFeveEnCours) {
 				prixMoyenFeves.put(cc.getProduit(), cc.getQuantiteRestantALivrer()*cc.getPrixAuKilo());
 				qttTotaleFeves.put(cc.getProduit(), cc.getQuantiteRestantALivrer());
@@ -432,12 +438,25 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 			for(Feve feve : qttTotaleFeves.keySet()) {
 				prixMoyenFeves.put(feve,prixMoyenFeves.get(feve)/qttTotaleFeves.get(feve));
 				prix+=prixMoyenFeves.get(feve)*coutEnFeves.getCoutEnFeves(chocolat,feve);
+			
+					
+				}
 			}
+		// begin sacha ___ évolution du prix en fonction du stock en chocolat
+		if (this.iStockChocolat.getValeur() < 60000000.0) {
 			return prix + this.margeChocolats.getCoutProd(chocolat)+this.margeChocolats.getMargeBrute(chocolat);
-		}	
+			
+		}
+		else {
+			
+			return prix + this.margeChocolats.getCoutProd(chocolat) +this.margeChocolats.getMargeBrute(chocolat)/(2*this.iStockChocolat.getValeur()/60000000.0) ;
+		}
+		// end Sacha
+	}
+	
 		//End Raph/Kevin
 		
-	}
+	
 
 	@Override
 	public void proposerEcheancierVendeur(ContratCadre<Chocolat> cc) {
