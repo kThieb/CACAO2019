@@ -26,7 +26,12 @@ public class Stock<T> {
 	// -----------------------------------------------------------
 	
 	public double getQuantiteEnStock(T produit) {
-		try { return this.stock.get(produit); }
+		try { 
+			if (this.stock.get(produit) > 1.) {
+				return this.stock.get(produit); 
+			}
+			else { return 0.; }
+		}
 		catch (NullPointerException e) { return 0.; }
 	}
 	
