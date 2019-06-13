@@ -401,7 +401,18 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 		}
 
 		if (this.contratsEnCours.size()==0) {
-			return 50;
+			if (c == Chocolat.HG_E_SHP) {
+				return 60;
+			}
+			if (c == Chocolat.MG_E_SHP) {
+				return 10;
+			}
+			if (c == Chocolat.MG_NE_SHP || c == Chocolat.MG_NE_HP) {
+				return 7;
+			}
+			else {
+				return 50;
+			}
 		} else {
 
 			double somme = 0;
@@ -413,11 +424,19 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 				}
 			}
 			if (nbproduits == 0) {
-				return 50;
+				return 500;
 			}
 			else {
 				double prixMoyen = somme/ nbproduits;
-				return prixMoyen *(1.0+this.marge);
+				if (prixMoyen <60 & c == Chocolat.HG_E_SHP) {
+					return 60;
+				}
+				if (prixMoyen <7 & (c == Chocolat.MG_E_SHP|| c == Chocolat.MG_NE_SHP || c == Chocolat.MG_NE_HP)) {
+					return 7;
+				}
+				else {
+					return prixMoyen *(1.0+this.marge);
+				}
 			}
 		}
 	}
@@ -436,7 +455,7 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 			this.indicateursolde.ajouter(this, quantitevendue*getPrix(chocolat));
 			//this.journal.ajouter("vendre : solde bancaire affecte a "+quantitevendue*getPrix(chocolat)+" getprix="+getPrix(chocolat));
 			this.stock.enlever(chocolat, quantitevendue, this);
-			this.journal.ajouter("La quantité de " + chocolat + " vendue est : "+ quantite);
+			this.journal.ajouter("La quantité de " + chocolat + " vendue est : "+ quantite+"vendue a"+ getPrix(chocolat));
 			return quantitevendue;
 		}
 	}	
