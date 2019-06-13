@@ -18,7 +18,7 @@ public class VendeurContratCadre extends Producteur1Interne implements IVendeurC
         StockEnVente<Feve> stockEnVente= new StockEnVente<Feve>();
         for(Feve feve: this.getFeve()) {
         	double stocktotal= this.getStockI(feve).getValeur();
-        	for (ContratCadre<Feve> cc : this.contratEnCours) {
+        	for (ContratCadre<Feve> cc : getContratEnCours()) {
 			if (Monde.LE_MONDE!=null) {
 				stocktotal-= cc.getQuantiteRestantALivrer();  
 			}
@@ -42,14 +42,19 @@ public class VendeurContratCadre extends Producteur1Interne implements IVendeurC
 
 			if(this.getHistoriqueSoldeBancaire().size()<=1) { // On regarde si on est pas au premier ou deuxième step
 				this.journal1.ajouter("Prix de Vente"+ prod.getPrixAuKilo().get(produit));
+
+			if(this.getHistoriqueSoldeBancaire().size()<=1) {
+				getJournal1().ajouter("Prix de Vente"+ prod.getPrixAuKilo().get(produit));
+
 				return prod.getPrixAuKilo().get(produit);}
 			
 			else{
-			if (this.getHistoriqueSoldeBancaire().get(this.getHistoriqueSoldeBancaire().size()-2)>this.getHistoriqueSoldeBancaire().get(this.getHistoriqueSoldeBancaire().size()-1)){// On regarde si on perd de l'argent
-					if(this.getStockEnVente().get(produit)==this.getStockI(produit).getValeur()) { // On regarde s'il y a des contrat en cours
-						if(this.getStockI(produit).getValeur()*this.getPrixAuKilo().get(produit)-0.1>this.getCOUT_FIXE()/3+this.getStockI(produit).getValeur()*this.getCOUT_VARIABLE_STOCK()) // On regarde si notre prix de vente n'est pas inférieur à notre coût de production
-								this.prixAuKilo.put(produit, this.getPrixAuKilo().get(produit)-0.1); // Dans ce cas là on baisse le prix
-						this.journal1.ajouter("Prix de Vente"+ prod.getPrixAuKilo().get(produit));
+
+			if (this.getHistoriqueSoldeBancaire().get(this.getHistoriqueSoldeBancaire().size()-2)>this.getHistoriqueSoldeBancaire().get(this.getHistoriqueSoldeBancaire().size()-1)){
+					if(this.getStockEnVente().get(produit)==this.getStockI(produit).getValeur()) {
+						if(this.getStockI(produit).getValeur()*this.getPrixAuKilo().get(produit)-0.1>this.getCOUT_FIXE()/3+this.getStockI(produit).getValeur()*this.getCOUT_VARIABLE_STOCK())
+								this.prixAuKilo.put(produit, this.getPrixAuKilo().get(produit)-0.1);
+						getJournal1().ajouter("Prix de Vente"+ prod.getPrixAuKilo().get(produit));
 						return prod.getPrixAuKilo().get(produit);
 				}  
 					else {this.journal1.ajouter("Prix de Vente"+ prod.getPrixAuKilo().get(produit));
@@ -200,6 +205,8 @@ public class VendeurContratCadre extends Producteur1Interne implements IVendeurC
 		   
 	}
 	
+	
+	
 	//BEGIN NAS
 	public void retirer(Feve feve, double quantite) {
 		/*super.stockFeves.retirer(this, quantite);
@@ -222,6 +229,7 @@ public class VendeurContratCadre extends Producteur1Interne implements IVendeurC
 		
 	}
 	//END NAS
+	
 	
 
 }
