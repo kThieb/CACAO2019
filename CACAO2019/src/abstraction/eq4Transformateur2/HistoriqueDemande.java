@@ -62,7 +62,7 @@ public class HistoriqueDemande {
 		// On commence par récupérer les données des années précédentes
 		List<TasProduit<Chocolat>> echantillons = new ArrayList<TasProduit<Chocolat>>();
 		for(int i = 1; i <= MEMOIRE_ESTIMATEUR_ANNEES && Monde.LE_MONDE.getStep() >= i*Transformateur2.STEPS_PAR_ANNEE; i++) {
-			TasProduit<Chocolat> e = getDemande(i * MEMOIRE_ESTIMATEUR_ANNEES, type);
+			TasProduit<Chocolat> e = getDemande(i * Transformateur2.STEPS_PAR_ANNEE, type);
 			echantillons.add(e);
 		}
 		
