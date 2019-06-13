@@ -66,5 +66,13 @@ public class Arbre {
 	public Integer getNbArbres(Feve feve) {
 		return this.nbtot.get(feve);
 	}
+
+	public double getPrixParStep() {
+		double surfaceTotale=0;
+		for(Feve f:this.nbArbres.keySet()) {
+			surfaceTotale+=this.nbtot.get(f);
+		}
+		return surfaceTotale *77500;
+	}
 	
 }

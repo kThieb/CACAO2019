@@ -33,7 +33,7 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	private int numStep;
 	private GestionnaireFeve gestionnaireFeve;
 	private Arbre arbres;
-
+	private double salaire=1.29/1000;
 
 	public Producteur2() {
 		this.gestionnaireFeve = new GestionnaireFeve(this);
@@ -246,10 +246,38 @@ public void payerCoutsProd() {
 
 	
 	//A modifier après détermination des couts de production
+	//prix au kg
 	public double getCoutProduction(Feve f) {
-		return 0;	
 		
+		double salaire = getSalaire();
+		double coutsarbres = arbres.getPrixParStep();
 		
+		return (salaire + coutsarbres)/getProduction() ;	}
+	
+	
+	public double getSalaire() {
+		
+		double cout=0;
+		for(Feve f:this.gestionnaireFeve.getFeves()) {
+			if (f.isEquitable()) {
+				cout+=this.gestionnaireFeve.getProductionParStep(f)*salaire;
+			}else {
+				cout+=this.gestionnaireFeve.getProductionParStep(f)*2*salaire;
+			}
+		}
+		return cout; //750 francs CFA=1.29 US dollar
+	}
+		
+	public boolean greve() {
+		return true;
+	}
+	public double getProduction() {
+		double production=0;
+		for(Feve f:this.gestionnaireFeve.getFeves()) {
+			production+=this.gestionnaireFeve.getProductionParStep(f);
+			
+		}
+		return production;
 	}
 	
 // End Elsa
