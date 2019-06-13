@@ -26,6 +26,9 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 	private Double marge;
 	private Indicateur indicateursolde;
 	private List<ContratCadre<Chocolat>> contratsEnCours;
+	private int coutfixe;
+	private int coutsvariables;
+	private int coutsdestockage;
 
 
 	/**
@@ -39,12 +42,17 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 	 * @author Erine DUPONT & Estelle BONNET
 	 */
 	public Distributeur1(double marge, Double soldeInitial) {
+		
 		this.marge = marge;   // La marge doit être en pourcentage !!! 5% > 0.05
+		this.coutfixe = 0;
+		this.coutsvariables = 0;	
+		this.coutsdestockage = 0;
 		this.stock = new Stock();
 		stock.ajouter(Chocolat.HG_E_SHP, 150000.0, this);
 		stock.ajouter(Chocolat.MG_E_SHP, 150000.0, this);
 		stock.ajouter(Chocolat.MG_NE_HP, 150000.0, this);
 		stock.ajouter(Chocolat.MG_NE_SHP, 150000.0, this);
+		
 		this.soldeBancaire = new CompteBancaire(this.getNom(), this, soldeInitial);
 		this.indicateursolde = new Indicateur ("EQ5 solde bancaire",this, soldeBancaire.getCompteBancaire());
 		Monde.LE_MONDE.ajouterIndicateur(indicateursolde);
@@ -62,7 +70,12 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 	public void initialiser() {
 	}
 
+	/**
+	 * @author Estelle Bonnet
+	 */
 	public void next() {
+		this.soldeBancaire.retirer(this, this.coutfixe);
+		this.indicateursolde.retirer(this, coutfixe);
 	}
 
 	// ------------------------------------------------------------------------------------------------------

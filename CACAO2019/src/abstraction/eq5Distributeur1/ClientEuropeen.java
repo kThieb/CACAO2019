@@ -21,9 +21,6 @@ public class ClientEuropeen implements IActeur {
 	private Journal journal;
 	private Chocolat uniqueProduit;
 	private int quantiteParStep;
-	private boolean equitable;
-	private boolean sansHuileDePalme;
-	private Gamme gamme;
 	
 	/** @author Erwann DEFOY */
 	public String getNom() {
@@ -57,6 +54,7 @@ public class ClientEuropeen implements IActeur {
 	public void next() {
 		this.journal.ajouter("Step "+Monde.LE_MONDE.getStep()+" : tentative d'achat de "+quantiteParStep+" de "+this.uniqueProduit+" ____________");
 		double quantiteAchetee = 0.0;
+		Chocolat produitQ = null;
 		IDistributeurChocolat distributeurDeQualite = null;
 		double meilleureQualite = 0.0;
 		double meilleurPrix = Double.MAX_VALUE;
@@ -78,7 +76,8 @@ public class ClientEuropeen implements IActeur {
 								quantiteEnVenteMeilleur = quantiteEnVente;
 								meilleureQualite = getNoteQualite(dist, this.uniqueProduit);
 								meilleurPrix = dist.getPrix(this.uniqueProduit);
-							} else if (distributeurDeQualite==null || (getNoteQualite(dist, this.uniqueProduit) == meilleureQualite && dist.getPrix(this.uniqueProduit)<meilleurPrix)) { // prend le meilleur prix si qualité identique
+							} else if ((distributeurDeQualite==null || (getNoteQualite(dist, this.uniqueProduit) == meilleureQualite 
+									&& dist.getPrix(this.uniqueProduit) < meilleurPrix)) && dist.getPrix(this.uniqueProduit) < 10) { // prend le meilleur prix si qualité identique
 								distributeurDeQualite = dist;
 								quantiteEnVenteMeilleur = quantiteEnVente;
 								meilleureQualite = getNoteQualite(dist, this.uniqueProduit);
@@ -111,7 +110,7 @@ public class ClientEuropeen implements IActeur {
 		} else if (c.getGamme() == Gamme.MOYENNE) {
 			N = N+1 ;
 		}
-		return 10*N/4;
+		return N ;
 	}
 	
 	/** @author Erwann DEFOY */
