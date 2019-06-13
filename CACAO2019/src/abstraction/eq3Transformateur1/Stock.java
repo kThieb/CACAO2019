@@ -26,18 +26,25 @@ public class Stock<T> {
 	// -----------------------------------------------------------
 	
 	public double getQuantiteEnStock(T produit) {
-		try { return this.stock.get(produit); }
+		try { 
+			if (this.stock.get(produit) > 1.) {
+				return this.stock.get(produit); 
+			}
+			else { return 0.; }
+		}
 		catch (NullPointerException e) { return 0.; }
 	}
 	
 	public boolean estEnStock(T produit) {
-		return this.stock.containsKey(produit) && (this.stock.get(produit) > 0.);
+		return this.stock.containsKey(produit) && (this.stock.get(produit) > 1.);
 	}
 	
 	public ArrayList<T> getProduitsEnStock() {
 		ArrayList<T> resultat = new ArrayList<T>();
 		for (T p: this.stock.keySet()) {
-			resultat.add(p);
+				if (this.getQuantiteEnStock(p) > 0.) {
+					resultat.add(p);
+				}
 		}
 		return resultat;
 	}
