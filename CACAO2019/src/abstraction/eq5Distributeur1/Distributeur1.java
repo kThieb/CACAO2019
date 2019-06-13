@@ -30,6 +30,31 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 	private int coutsvariables;
 	private int coutsdestockage;
 
+	public static final int JANVIER1 = 1;
+	public static final int JANVIER2 = 2;
+	public static final int FEVRIER1 = 3;
+	public static final int FEVRIER2 = 4;
+	public static final int MARS1 = 5;
+	public static final int MARS2 = 6;
+	public static final int AVRIL1 = 7;
+	public static final int AVRIL2 = 8;
+	public static final int MAI1 = 9;
+	public static final int MAI2 = 10;
+	public static final int JUIN1 = 11;
+	public static final int JUIN2 = 12;
+	public static final int JUILLET1 = 13;
+	public static final int JUILLET2 = 14;
+	public static final int AOUT1 = 15;
+	public static final int AOUT2 = 16;
+	public static final int SEPTEMBRE1 = 17;
+	public static final int SEPTEMBRE2 = 18;
+	public static final int OCTOBRE1 = 19;
+	public static final int OCTOBRE2 = 20;
+	public static final int NOVEMBRE1 = 21;
+	public static final int NOVEMBRE2 = 22;
+	public static final int DECEMBRE1 = 23;
+	public static final int DECEMBRE2 = 24;
+	
 	/**
 	 * @author Erine DUPONT & Estelle BONNET
 	 */
@@ -69,7 +94,8 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 	}
 
 	/**
-	 * @author Estelle Bonnet
+	 * @author Estelle Bonnet > couts fixes, couts variables
+	 * @author Erine DUPONT > pub
 	 */
 	public void next() {
 		//Prise en compte de coût fixe
@@ -78,8 +104,26 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 		//Prise en compte du coût du stock
 		this.soldeBancaire.retirer(this, this.coutsdestockage*this.stock.getStockTotal());
 		this.indicateursolde.retirer(this, this.coutsdestockage*this.stock.getStockTotal());
-		
-		
+		//------------------ Publicité -----------------------------------------------------
+		//Janvier 	Step 1 à 4					Juillet 	Step 25 à 28
+		//Février 	Step 5 à 8					Août		Step 29 à 32
+		//Mars 		Step 9 à 12					Septembre	Step 33 à 36
+		//Avril		Step 13 à 16				Octobre		Step 37 à 40
+		//Mai 		Step 17 à 20				Novembre	Step 41 à 44
+		//Juin		Step 21 à 24				Décembre	Step 45 à 48
+		int step_actuel = Monde.LE_MONDE.getStep();
+		int stepDansLAnnee = step_actuel%24;
+		//ClientEuropeen
+		if (stepDansLAnnee == NOVEMBRE1 || stepDansLAnnee == NOVEMBRE2 || stepDansLAnnee == DECEMBRE1 
+				|| stepDansLAnnee == DECEMBRE2) {
+			Publicite pub1 = new Publicite(Chocolat.HG_E_SHP,5000);
+			Publicite pub2 = new Publicite(Chocolat.MG_E_SHP,5000);
+			Publicite pub3 = new Publicite(Chocolat.MG_NE_HP,5000);
+			Publicite pub4 = new Publicite(Chocolat.MG_NE_SHP,5000);
+			this.journal.ajouter("-------------------------------------- PUB ---------------------------------------------");
+			this.journal.ajouter("Publicité de Noël:");
+			
+		}
 	}
 
 	// ------------------------------------------------------------------------------------------------------

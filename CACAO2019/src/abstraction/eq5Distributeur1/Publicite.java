@@ -25,4 +25,5 @@ public class Publicite {
 	public double getBudget() {
 		return this.budget;
 	}
+	
 }
