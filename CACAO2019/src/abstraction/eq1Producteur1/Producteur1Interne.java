@@ -392,11 +392,11 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		HashMap<Integer, Integer> plantationCriolloOld = new HashMap<Integer,Integer>(plantationCriollo);
 		HashMap<Integer, Integer> plantationForasteroOld = new HashMap<Integer, Integer>(plantationForastero);
 		HashMap<Integer, Integer> plantationTrinitarioOld = new HashMap<Integer, Integer>(plantationTrinitario);
-		
+		recolteCriollo = 0;
+		recolteTrinitario = 0;
+		recolteForastero = 0;
 		for (int next = 0; next < dureeDeVieCacaoyer - 1; next++) {
-			recolteCriollo = 0;
-			recolteTrinitario = 0;
-			recolteForastero = 0;
+			
 			plantationCriollo.put(next + 1 , plantationCriolloOld.get(next));
 			plantationForastero.put(next + 1 , plantationForasteroOld.get(next));
 			plantationTrinitario.put( next + 1 , plantationTrinitarioOld.get(next));
