@@ -44,7 +44,7 @@ public class VendeurContratCadre extends Producteur1Interne implements IVendeurC
 				return this.getPrixAuKilo().get(produit);}
 			
 			else{
-				if(this.moyenneDemande(produit)*1.5>this.getStockI(produit).getValeur() ) {
+				if(this.moyenneDemande(produit)*2>this.getStockI(produit).getValeur() ) {
 					this.prixAuKilo.put(produit, this.getPrixAuKilo().get(produit)+0.1);
 					getJournal1().ajouter("Prix de Vente"+ this.getPrixAuKilo().get(produit));
 					return this.getPrixAuKilo().get(produit);}
