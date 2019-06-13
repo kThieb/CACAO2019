@@ -43,9 +43,16 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
         private Journal journal;
 
         private HashMap<Chocolat,Double> prixParProduit;
-        private StockEnVente<Chocolat> stockEnVente; 
-
-
+        private StockEnVente<Chocolat> stockEnVente;
+        
+        private double massesalariale = 100000 ;
+        private double coutstructure = 10000 ; 
+        private double tva = 1.2 ;
+        
+        public void quantitevendu () {
+        	
+        }
+        
         public Distributeur2() {
 
                 //NORDIN et Caroline
