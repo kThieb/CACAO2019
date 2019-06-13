@@ -52,7 +52,7 @@ public class VendeurContratCadre extends Producteur1Interne implements IVendeurC
 					return this.getPrixAuKilo().get(produit);}
 				
 				else {
-					if(this.moyennePrixNonAccepte(produit)>this.getPrixAuKilo().get(produit)) {
+					//if(this.moyennePrixNonAccepte(produit)>this.getPrixAuKilo().get(produit)) {
 						if(this.getStockI(produit).getValeur()*this.getPrixAuKilo().get(produit)-0.1>this.getCOUT_FIXE()/3+this.getStockI(produit).getValeur()*this.getCOUT_VARIABLE_STOCK()) {// On vérifie qu'on ne vend pas à perte
 								this.prixAuKilo.put(produit, this.getPrixAuKilo().get(produit)-0.1);
 								getJournal1().ajouter("Prix de Vente"+ this.getPrixAuKilo().get(produit));
@@ -64,9 +64,9 @@ public class VendeurContratCadre extends Producteur1Interne implements IVendeurC
 						getJournal1().ajouter("Prix de Vente"+ this.getPrixAuKilo().get(produit));
 						return this.getPrixAuKilo().get(produit);}
 				}  
-					else {this.journal1.ajouter("Prix de Vente"+ this.getPrixAuKilo().get(produit));
-					return this.getPrixAuKilo().get(produit);}
-				}
+					//else {this.journal1.ajouter("Prix de Vente"+ this.getPrixAuKilo().get(produit));
+					//return this.getPrixAuKilo().get(produit);}
+				//}
 				//END MANON
 
 			// utiliser Producteur1.getPrixAuKilo() pour savoir prix en fct du produit
