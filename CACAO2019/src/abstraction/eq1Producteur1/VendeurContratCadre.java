@@ -38,16 +38,17 @@ public class VendeurContratCadre extends Producteur1Interne implements IVendeurC
 		} else if (quantite > this.getStockEnVente().get(produit)) {
 			return Double.NaN;
 		} else {
+			//BEGIN MAnon
 
-			if(this.getHistoriqueSoldeBancaire().size()<=1) {
+			if(this.getHistoriqueSoldeBancaire().size()<=1) { // On regarde si on est pas au premier ou deuxième ste
 				this.journal1.ajouter("Prix de Vente"+ prod.getPrixAuKilo().get(produit));
 				return prod.getPrixAuKilo().get(produit);}
 			
 			else{
-			if (this.getHistoriqueSoldeBancaire().get(this.getHistoriqueSoldeBancaire().size()-2)>this.getHistoriqueSoldeBancaire().get(this.getHistoriqueSoldeBancaire().size()-1)){
-					if(this.getStockEnVente().get(produit)==this.getStockI(produit).getValeur()) {
-						if(this.getStockI(produit).getValeur()*this.getPrixAuKilo().get(produit)-0.1>this.getCOUT_FIXE()/3+this.getStockI(produit).getValeur()*this.getCOUT_VARIABLE_STOCK())
-								this.prixAuKilo.put(produit, this.getPrixAuKilo().get(produit)-0.1);
+			if (this.getHistoriqueSoldeBancaire().get(this.getHistoriqueSoldeBancaire().size()-2)>this.getHistoriqueSoldeBancaire().get(this.getHistoriqueSoldeBancaire().size()-1)){// On regarde si on perd de l'argent
+					if(this.getStockEnVente().get(produit)==this.getStockI(produit).getValeur()) { // On regarde s'il y a des contrat en cours
+						if(this.getStockI(produit).getValeur()*this.getPrixAuKilo().get(produit)-0.1>this.getCOUT_FIXE()/3+this.getStockI(produit).getValeur()*this.getCOUT_VARIABLE_STOCK()) // On regarde si notre prix de vente n'est pas inférieur à notre coût de production
+								this.prixAuKilo.put(produit, this.getPrixAuKilo().get(produit)-0.1); // Dans ce cas là on baisse le prix
 						this.journal1.ajouter("Prix de Vente"+ prod.getPrixAuKilo().get(produit));
 						return prod.getPrixAuKilo().get(produit);
 				}  
