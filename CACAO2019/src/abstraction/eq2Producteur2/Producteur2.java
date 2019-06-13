@@ -120,9 +120,9 @@ public void recolte(Feve f) {
 			double qualitePRoduction = maladie_predateurs+meteo;
 			//double qualiteProduction = (Math.random() - 0.5) / 2.5 + 1; // entre 0.8 et 1.2
 			double nouveauStock = this.gestionnaireFeve.getStock(f)
+
 						+ this.gestionnaireFeve.getProductionParStep(f) * (1 + qualitePRoduction);		
 			this.gestionnaireFeve.setStock(this, f, nouveauStock);}}
-
 
 
 public void payerCoutsProd() {
@@ -155,6 +155,7 @@ public void payerCoutsProd() {
 		List<Feve> feves = gestionnaireFeve.getFeves();
 		for (Feve feve : feves) {
 			double stockRestant = this.gestionnaireFeve.getStock(feve);
+			
 			for (ContratCadre<Feve> cc : this.contratsEnCours) {
 				if (Monde.LE_MONDE != null) {
 					if (cc.getProduit() == feve) {
@@ -162,9 +163,10 @@ public void payerCoutsProd() {
 					}
 				}
 			}
+			//System.out.println(stockRestant);
 			res.ajouter(feve, Math.max(0.0, stockRestant));
 
-		}
+		} 
 		return res;
 	}
 
@@ -204,7 +206,7 @@ public void payerCoutsProd() {
 		double prixVendeur = cc.getListePrixAuKilo().get(cc.getListePrixAuKilo().size() - 2); //On récupère le dernier prix proposé
 		double prixAcheteur = cc.getPrixAuKilo();
 		cc.ajouterPrixAuKilo(prixVendeur); // Le premier prix proposé est le prix au kilo initial
-		
+		cc.getListePrixAuKilo().add(prixVendeur);
 		if (prixVendeur == getCoutProduction(cc.getProduit()) * 1.01) { 
 			//On pose une marge minimale de 1% du cout de production
 			cc.ajouterPrixAuKilo(prixVendeur);
@@ -231,18 +233,17 @@ public void payerCoutsProd() {
 
 							//On s'assure de conserver notre marge minimale
 							prixVendeur = getCoutProduction(cc.getProduit()) * 1.01;
-							cc.ajouterPrixAuKilo(prixVendeur);
-						
+
+							cc.getListePrixAuKilo().add(prixVendeur);
+
 						} else {
 							prixVendeur *= 0.90; // On diminue le prix proposé de 10%
 							cc.ajouterPrixAuKilo(prixVendeur);
 						}
 					}
 				}
-			}
+			}}}
 		}
-	}}
-
 
 	
 	public double getCoutProduction(Feve f) { //Calcul des couts de production par step au kilo
@@ -269,6 +270,7 @@ public void payerCoutsProd() {
 	public void notifierVendeur(ContratCadre<Feve> cc) {
 		System.out.println(cc);
 		this.contratsEnCours.add(cc);
+		System.out.println("le contrat cadre a été ajouté donc c'est bizarre");
 	}
 
 	
@@ -279,13 +281,11 @@ public void payerCoutsProd() {
 			throw new IllegalArgumentException("Appel de la methode encaisser de Producteur2 avec un montant negatif");
 		}
 		this.soldeBancaire.ajouter(this, montant);
-		System.out.println("appel encaisser");
 	}
 
 
 
 	public double getPrix(Feve produit, Double quantite) {
-		// si tu peux voir ce message, c'est que ca a marche :)
 		double prixAPayer = 0;
 
 		if (produit == null || quantite <= 0.0 || this.getStockEnVente().get(produit) < quantite) {
