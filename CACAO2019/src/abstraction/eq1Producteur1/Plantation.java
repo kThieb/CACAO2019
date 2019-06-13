@@ -61,4 +61,15 @@ public class Plantation {
 			getInd().retirer(getAct(), ArbresAges);
 		} 
 	}
+	
+	public Double moyenneDemande(){
+		return Double.NaN;
+	}
+	
+	public void updatePlantation(int stepCourant,double plantation) {
+		planter(stepCourant,plantation); 
+		retraitArbresAges(stepCourant);
+	}
+	
+	
 }
