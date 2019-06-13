@@ -1,9 +1,11 @@
 package abstraction.eq4Transformateur2;
 
-// Kelian
+/**
+ * 
+ * @author kelia
+ * Représente une livraison de fèves ou de chocolats
+ */
 public class TasProduit<T> {
-	/** Représente une livraison de fèves ou de chocolats */
-	
 	private double quantité; // kg
 	private double prixAuKilo; // €
 	private int datePeremption;

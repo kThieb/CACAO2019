@@ -2,7 +2,7 @@ package abstraction.eq4Transformateur2;
 
 /** 
  * @author Kelian
- * Classe utilitaire permettant de stocker une paire (utilisée par plusieurs fonctions de notre acteur)
+ * Classe utilitaire permettant de stocker deux valeurs (utilisée par plusieurs fonctions de notre acteur)
  */
 public class Pair<X, Y> {
 	private X x;
