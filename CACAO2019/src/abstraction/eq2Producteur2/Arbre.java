@@ -37,8 +37,8 @@ public class Arbre {
 	
 			 }
 			 for(int i=0;i<3;i++) {
-				 this.nbArbres.get(f).add(Arbre.QT_ARBRE_AN);}
-			
+				 this.nbArbres.get(f).add(Arbre.QT_ARBRE_AN);
+			 }
 		 }
 	}
 	
@@ -60,7 +60,6 @@ public class Arbre {
 			 this.nbtot.put(f, nouveauTot);
 			 this.nbArbres.get(f).add(18225);
 		 }
-		
 	}
 	
 	public Integer getNbArbres(Feve feve) {
@@ -69,7 +68,7 @@ public class Arbre {
 
 	public double getPrixParStep(Feve f) {
 		double surfaceTotale=this.nbtot.get(f);
-		return surfaceTotale *77500;
+		return surfaceTotale *132; //en dollar 
 	}
 	
 }
