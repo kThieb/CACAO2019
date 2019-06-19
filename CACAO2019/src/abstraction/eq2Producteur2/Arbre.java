@@ -72,7 +72,7 @@ public class Arbre {
 		for(Feve f:this.nbArbres.keySet()) {
 			surfaceTotale+=this.nbtot.get(f);
 		}
-		return surfaceTotale *77500;
+		return surfaceTotale *133;
 	}
 	
 }

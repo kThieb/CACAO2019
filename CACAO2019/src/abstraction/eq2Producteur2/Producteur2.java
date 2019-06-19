@@ -33,7 +33,7 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	private int numStep;
 	private GestionnaireFeve gestionnaireFeve;
 	private Arbre arbres;
-	private double salaire=1.29/1000;
+	private double salaire=1.0/1000;
 
 	public Producteur2() {
 		this.gestionnaireFeve = new GestionnaireFeve(this);
@@ -255,7 +255,7 @@ public void payerCoutsProd() {
 		double salaire = getSalaire();
 		double coutsarbres = arbres.getPrixParStep();
 		
-		return (salaire + coutsarbres)/getProduction() ;	}
+		return (salaire + coutsarbres)/4/getProduction() ;	}
 	
 	
 	public double getSalaire() {
