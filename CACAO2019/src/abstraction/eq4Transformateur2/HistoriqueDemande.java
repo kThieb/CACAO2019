@@ -43,7 +43,7 @@ public class HistoriqueDemande {
 		if(targetStep < 0 || targetStep > currentStep)
 			return null;
 		HashMap<Chocolat, TasProduit<Chocolat>> demandeAncienne = historique.get(targetStep);
-		if(demandeAncienne == null)
+		if(demandeAncienne == null || demandeAncienne.get(type) == null)
 			return new TasProduit<>(0, 0);
 		else
 			return demandeAncienne.get(type);
@@ -61,7 +61,7 @@ public class HistoriqueDemande {
 	public double estimerDemande(int stepsInFuture, Chocolat type) {
 		// On commence par récupérer les données des années précédentes
 		List<TasProduit<Chocolat>> echantillons = new ArrayList<TasProduit<Chocolat>>();
-		for(int i = 1; i <= MEMOIRE_ESTIMATEUR_ANNEES && Monde.LE_MONDE.getStep() >= i*Transformateur2.STEPS_PAR_ANNEE; i++) {
+		for(int i = 1; i <= MEMOIRE_ESTIMATEUR_ANNEES && Monde.LE_MONDE.getStep() > i*Transformateur2.STEPS_PAR_ANNEE; i++) {
 			TasProduit<Chocolat> e = getDemande(i * Transformateur2.STEPS_PAR_ANNEE, type);
 			echantillons.add(e);
 		}

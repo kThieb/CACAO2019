@@ -42,11 +42,13 @@ public class Transformateur2VendeurCC implements IVendeurContratCadre<Chocolat> 
 		return sev;
 	}
 
-	//Minh Tri
+	// Minh Tri
 	@Override
 	public double getPrix(Chocolat produit, Double qte) {
+		//System.out.println("getPrix(" + produit + ", " + qte + ") = " + (t2.stocksChocolat.getPrix(produit, qte) * (1.0 + MARGE_VISEE) / qte));
+		
 		// Si l'on ne vend pas ce type de chocolat, on renvoie +infini
-		if(!t2.CHOCOLATS_VENTE.contains(produit))
+		if(!t2.CHOCOLATS_VENTE.contains(produit) || qte == Double.POSITIVE_INFINITY)
 			return Double.MAX_VALUE;
 		// Quantité réelle de production de la qté de chocolat demandée + une marge (on re-divise par la quantité pour obtenir le prix au kg)
 		return t2.stocksChocolat.getPrix(produit, qte) * (1.0 + MARGE_VISEE) / qte;
@@ -55,6 +57,9 @@ public class Transformateur2VendeurCC implements IVendeurContratCadre<Chocolat> 
 	//Adrien
 	@Override
 	public void proposerEcheancierVendeur(ContratCadre<Chocolat> cc) {
+		if(cc.getQuantite() == Double.POSITIVE_INFINITY)
+			return;
+		
 		if (Math.random() < 0.4) { // 40% de chances d'accepter l'échéancier
 			cc.ajouterEcheancier(new Echeancier(cc.getEcheancier())); // on accepte la proposition de l'acheteur car on a la quantite en stock 
 		} else { // 60% de chance de proposer un echeancier etalant sur un ou deux step de plus, de façon aléatoire
@@ -100,6 +105,8 @@ public class Transformateur2VendeurCC implements IVendeurContratCadre<Chocolat> 
 	public void notifierVendeur(ContratCadre<Chocolat> cc) {
 		t2.contratsChocolatEnCours.add(cc);
 
+		System.out.println("------ CONTRAT VALIDé ------" + cc.getPrixAuKilo());
+		
 		// Ajout de la demande à l'historique (Minh Tri)
 		Echeancier e = cc.getEcheancier();
 		for(int s = e.getStepDebut(); s <= e.getStepFin(); s++) {
@@ -111,9 +118,10 @@ public class Transformateur2VendeurCC implements IVendeurContratCadre<Chocolat> 
 	// Kelian
 	@Override
 	public double livrer(Chocolat produit, double quantite, ContratCadre<Chocolat> cc) {
-		if (produit==null || t2.getStockEnVente().get(produit) == 0)
+		System.out.println("Livraison de " + quantite + " kg de " + produit);
+		if (produit == null || !t2.CHOCOLATS_VENTE.contains(produit))
 			throw new IllegalArgumentException("Appel de la methode livrer de Transformateur2 avec un produit ne correspondant pas au chocolat produit");
-		double livraison = Math.min(quantite, t2.iStockChocolat.getValeur());
+		double livraison = Math.min(quantite, t2.stocksChocolat.getQuantiteTotale(produit));
 		t2.stocksChocolat.prendreProduits(produit, livraison);
 		t2.iStockChocolat.retirer(t2, livraison);
 		

@@ -69,7 +69,7 @@ public class StockProduit<T> {
 				qty -= qteAPrendre;
 				prix += qteAPrendre * t.getPrixAuKilo();
 				// On supprime le tas s'il est vide
-				if(t.getQuantité() == 0)
+				if(t.getQuantité() < 0.01)
 					tas.pop();
 			}
 			return prix;
