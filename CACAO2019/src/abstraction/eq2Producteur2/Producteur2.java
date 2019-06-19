@@ -48,6 +48,7 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 		this.contratsEnCours = new ArrayList<ContratCadre<Feve>>();
 		this.journal = new Journal("Journal " + this.getNom());
 		Monde.LE_MONDE.ajouterJournal(this.journal);
+		System.out.println("ajout journal equipe 2");
 		this.numStep = 1;
 		
 		arbres = new Arbre();
