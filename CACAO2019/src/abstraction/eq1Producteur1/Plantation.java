@@ -81,7 +81,9 @@ public class Plantation {
 		int stepAExplorer=getStepBorneInf();
 		double recolte=0;
 		while (stepAExplorer <=stepCourant-troisAnsEnSteps) { 
+			// les arbres sont matures après 3 ans
 			recolte += getPlantation().getOrDefault(stepAExplorer, (double)0);
+			
 			stepAExplorer++;
 			
 		}
@@ -106,6 +108,7 @@ public class Plantation {
 
 		Double moyenne = 0.0;
 		//System.out.println(getHistoriqueContrats());//ROMU
+		// calcul de la moyenne de la demande en fèves sur les cinq premières années afin de s'adapter à la demande
 		Set<Entry<Integer, ContratCadre<Feve>>> setHisto= getHistoriqueContrats().entrySet();
 		Iterator<Entry<Integer, ContratCadre<Feve>>> it = setHisto.iterator();
 		while(it.hasNext()) {
