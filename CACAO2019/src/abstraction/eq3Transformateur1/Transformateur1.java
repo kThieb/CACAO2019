@@ -126,7 +126,6 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 
 		// --------------------------------- end Raph
 		
-		
 		this.soldeBancaire=new Indicateur("EQ3 solde bancaire", this, 100000);
 		this.journal = new Journal ("Journal EQ3");
 		Monde.LE_MONDE.ajouterJournal(this.journal);
