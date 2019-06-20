@@ -65,12 +65,13 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 	public static int quatreAnsEnSteps = 96 ;
 	public static int cinqAnsEnSteps = 120 ;
 	public static int dureeDeVieFeve = unAnEnSteps; // durée de vie en nexts
-	public static int coutPlanter = 1 ; //cout par plant 
+	public static int coutPlanter = 1 ;
+
 	
 //END ANTI
 
 //	protected int compteurRecolte = 0; 
-	protected int recolteExceptionnellementReduite;
+	protected int stepRecolteExceptionnellementReduite;
 
 
 	protected Indicateur soldeBancaire;
@@ -95,7 +96,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		this.contratEnCours= new ArrayList<ContratCadre<Feve>> ();
 		this.historiqueSoldeBancaire= new ArrayList<Double> ();
 		Random r=new Random();
-		recolteExceptionnellementReduite=r.nextInt(2);
+		stepRecolteExceptionnellementReduite=r.nextInt(unAnEnSteps);
 		//BEGIN ANTI 
 		/*
 		this.plantationCriolloI = new Indicateur("EQ1 plantation criollo", this, 80);
@@ -166,11 +167,11 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		
 		
 		if (feve.getVariete() == Variete.CRIOLLO) { 
-			return recolteExceptionnellementReduite*unAnEnSteps/2==LE_MONDE.getStep()%unAnEnSteps ? recolteCriollo*Math.random() :recolteCriollo;
+			return stepRecolteExceptionnellementReduite==LE_MONDE.getStep()%unAnEnSteps ? recolteCriollo*Math.random() :recolteCriollo;
 		} else if (feve.getVariete() == Variete.FORASTERO) {
-			return recolteExceptionnellementReduite*unAnEnSteps/2==LE_MONDE.getStep()%unAnEnSteps ? recolteForastero*Math.random() :recolteForastero;
+			return stepRecolteExceptionnellementReduite==LE_MONDE.getStep()%unAnEnSteps ? recolteForastero*Math.random() :recolteForastero;
 		} else if (feve.getVariete() == Variete.TRINITARIO) {
-			return recolteExceptionnellementReduite*unAnEnSteps/2==LE_MONDE.getStep()%unAnEnSteps ? recolteTrinitario*Math.random() :recolteTrinitario;
+			return stepRecolteExceptionnellementReduite==LE_MONDE.getStep()%unAnEnSteps ? recolteTrinitario*Math.random() :recolteTrinitario;
 		}
 		
 		return Double.NaN;
@@ -193,7 +194,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		if (LE_MONDE.getStep()%unAnEnSteps==0) {
 
 			Random r=new Random();
-			recolteExceptionnellementReduite=r.nextInt(2);
+			stepRecolteExceptionnellementReduite=r.nextInt(unAnEnSteps);
 		}
 	}
 	
