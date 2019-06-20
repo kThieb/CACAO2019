@@ -202,9 +202,35 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 			}
 		}
 		retireVieuxContrats();
+		
+		// retrait des lots perimes & examen des pertes
+		double quantiteAvantFeves = 0.;
+		for (Feve f: this.stockFeves.getProduitsEnStock()) {
+			quantiteAvantFeves = quantiteAvantFeves + this.stockFeves.getQuantiteEnStock(f);
+		}
+		double quantiteAvantChocolats = 0.;
+		for (Chocolat c: this.stockChocolat.getProduitsEnStock()) {
+			quantiteAvantChocolats = quantiteAvantChocolats + this.stockChocolat.getQuantiteEnStock(c);
+		}
+		
 		this.stockFeves.decrDate();
 		this.stockChocolat.decrDate();
+<<<<<<< HEAD
 		// -------------------------- end eve et sacha
+=======
+		
+		double quantiteApresFeves = 0.;
+		for (Feve f: this.stockFeves.getProduitsEnStock()) {
+			quantiteApresFeves = quantiteApresFeves + this.stockFeves.getQuantiteEnStock(f);
+		}
+		double quantiteApresChocolats = 0.;
+		for (Chocolat c: this.stockChocolat.getProduitsEnStock()) {
+			quantiteApresChocolats = quantiteApresChocolats + this.stockChocolat.getQuantiteEnStock(c);
+		}
+		this.journal.ajouter("perte de " + (quantiteApresFeves*1.)/quantiteAvantFeves + "% du stock de feves");
+		this.journal.ajouter("perte de " + (quantiteApresChocolats*1.)/quantiteAvantChocolats + "% du stock de chocolats");
+		// -------------------------- end eve 
+>>>>>>> branch 'master' of https://github.com/kThieb/CACAO2019.git
 	}
 	
 	public void retireVieuxContrats() {

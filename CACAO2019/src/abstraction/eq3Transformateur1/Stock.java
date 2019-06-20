@@ -29,8 +29,8 @@ public class Stock<T> {
 		for (T p: produits) { 
 			this.stock.put(p, new ArrayList<Lot>());
 		}
-		this.peremptionFeve = 90;
-		this.peremptionChocolat = 30;
+		this.peremptionFeve = 120;
+		this.peremptionChocolat = 60;
 	}
 	public Stock() { }
 	
@@ -63,6 +63,14 @@ public class Stock<T> {
 		return resultat;
 	}
 	
+	public int getNombreDeLots(ArrayList<T> produits) {
+		int nbLots = 0;
+		for (T p: produits) {
+			nbLots = nbLots + this.stock.get(p).size();
+		}
+		return nbLots;
+	}
+	
 	
 	// -----------------------------------------------------------
 	//          SETTERS
@@ -76,6 +84,17 @@ public class Stock<T> {
 			this.stock.get(produit).add(new Lot(this.numLot, quantite, date));
 			this.incrLot();
 		}
+	}
+	
+	private Lot getLotLePlusVieux(T produit) {
+		Lot result = new Lot();
+		result.setDate(10000000); // arbitrairement grand
+		for (Lot l: this.stock.get(produit)) {
+			if (l.getDate() < result.getDate()) {
+				result = l;
+			}
+		}
+		return result;
 	}
 	
 	public void addQuantiteEnStock(T produit, double quantite)
@@ -100,10 +119,10 @@ public class Stock<T> {
 			}
 			else {
 				double quantiteRestante = quantite;
-				Lot lot = ((ArrayList<Lot>) this.stock.get(produit)).get(0);
+				Lot lot = new Lot();
 				while (quantiteRestante > 10e-8) {
 //					System.out.println("dans le while");
-					lot = ((ArrayList<Lot>) this.stock.get(produit)).get(0);
+					lot = this.getLotLePlusVieux(produit);
 					this.stock.get(produit).remove(lot);
 					if (lot.getQuantite() > quantiteRestante) { lot.retirerQuantiteLot(quantiteRestante);
 																quantiteRestante = 0.;
@@ -135,6 +154,7 @@ public class Stock<T> {
 				lot.setDate(lot.getDate() - 1);
 				if (lot.getDate() == 0) {
 					this.stock.get(produit).remove(lot);
+//					System.out.println("lot " + lot.getnLot() + " de " + produit + " retiré, quantité " + lot.getQuantite());
 				}
 			}
 		}
