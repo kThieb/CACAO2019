@@ -39,6 +39,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	private List<ContratCadre<Chocolat>> contratsChocolatEnCours;
 	private List<ContratCadre<Feve>> contratsFeveEnCours;
 	//end sacha
+	
 	//begin Raphael
 	private Marge margeChocolats;
 	private CoutEnFeves coutEnFeves;
@@ -61,6 +62,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		this.peutEtreProduit.add(Chocolat.MG_NE_HP);
 		this.peutEtreProduit.add(Chocolat.MG_NE_SHP);
 		this.peutEtreProduit.add(Chocolat.MG_E_SHP);
+		
 		//End Kevin
 		// --------------------------------- begin eve
 
@@ -117,9 +119,9 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		this.margeChocolats.setMargeBrute(Chocolat.MG_E_SHP, 10);
 		this.margeChocolats.setCoutProd(Chocolat.MG_E_SHP, 4.5);
 
-		this.PRIX_VENTE_PAR_DEFAUT.put(Chocolat.MG_NE_HP,40.);
-		this.PRIX_VENTE_PAR_DEFAUT.put(Chocolat.MG_NE_SHP,40.);
-		this.PRIX_VENTE_PAR_DEFAUT.put(Chocolat.MG_E_SHP,40.);
+		this.PRIX_VENTE_PAR_DEFAUT.put(Chocolat.MG_NE_HP,24.);
+		this.PRIX_VENTE_PAR_DEFAUT.put(Chocolat.MG_NE_SHP,24.);
+		this.PRIX_VENTE_PAR_DEFAUT.put(Chocolat.MG_E_SHP,24.);
 		
 
 		// --------------------------------- end Raph
@@ -158,11 +160,12 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	}
 
 	public void next() {
-		// -------------------------- begin eve
+		// -------------------------- begin eve et sacha
 		
 		// feves en stock = utilisables
 		
 		ArrayList<Feve> aDisposition = this.stockFeves.getProduitsEnStock();
+		//ArraList<Double> moyenneQuantitéVendue = this.moyennesQuantiteVendues();
 		
 		for (Feve f: aDisposition) {
 			
@@ -200,7 +203,37 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 			}
 		}
 		retireVieuxContrats();
+		
+		// -------------------------- end eve et sacha
+		
+		// -------------------------- begin eve
+		
+		// retrait des lots perimes & examen des pertes
+		double quantiteAvantFeves = 0.;
+		for (Feve f: this.stockFeves.getProduitsEnStock()) {
+			quantiteAvantFeves = quantiteAvantFeves + this.stockFeves.getQuantiteEnStock(f);
+		}
+		double quantiteAvantChocolats = 0.;
+		for (Chocolat c: this.stockChocolat.getProduitsEnStock()) {
+			quantiteAvantChocolats = quantiteAvantChocolats + this.stockChocolat.getQuantiteEnStock(c);
+		}
+		
+		this.stockFeves.decrDate();
+		this.stockChocolat.decrDate();
+
+		
+		double quantiteApresFeves = 0.;
+		for (Feve f: this.stockFeves.getProduitsEnStock()) {
+			quantiteApresFeves = quantiteApresFeves + this.stockFeves.getQuantiteEnStock(f);
+		}
+		double quantiteApresChocolats = 0.;
+		for (Chocolat c: this.stockChocolat.getProduitsEnStock()) {
+			quantiteApresChocolats = quantiteApresChocolats + this.stockChocolat.getQuantiteEnStock(c);
+		}
+		this.journal.ajouter("perte de " + (quantiteApresFeves*1.)/quantiteAvantFeves + "% du stock de feves");
+		this.journal.ajouter("perte de " + (quantiteApresChocolats*1.)/quantiteAvantChocolats + "% du stock de chocolats");
 		// -------------------------- end eve 
+
 	}
 	
 	public void retireVieuxContrats() {
@@ -442,6 +475,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		this.soldeBancaire.retirer(this,  paiement);
 		return paiement;
 	}
+	// end sacha
 	
 	// -------------------------------------------------------------------------------------------
 	// 			VENDEUR
