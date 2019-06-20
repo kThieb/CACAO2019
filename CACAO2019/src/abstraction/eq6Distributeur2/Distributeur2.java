@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import abstraction.eq7Romu.distributionChocolat.IDistributeurChocolat;
 import abstraction.eq7Romu.produits.Chocolat;
 import abstraction.eq7Romu.produits.Gamme;
@@ -21,6 +22,7 @@ import abstraction.fourni.Monde;
 
 public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, IDistributeurChocolat {
         
+		private HashMap<Indicateur,IActeur> fidelite;
         private Prix gestionPrix;
         private ArrayList<Double> historiqueMG_E_SHP;
         private ArrayList<Double> historiqueMG_NE_SHP;
@@ -35,12 +37,13 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
         private Indicateur stockMG_NE_HP;
         private Indicateur stockHG_E_SHP;
 
-        private ArrayList<Integer> temporalite;
+        private Temporalite temporalitee;
         private int contratEnCoursStep;
 
         private Journal journal;
 
         private StockEnVente<Chocolat> stockEnVente;
+        private HashMap<Chocolat, Double> quantitevenduparstep;
 
         
         public Distributeur2() {
@@ -55,31 +58,6 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
                 this.soldeBancaire = new Indicateur("EQ6 Solde Bancaire", this, 100000);
                 Monde.LE_MONDE.ajouterIndicateur(this.soldeBancaire);
 
-                this.temporalite = new ArrayList<Integer>();
-                temporalite.add(1);
-                temporalite.add(1);
-                temporalite.add(1);
-                temporalite.add(1);
-                temporalite.add(1);
-                temporalite.add(1);
-                temporalite.add(1);
-                temporalite.add(1);
-                temporalite.add(1);
-                temporalite.add(1);
-                temporalite.add(1);
-                temporalite.add(1);
-                temporalite.add(1);
-                temporalite.add(1);
-                temporalite.add(1);
-                temporalite.add(1);
-                temporalite.add(1);
-                temporalite.add(1);
-                temporalite.add(1);
-                temporalite.add(1);
-                temporalite.add(1);
-                temporalite.add(1);
-                temporalite.add(1);
-                temporalite.add(1);
 
                 //Chnager par nom du chocolat pour que le getNom de indcateur renvoie le type chocolat
                 this.stockMG_E_SHP = new Indicateur("EQ6 stock" + Chocolat.MG_E_SHP.toString(), this, 15000);
@@ -108,6 +86,14 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
                 
 
                 gestionPrix = new Prix(this);
+                
+                this.quantitevenduparstep = new HashMap<>();
+                this.quantitevenduparstep.put(Chocolat.HG_E_SHP, 0.0);
+                this.quantitevenduparstep.put(Chocolat.MG_E_SHP, 0.0);
+                this.quantitevenduparstep.put(Chocolat.MG_NE_SHP,0.0);
+                this.quantitevenduparstep.put(Chocolat.MG_NE_HP, 0.0);
+                
+                temporalitee = new Temporalite(this);
         }
 
 
@@ -195,24 +181,14 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
         /**
          * @return the temporalite
          */
-        public ArrayList<Integer> getTemporalite() {
-                return temporalite;
-        }
-
-
-        /**
-         * @param temporalite the temporalite to set
-         */
-        public void setTemporalite(ArrayList<Integer> temporalite) {
-                this.temporalite = temporalite;
-        }
+       
 
 
         public void initialiser() {
         }
         //nordin
         public void next() {
-
+        		int step = Monde.LE_MONDE.getStep();
                 double solde = this.getSoldeBancaire().getValeur();
                 for (ContratCadre<Chocolat> cc : this.getContratsEnCours()) {
                         solde = solde - cc.getMontantRestantARegler();
@@ -229,21 +205,26 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
                                 getHistoriqueMG_E_SHP().add(derniereVente.get(c));
                                 gestionPrix.ajustementMarge(getHistoriqueMG_E_SHP(), c);
                                 gestionPrix.setPrixParProduit(c);
+                                temporalitee.setQuantiteVendueMG_E_SHP(step, quantitevenduparstep.get(c));
                         }
                         if (c.getGamme()==Gamme.MOYENNE && !(c.isEquitable()) && (c.isSansHuileDePalme())) {
                                 getHistoriqueMG_NE_SHP().add(derniereVente.get(c));
                                 gestionPrix.ajustementMarge(getHistoriqueMG_NE_SHP(), c);
                                 gestionPrix.setPrixParProduit(c);
+                                temporalitee.setQuantiteVendueMG_NE_SHP(step, quantitevenduparstep.get(c));
                         }
+                       
                         if (c.getGamme()==Gamme.MOYENNE && !(c.isEquitable()) && !(c.isSansHuileDePalme())){
                                 getHistoriqueMG_NE_HP().add(derniereVente.get(c));
-                                gestionPrix.ajustementMarge(getHistoriqueMG_NE_SHP(), c);
+                                gestionPrix.ajustementMarge(getHistoriqueMG_NE_HP(), c);
                                 gestionPrix.setPrixParProduit(c);
+                                temporalitee.setQuantiteVendueMG_NE_HP(step, quantitevenduparstep.get(c));
                         }
                         if (c.getGamme()==Gamme.HAUTE && (c.isEquitable()) && (c.isSansHuileDePalme())){
                                 getHistoriqueHG_E_SHP().add(derniereVente.get(c));
                                 gestionPrix.ajustementMarge(getHistoriqueHG_E_SHP(), c);
                                 gestionPrix.setPrixParProduit(c);
+                                temporalitee.setQuantiteVendueHG_E_SHP(step, quantitevenduparstep.get(c));
                         }
                 }
 
@@ -278,13 +259,17 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
                 List<String> chocolatsdisponibles = new ArrayList<String>();
                 for (Chocolat chocolat : this.getStockEnVente().getProduitsEnVente()) {
                         if( c.equals(chocolat)) {
+                        		// On ajoute cette vente à la Hashmap Qtité vendue
+                        		double q_precedent= quantitevenduparstep.get(c);
                                 Double q = Math.min(this.getStockEnVente().get(c), quantite);
+                                quantitevenduparstep.put(c, q + q_precedent);
                                 Double stockenvente = this.getStockEnVente().get(c) - q;
                                 this.getStockEnVente().ajouter(c, stockenvente);
                                 this.getIndicateurStock(c).retirer(this, q);
                                 this.getSoldeBancaire().ajouter(this, this.getPrix(c)*q);
                                 this.journal.ajouter("Vente de "+getArrondi(q)+ " kilos à " +getArrondi(this.getPrix(c)) + " euros pour le chocolat " +c);
                                 return q;
+                                
                         }
                         else {chocolatsdisponibles.add(""+chocolat);}
                 }
@@ -414,18 +399,16 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
                 }
 
 
-                previsionVente.put(Chocolat.MG_E_SHP, demandetotaleMG_E_SHP*this.getTemporalite().get((Monde.LE_MONDE.getStep())%24));
-                previsionVente.put(Chocolat.MG_NE_SHP,demandetotaleMG_NE_SHP*this.getTemporalite().get((Monde.LE_MONDE.getStep())%24));
-                previsionVente.put(Chocolat.MG_NE_HP, demandetotaleMG_NE_HP*this.getTemporalite().get((Monde.LE_MONDE.getStep())%24));
-                previsionVente.put(Chocolat.HG_E_SHP, demandetotaleHG_E_SHP*this.getTemporalite().get((Monde.LE_MONDE.getStep())%24));
-
+                previsionVente.put(Chocolat.MG_E_SHP, demandetotaleMG_E_SHP*temporalitee.getPeriode((Monde.LE_MONDE.getStep())));
+                previsionVente.put(Chocolat.MG_NE_SHP,demandetotaleMG_NE_SHP*temporalitee.getPeriode((Monde.LE_MONDE.getStep())));
+                previsionVente.put(Chocolat.MG_NE_HP, demandetotaleMG_NE_HP*temporalitee.getPeriode((Monde.LE_MONDE.getStep())));
+                previsionVente.put(Chocolat.HG_E_SHP, demandetotaleHG_E_SHP*temporalitee.getPeriode((Monde.LE_MONDE.getStep())));
                 /*
                 previsionVente.put(Chocolat.MG_E_SHP, 5000.0);
                 previsionVente.put(Chocolat.MG_NE_SHP,5000.0);
                 previsionVente.put(Chocolat.MG_NE_HP, 5000.0);
                 previsionVente.put(Chocolat.HG_E_SHP, 5000.0);
                  */
-
                 return previsionVente;
         }
 
@@ -553,7 +536,7 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
                 for (ContratCadre<Chocolat> cc : this.getContratsEnCours()) {
                         solde = solde - cc.getMontantRestantARegler();
                 }
-
+                System.out.println("notre solde est " + getArrondi(solde) + " le solde " + solde);
                 if (solde >10000)
                 {
                         if (contratEnCoursStep<4) {
@@ -683,7 +666,6 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
                         satisfait = true;
                         gestionPrix.setPrixachatParProduit(produit, dernierprixpropose);
                         gestionPrix.setPrixParProduit(produit);
-                        System.out.println(" dernier prix proposé " +  dernierprixpropose + notreprix  );
                 }else {
                         satisfait = false;
                 }
