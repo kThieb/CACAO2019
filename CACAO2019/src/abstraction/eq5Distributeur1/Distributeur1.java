@@ -27,7 +27,7 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 	private Indicateur indicateursolde;
 	private List<ContratCadre<Chocolat>> contratsEnCours;
 	private int coutfixe;
-	private int coutsdestockage;
+	private double coutsdestockage;
 
 	public static final int JANVIER1 = 1%24;
 	public static final int JANVIER2 = 2%24;
@@ -58,7 +58,7 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 	 * @author Erine DUPONT & Estelle BONNET
 	 */
 	public Distributeur1() {
-		this(0.1, 100000.0); // La marge doit être en pourcentage !!! 5% > 0.05
+		this(0.5, 100000.0); // La marge doit être en pourcentage !!! 5% > 0.05
 	}
 
 	/**
@@ -67,8 +67,8 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 	public Distributeur1(double marge, Double soldeInitial) {
 		
 		this.marge = marge;   // La marge doit être en pourcentage !!! 5% > 0.05
-		this.coutfixe = 0;	
-		this.coutsdestockage = 0;
+		this.coutfixe = 200000;	
+		this.coutsdestockage = 0.1;
 		this.stock = new Stock();
 		stock.ajouter(Chocolat.HG_E_SHP, 150000.0, this);
 		stock.ajouter(Chocolat.MG_E_SHP, 150000.0, this);
@@ -102,7 +102,7 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 	public void next() {
 		//Prise en compte de coût fixe
 		this.soldeBancaire.retirer(this, this.coutfixe);
-		this.indicateursolde.retirer(this, coutfixe);
+		this.indicateursolde.retirer(this, this.coutfixe);
 		//Prise en compte du coût du stock
 		this.soldeBancaire.retirer(this, this.coutsdestockage*this.stock.getStockTotal());
 		this.indicateursolde.retirer(this, this.coutsdestockage*this.stock.getStockTotal());

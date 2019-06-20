@@ -49,8 +49,10 @@ public class ClientFidele implements IActeur {
 		double quantiteAchetee = 0.0;
 		double quantiteEnVente = 0.0;
 		double quantiteAVendre = 0.0;
+		double achetteACeStep = 0.0;
 		do {
 			quantiteAVendre = 0.0;
+			achetteACeStep = 0.0;
 			StockEnVente<Chocolat> s = dist.getStockEnVente();
 			if (s.getProduitsEnVente().contains(this.uniqueProduit)) {
 				quantiteEnVente = s.get(this.uniqueProduit);
@@ -65,9 +67,10 @@ public class ClientFidele implements IActeur {
 				double quantiteCommandee = Math.min(this.quantiteParStep-quantiteAchetee, quantiteAVendre);
 				double quantiteVendue = dist.vendre(this.uniqueProduit, quantiteCommandee);
 				quantiteAchetee+=quantiteVendue;
+				achetteACeStep = quantiteVendue;
 				this.journal.ajouter("Step "+Monde.LE_MONDE.getStep()+" : Achat de "+uniqueProduit+" a la quantite de "+quantiteVendue+" chez "+((IActeur)dist).getNom()+" au prix de "+dist.getPrix(this.uniqueProduit));
 			}
 			//			Clavier.lireString();
-		} while (quantiteAchetee<this.quantiteParStep);
+		} while (achetteACeStep > 0.0 && quantiteAchetee<this.quantiteParStep);
 	}
 }
