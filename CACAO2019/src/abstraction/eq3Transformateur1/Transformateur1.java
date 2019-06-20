@@ -203,6 +203,8 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 			}
 		}
 		retireVieuxContrats();
+		this.stockFeves.decrDate();
+		this.stockChocolat.decrDate();
 		// -------------------------- end eve 
 	}
 	
