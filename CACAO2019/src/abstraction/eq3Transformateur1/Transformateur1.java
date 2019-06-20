@@ -38,7 +38,6 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	//begin sacha
 	private List<ContratCadre<Chocolat>> contratsChocolatEnCours;
 	private List<ContratCadre<Feve>> contratsFeveEnCours;
-	private List<Double> moyennesQuantiteVendues ; 
 	//end sacha
 	
 	//begin Raphael
@@ -138,7 +137,6 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		//begin sacha
 		this.contratsChocolatEnCours = new ArrayList<ContratCadre<Chocolat>>();
 		this.contratsFeveEnCours = new ArrayList<ContratCadre<Feve>>();
-		this.moyennesQuantiteVendues = new ArrayList<Double>();
 		//end sacha
 		
 
@@ -161,7 +159,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	}
 
 	public void next() {
-		// -------------------------- begin eve
+		// -------------------------- begin eve et sacha
 		
 		// feves en stock = utilisables
 		
@@ -206,7 +204,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		retireVieuxContrats();
 		this.stockFeves.decrDate();
 		this.stockChocolat.decrDate();
-		// -------------------------- end eve 
+		// -------------------------- end eve et sacha
 	}
 	
 	public void retireVieuxContrats() {
@@ -448,6 +446,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		this.soldeBancaire.retirer(this,  paiement);
 		return paiement;
 	}
+	// end sacha
 	
 	// -------------------------------------------------------------------------------------------
 	// 			VENDEUR
