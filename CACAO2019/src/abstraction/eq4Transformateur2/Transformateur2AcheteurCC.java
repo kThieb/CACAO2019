@@ -15,7 +15,7 @@ import abstraction.fourni.IActeur;
 import abstraction.fourni.Monde;
 
 public class Transformateur2AcheteurCC implements IAcheteurContratCadre<Feve> {
-	private static final double POIDS_MIN_CONTRAT_ACHAT = 10000.0; // poids min d'un contrat d'achat de fèves.
+	private static final double POIDS_MIN_CONTRAT_ACHAT = 300.0; // poids min d'un contrat d'achat de fèves.
 	private static final double DEPENSE_MAX_PAR_CC = 0.75; // on ne dépense pas plus de 60% de notre solde par CC
 	
 	private Transformateur2 t2;
@@ -60,7 +60,6 @@ public class Transformateur2AcheteurCC implements IAcheteurContratCadre<Feve> {
 		while(idx < triParQte.size() && vendeur == null) {
 			Feve f = triParQte.get(idx);
 			double qte = echeanciers.get(f).getQuantiteTotale();
-			t2.journal.ajouter("boucle - " + f + " " + qte + " kg");
 			if(qte != 0.0) {
 				vendeur = choisirVendeur(f, qte);
 				if(vendeur == null)
@@ -78,7 +77,7 @@ public class Transformateur2AcheteurCC implements IAcheteurContratCadre<Feve> {
 		Feve feve = triParQte.get(idx);
 		double qte = echeanciers.get(feve).getQuantiteTotale();
 		
-		if(qte == 0.0)
+		if(qte == 0.0 || qte < POIDS_MIN_CONTRAT_ACHAT)
 			return null;
 		
 		// On réduit la quantité achetée tant que le prix est supérieur à un pourcentage fixé de notre solde
@@ -90,6 +89,7 @@ public class Transformateur2AcheteurCC implements IAcheteurContratCadre<Feve> {
 
 		t2.journal.ajouter("Nouveau CC fève : " + vendeur + ", " + feve + ", " + qte + " kg");
 		return new ContratCadre<Feve>(t2, vendeur, feve, qte);
+		
 		
 		/*List<Pair<IVendeurContratCadre<Feve>, List<Feve>>> vendeurs = trouverVendeursInteressants();
 		
@@ -260,8 +260,6 @@ public class Transformateur2AcheteurCC implements IAcheteurContratCadre<Feve> {
 			int step = Monde.LE_MONDE.getStep() + i;
 			e3.set(step, (e1.getQuantite(step) + e2.getQuantite(step)) / 2);
 		}
-		System.out.println("MOYENNE " + e1.getQuantiteTotale() + " ----- " + e3.getQuantiteTotale());
-		t2.journal.ajouter("MOYENNE " + e1.getQuantiteTotale() + " ----- " + e3.getQuantiteTotale());
 		return e3;
 	}
  

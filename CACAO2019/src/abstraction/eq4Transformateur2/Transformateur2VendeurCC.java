@@ -105,8 +105,6 @@ public class Transformateur2VendeurCC implements IVendeurContratCadre<Chocolat> 
 	public void notifierVendeur(ContratCadre<Chocolat> cc) {
 		t2.contratsChocolatEnCours.add(cc);
 
-		System.out.println("------ CONTRAT VALIDé ------" + cc.getPrixAuKilo());
-		
 		// Ajout de la demande à l'historique (Minh Tri)
 		Echeancier e = cc.getEcheancier();
 		for(int s = e.getStepDebut(); s <= e.getStepFin(); s++) {
@@ -119,10 +117,8 @@ public class Transformateur2VendeurCC implements IVendeurContratCadre<Chocolat> 
 	@Override
 	public double livrer(Chocolat produit, double quantite, ContratCadre<Chocolat> cc) {
 		if (produit == null || !t2.CHOCOLATS_VENTE.contains(produit))
-			throw new IllegalArgumentException("Appel de la methode livrer de Transformateur2 avec un produit ne correspondant pas au chocolat produit");
-		System.out.println("Livraison de " + quantite + " kg de " + produit);
+			throw new IllegalArgumentException("Appel de la methode livrer de Transformateur2 avec un produit ne correspondant pas à un chocolat produit");
 		double livraison = Math.min(quantite, t2.stocksChocolat.getQuantiteTotale(produit));
-		
 		t2.journal.ajouter("Livraison de " + livraison + " kg de " + produit);
 		t2.stocksChocolat.prendreProduits(produit, livraison);
 		t2.iStockChocolat.retirer(t2, livraison);

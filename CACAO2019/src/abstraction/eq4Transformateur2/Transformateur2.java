@@ -58,7 +58,7 @@ public class Transformateur2 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	public static final int STEPS_PAR_ANNEE = 24;
 	private static final double MAX_PRODUCTION_PAR_STEP = 10e3; // Production max. de chocolats par step, en kg
 	protected static final int STEPS_ESTIMATION_DEMANDE_FUTURE = 12; // Le nombre de steps dans le futur pour lesquels on estime la demande
-	private static final double MARGE_STOCK_CHOCOLAT = 0.1; // La marge de chocolat que l'on produit en plus de la demande estimée
+	private static final double MARGE_STOCK_CHOCOLAT = 0.05; // La marge de chocolat que l'on produit en plus de la demande estimée
 	private static final double QTE_PRODUCTION_MIN = 10.0;
 	
 	public Transformateur2() {
@@ -122,6 +122,8 @@ public class Transformateur2 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	}
 
 	public void next() {
+		journal.ajouter("=================== STEP " + Monde.LE_MONDE.getStep() + " ===================");
+		
 		/** Archivage des contrats terminés */
 		archiverContratsTerminés(contratsFevesEnCours, archiveContratsFeves);
 		archiverContratsTerminés(contratsChocolatEnCours, archiveContratsChocolat);
@@ -138,13 +140,26 @@ public class Transformateur2 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		/** Prévision des stocks */ // TODO Ne pas le faire à chaque step
 		estimerPlanningStockChocolat();
 		verifierPlanningStockChocolat();
+		calculerPlanningStockFeves();
 		
 		String str = "";
 		for(Chocolat c : CHOCOLATS_VENTE)
-			str += c + " = " + planningStockChocolats.getQuantite(c, Monde.LE_MONDE.getStep() + 1) + "kg ; ";
+			str += c + " = " + stocksChocolat.getQuantiteTotale(c) + "kg ; ";
+		journal.ajouter("Stock chocolat :");
 		journal.ajouter(str);
 		
-		calculerPlanningStockFeves();
+		str = "";
+		for(Feve f : FEVES_ACHAT)
+			str += f + " = " + stockFeves.getQuantiteTotale(f) + "kg ; ";
+		journal.ajouter("Stock fèves :");
+		journal.ajouter(str);
+		
+		str = "";
+		for(Chocolat c : CHOCOLATS_VENTE)
+			str += c + " = " + planningStockChocolats.getQuantite(c, Monde.LE_MONDE.getStep() + 1) + "kg ; ";
+		journal.ajouter("Planning stock chocolat au prochain step :");
+		journal.ajouter(str);
+		
 	}
 
 	// Kelian
@@ -228,15 +243,17 @@ public class Transformateur2 implements IActeur, IAcheteurContratCadre<Feve>, IV
 			return false;
 		
 		// Exécution stock
-		double coutTotal = stockFeves.getPrix(r.getInputFeve(), fevesNecessaires) + r.calculCoutTransformation(qte);
+		double coutTransfo = r.calculCoutTransformation(qte);
+		double coutTotal = stockFeves.getPrix(r.getInputFeve(), fevesNecessaires);
 		stockFeves.prendreProduits(r.getInputFeve(), fevesNecessaires);
 		iStockFeves.retirer(this, fevesNecessaires);
-		System.out.println(iStockFeves.getValeur() + " après consommation de " + fevesNecessaires + " kg");
 		stocksChocolat.ajouterTas(r.getOutput(), new TasProduit<Chocolat>(qte, qte / coutTotal));
 		iStockChocolat.ajouter(this, qte);
 		
 		// Exécution solde
-		soldeBancaire.retirer(this, r.calculCoutTransformation(qte));
+		soldeBancaire.retirer(this, coutTransfo);
+		
+		journal.ajouter("Production de " + qte + " kg de " + r.getOutput());
 		
 		return true;
 	}

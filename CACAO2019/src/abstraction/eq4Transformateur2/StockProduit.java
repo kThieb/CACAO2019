@@ -66,15 +66,15 @@ public class StockProduit<T> {
 			double prix = 0;
 			while(qty > 0) {
 				TasProduit<T> t = tas.peek(); // prochain tas à vider
-				double qteAPrendre = Math.min(qty, t.getQuantité());
-				System.out.println(t.getQuantité() + " kg dans le tas - on souhaite enlever " + qty + " kg");
-				t.prendre(qteAPrendre);
-				System.out.println(t.getQuantité() + " kg dans le tas");
-				qty -= qteAPrendre;
-				prix += qteAPrendre * t.getPrixAuKilo();
-				// On supprime le tas s'il est vide
-				if(t.getQuantité() < 0.01)
-					tas.pop();
+				if(t != null) {
+					double qteAPrendre = Math.min(qty, t.getQuantité());
+					t.prendre(qteAPrendre);
+					qty -= qteAPrendre;
+					prix += qteAPrendre * t.getPrixAuKilo();
+					// On supprime le tas s'il est vide
+					if(t.getQuantité() < 0.01)
+						tas.pop();
+				}
 			}
 			return prix;
 		}
