@@ -79,6 +79,7 @@ public class Arbre {
 	}
 
 	public double getPrixParStep(Feve f) {
+
 		double surfaceTotale = this.nbtot.get(f);
 		return surfaceTotale * 132; // en dollar
 	}
