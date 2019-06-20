@@ -521,7 +521,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		for (Feve feve:getFeve()) {
 			setRecolte(feve,getPlantation(feve).getRecolte(step));
 			if(step%unAnEnSteps == 0){
-				double plantationActuelle = getPlantation(feve).getQuantite(step);
+				double plantationActuelle = getPlantation(feve).getInd().getValeur();
 				double demande = getPlantation(feve).moyenneDemande();
 				if (plantationActuelle - demande/40 < plantationActuelle*0.05 && plantationActuelle - demande/40 >0) {
 					double aPlanter = plantationActuelle*0.05; // pour pas avoir tout pile assez, on garde 5% de marge
