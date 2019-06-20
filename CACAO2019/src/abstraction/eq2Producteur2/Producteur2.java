@@ -123,7 +123,8 @@ public void recolte(Feve f) {
 			double nouveauStock = this.gestionnaireFeve.getStock(f)
 
 						+ this.gestionnaireFeve.getProductionParStep(f) * (1 + qualitePRoduction);		
-			this.gestionnaireFeve.setStock(this, f, nouveauStock);}}
+			this.gestionnaireFeve.setStock(this, f, nouveauStock);
+			System.out.println(this.gestionnaireFeve);}}
 
 
 public void payerCoutsProd() {
@@ -194,7 +195,6 @@ public void payerCoutsProd() {
 			} else {
 				cc.ajouterEcheancier(new Echeancier(e)); // on accepte la proposition de l'acheteur car on a la quantite
 															// en stock
-
 			}
 		}
 	}
@@ -208,45 +208,45 @@ public void payerCoutsProd() {
 		//On définit prixVendeur et prixAcheteur pour cette étape de négociation
 		double prixVendeur = cc.getListePrixAuKilo().get(cc.getListePrixAuKilo().size() - 2); //On récupère le dernier prix proposé
 		double prixAcheteur = cc.getListePrixAuKilo().get(cc.getListePrixAuKilo().size() - 1);
-		cc.ajouterPrixAuKilo(prixVendeur); // Le premier prix proposé est le prix au kilo initial
-		cc.getListePrixAuKilo().add(prixVendeur);
-		if (prixVendeur == getCoutProduction(cc.getProduit()) * 1.01) { 
-			//On pose une marge minimale de 1% du cout de production
-			cc.ajouterPrixAuKilo(prixVendeur);
+		
+		if (prixAcheteur>=prixVendeur) {
+			cc.ajouterPrixAuKilo(prixAcheteur);
 		} else {
-			if (prixAcheteur < getCoutProduction(cc.getProduit())*1.01) {
-				//On s'assure de conserver la marge minimale 
-				prixVendeur = getCoutProduction(cc.getProduit()) * 1.01;
+			if (prixVendeur == getCoutProduction(cc.getProduit()) * 1.01) { 
+				//On pose une marge minimale de 1% du cout de production
 				cc.ajouterPrixAuKilo(prixVendeur);
 			} else {
-		
-				if ((prixVendeur - prixAcheteur) < 0.05 * prixVendeur) { 
-				// On arrête la négociation si la différence de prix est suffisamment faible (5% du prixVendeur)
-					prixVendeur = prixAcheteur;
+				if (prixAcheteur < getCoutProduction(cc.getProduit())*1.01) {
+					//On s'assure de conserver la marge minimale 
+					prixVendeur = getCoutProduction(cc.getProduit()) * 1.01;
 					cc.ajouterPrixAuKilo(prixVendeur);
-				} else { 
-			
-					if (prixAcheteur >= 0.75 * prixVendeur && prixAcheteur * 1.1 >= getCoutProduction(cc.getProduit())) { 
-						// on ne fait une proposition que si l'acheteur ne demande pas un prix trop bas, tout en respectant la marge minimale
-						prixVendeur = prixAcheteur * 1.1; // on augmente le prix proposé par l'acheteur de 10%
-						cc.ajouterPrixAuKilo(prixVendeur);
-
-					} else {
-						if (prixVendeur * 0.90 < getCoutProduction(cc.getProduit())) {
-
-							//On s'assure de conserver notre marge minimale
-							prixVendeur = getCoutProduction(cc.getProduit()) * 1.01;
-
-							cc.getListePrixAuKilo().add(prixVendeur);
-
-						} else {
-							prixVendeur *= 0.90; // On diminue le prix proposé de 10%
+				} else {
+					if ((prixVendeur - prixAcheteur) < 0.05 * prixVendeur) { 
+						// On arrête la négociation si la différence de prix est suffisamment faible (5% du prixVendeur)
+						cc.ajouterPrixAuKilo(prixAcheteur);
+					} else { 
+						if (prixAcheteur >= 0.75 * prixVendeur && prixAcheteur * 1.1 >= getCoutProduction(cc.getProduit())) { 
+							// on ne fait une proposition que si l'acheteur ne demande pas un prix trop bas, tout en respectant la marge minimale
+							prixVendeur = prixAcheteur * 1.1; // on augmente le prix proposé par l'acheteur de 10%
 							cc.ajouterPrixAuKilo(prixVendeur);
+						
+						} else {
+							if (prixVendeur * 0.90 < getCoutProduction(cc.getProduit())) {
+
+								//On s'assure de conserver notre marge minimale
+								prixVendeur = getCoutProduction(cc.getProduit()) * 1.01;
+
+								cc.getListePrixAuKilo().add(prixVendeur);
+
+							} else {
+								prixVendeur *= 0.90; // On diminue le prix proposé de 10%
+								cc.ajouterPrixAuKilo(prixVendeur);
+							}
 						}
 					}
 				}
-			}}
-		}
+			}
+		}}
 	}
 
 	
