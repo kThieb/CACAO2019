@@ -13,10 +13,15 @@ import abstraction.eq7Romu.ventesContratCadre.StockEnVente;
 import abstraction.fourni.IActeur;
 import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
+import abstraction.eq5Distributeur1.Publicite;
 
 public class ClientEuropeen implements IActeur {
 	private Journal journal;
 	private int quantiteParStep;
+	public static final int NOVEMBRE1 = 21;
+	public static final int NOVEMBRE2 = 22;
+	public static final int DECEMBRE1 = 23;
+	public static final int DECEMBRE2 = 24;
 
 	/** @author Erwann DEFOY */
 	public String getNom() {
@@ -25,13 +30,7 @@ public class ClientEuropeen implements IActeur {
 
 	/** @author Erwann DEFOY */
 	public void initialiser() {
-	}
 
-	/** V2 @author Erwann DEFOY */
-	public ClientEuropeen() {
-		int quantiteParStep = 100;
-		this.journal = new Journal("Journal Européen");
-		Monde.LE_MONDE.ajouterJournal(this.journal);
 	}
 
 	/** @author Erwann DEFOY */
@@ -43,6 +42,7 @@ public class ClientEuropeen implements IActeur {
 
 	/** @author Erwann DEFOY */
 	public void next() {
+		this.journal.ajouter(" ");
 		this.journal.ajouter("Step "+Monde.LE_MONDE.getStep()+" : Tentative d'achat de "+quantiteParStep+" du meilleur chocolat ____________");
 		double quantiteAchetee = 0.0;
 		Chocolat produitQ = null;
@@ -54,6 +54,8 @@ public class ClientEuropeen implements IActeur {
 		do {
 			distributeurDeQualite = null;
 			quantiteEnVenteMeilleur = 0.0;
+			int step_actuel = Monde.LE_MONDE.getStep();
+			int stepDansLAnnee = step_actuel%24;
 			for (IActeur acteur : Monde.LE_MONDE.getActeurs()) { // recherche des distributeurs avec la meilleur qualité de chocolat
 				if (acteur instanceof IDistributeurChocolat) { // recherche des distributeurs
 					IDistributeurChocolat dist = (IDistributeurChocolat)acteur;
@@ -62,18 +64,31 @@ public class ClientEuropeen implements IActeur {
 						quantiteEnVente = s.get(c);
 						this.journal.ajouter("Step "+Monde.LE_MONDE.getStep()+" : "+((IActeur)dist).getNom()+" vend "+ c +" a la quantite de "+quantiteEnVente+" a "+dist.getPrix(c));
 						if (quantiteEnVente>0.0) { // dist vend le chocolat recherche
-							if ((distributeurDeQualite==null || getNoteQualite(dist, c)>meilleureQualite) && dist.getPrix(c) < 70 ) { // recherche si le produit est de meilleur qualité
+							double noteQualite = getNoteQualite(dist,c);
+							if (stepDansLAnnee == NOVEMBRE1 || stepDansLAnnee == NOVEMBRE2 || stepDansLAnnee == DECEMBRE1 || stepDansLAnnee == DECEMBRE2) {
+								if (acteur instanceof IPublicitaire) {
+									IPublicitaire pubActeur = (IPublicitaire)acteur;
+									for (Publicite pub : pubActeur.getPubEnCours()) {
+										if (pub.getProduit()==c && pub.getBudget()>0) {
+											noteQualite = getNoteQualite(dist,c) + 5;
+											this.journal.ajouter("-----PUB-----");
+											this.journal.ajouter("Step "+Monde.LE_MONDE.getStep()+" : "+"La qualite du chocolat "+c+" de "+((IActeur)dist).getNom()+" passe de "+getNoteQualite(dist,c)+" à "+noteQualite);
+										}
+									}
+								}
+							}
+							if ((distributeurDeQualite==null || noteQualite>meilleureQualite) && dist.getPrix(c) < 70 ) { // recherche si le produit est de meilleur qualité
 								distributeurDeQualite = dist;
 								produitQ = c;
 								quantiteEnVenteMeilleur = quantiteEnVente;
-								meilleureQualite = getNoteQualite(dist, c);
+								meilleureQualite = noteQualite;
 								meilleurPrix = dist.getPrix(c);
 							} else if ((distributeurDeQualite==null || (getNoteQualite(dist, c) == meilleureQualite 
 									&& dist.getPrix(c) < meilleurPrix)) && dist.getPrix(c) < 70) { // prend le meilleur prix si qualité identique
 								distributeurDeQualite = dist;
 								produitQ = c;
 								quantiteEnVenteMeilleur = quantiteEnVente;
-								meilleureQualite = getNoteQualite(dist, c);
+								meilleureQualite = noteQualite;
 								meilleurPrix = dist.getPrix(c);
 							}
 						}
@@ -84,6 +99,7 @@ public class ClientEuropeen implements IActeur {
 				double quantiteCommandee = Math.min(this.quantiteParStep-quantiteAchetee, quantiteEnVenteMeilleur);
 				double quantiteVendue = distributeurDeQualite.vendre(produitQ, quantiteCommandee);
 				quantiteAchetee+=quantiteVendue;
+				this.journal.ajouter(" ");
 				this.journal.ajouter("Step "+Monde.LE_MONDE.getStep()+" : Achat de "+ produitQ + " a la quantite de "+quantiteVendue+" chez "+((IActeur)distributeurDeQualite).getNom()+" au prix de "+meilleurPrix);
 			}
 		} while (quantiteAchetee<this.quantiteParStep && distributeurDeQualite!=null);
@@ -103,7 +119,7 @@ public class ClientEuropeen implements IActeur {
 		} else if (c.getGamme() == Gamme.MOYENNE) {
 			N = N+1 ;
 		}
-		return 10*N/4;
+		return N;
 	}
 
 	/** @author Erwann DEFOY */
