@@ -16,6 +16,9 @@ public class Lot {
 		this.quantite = quantite;
 		this.date = date;
 	}
+	public Lot() {
+		this(0,0,0);
+	}
 
 	public int getnLot() {
 		return nLot;
