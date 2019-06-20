@@ -69,11 +69,11 @@ public class Stock<T> {
 	// -----------------------------------------------------------
 	
 	private void nouveauLot(T produit, double quantite, int date) {
-		try { 	this.stock.get(produit).add(new Lot(numLot, quantite, date));
+		try { 	this.stock.get(produit).add(new Lot(this.numLot, quantite, date));
 				this.incrLot(); }
 		catch (IllegalArgumentException e) { 
 			this.stock.put(produit, new ArrayList<Lot>());
-			this.stock.get(produit).add(new Lot(numLot, quantite, date));
+			this.stock.get(produit).add(new Lot(this.numLot, quantite, date));
 			this.incrLot();
 		}
 	}
@@ -109,8 +109,8 @@ public class Stock<T> {
 																quantiteRestante = 0.;
 																this.stock.get(produit).add(lot); }
 //																System.out.println("lot 1 : " + lot.getQuantite());}
-					else { 	quantiteRestante = quantiteRestante - lot.getQuantite();
-							System.out.println("lot 2 : " + lot.getQuantite()); }
+					else { 	quantiteRestante = quantiteRestante - lot.getQuantite(); }
+//							System.out.println("lot 2 : " + lot.getQuantite()); }
 //					System.out.println("reste " + quantiteRestante);
 				}
 			}
