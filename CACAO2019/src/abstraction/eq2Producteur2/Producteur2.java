@@ -113,7 +113,7 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 			}
 			this.journal.ajouter(
 					"Step " + Monde.LE_MONDE.getStep() + " : prix de vente = " + this.gestionnaireFeve.getPrixVente(f));
-			if ((beneficesDuMois <6000000)
+			if ((beneficesDuMois <200000)
 					&& this.gestionnaireFeve.getPrixVente(f) * 0.95 > PRIX_MIN) {
 				this.gestionnaireFeve.setPrix(this, f, this.gestionnaireFeve.getPrixVente(f) * 0.95);
 			}
