@@ -34,6 +34,8 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	private GestionnaireFeve gestionnaireFeve;
 	private Arbre arbres;
 	private double salaire=1.29/1000;
+	private double beneficesDuMois = 0;
+	private int contratsConclus = 0;
 
 	public Producteur2() {
 		this.gestionnaireFeve = new GestionnaireFeve(this);
@@ -90,7 +92,14 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 			this.recolte(f);
 			this.journal.ajouter(
 					"Step " + Monde.LE_MONDE.getStep() + " : prix de vente = " + this.gestionnaireFeve.getPrixVente(f));
+			if ((contratsConclus < 5 || beneficesDuMois < 100000) && this.gestionnaireFeve.getPrixVente(f)*0.9 > PRIX_MIN) {
+				this.gestionnaireFeve.setPrix(this,f,this.gestionnaireFeve.getPrixVente(f)*0.9);
+			}
 		}
+		System.out.println("		" + beneficesDuMois);
+		System.out.println("		" + contratsConclus);
+		contratsConclus = 0;
+		beneficesDuMois = 0;
 		if (this.numStep == 24) {
 			this.numStep = 1;
 			arbres.actualise();
@@ -291,6 +300,10 @@ public void payerCoutsProd() {
 	@Override
 	public void notifierVendeur(ContratCadre<Feve> cc) {
 		this.contratsEnCours.add(cc);
+		contratsConclus = contratsConclus + 1;
+		double prixKilo = this.gestionnaireFeve.getPrixVente(cc.getProduit());
+		double quantite = cc.getQuantite();
+		beneficesDuMois = beneficesDuMois + prixKilo*quantite;
 	}
 
 	
