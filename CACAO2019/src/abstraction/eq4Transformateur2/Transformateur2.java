@@ -177,7 +177,6 @@ public class Transformateur2 implements IActeur, IAcheteurContratCadre<Feve>, IV
 			
 			if(qte < QTE_PRODUCTION_MIN)
 				return 0.0;
-			
 			executerRecette(r, qte);
 			return qte;
 		}
@@ -200,14 +199,16 @@ public class Transformateur2 implements IActeur, IAcheteurContratCadre<Feve>, IV
 			// à ce stade maxRecette ne devrait pas être null, sauf si on nous demande de produire un chocolat qui n'a pas de recette associée.
 			
 			double qte = 0;
-			if(maxRecette.calculCoutTransformation(c.getY()) < soldeBancaire.getValeur() * 0.6)
-				qte = c.getY();
-			else
+			if(maxRecette.calculCoutTransformation(c.getY()) < soldeBancaire.getValeur() * 0.6) {
+				qte = c.getY();}
+			else {
 				qte = maxRecette.getQteProductible(soldeBancaire.getValeur() * 0.6); // on transforme le plus possible jusqu'à 60% de notre sold
-			if(qte < QTE_PRODUCTION_MIN)
-				return 0.0;
-			
+			}
+			if(qte < QTE_PRODUCTION_MIN) {
+				return 0.0;}
+			executerRecette(maxRecette,qte);
 			return qte;
+			
 		}
 		
 		return 0;
