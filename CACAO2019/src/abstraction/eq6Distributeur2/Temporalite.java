@@ -11,7 +11,7 @@ import abstraction.fourni.Monde;
 
 
 public class Temporalite {
-
+	// Nordin
     private Distributeur2 nous;
     private List<Integer> noel ;
     private List<Integer> paques ;

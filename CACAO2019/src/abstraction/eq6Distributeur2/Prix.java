@@ -9,7 +9,7 @@ import abstraction.fourni.Indicateur;
 import abstraction.fourni.Monde;
 
 public class Prix {
-	
+	// Nordin
     private HashMap<Chocolat,Double> prixachatParProduit;
     private HashMap<Chocolat,Double> margeParProduit;
     private double massesalariale = 100000; //à harmoniser avec le sscond distributeur
@@ -26,13 +26,13 @@ public class Prix {
 	public Prix(Distributeur2 distributeur) {
 		
 		nous = distributeur; 
-		this.prixMG_E_SHP = new Indicateur("EQ6 " + Chocolat.MG_E_SHP.toString(), nous, 5);
+		this.prixMG_E_SHP = new Indicateur("EQ6 " + Chocolat.MG_E_SHP.toString(), nous, 20);
         Monde.LE_MONDE.ajouterIndicateur(this.prixMG_E_SHP);
-        this.prixMG_NE_SHP = new Indicateur("EQ6 " + Chocolat.MG_NE_SHP.toString(), nous, 5);
+        this.prixMG_NE_SHP = new Indicateur("EQ6 " + Chocolat.MG_NE_SHP.toString(), nous, 50);
         Monde.LE_MONDE.ajouterIndicateur(this.prixMG_NE_SHP);
-        this.prixMG_NE_HP = new Indicateur("EQ6 "+ Chocolat.MG_NE_HP.toString(), nous, 10);
+        this.prixMG_NE_HP = new Indicateur("EQ6 "+ Chocolat.MG_NE_HP.toString(), nous, 30);
         Monde.LE_MONDE.ajouterIndicateur(this.prixMG_NE_HP);
-        this.prixHG_E_SHP = new Indicateur("EQ6 " + Chocolat.HG_E_SHP.toString(), nous, 20);
+        this.prixHG_E_SHP = new Indicateur("EQ6 " + Chocolat.HG_E_SHP.toString(), nous, 50);
         Monde.LE_MONDE.ajouterIndicateur(this.prixHG_E_SHP);
         
         this.margeParProduit = new HashMap<Chocolat, Double>();
@@ -101,9 +101,9 @@ public class Prix {
 
     
     public double cout (Chocolat choco) { // cout de structure a pendre en compte lors de la vente d'un produit
-    	/*int i = Monde.LE_MONDE.getStep()%24 - 1;
+    	int i = Monde.LE_MONDE.getStep()%24 - 1;
     	int t = Monde.LE_MONDE.getStep();
-    	double qv=0;
+    	/*double qv=0;
     	double c = 0.25;
     	if (i != 0) {
     		for (int j = 24*i; j <24*i+24 ; j++) {
@@ -112,10 +112,9 @@ public class Prix {
     		c = (coutstructure+massesalariale)*.25/qv;
 
     	}
-    	else { c = 0.25; } 
-    	}
-    	*/
-    	return 0.25;
+    	else { c = 0.25; } */
+    	
+    	return 1.25;
     }
 	
     public void ajustementMarge(ArrayList<Double> historique, Chocolat c ) {

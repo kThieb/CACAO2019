@@ -533,10 +533,11 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
                 ContratCadre<Chocolat> res=null;
 
                 double solde = this.getSoldeBancaire().getValeur();
+                
                 for (ContratCadre<Chocolat> cc : this.getContratsEnCours()) {
                         solde = solde - cc.getMontantRestantARegler();
                 }
-                System.out.println("notre solde est " + getArrondi(solde) + " le solde " + solde);
+                
                 if (solde >10000)
                 {
                         if (contratEnCoursStep<4) {
