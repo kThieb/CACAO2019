@@ -27,6 +27,7 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
         private Prix gestionPrix;
         private ArrayList<Double> historiqueMG_E_SHP;
         private ArrayList<Double> historiqueMG_NE_SHP;
+        
         private ArrayList<Double> historiqueMG_NE_HP;
         private ArrayList<Double> historiqueHG_E_SHP;
 
