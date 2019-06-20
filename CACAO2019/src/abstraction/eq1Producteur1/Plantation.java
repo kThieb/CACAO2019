@@ -25,6 +25,8 @@ public class Plantation {
 	protected HashMap<Integer, ContratCadre<Feve>> historiqueContrats;
 	private Feve feve;
 	
+	
+	
 	public Plantation(Feve feve,IActeur act,int plantationDepart) {
 		this.act=act;
 		this.feve=feve;
@@ -135,6 +137,10 @@ public class Plantation {
 		planter(stepCourant,plantation); 
 		retraitArbresAges(stepCourant);
 	}
+	
+	
+	
+	
 	
 	
 }
