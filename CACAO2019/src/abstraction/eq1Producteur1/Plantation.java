@@ -1,6 +1,5 @@
 package abstraction.eq1Producteur1;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -8,7 +7,6 @@ import java.util.Set;
 import java.util.Map.Entry;
 
 import abstraction.eq7Romu.produits.Feve;
-import abstraction.eq7Romu.produits.Variete;
 import abstraction.eq7Romu.ventesContratCadre.ContratCadre;
 import abstraction.eq7Romu.ventesContratCadre.Echeancier;
 import abstraction.fourni.IActeur;
@@ -24,6 +22,8 @@ public class Plantation {
 	private int stepBorneInf=-(40-1)*unAnEnSteps;
 	protected HashMap<Integer, ContratCadre<Feve>> historiqueContrats;
 	private Feve feve;
+	
+	
 	
 	public Plantation(Feve feve,IActeur act,int plantationDepart) {
 		this.act=act;
@@ -82,7 +82,9 @@ public class Plantation {
 		int stepAExplorer=getStepBorneInf();
 		double recolte=0;
 		while (stepAExplorer <=stepCourant-troisAnsEnSteps) { 
+			// les arbres sont matures après 3 ans
 			recolte += getPlantation().getOrDefault(stepAExplorer, (double)0);
+			
 			stepAExplorer++;
 			
 		}
@@ -107,6 +109,7 @@ public class Plantation {
 
 		Double moyenne = 0.0;
 		//System.out.println(getHistoriqueContrats());//ROMU
+		// calcul de la moyenne de la demande en fèves sur les cinq premières années afin de s'adapter à la demande
 		Set<Entry<Integer, ContratCadre<Feve>>> setHisto= getHistoriqueContrats().entrySet();
 		Iterator<Entry<Integer, ContratCadre<Feve>>> it = setHisto.iterator();
 		while(it.hasNext()) {
@@ -138,6 +141,10 @@ public class Plantation {
 		planter(stepCourant,plantation); 
 		retraitArbresAges(stepCourant);
 	}
+	
+	
+	
+	
 	
 	
 }
