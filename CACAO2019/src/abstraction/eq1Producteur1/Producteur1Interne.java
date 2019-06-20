@@ -65,7 +65,8 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 	public static int quatreAnsEnSteps = 96 ;
 	public static int cinqAnsEnSteps = 120 ;
 	public static int dureeDeVieFeve = unAnEnSteps; // durée de vie en nexts
-	public static int coutPlanter = 1 ; //cout par plant 
+	public static int coutPlanter = 1 ;
+
 	
 //END ANTI
 
