@@ -54,11 +54,11 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 	protected HashMap<Double, Boolean> prixTrinitarioAboutissantAcc;
 	protected HashMap<Double, Boolean> prixForasteroAboutissantAcc;
 
-	protected int compteurSteps = 0 ;
+	//protected int compteurSteps = 0 ;
 	public static int dureeDeVieCacaoyer = 960 ; 
-	protected int criolloPlante ; 
+	/*protected int criolloPlante ; 
 	protected int forasteroPlante ; 
-	protected int trinitarioPlante ;
+	protected int trinitarioPlante ;*/
 	public static int unAnEnSteps = 24 ; 
 	public static int deuxAnsEnSteps = 48 ;
 	public static int troisAnsEnSteps = 72 ; 
@@ -67,7 +67,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 	public static int dureeDeVieFeve = unAnEnSteps; // durée de vie en nexts
 //END ANTI
 
-	protected int compteurRecolte = 0;
+//	protected int compteurRecolte = 0; 
 	protected int stepRecolteExceptionnellementReduite;
 
 
@@ -159,10 +159,10 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 	// END Anti
 
 	// BEGIN Nas
-	public double getRecolte(Feve feve) {
+	public double getRecolte(Feve feve) { // récolte exceptionnellement réduite un step par an
 		
 		
-		if (feve.getVariete() == Variete.CRIOLLO) {
+		if (feve.getVariete() == Variete.CRIOLLO) { 
 			return stepRecolteExceptionnellementReduite==LE_MONDE.getStep()%unAnEnSteps ? recolteCriollo*Math.random() :recolteCriollo;
 		} else if (feve.getVariete() == Variete.FORASTERO) {
 			return stepRecolteExceptionnellementReduite==LE_MONDE.getStep()%unAnEnSteps ? recolteForastero*Math.random() :recolteForastero;
@@ -185,11 +185,8 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 	 
 
 	
-	public void genereAlea() {
-		if (compteurRecolte<unAnEnSteps) {
-			compteurRecolte++;
-		} else {
-			compteurRecolte=0;
+	public void genereAlea() { // génère un step où la récolte est exceptionnellement réduite
+		if (LE_MONDE.getStep()%unAnEnSteps==0) {
 			Random r=new Random();
 			stepRecolteExceptionnellementReduite=r.nextInt(unAnEnSteps);
 		}
@@ -418,7 +415,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		*/
 	//END ANTI
 	//BEGIN MANON
-	public double moyenneDemande(Feve feve) {
+	public double moyenneDemande(Feve feve) { // demande moyenne par an (prend en compte les contrats programmés jusqu'à 5 ans dans le futur)
 		return getPlantation(feve).moyenneDemande();
 	}
 	
@@ -690,19 +687,19 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 	public void setPlantationTrinitario(HashMap<Integer, Integer> plantationTrinitario) {
 		this.plantationTrinitario = plantationTrinitario;
 	}*/
-	public int getCompteurSteps() {
+	/*public int getCompteurSteps() {
 		return compteurSteps;
 	}
 	public void setCompteurSteps(int compteurSteps) {
 		this.compteurSteps = compteurSteps;
-	}
+	}*/
 	public static int getDureeDeVieCacaoyer() {
 		return dureeDeVieCacaoyer;
 	}
 	public static void setDureeDeVieCacaoyer(int dureeDeVieCacaoyer) {
 		Producteur1Interne.dureeDeVieCacaoyer = dureeDeVieCacaoyer;
 	}
-	public int getCriolloPlante() {
+	/*public int getCriolloPlante() {
 		return criolloPlante;
 	}
 	public void setCriolloPlante(int criolloPlante) {
@@ -719,7 +716,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 	}
 	public void setTrinitarioPlante(int trinitarioPlante) {
 		this.trinitarioPlante = trinitarioPlante;
-	}
+	}*/
 	public static int getUnAnEnSteps() {
 		return unAnEnSteps;
 	}
@@ -756,12 +753,12 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 	public static void setDureeDeVieFeve(int dureeDeVieFeve) {
 		Producteur1Interne.dureeDeVieFeve = dureeDeVieFeve;
 	}
-	public int getcompteurRecolte() {
+/*	public int getcompteurRecolte() {
 		return compteurRecolte;
 	}
 	public void setcompteurRecolte(int compteurRecolte) {
 		this.compteurRecolte = compteurRecolte;
-	}
+	}*/
 	/*public int getAlea() {
 		return alea;
 	}
