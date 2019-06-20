@@ -103,14 +103,14 @@ public class Prix {
     	int i = Monde.LE_MONDE.getStep()%24 - 1;
     	int t = Monde.LE_MONDE.getStep();
     	double qv=0;
-    	double c;
-    	if (i != 0) {
+    	double c= 0.50;
+    	/*if (i != 0) {
     		for (int j = 24*i; j <24*i+24 ; j++) {
     			qv = qv + nous.getIndicateurStock(choco).getHistorique().get(nous.getIndicateurStock(choco).getHistorique().getTaille() -t+j).getValeur();
     			}
     		c = (coutstructure+massesalariale)*.25/qv;
     	}
-    	else { c = 0.25; } 
+    	else { c = 0.25; } */
     	return c;
     }
 
