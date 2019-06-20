@@ -13,11 +13,13 @@ import abstraction.fourni.Monde;
 public class Stock {
 	private HashMap<Chocolat, Double> stock;
 	private HashMap<Chocolat, Indicateur> indicateurs;
+	private HashMap<Chocolat, Double> stockDebutStep;
 
 	/** @author Estelle BONNET */
 	public Stock() {
 		this.stock = new HashMap<Chocolat, Double>();
 		this.indicateurs = new HashMap<Chocolat, Indicateur>();
+		this.stockDebutStep = new HashMap<Chocolat, Double>();
 	}
 
 	/**
@@ -48,6 +50,18 @@ public class Stock {
 		}
 	}
 	
+	/** @autho Estelle BONNET 
+	 */
+	public void initialisationDebutStep(HashMap<Chocolat, Double> stock) {
+		this.stockDebutStep=stock;
+	}
+	
+	/** @autho Estelle BONNET 
+	 */
+	public void pereniteStock(HashMap<Chocolat, Double> stock) {
+		this.stockDebutStep=stock;
+	}
+	
 	/** @authors Erine DUPONT & Estelle BONNET 
 	 * V2 @author Estelle Bonnet
 	 */
@@ -70,6 +84,16 @@ public class Stock {
 		ArrayList<Chocolat> produits=new ArrayList<Chocolat>();
 		produits.addAll(this.stock.keySet());
 		return produits;
+	}
+	
+	/** @author Estelle BONNET */
+	public HashMap<Chocolat,Double> getStock() {
+		return this.stock;
+	}
+	
+	/** @author Estelle BONNET */
+	public HashMap<Chocolat,Double> getStockDebutStep() {
+		return this.stockDebutStep;
 	}
 
 	/** @author Estelle BONNET */
