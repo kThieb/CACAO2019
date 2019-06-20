@@ -33,7 +33,6 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	private int numStep;
 	private GestionnaireFeve gestionnaireFeve;
 	private Arbre arbres;
-
 	private double salaire=2;
 
 	public Producteur2() {
