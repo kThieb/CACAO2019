@@ -3,6 +3,8 @@ package abstraction.eq1Producteur1;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Random;
 import abstraction.eq7Romu.produits.Feve;
 import abstraction.eq7Romu.produits.Variete;
@@ -14,7 +16,7 @@ import abstraction.fourni.Monde;
 import static abstraction.fourni.Monde.*;
 
 
-public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire */ {
+public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire */, Observer {
 
 	public static int COUT_FIXE = 00;
 	public static int COUT_VARIABLE_STOCK = 0;
@@ -65,6 +67,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 	public static int cinqAnsEnSteps = 120 ;
 	public static int dureeDeVieFeve = unAnEnSteps; // durée de vie en nexts
 	public static int coutPlanter = 500 ;
+	public static int stockDepart = 3000;
 	
 //END ANTI
 
@@ -90,7 +93,8 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		this.prixCriolloAboutissantAcc=new HashMap<Double, Boolean>();
 		this.prixForasteroAboutissantAcc=new HashMap<Double, Boolean>();
 		this.prixTrinitarioAboutissantAcc=new HashMap<Double, Boolean>();
-		this.stockFeves = new Indicateur("EQ1 stock feves", this, 3000);  
+		this.stockFeves = new Indicateur("EQ1 stock feves", this, stockDepart);  
+		this.stockFeves.addObserver(this);
 		this.contratEnCours= new ArrayList<ContratCadre<Feve>> ();
 		this.historiqueSoldeBancaire= new ArrayList<Double> ();
 		Random r=new Random();
@@ -210,6 +214,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 	public void initialiser() {
 	}
 
+	
 	public void next() {
 		// BEGIN Nas
 		updateStock();
@@ -786,6 +791,11 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 	
 	public void setHistoriqueContrats(HashMap<Integer, ContratCadre<Feve>> historiqueContrats) {
 		this.historiqueContrats = historiqueContrats;
+	}
+	@Override
+	public void update(Observable o, Object arg) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	
