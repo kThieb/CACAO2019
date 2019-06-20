@@ -147,6 +147,7 @@ public void recolte(Feve f) {
 
 
 
+
 public void payerCoutsProd() {
 	double couts  =  0.0;
 	for (Feve f : gestionnaireFeve.getFeves()) {
