@@ -118,7 +118,7 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 		//Juin		Step 21 à 24				Décembre	Step 45 à 48
 		int step_actuel = Monde.LE_MONDE.getStep();
 		int stepDansLAnnee = step_actuel%24;
-		this.journal.ajouter("-------------------------------------- PUB ---------------------------------------------");
+		this.journal.ajouter("-------------------------------------------- PUB -------------------------------------------------------------------------------------------");
 		if (stepDansLAnnee == JANVIER2 || stepDansLAnnee == FEVRIER1) {
 			Publicite pub1 = new Publicite(Chocolat.HG_E_SHP, 10000, "Europe");
 			this.journal.ajouter("Publicité de la Saint-Valentin:");
@@ -223,13 +223,13 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 
 		// On détermine combien il resterait sur le compte si on soldait tous les contrats en cours.
 		double solde = this.soldeBancaire.getCompteBancaire();
-		this.journal.ajouter("Le solde actuel est de " + solde);
+		this.journal.ajouter("Le solde actuel est de " + solde + " €");
 		for (ContratCadre<Chocolat> cc : this.contratsEnCours) {
 			solde = solde - cc.getMontantRestantARegler();
 		}
-
+		this.journal.ajouter("Le solde une fois tous les contrats payés est de " + solde + " €");
 		// On ne cherche pas a établir d'autres contrats d'achat si le compte bancaire est trop bas
-		if (solde>5000.0) { 
+		if (solde > 100000.0) { 
 			this.journal.ajouter("On négocie donc un nouveau contrat cadre");
 			//Choix du produit : on choisit le produit pour lequel on a le moins de stock
 			Chocolat produit = this.stock.getProduitsEnVente().get(0);
@@ -282,7 +282,8 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 
 				// Choix quantité
 				double quantite = 0.0;
-				if (this.stock.get(produit) <= 50000) {
+				/* V2 Erine
+				 if (this.stock.get(produit) <= 50000) {
 					if (vendeur_choisi.getStockEnVente().get(produit) >= 40000) {
 						quantite = 40000;
 					} else {
@@ -294,13 +295,43 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 					} else {
 						quantite = vendeur_choisi.getStockEnVente().get(produit);
 					}
+				}*/
+				/* V3 Erine */
+				double qrestante = 0.0;
+				for (ContratCadre<Chocolat> cc : this.contratsEnCours) {
+					if (cc.getProduit() == produit) {
+						qrestante += cc.getQuantiteRestantALivrer();
+					}
+				}
+				if (qrestante >= this.stock.get(produit)) {
+					if (vendeur_choisi.getStockEnVente().get(produit) >= qrestante + 50000) {
+						quantite = qrestante + 50000;
+					} else if (vendeur_choisi.getStockEnVente().get(produit) >= qrestante + 20000){
+						quantite = vendeur_choisi.getStockEnVente().get(produit) + 20000;
+					} else {
+						quantite = vendeur_choisi.getStockEnVente().get(produit);
+					}
+				} else {
+					if (this.stock.get(produit) <= 50000) {
+						if (vendeur_choisi.getStockEnVente().get(produit) >= 40000) {
+							quantite = 40000;
+						} else {
+							quantite = vendeur_choisi.getStockEnVente().get(produit);
+						}
+					} else {
+						if (vendeur_choisi.getStockEnVente().get(produit) >= 20000) {
+							quantite = 20000;
+						} else {
+							quantite = vendeur_choisi.getStockEnVente().get(produit);
+						}
+					}
 				}
 				this.journal.ajouter("La quantité demandée est " + quantite);
 				ncc = new ContratCadre<Chocolat>(this, vendeur_choisi, produit, quantite);
 			}  
 		} else {
-			this.journal.ajouter("   Il ne reste que "+solde+" une fois tous les contrats payes donc nous ne souhaitons "
-					+ "pas en créer d'autres pour l'instant");
+			this.journal.ajouter("   Il ne reste moins de 100000 € une fois tous les contrats payes donc nous ne souhaitons "
+					+ "pas en créer d'autres pour l'instant"); 
 		}
 
 		//Création Contrat
@@ -522,7 +553,7 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 				this.stock.ajouter((Chocolat) produit, quantite, this);
 			}
 			this.journal.ajouter("----------------------------------------- RECEPTION ------------------------------------------------------------------------------------");
-			this.journal.ajouter("Réception de "+ quantite + " kg de" + produit);
+			this.journal.ajouter("Réception de "+ quantite + " kg de " + produit);
 		}
 
 		/**
@@ -641,7 +672,7 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 				this.indicateursolde.ajouter(this, quantitevendue*getPrix(chocolat));
 				//this.journal.ajouter("vendre : solde bancaire affecte a "+quantitevendue*getPrix(chocolat)+" getprix="+getPrix(chocolat));
 				this.stock.enlever(chocolat, quantitevendue, this);
-				this.journal.ajouter("-------------------------------------------------------- VENTE ----------------------------------------------------------------------------");
+				this.journal.ajouter("------------------------------------------ VENTE ------------------------------------------------------------------------------------------");
 				this.journal.ajouter("La quantité de " + chocolat + " vendue est : "+ quantite + " kg"+"au prix de "+getPrix(chocolat));
 				return quantitevendue;
 			}
