@@ -127,20 +127,28 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 		//Juin		Step 21 à 24				Décembre	Step 45 à 48
 		int step_actuel = Monde.LE_MONDE.getStep();
 		int stepDansLAnnee = step_actuel%24;
-		this.journal.ajouter("-------------------------------------------- PUB -------------------------------------------------------------------------------------------");
+		publicites.clear();
 		if (stepDansLAnnee == JANVIER2 || stepDansLAnnee == FEVRIER1) {
 			Publicite pub1 = new Publicite(Chocolat.HG_E_SHP, 10000, "Europe");
+			this.journal.ajouter("-------------------------------------------- PUB -------------------------------------------------------------------------------------------");
 			this.journal.ajouter("Publicité de la Saint-Valentin:");
 			this.journal.ajouter(pub1.toString());
+			publicites.clear();
+			publicites.add(pub1);
 		}
 		if (stepDansLAnnee == MARS1 || stepDansLAnnee == MARS2 || stepDansLAnnee == AVRIL1) {
 			Publicite pub1 = new Publicite(Chocolat.HG_E_SHP, 7000, "Europe");
 			Publicite pub2 = new Publicite(Chocolat.MG_E_SHP, 5000, "Europe");
 			Publicite pub3 = new Publicite(Chocolat.MG_NE_SHP, 3000, "Europe");
+			this.journal.ajouter("-------------------------------------------- PUB -------------------------------------------------------------------------------------------");
 			this.journal.ajouter("Publicité de Pâques:");
 			this.journal.ajouter(pub1.toString());
 			this.journal.ajouter(pub2.toString());
 			this.journal.ajouter(pub3.toString());
+			publicites.clear();
+			publicites.add(pub1);
+			publicites.add(pub2);
+			publicites.add(pub3);
 		}
 		if (stepDansLAnnee == NOVEMBRE1 || stepDansLAnnee == NOVEMBRE2 || stepDansLAnnee == DECEMBRE1 
 				|| stepDansLAnnee == DECEMBRE2) {
@@ -148,15 +156,17 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 			Publicite pub2 = new Publicite(Chocolat.MG_E_SHP,5000,"Europe");
 			Publicite pub3 = new Publicite(Chocolat.MG_NE_HP,5000,"Europe");
 			Publicite pub4 = new Publicite(Chocolat.MG_NE_SHP,5000,"Europe");
-			publicites.clear();
-			publicites.add(pub2);
-			publicites.add(pub3);
-			this.journal.ajouter("-------------------------------------- PUB ---------------------------------------------");
+			this.journal.ajouter("-------------------------------------------- PUB -------------------------------------------------------------------------------------------");
 			this.journal.ajouter("Publicité de Noël:");
 			this.journal.ajouter(pub1.toString());
 			this.journal.ajouter(pub2.toString());
 			this.journal.ajouter(pub3.toString());
 			this.journal.ajouter(pub4.toString());
+			publicites.clear();
+			publicites.add(pub1);
+			publicites.add(pub2);
+			publicites.add(pub3);
+			publicites.add(pub4);
 		}
 	}
 

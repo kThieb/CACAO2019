@@ -65,7 +65,6 @@ public class ClientEuropeen implements IActeur {
 						this.journal.ajouter("Step "+Monde.LE_MONDE.getStep()+" : "+((IActeur)dist).getNom()+" vend "+ c +" a la quantite de "+quantiteEnVente+" a "+dist.getPrix(c));
 						if (quantiteEnVente>0.0) { // dist vend le chocolat recherche
 							double noteQualite = getNoteQualite(dist,c);
-							if (stepDansLAnnee == NOVEMBRE1 || stepDansLAnnee == NOVEMBRE2 || stepDansLAnnee == DECEMBRE1 || stepDansLAnnee == DECEMBRE2) {
 								if (acteur instanceof IPublicitaire) {
 									IPublicitaire pubActeur = (IPublicitaire)acteur;
 									for (Publicite pub : pubActeur.getPubEnCours()) {
@@ -76,7 +75,6 @@ public class ClientEuropeen implements IActeur {
 										}
 									}
 								}
-							}
 							if ((distributeurDeQualite==null || noteQualite>meilleureQualite) && dist.getPrix(c) < 70 ) { // recherche si le produit est de meilleur qualité
 								distributeurDeQualite = dist;
 								produitQ = c;
