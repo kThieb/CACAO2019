@@ -5,13 +5,14 @@ import java.util.HashMap;
 
 import abstraction.eq7Romu.produits.Chocolat;
 import abstraction.eq7Romu.produits.Feve;
-
+/** 
+ * 
+ * @author eve
+ *
+ */
 public class CoutEnFeves {
 	
 	private HashMap<Chocolat, HashMap<Feve, Double>> cout;
-	
-	public CoutEnFeves() {
-	}
 	
 	public CoutEnFeves(ArrayList<Chocolat> chocolats, ArrayList<Feve> feves) {
 		this.cout = new HashMap<Chocolat, HashMap<Feve, Double>>();
