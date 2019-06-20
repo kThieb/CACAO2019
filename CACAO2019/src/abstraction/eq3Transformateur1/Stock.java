@@ -1,6 +1,7 @@
 package abstraction.eq3Transformateur1;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
@@ -12,12 +13,13 @@ import java.util.List;
 public class Stock<T> {
 
 	// T est le chocolat ou la feve ; lui est associe une quantite en stock, en kg
-	HashMap<Lot, T> stock;
+	HashMap<T, Collection<Lot>> stock;
+	int numLot;
 	
 	public Stock(ArrayList<T> produits) {
-		this.stock = new HashMap<T, Double>();
+		this.stock = new HashMap<T, Collection<Lot>>();
 		for (T p: produits) { 
-			this.stock.put(p, 0.);
+			this.stock.put(p, new ArrayList<Lot>());
 		}
 	}
 	public Stock() { }
@@ -28,10 +30,11 @@ public class Stock<T> {
 	
 	public double getQuantiteEnStock(T produit) {
 		try { 
-			if (this.stock.get(produit) > 1.) {
-				return this.stock.get(produit); 
+			double result = 0.;
+			for (Lot l: this.stock.get(produit)) {
+				result += l.getQuantite();
 			}
-			else { return 0.; }
+			return result;
 		}
 		catch (NullPointerException e) { return 0.; }
 	}
@@ -80,6 +83,14 @@ public class Stock<T> {
 		else {
 			throw new IllegalArgumentException("Appel de removeQuantiteEnStock avec quantite positive. Utiliser plutot addQuantiteEnStock");
 		}
+	}
+	
+	// -----------------------------------------------------------
+	//          METHODS
+	// -----------------------------------------------------------
+	
+	private void incrLot() {
+		this.numLot ++;
 	}
 
 }
