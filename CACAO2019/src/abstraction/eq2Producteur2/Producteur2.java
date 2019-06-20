@@ -42,7 +42,9 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 		for (Feve f : feves) {
 			Monde.LE_MONDE.ajouterIndicateur(gestionnaireFeve.get(f).getStockIndicateur());
 		}
-		this.soldeBancaire = new Indicateur(this.getNom() + " Solde", this, 100000000);
+
+		this.soldeBancaire = new Indicateur(this.getNom() + " Solde", this, 10000000);
+
 		
 		Monde.LE_MONDE.ajouterIndicateur(this.soldeBancaire);
 		this.contratsEnCours = new ArrayList<ContratCadre<Feve>>();
@@ -90,7 +92,17 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 			this.recolte(f);
 			this.journal.ajouter(
 					"Step " + Monde.LE_MONDE.getStep() + " : prix de vente = " + this.gestionnaireFeve.getPrixVente(f));
+
+			if ((contratsConclus < 12 || beneficesDuMois < 250000) && this.gestionnaireFeve.getPrixVente(f)*0.9 > PRIX_MIN) {
+				this.gestionnaireFeve.setPrix(this,f,this.gestionnaireFeve.getPrixVente(f)*0.9);
+			}
 		}
+
+		System.out.println("					benefices du mois dernier : " + beneficesDuMois);
+		System.out.println("					contats signes durant le dernier mois : " + contratsConclus);
+		contratsConclus = 0;
+		beneficesDuMois = 0;
+
 		if (this.numStep == 24) {
 			this.numStep = 1;
 			arbres.actualise();
@@ -252,15 +264,23 @@ public void payerCoutsProd() {
 	//A modifier après détermination des couts de production
 	//prix au kg
 	public double getCoutProduction(Feve f) {
-		System.out.println("pour la feve "+ f.toString());
+		//System.out.println("pour la feve "+ f.toString());
 		double salaire = getSalaire(f);
-		System.out.println("le salaire total vaut : "+salaire);
+		//System.out.println("le salaire total vaut : "+salaire);
 		double coutsarbres = arbres.getPrixParStep(f);
+<<<<<<< HEAD
 		System.out.println("le cout d'entretien des arbres est : "+coutsarbres);
 		System.out.println("la production par step est "+this.gestionnaireFeve.getProductionParStep(f));
 		System.out.println("en tout on paye : "+ (salaire + coutsarbres)/gestionnaireFeve.getProductionParStep(f));
 		return (salaire + coutsarbres)/gestionnaireFeve.getProductionParStep(f) ;}	
 
+=======
+		//System.out.println("le cout d'entretien des arbres est : "+coutsarbres);
+		//System.out.println("la production par step est "+this.gestionnaireFeve.getProductionParStep(f));
+		//System.out.println("en tout on paye : "+ (salaire + coutsarbres)/gestionnaireFeve.getProductionParStep(f));
+		return (salaire + coutsarbres)/gestionnaireFeve.getProductionParStep(f) ;	
+		}
+>>>>>>> branch 'master' of https://github.com/Clementmagnin/CACAO2019.git
 	
 	public double getSalaire(Feve f) {
 		double cout=0;
