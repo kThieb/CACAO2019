@@ -67,12 +67,18 @@ public class Arbre {
 		return this.nbtot.get(feve);
 	}
 
+//<<<<<<< HEAD
 	public double getPrixParStep() {
 		double surfaceTotale=0;
 		for(Feve f:this.nbArbres.keySet()) {
 			surfaceTotale+=this.nbtot.get(f);
 		}
 		return surfaceTotale *133;
+//=======
+//	public double getPrixParStep(Feve f) {
+//		double surfaceTotale=this.nbtot.get(f);
+//		return surfaceTotale *77500;
+//>>>>>>> branch 'master' of https://github.com/Clementmagnin/CACAO2019.git
 	}
 	
 }
