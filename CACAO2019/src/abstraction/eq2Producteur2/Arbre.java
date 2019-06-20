@@ -50,7 +50,6 @@ public class Arbre {
 			 this.nbtot.put(f, nouveauTot); // replace(f, nouveauTot)
 			 this.nbArbres.get(f).add(nouveaux.get(f));
 		 }
-		
 	}
 	
 	public void actualise() {		
@@ -59,8 +58,7 @@ public class Arbre {
 			 int nouveauTot=this.nbtot.get(f)-arbreMort+this.nbArbres.get(f).get(36);
 			 this.nbtot.put(f, nouveauTot);
 			 this.nbArbres.get(f).add(18225);
-		 }
-		
+		 }	
 	}
 	
 	public Integer getNbArbres(Feve feve) {
