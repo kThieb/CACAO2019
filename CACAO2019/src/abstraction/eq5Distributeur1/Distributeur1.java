@@ -29,36 +29,36 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 	private int coutfixe;
 	private double coutsdestockage;
 
-	public static final int JANVIER1 = 1%24;
-	public static final int JANVIER2 = 2%24;
-	public static final int FEVRIER1 = 3%24;
-	public static final int FEVRIER2 = 4%24;
-	public static final int MARS1 = 5%24;
-	public static final int MARS2 = 6%24;
-	public static final int AVRIL1 = 7%24;
-	public static final int AVRIL2 = 8%24;
-	public static final int MAI1 = 9%24;
-	public static final int MAI2 = 10%24;
-	public static final int JUIN1 = 11%24;
-	public static final int JUIN2 = 12%24;
-	public static final int JUILLET1 = 13%24;
-	public static final int JUILLET2 = 14%24;
-	public static final int AOUT1 = 15%24;
-	public static final int AOUT2 = 16%24;
-	public static final int SEPTEMBRE1 = 17%24;
-	public static final int SEPTEMBRE2 = 18%24;
-	public static final int OCTOBRE1 = 19%24;
-	public static final int OCTOBRE2 = 20%24;
-	public static final int NOVEMBRE1 = 21%24;
-	public static final int NOVEMBRE2 = 22%24;
-	public static final int DECEMBRE1 = 23%24;
-	public static final int DECEMBRE2 = 24%24;
+	public static final int JANVIER1 = 1;
+	public static final int JANVIER2 = 2;
+	public static final int FEVRIER1 = 3;
+	public static final int FEVRIER2 = 4;
+	public static final int MARS1 = 5;
+	public static final int MARS2 = 6;
+	public static final int AVRIL1 = 7;
+	public static final int AVRIL2 = 8;
+	public static final int MAI1 = 9;
+	public static final int MAI2 = 10;
+	public static final int JUIN1 = 11;
+	public static final int JUIN2 = 12;
+	public static final int JUILLET1 = 13;
+	public static final int JUILLET2 = 14;
+	public static final int AOUT1 = 15;
+	public static final int AOUT2 = 16;
+	public static final int SEPTEMBRE1 = 17;
+	public static final int SEPTEMBRE2 = 18;
+	public static final int OCTOBRE1 = 19;
+	public static final int OCTOBRE2 = 20;
+	public static final int NOVEMBRE1 = 21;
+	public static final int NOVEMBRE2 = 22;
+	public static final int DECEMBRE1 = 23;
+	public static final int DECEMBRE2 = 24;
 	
 	/**
 	 * @author Erine DUPONT & Estelle BONNET
 	 */
 	public Distributeur1() {
-		this(0.4, 10000000.0); // La marge doit être en pourcentage !!! 5% > 0.05
+		this(0.4, 1000000.0); // La marge doit être en pourcentage !!! 5% > 0.05
 	}
 
 	/**
@@ -100,7 +100,7 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 	 * @author Erine DUPONT > pub
 	 */
 	public void next() {
-		//Prise en compte de coût fixe
+		//Prise en compte du coût fixe
 		this.soldeBancaire.retirer(this, this.coutfixe);
 		this.indicateursolde.retirer(this, this.coutfixe);
 		//Prise en compte du coût du stock
@@ -115,14 +115,27 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 		//Juin		Step 21 à 24				Décembre	Step 45 à 48
 		int step_actuel = Monde.LE_MONDE.getStep();
 		int stepDansLAnnee = step_actuel%24;
-		//ClientEuropeen
+		this.journal.ajouter("-------------------------------------- PUB ---------------------------------------------");
+		if (stepDansLAnnee == JANVIER2 || stepDansLAnnee == FEVRIER1) {
+			Publicite pub1 = new Publicite(Chocolat.HG_E_SHP, 10000, "Europe");
+			this.journal.ajouter("Publicité de la Saint-Valentin:");
+			this.journal.ajouter(pub1.toString());
+		}
+		if (stepDansLAnnee == MARS1 || stepDansLAnnee == MARS2 || stepDansLAnnee == AVRIL1) {
+			Publicite pub1 = new Publicite(Chocolat.HG_E_SHP, 7000, "Europe");
+			Publicite pub2 = new Publicite(Chocolat.MG_E_SHP, 5000, "Europe");
+			Publicite pub3 = new Publicite(Chocolat.MG_NE_SHP, 3000, "Europe");
+			this.journal.ajouter("Publicité de Pâques:");
+			this.journal.ajouter(pub1.toString());
+			this.journal.ajouter(pub2.toString());
+			this.journal.ajouter(pub3.toString());
+		}
 		if (stepDansLAnnee == NOVEMBRE1 || stepDansLAnnee == NOVEMBRE2 || stepDansLAnnee == DECEMBRE1 
 				|| stepDansLAnnee == DECEMBRE2) {
-			Publicite pub1 = new Publicite(Chocolat.HG_E_SHP,5000);
-			Publicite pub2 = new Publicite(Chocolat.MG_E_SHP,5000);
-			Publicite pub3 = new Publicite(Chocolat.MG_NE_HP,5000);
-			Publicite pub4 = new Publicite(Chocolat.MG_NE_SHP,5000);
-			this.journal.ajouter("-------------------------------------- PUB ---------------------------------------------");
+			Publicite pub1 = new Publicite(Chocolat.HG_E_SHP,7000,"Europe");
+			Publicite pub2 = new Publicite(Chocolat.MG_E_SHP,5000,"Europe");
+			Publicite pub3 = new Publicite(Chocolat.MG_NE_HP,5000,"Europe");
+			Publicite pub4 = new Publicite(Chocolat.MG_NE_SHP,5000,"Europe");
 			this.journal.ajouter("Publicité de Noël:");
 			this.journal.ajouter(pub1.toString());
 			this.journal.ajouter(pub2.toString());
