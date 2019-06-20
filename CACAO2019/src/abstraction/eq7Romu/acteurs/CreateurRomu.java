@@ -25,13 +25,7 @@ public class CreateurRomu implements IActeur {
 //				Chocolat.MG_NE_HP, 10000, 1.5, 5000.0, 5000.0, 100000.0, 0.15));
 //		Monde.LE_MONDE.ajouterActeur(new TransformateurRomu(Feve.TRINITARIO_MG_NEQ, 
 //				Chocolat.MG_NE_HP, 5000, 1.8, 5000.0, 5000.0, 100000.0, 0.20));
-		Monde.LE_MONDE.ajouterActeur(new TransformateurRomu(Feve.FORASTERO_MG_EQ, 
-				Chocolat.HG_E_SHP, 2000, 1.1, 2000.0, 2000.0, 100000.0, 0.25));
-		Monde.LE_MONDE.ajouterActeur(new TransformateurRomu(Feve.FORASTERO_MG_NEQ, 
-				Chocolat.HG_E_SHP, 2000, 1.1, 2000.0, 2000.0, 100000.0, 0.25));
-		Monde.LE_MONDE.ajouterActeur(new TransformateurRomu(Feve.MERCEDES_MG_EQ, 
-				Chocolat.HG_E_SHP, 2000, 1.1, 2000.0, 2000.0, 100000.0, 0.25));
-		Monde.LE_MONDE.ajouterActeur(new TransformateurRomu(Feve.MERCEDES_MG_NEQ, 
+		Monde.LE_MONDE.ajouterActeur(new TransformateurRomu(Feve.CRIOLLO_HG_EQ, 
 				Chocolat.HG_E_SHP, 2000, 1.1, 2000.0, 2000.0, 100000.0, 0.25));
 //		Monde.LE_MONDE.ajouterActeur(new DistributeurRomu(Chocolat.MG_NE_HP, 
 //				0.25, 200.0, 100000.0));
