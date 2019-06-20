@@ -518,12 +518,12 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 				double plantationActuelle = getPlantation(feve).getInd().getValeur();
 				double demande = getPlantation(feve).moyenneDemande();
 				if (plantationActuelle - demande < plantationActuelle*0.05 && plantationActuelle - demande>0) {
-					double aPlanter = plantationActuelle*0.05; // pour pas avoir tout pile assez, on garde 5% de marge
+					double aPlanter = plantationActuelle*0.05/40; // pour pas avoir tout pile assez, on garde 5% de marge
 					getPlantation(feve).updatePlantation(step, aPlanter);
 					setRecolte(feve,getPlantation(feve).getRecolte(step));
 					getSoldeBancaire().retirer(this, coutPlanter*aPlanter);
 				} else if (plantationActuelle - demande <0) {
-					double aPlanter = (demande - plantationActuelle)*1.05; // on plante de quoi subvenir a la demande + 5% pour avir de la marge 
+					double aPlanter = (demande - plantationActuelle)*1.05/40; // on plante de quoi subvenir a la demande + 5% pour avir de la marge 
 					getPlantation(feve).updatePlantation(step, aPlanter);
 					setRecolte(feve,getPlantation(feve).getRecolte(step));
 					getSoldeBancaire().retirer(this, coutPlanter*aPlanter);
