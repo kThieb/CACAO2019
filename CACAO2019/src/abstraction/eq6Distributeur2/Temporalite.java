@@ -22,6 +22,7 @@ public class Temporalite {
     private HashMap<Integer,Double> quantiteVendueMG_E_SHP; 
     private HashMap<Integer,Double> quantiteVendueHG_E_SHP; 
     
+    
 	public Temporalite(Distributeur2 dist) {
 		nous =dist;
 		noel= new ArrayList<Integer>();
