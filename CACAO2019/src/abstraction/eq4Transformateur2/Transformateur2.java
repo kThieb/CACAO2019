@@ -138,6 +138,12 @@ public class Transformateur2 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		/** Prévision des stocks */ // TODO Ne pas le faire à chaque step
 		estimerPlanningStockChocolat();
 		verifierPlanningStockChocolat();
+		
+		String str = "";
+		for(Chocolat c : CHOCOLATS_VENTE)
+			str += c + " = " + planningStockChocolats.getQuantite(c, Monde.LE_MONDE.getStep() + 1) + "kg ; ";
+		journal.ajouter(str);
+		
 		calculerPlanningStockFeves();
 	}
 

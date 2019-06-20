@@ -52,12 +52,15 @@ public class Transformateur2AcheteurCC implements IAcheteurContratCadre<Feve> {
 			return (int) (echeanciers.get(f2).getQuantiteTotale() - echeanciers.get(f1).getQuantiteTotale());
 		});
 		
+		t2.journal.ajouter("Il manque " + echeanciers.get(triParQte.get(0)).getQuantiteTotale() + " kg de " + triParQte.get(0));
+		
 		// On prend la première fève (dans l'ordre décroissant des quantités manquantes) pour laquelle on trouve un vendeur
 		int idx = 0;
 		IVendeurContratCadre<Feve> vendeur = null;
 		while(idx < triParQte.size() && vendeur == null) {
 			Feve f = triParQte.get(idx);
 			double qte = echeanciers.get(f).getQuantiteTotale();
+			t2.journal.ajouter("boucle - " + f + " " + qte + " kg");
 			if(qte != 0.0) {
 				vendeur = choisirVendeur(f, qte);
 				if(vendeur == null)
@@ -65,12 +68,18 @@ public class Transformateur2AcheteurCC implements IAcheteurContratCadre<Feve> {
 			}
 			idx++;
 		}
+		idx--;
 		
 		if(vendeur == null)
 			return null;
-	
+		
+		t2.journal.ajouter("Vendeur trouvé pour " + triParQte.get(idx) + ": " + vendeur);
+		
 		Feve feve = triParQte.get(idx);
 		double qte = echeanciers.get(feve).getQuantiteTotale();
+		
+		if(qte == 0.0)
+			return null;
 		
 		// On réduit la quantité achetée tant que le prix est supérieur à un pourcentage fixé de notre solde
 		double prix = vendeur.getPrix(feve, qte);
@@ -78,6 +87,8 @@ public class Transformateur2AcheteurCC implements IAcheteurContratCadre<Feve> {
 			qte *= 0.8;
 			prix = vendeur.getPrix(feve, qte);
 		}
+
+		t2.journal.ajouter("Nouveau CC fève : " + vendeur + ", " + feve + ", " + qte + " kg");
 		return new ContratCadre<Feve>(t2, vendeur, feve, qte);
 		
 		/*List<Pair<IVendeurContratCadre<Feve>, List<Feve>>> vendeurs = trouverVendeursInteressants();
@@ -173,7 +184,8 @@ public class Transformateur2AcheteurCC implements IAcheteurContratCadre<Feve> {
 			qteManquante = Math.max(0, qteManquante);
 			e.set(step, qteManquante);
 		}
-		t2.journal.ajouter("Qte manquante pour " + f + " : " + e.getQuantiteTotale() + " kg.");
+		if(e.getQuantiteTotale() != 0.0)
+			t2.journal.ajouter("Qte manquante pour " + f + " : " + e.getQuantiteTotale() + " kg.");
 		return e;
 	}
 	
@@ -246,8 +258,10 @@ public class Transformateur2AcheteurCC implements IAcheteurContratCadre<Feve> {
 		Echeancier e3 = new Echeancier(Monde.LE_MONDE.getStep());
 		for(int i = 0; i < duree; i++) {
 			int step = Monde.LE_MONDE.getStep() + i;
-			e3.set(step, (e1.getQuantite(step) + e2.getQuantite(step)));
+			e3.set(step, (e1.getQuantite(step) + e2.getQuantite(step)) / 2);
 		}
+		System.out.println("MOYENNE " + e1.getQuantiteTotale() + " ----- " + e3.getQuantiteTotale());
+		t2.journal.ajouter("MOYENNE " + e1.getQuantiteTotale() + " ----- " + e3.getQuantiteTotale());
 		return e3;
 	}
  
