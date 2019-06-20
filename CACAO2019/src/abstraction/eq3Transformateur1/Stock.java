@@ -38,16 +38,29 @@ public class Stock<T> {
 	//          GETTERS
 	// -----------------------------------------------------------
 	
+	
+	
 	public double getQuantiteEnStock(T produit) {
 		try { 
 			double result = 0.;
 			for (Lot l: this.stock.get(produit)) {
-				result += l.getQuantite();
+				if (l.getQuantite() > 1.) {
+					result += l.getQuantite();
+				}
 			}
 			return result;
 		}
 		catch (NullPointerException e) { return 0.; }
 	}
+	
+	public double getQuantiteEnStockTotale() {
+		double result = 0.;
+		for (T t : this.stock.keySet()) {
+			result = result + this.getQuantiteEnStock(t);
+		}
+		return result;
+	}
+	
 	
 	public boolean estEnStock(T produit) {
 		return this.stock.containsKey(produit) && (this.getQuantiteEnStock(produit) > 1.);
@@ -159,6 +172,7 @@ public class Stock<T> {
 			}
 		}
 	}
+	
 	
 	// -----------------------------------------------------------
 	//          TESTS
