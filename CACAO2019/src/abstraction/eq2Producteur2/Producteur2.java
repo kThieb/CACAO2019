@@ -48,7 +48,7 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 		for (Feve f : feves) {
 			Monde.LE_MONDE.ajouterIndicateur(gestionnaireFeve.get(f).getStockIndicateur());
 		}
-		this.soldeBancaire = new Indicateur(this.getNom() + " Solde", this, 100000);
+		this.soldeBancaire = new Indicateur(this.getNom() + " Solde", this, 10000000);
 
 		Monde.LE_MONDE.ajouterIndicateur(this.soldeBancaire);
 		this.contratsEnCours = new ArrayList<ContratCadre<Feve>>();
@@ -109,18 +109,20 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 					this.salaire *= 0.95;
 			} else {
 				this.salaireDemande *= 0.95;
-				this.salaire*=1.05;
+				this.salaire *= 1.05;
 			}
 			this.journal.ajouter(
 					"Step " + Monde.LE_MONDE.getStep() + " : prix de vente = " + this.gestionnaireFeve.getPrixVente(f));
-			if ((contratsConclus < 5 || beneficesDuMois < 100000)
+			if ((contratsConclus < 12 || beneficesDuMois < 250000)
 					&& this.gestionnaireFeve.getPrixVente(f) * 0.9 > PRIX_MIN) {
 				this.gestionnaireFeve.setPrix(this, f, this.gestionnaireFeve.getPrixVente(f) * 0.9);
 			}
 		}
+
 		System.out.println("balance du step : " + this.balanceDuStep());
 		System.out.println("benefices du mois : " + beneficesDuMois);
 		System.out.println("contrats conclus : " + contratsConclus);
+
 		contratsConclus = 0;
 		beneficesDuMois = 0;
 		if (this.numStep == 24) {
@@ -250,44 +252,38 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 		if (cc.getListePrixAuKilo().size() == 0) { // On vérifie qu'on a un prix à proposer
 			cc.ajouterPrixAuKilo(getPrix(cc.getProduit(), cc.getQuantite()));
 		} else {
-			// On définit prixVendeur et prixAcheteur pour cette étape de négociation
-			double prixVendeur = cc.getListePrixAuKilo().get(cc.getListePrixAuKilo().size() - 2); // On récupère le
-																									// dernier prix
-																									// proposé
-			double prixAcheteur = cc.getListePrixAuKilo().get(cc.getListePrixAuKilo().size() - 1);
-
-			if (prixAcheteur >= prixVendeur) {
-				cc.ajouterPrixAuKilo(prixAcheteur);
+		//On définit prixVendeur et prixAcheteur pour cette étape de négociation
+		double prixVendeur = cc.getListePrixAuKilo().get(cc.getListePrixAuKilo().size() - 2); //On récupère le dernier prix proposé
+		double prixAcheteur = cc.getListePrixAuKilo().get(cc.getListePrixAuKilo().size() - 1);
+		
+		if (prixAcheteur>=prixVendeur) {
+			cc.ajouterPrixAuKilo(prixAcheteur);
+		} else {
+			if (prixVendeur == getCoutProduction(cc.getProduit()) * 0.80) { 
+				//On pose une marge minimale de 1% du cout de production
+				cc.ajouterPrixAuKilo(prixVendeur);
 			} else {
-				if (prixVendeur == getCoutProduction(cc.getProduit()) * 1.01) {
-					// On pose une marge minimale de 1% du cout de production
+				if (prixAcheteur < getCoutProduction(cc.getProduit())*0.80) {
+					//On s'assure de conserver la marge minimale 
+					prixVendeur = getCoutProduction(cc.getProduit()) * 0.80;
 					cc.ajouterPrixAuKilo(prixVendeur);
 				} else {
-					if (prixAcheteur < getCoutProduction(cc.getProduit()) * 1.01) {
-						// On s'assure de conserver la marge minimale
-						prixVendeur = getCoutProduction(cc.getProduit()) * 1.01;
-						cc.ajouterPrixAuKilo(prixVendeur);
-					} else {
-						if ((prixVendeur - prixAcheteur) < 0.05 * prixVendeur) {
+					if ((prixVendeur - prixAcheteur) < 0.05 * prixVendeur) {
 							// On arrête la négociation si la différence de prix est suffisamment faible (5%
 							// du prixVendeur)
-							cc.ajouterPrixAuKilo(prixAcheteur);
+						cc.ajouterPrixAuKilo(prixAcheteur);
+					} else { 
+						if (prixAcheteur >= 0.75 * prixVendeur && prixAcheteur * 1.1 >= getCoutProduction(cc.getProduit())*0.80) { 
+							// on ne fait une proposition que si l'acheteur ne demande pas un prix trop bas, tout en respectant la marge minimale
+							prixVendeur = prixAcheteur * 1.1; // on augmente le prix proposé par l'acheteur de 10%
+							cc.ajouterPrixAuKilo(prixVendeur);
 						} else {
-							if (prixAcheteur >= 0.75 * prixVendeur
-									&& prixAcheteur * 1.1 >= getCoutProduction(cc.getProduit())) {
-								// on ne fait une proposition que si l'acheteur ne demande pas un prix trop bas,
-								// tout en respectant la marge minimale
-								prixVendeur = prixAcheteur * 1.1; // on augmente le prix proposé par l'acheteur de 10%
-								cc.ajouterPrixAuKilo(prixVendeur);
+							if (prixVendeur * 0.90 < getCoutProduction(cc.getProduit())) {
 
-							} else {
-								if (prixVendeur * 0.90 < getCoutProduction(cc.getProduit())) {
+								//On s'assure de conserver notre marge minimale
+								prixVendeur = getCoutProduction(cc.getProduit()) * 0.80;
 
-									// On s'assure de conserver notre marge minimale
-									prixVendeur = getCoutProduction(cc.getProduit()) * 1.01;
-
-									cc.getListePrixAuKilo().add(prixVendeur);
-
+								cc.getListePrixAuKilo().add(prixVendeur);
 								} else {
 									prixVendeur *= 0.90; // On diminue le prix proposé de 10%
 									cc.ajouterPrixAuKilo(prixVendeur);
@@ -304,8 +300,10 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	// prix au kg
 	public double getCoutProduction(Feve f) {
 //		System.out.println("pour la feve "+ f.toString());
+		// System.out.println("pour la feve "+ f.toString());
 		double salaire = getSalaire(f);
 //		System.out.println("le salaire total vaut : "+salaire);
+		// System.out.println("le salaire total vaut : "+salaire);
 		double coutsarbres = arbres.getPrixParStep(f);
 //		System.out.println("le cout d'entretien des arbres est : "+coutsarbres);
 //		System.out.println("la production par step est "+this.gestionnaireFeve.getProductionParStep(f));
