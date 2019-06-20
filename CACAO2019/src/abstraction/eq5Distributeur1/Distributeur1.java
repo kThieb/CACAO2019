@@ -94,8 +94,13 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 		return "EQ5";
 	}
 
+	
+	/**
+	 * @author Estelle Bonnet
+	 */
 	public void initialiser() {
 		this.soldeDebutStep = this.soldeBancaire.getCompteBancaire();
+		stock.initialisationDebutStep(stock.getStock());
 	}
 
 	/**

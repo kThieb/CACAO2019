@@ -85,6 +85,16 @@ public class Stock {
 		produits.addAll(this.stock.keySet());
 		return produits;
 	}
+	
+	/** @author Estelle BONNET */
+	public HashMap<Chocolat,Double> getStock() {
+		return this.stock;
+	}
+	
+	/** @author Estelle BONNET */
+	public HashMap<Chocolat,Double> getStockDebutStep() {
+		return this.stockDebutStep;
+	}
 
 	/** @author Estelle BONNET */
 	public Double get(Chocolat produit) {
