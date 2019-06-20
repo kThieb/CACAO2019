@@ -1,5 +1,11 @@
 package abstraction.eq3Transformateur1;
 
+/** 
+ * 
+ * @author kevin
+ *
+ */
+
 public class Lot {
 	private int nLot;
 	private double quantite;
