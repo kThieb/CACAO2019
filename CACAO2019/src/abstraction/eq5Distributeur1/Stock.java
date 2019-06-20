@@ -13,11 +13,13 @@ import abstraction.fourni.Monde;
 public class Stock {
 	private HashMap<Chocolat, Double> stock;
 	private HashMap<Chocolat, Indicateur> indicateurs;
+	private HashMap<Chocolat, Double> stockDebutStep;
 
 	/** @author Estelle BONNET */
 	public Stock() {
 		this.stock = new HashMap<Chocolat, Double>();
 		this.indicateurs = new HashMap<Chocolat, Indicateur>();
+		this.stockDebutStep = new HashMap<Chocolat, Double>();
 	}
 
 	/**
@@ -46,6 +48,18 @@ public class Stock {
 				Monde.LE_MONDE.ajouterIndicateur(this.getIndicateur(produit));
 			}			
 		}
+	}
+	
+	/** @autho Estelle BONNET 
+	 */
+	public void initialisationDebutStep(HashMap<Chocolat, Double> stock) {
+		this.stockDebutStep=stock;
+	}
+	
+	/** @autho Estelle BONNET 
+	 */
+	public void pereniteStock(HashMap<Chocolat, Double> stock) {
+		this.stockDebutStep=stock;
 	}
 	
 	/** @authors Erine DUPONT & Estelle BONNET 

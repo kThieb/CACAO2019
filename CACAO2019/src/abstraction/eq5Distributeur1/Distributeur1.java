@@ -59,7 +59,7 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 	 * @author Erine DUPONT & Estelle BONNET
 	 */
 	public Distributeur1() {
-		this(0.4, 10000000.0); // La marge doit être en pourcentage !!! 5% > 0.05
+		this(0.6, 10000000.0); // La marge doit être en pourcentage !!! 5% > 0.05
 	}
 
 	/**
@@ -68,13 +68,13 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 	public Distributeur1(double marge, Double soldeInitial) {
 		
 		this.marge = marge;   // La marge doit être en pourcentage !!! 5% > 0.05
-		this.coutfixe = 0.2;	
+		this.coutfixe = 0.17;	
 		this.coutsdestockage = 0.1;
 		this.stock = new Stock();
 		stock.ajouter(Chocolat.HG_E_SHP, 150000.0, this);
-		stock.ajouter(Chocolat.MG_E_SHP, 150000.0, this);
-		stock.ajouter(Chocolat.MG_NE_HP, 150000.0, this);
-		stock.ajouter(Chocolat.MG_NE_SHP, 150000.0, this);
+		stock.ajouter(Chocolat.MG_E_SHP, 55000.0, this);
+		stock.ajouter(Chocolat.MG_NE_HP, 55000.0, this);
+		stock.ajouter(Chocolat.MG_NE_SHP, 55000.0, this);
 		
 		this.soldeBancaire = new CompteBancaire(this.getNom(), this, soldeInitial);
 		this.indicateursolde = new Indicateur ("EQ5 solde bancaire",this, soldeBancaire.getCompteBancaire());
@@ -105,10 +105,10 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 	public void next() {
 		//Prise en compte de coût fixe
 		this.soldeBancaire.retirer(this, ((this.soldeBancaire.getCompteBancaire()-this.soldeDebutStep)*this.coutfixe));
-		this.indicateursolde.retirer(this, this.coutfixe);
+		this.indicateursolde.retirer(this, ((this.soldeBancaire.getCompteBancaire()-this.soldeDebutStep)*this.coutfixe));
 		//Prise en compte du coût du stock
-		this.soldeBancaire.retirer(this, this.coutsdestockage*this.stock.getStockTotal());
-		this.indicateursolde.retirer(this, this.coutsdestockage*this.stock.getStockTotal());
+		//this.soldeBancaire.retirer(this, this.coutsdestockage*this.stock.getStockTotal());
+		//this.indicateursolde.retirer(this, this.coutsdestockage*this.stock.getStockTotal());
 		//------------------ Publicité -----------------------------------------------------
 		//Janvier 	Step 1 à 4					Juillet 	Step 25 à 28
 		//Février 	Step 5 à 8					Août		Step 29 à 32
@@ -577,8 +577,8 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 				int nbproduits = 0;
 				for (ContratCadre<Chocolat> cc : this.contratsEnCours) {
 					if (cc.getProduit()==c) {
-						somme += cc.getPrixAuKilo();
-						nbproduits += 1;
+						somme += cc.getPrixAuKilo()*cc.getQuantite();
+						nbproduits += cc.getQuantite();
 					}
 				}
 				if (nbproduits == 0) {
