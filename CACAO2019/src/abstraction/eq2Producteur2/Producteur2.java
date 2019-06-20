@@ -219,20 +219,20 @@ public void payerCoutsProd() {
 		if (prixAcheteur>=prixVendeur) {
 			cc.ajouterPrixAuKilo(prixAcheteur);
 		} else {
-			if (prixVendeur == getCoutProduction(cc.getProduit()) * 1.01) { 
+			if (prixVendeur == getCoutProduction(cc.getProduit()) * 0.80) { 
 				//On pose une marge minimale de 1% du cout de production
 				cc.ajouterPrixAuKilo(prixVendeur);
 			} else {
-				if (prixAcheteur < getCoutProduction(cc.getProduit())*1.01) {
+				if (prixAcheteur < getCoutProduction(cc.getProduit())*0.80) {
 					//On s'assure de conserver la marge minimale 
-					prixVendeur = getCoutProduction(cc.getProduit()) * 1.01;
+					prixVendeur = getCoutProduction(cc.getProduit()) * 0.80;
 					cc.ajouterPrixAuKilo(prixVendeur);
 				} else {
 					if ((prixVendeur - prixAcheteur) < 0.05 * prixVendeur) { 
 						// On arrête la négociation si la différence de prix est suffisamment faible (5% du prixVendeur)
 						cc.ajouterPrixAuKilo(prixAcheteur);
 					} else { 
-						if (prixAcheteur >= 0.75 * prixVendeur && prixAcheteur * 1.1 >= getCoutProduction(cc.getProduit())) { 
+						if (prixAcheteur >= 0.75 * prixVendeur && prixAcheteur * 1.1 >= getCoutProduction(cc.getProduit())*0.80) { 
 							// on ne fait une proposition que si l'acheteur ne demande pas un prix trop bas, tout en respectant la marge minimale
 							prixVendeur = prixAcheteur * 1.1; // on augmente le prix proposé par l'acheteur de 10%
 							cc.ajouterPrixAuKilo(prixVendeur);
@@ -241,7 +241,7 @@ public void payerCoutsProd() {
 							if (prixVendeur * 0.90 < getCoutProduction(cc.getProduit())) {
 
 								//On s'assure de conserver notre marge minimale
-								prixVendeur = getCoutProduction(cc.getProduit()) * 1.01;
+								prixVendeur = getCoutProduction(cc.getProduit()) * 0.80;
 
 								cc.getListePrixAuKilo().add(prixVendeur);
 
