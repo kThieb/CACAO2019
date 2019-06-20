@@ -443,13 +443,13 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 				this.prixAuKilo.put(produit, this.getPrixAuKilo().get(produit)+0.1);}
 			
 			else {
-				//if(this.moyennePrixNonAccepte(produit)>this.getPrixAuKilo().get(produit)) {
+				if(this.moyennePrixNonAccepte(produit)>this.getPrixAuKilo().get(produit)) {
 					if(this.getStockI(produit).getValeur()*(this.getPrixAuKilo().get(produit)-0.1)>this.getCOUT_FIXE()/3+this.getStockI(produit).getValeur()*this.getCOUT_VARIABLE_STOCK()
 							||this.getStockI(produit).getValeur()*(this.getPrixAuKilo().get(produit)-0.1)>0) {// On vérifie qu'on ne vend pas à perte
 	//	System.out.println("put "+(this.getPrixAuKilo().get(produit)-0.1));
 	//	if (this.getPrixAuKilo().get(produit)-0.1<0.0) {
 	//		System.exit(0);
-	//	}
+		}
 						this.prixAuKilo.put(produit, this.getPrixAuKilo().get(produit)-0.1);
 							}
 					else {
