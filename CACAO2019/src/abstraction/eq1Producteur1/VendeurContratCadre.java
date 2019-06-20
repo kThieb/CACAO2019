@@ -29,6 +29,7 @@ public class VendeurContratCadre extends Producteur1Interne implements IVendeurC
 	}
 //END MANON
 	public double getPrix(Feve produit, Double quantite) {
+		//this.journal1.ajouter("On nous demande le prix de:"+produit);
 		// BEGIN Pauline
 		if (produit == null || quantite <= 0.0) {
 			return Double.NaN;
@@ -60,6 +61,7 @@ public class VendeurContratCadre extends Producteur1Interne implements IVendeurC
 						else {
 						this.getPrixAboutissantAcc(produit).put(this.getPrixAuKilo().get(produit), false);
 						*/this.getPrixAboutissantAcc(produit).put(this.getPrixAuKilo().get(produit), false);
+						//this.journal1.ajouter("On répond:"+this.getPrixAuKilo().get(produit));
 						return this.getPrixAuKilo().get(produit);}
 				}  
 					//else {this.journal1.ajouter("Prix de Vente"+ this.getPrixAuKilo().get(produit));
@@ -109,6 +111,7 @@ public class VendeurContratCadre extends Producteur1Interne implements IVendeurC
 //Manon
 
 	public void proposerPrixVendeur(ContratCadre<Feve> cc) {
+		//this.journal1.ajouter("Entrée en négociation du prix"+cc.getNumero() + cc.getPrixAuKilo() + cc.getProduit());
 		this.getPrixAboutissantAcc(cc.getProduit()).put(cc.getPrixAuKilo(), true);
 
 		/* Si la liste est nulle on ajoute le prix initialement proposé */
