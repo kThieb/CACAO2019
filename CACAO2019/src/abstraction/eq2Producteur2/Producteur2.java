@@ -57,7 +57,7 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 		arbres.initialise();
 
 		this.gestionnaireFeve.setProduction(this, Feve.FORASTERO_MG_NEQ, 67500000);
-		this.gestionnaireFeve.setStock(this, Feve.FORASTERO_MG_NEQ, 200000000);
+		this.gestionnaireFeve.setStock(this, Feve.FORASTERO_MG_NEQ, 20000000);
 		this.gestionnaireFeve.setPrix(this, Feve.FORASTERO_MG_NEQ, 1.5);
 
 		this.gestionnaireFeve.setProduction(this, Feve.FORASTERO_MG_EQ, 7500000); // TODO rectifier les productions des autres feves
