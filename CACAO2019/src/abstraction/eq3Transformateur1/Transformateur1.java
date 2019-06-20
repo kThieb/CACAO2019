@@ -50,7 +50,6 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	// end eve
 	
 	private ArrayList<Chocolat> peutEtreProduit;
-	private List<Double> demandeParStep;
 	
 	
 	
@@ -63,7 +62,6 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		this.peutEtreProduit.add(Chocolat.MG_NE_SHP);
 		this.peutEtreProduit.add(Chocolat.MG_E_SHP);
 		
-		this.demandeParStep = new ArrayList<Double>();
 		//End Kevin
 		// --------------------------------- begin eve
 
