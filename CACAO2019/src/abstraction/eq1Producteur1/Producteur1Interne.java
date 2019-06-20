@@ -524,12 +524,6 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 			if(step%unAnEnSteps == 0){
 				double plantationActuelle = getPlantation(feve).getQuantite(step);
 				double demande = getPlantation(feve).moyenneDemande();
-<<<<<<< HEAD
-				double stock = this.getStock(feve).getStock(step);
-				getPlantation(feve).updatePlantation(step,getPlantation(feve).moyenneDemande()*1/40);
-				setRecolte(feve,getPlantation(feve).getRecolte(step));
-				getSoldeBancaire().retirer(this, coutPlanter);
-=======
 				if (plantationActuelle - demande < plantationActuelle*0.05 && plantationActuelle - demande>0) {
 					double aPlanter = plantationActuelle*0.05/40; // pour pas avoir tout pile assez, on garde 5% de marge
 					getPlantation(feve).updatePlantation(step, aPlanter);
@@ -544,7 +538,6 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 					getPlantation(feve).updatePlantation(step,0);
 					setRecolte(feve,getPlantation(feve).getRecolte(step));
 				}
->>>>>>> branch 'master' of https://github.com/n18abdel/CACAO2019.git
 			} else{
 				getPlantation(feve).updatePlantation(step,0);
 			}
