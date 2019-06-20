@@ -58,7 +58,7 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 	 * @author Erine DUPONT & Estelle BONNET
 	 */
 	public Distributeur1() {
-		this(0.5, 100000.0); // La marge doit être en pourcentage !!! 5% > 0.05
+		this(0.5, 10000000.0); // La marge doit être en pourcentage !!! 5% > 0.05
 	}
 
 	/**
