@@ -26,8 +26,9 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 	private Double marge;
 	private Indicateur indicateursolde;
 	private List<ContratCadre<Chocolat>> contratsEnCours;
-	private int coutfixe;
+	private double coutfixe;
 	private double coutsdestockage;
+	private double soldeDebutStep;
 
 	public static final int JANVIER1 = 1;
 	public static final int JANVIER2 = 2;
@@ -67,7 +68,7 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 	public Distributeur1(double marge, Double soldeInitial) {
 		
 		this.marge = marge;   // La marge doit être en pourcentage !!! 5% > 0.05
-		this.coutfixe = 200000;	
+		this.coutfixe = 0.2;	
 		this.coutsdestockage = 0.1;
 		this.stock = new Stock();
 		stock.ajouter(Chocolat.HG_E_SHP, 150000.0, this);
@@ -77,6 +78,7 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 		
 		this.soldeBancaire = new CompteBancaire(this.getNom(), this, soldeInitial);
 		this.indicateursolde = new Indicateur ("EQ5 solde bancaire",this, soldeBancaire.getCompteBancaire());
+		this.soldeDebutStep= this.soldeBancaire.getCompteBancaire();
 		Monde.LE_MONDE.ajouterIndicateur(indicateursolde);
 		this.journal = new Journal("Journal "+this.getNom());
 		Monde.LE_MONDE.ajouterJournal(this.journal);
@@ -93,6 +95,7 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 	}
 
 	public void initialiser() {
+		this.soldeDebutStep = this.soldeBancaire.getCompteBancaire();
 	}
 
 	/**
@@ -100,8 +103,8 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 	 * @author Erine DUPONT > pub
 	 */
 	public void next() {
-		//Prise en compte du coût fixe
-		this.soldeBancaire.retirer(this, this.coutfixe);
+		//Prise en compte de coût fixe
+		this.soldeBancaire.retirer(this, ((this.soldeBancaire.getCompteBancaire()-this.soldeDebutStep)*this.coutfixe));
 		this.indicateursolde.retirer(this, this.coutfixe);
 		//Prise en compte du coût du stock
 		this.soldeBancaire.retirer(this, this.coutsdestockage*this.stock.getStockTotal());
@@ -608,7 +611,7 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 				else {
 					double prixMoyen = somme/ nbproduits;
 					double prixVente = prixMoyen*(1+this.marge);
-					
+					/*
 					if (prixVente <60 & c == Chocolat.HG_E_SHP) {
 						return 60;
 					}
@@ -618,8 +621,8 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 					else {
 						return prixVente;
 					}
-					
-					//return prixMoyen*(1.0+this.marge);
+					*/
+					return prixMoyen*(1.0+this.marge);
 				}
 			}
 		}
