@@ -187,7 +187,9 @@ public void payerCoutsProd() {
 			Echeancier e = cc.getEcheancier();
 			if (e.getQuantiteTotale() > this.getStockEnVente().get(cc.getProduit())) { // On s assure que la quantité
 																						// demandée est en stock
-				int echSuppl = (int) ((e.getQuantiteTotale() - this.getStockEnVente().get(cc.getProduit())))/75000 ;
+				Feve feveDuContrat = cc.getProduit();
+				double production = this.gestionnaireFeve.getProductionParStep(feveDuContrat);
+				int echSuppl = (int) ((e.getQuantiteTotale() - this.getStockEnVente().get(cc.getProduit()))/production) ;
 				cc.ajouterEcheancier(new Echeancier (e.getStepDebut(), e.getNbEcheances() + echSuppl, cc.getQuantite()/(cc.getEcheancier().getNbEcheances()+echSuppl)));;
 
 			} else {
@@ -206,7 +208,7 @@ public void payerCoutsProd() {
 		} else {
 		//On définit prixVendeur et prixAcheteur pour cette étape de négociation
 		double prixVendeur = cc.getListePrixAuKilo().get(cc.getListePrixAuKilo().size() - 2); //On récupère le dernier prix proposé
-		double prixAcheteur = cc.getPrixAuKilo();
+		double prixAcheteur = cc.getListePrixAuKilo().get(cc.getListePrixAuKilo().size() - 1);
 		cc.ajouterPrixAuKilo(prixVendeur); // Le premier prix proposé est le prix au kilo initial
 		cc.getListePrixAuKilo().add(prixVendeur);
 		if (prixVendeur == getCoutProduction(cc.getProduit()) * 1.01) { 

@@ -52,7 +52,6 @@ public class Arbre {
 		}
 	}
 
-
 	public void actualise(HashMap<Feve, Integer> nouveaux) {
 		for (Feve f : this.nbArbres.keySet()) {
 			int arbreMort = this.nbArbres.get(f).remove(0);
@@ -74,7 +73,7 @@ public class Arbre {
 		this.nbArbres.get(Feve.MERCEDES_MG_EQ).add(75);
 		this.nbArbres.get(Feve.MERCEDES_MG_NEQ).add(675);
 	}
-
+	
 	public Integer getNbArbres(Feve feve) {
 		return this.nbtot.get(feve);
 	}
@@ -83,5 +82,4 @@ public class Arbre {
 		double surfaceTotale = this.nbtot.get(f);
 		return surfaceTotale * 132; // en dollar
 	}
-
 }
