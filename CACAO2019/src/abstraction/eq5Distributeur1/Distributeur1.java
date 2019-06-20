@@ -29,36 +29,36 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 	private int coutfixe;
 	private double coutsdestockage;
 
-	public static final int JANVIER1 = 1;
-	public static final int JANVIER2 = 2;
-	public static final int FEVRIER1 = 3;
-	public static final int FEVRIER2 = 4;
-	public static final int MARS1 = 5;
-	public static final int MARS2 = 6;
-	public static final int AVRIL1 = 7;
-	public static final int AVRIL2 = 8;
-	public static final int MAI1 = 9;
-	public static final int MAI2 = 10;
-	public static final int JUIN1 = 11;
-	public static final int JUIN2 = 12;
-	public static final int JUILLET1 = 13;
-	public static final int JUILLET2 = 14;
-	public static final int AOUT1 = 15;
-	public static final int AOUT2 = 16;
-	public static final int SEPTEMBRE1 = 17;
-	public static final int SEPTEMBRE2 = 18;
-	public static final int OCTOBRE1 = 19;
-	public static final int OCTOBRE2 = 20;
-	public static final int NOVEMBRE1 = 21;
-	public static final int NOVEMBRE2 = 22;
-	public static final int DECEMBRE1 = 23;
-	public static final int DECEMBRE2 = 24;
+	public static final int JANVIER1 = 1%24;
+	public static final int JANVIER2 = 2%24;
+	public static final int FEVRIER1 = 3%24;
+	public static final int FEVRIER2 = 4%24;
+	public static final int MARS1 = 5%24;
+	public static final int MARS2 = 6%24;
+	public static final int AVRIL1 = 7%24;
+	public static final int AVRIL2 = 8%24;
+	public static final int MAI1 = 9%24;
+	public static final int MAI2 = 10%24;
+	public static final int JUIN1 = 11%24;
+	public static final int JUIN2 = 12%24;
+	public static final int JUILLET1 = 13%24;
+	public static final int JUILLET2 = 14%24;
+	public static final int AOUT1 = 15%24;
+	public static final int AOUT2 = 16%24;
+	public static final int SEPTEMBRE1 = 17%24;
+	public static final int SEPTEMBRE2 = 18%24;
+	public static final int OCTOBRE1 = 19%24;
+	public static final int OCTOBRE2 = 20%24;
+	public static final int NOVEMBRE1 = 21%24;
+	public static final int NOVEMBRE2 = 22%24;
+	public static final int DECEMBRE1 = 23%24;
+	public static final int DECEMBRE2 = 24%24;
 	
 	/**
 	 * @author Erine DUPONT & Estelle BONNET
 	 */
 	public Distributeur1() {
-		this(0.5, 100000.0); // La marge doit être en pourcentage !!! 5% > 0.05
+		this(0.5, 10000000.0); // La marge doit être en pourcentage !!! 5% > 0.05
 	}
 
 	/**
@@ -124,7 +124,10 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 			Publicite pub4 = new Publicite(Chocolat.MG_NE_SHP,5000);
 			this.journal.ajouter("-------------------------------------- PUB ---------------------------------------------");
 			this.journal.ajouter("Publicité de Noël:");
-			
+			this.journal.ajouter(pub1.toString());
+			this.journal.ajouter(pub2.toString());
+			this.journal.ajouter(pub3.toString());
+			this.journal.ajouter(pub4.toString());
 		}
 	}
 
@@ -292,7 +295,7 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 	 * @author Imane ZRIAA
 	 */
 	public void proposerEcheancierAcheteur(ContratCadre C) {
-		if (C!=null) {
+		/*if (C!=null) {
 			Echeancier e = C.getEcheancier() ;
 			if (e==null ) {//pas de contre-proposition
 				C.ajouterEcheancier(new Echeancier(Monde.LE_MONDE.getStep(), 5, C.getQuantite()/5));
@@ -303,6 +306,7 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 				this.journal.ajouter("Contrat n° " + C.getNumero() + " avec " + C.getEcheancier().getNbEcheances()+ " échéances");
 			}
 		}
+		*/
 		/* -------------------------------------------------------------------------- 
 		 * V2 ERINE
 		 */
@@ -317,8 +321,9 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 				qcc += cc.getQuantiteRestantALivrer();
 			}
 			this.journal.ajouter("La quantité de " + produit + " restant à livrer pour les autres contrats est " + qcc + " kg");
+			double qtot = qcc + quantite;
 			if (qcc + quantite <= 0.25*stock) {
-				this.journal.ajouter("La quantité demandée ajoutée à la quantité restant à livrer (" + qcc +") est inférieure "
+				this.journal.ajouter("La quantité demandée ajoutée à la quantité restant à livrer (" + qtot +") est inférieure "
 						+ "à 25% du stock ("+ stock + ")");
 				ArrayList<Integer> e1 = new ArrayList<Integer>();
 				e1.add(1);
@@ -330,18 +335,22 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 				Echeancier e_possible = new Echeancier(Monde.LE_MONDE.getStep(), echeance, 
 						C.getQuantite()/echeance);
 				if (e_vendeur != null && e_vendeur.getNbEcheances() >= e_possible.getNbEcheances()) {
+					this.journal.ajouter("L'échéancier possible est: " + e_possible.getNbEcheances() + " échéances");
+					this.journal.ajouter("L'échéancier vendeur est: " + e_vendeur.getNbEcheances() + " échéances" );
 					C.ajouterEcheancier(e_vendeur);
 					this.journal.ajouter("On accepte l'échéancier du vendeur");
 				} else if (e_vendeur != null && e_vendeur.getNbEcheances() < e_possible.getNbEcheances()) {
+					this.journal.ajouter("L'échéancier possible est: " + e_possible.getNbEcheances() + " échéances");
+					this.journal.ajouter("L'échéancier vendeur est: " + e_vendeur.getNbEcheances() + " échéances" );
 					C.ajouterEcheancier(e_possible);
 					this.journal.ajouter("L'échéancier proposé par le vendeur est trop court, on propose " 
 							+ e_possible.toString());
-				} else if (e_vendeur == null){
+				} else {
 					C.ajouterEcheancier(e_possible);
 					this.journal.ajouter("On propose "+ e_possible.toString());
 				}
 			} else if (quantite + qcc <= 0.5*stock) {
-				this.journal.ajouter("La quantité demandée ajoutée à la quantité restant à livrer " + qcc + " est inférieure "
+				this.journal.ajouter("La quantité demandée ajoutée à la quantité restant à livrer " + qtot + " est inférieure "
 						+ "à 50% du stock ("+ stock + ")");
 				ArrayList<Integer> e2 = new ArrayList<Integer>();
 				e2.add(6);
@@ -353,18 +362,22 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 				Echeancier e_possible = new Echeancier(Monde.LE_MONDE.getStep(), echeance, 
 						C.getQuantite()/echeance);
 				if (e_vendeur != null && e_vendeur.getNbEcheances() >= e_possible.getNbEcheances()) {
+					this.journal.ajouter("L'échéancier possible est: " + e_possible.getNbEcheances() + " échéances");
+					this.journal.ajouter("L'échéancier vendeur est: " + e_vendeur.getNbEcheances() + " échéances" );
 					C.ajouterEcheancier(e_vendeur);
 					this.journal.ajouter("On accepte l'échéancier du vendeur");
 				} else if (e_vendeur != null && e_vendeur.getNbEcheances() < e_possible.getNbEcheances()){
+					this.journal.ajouter("L'échéancier possible est: " + e_possible.getNbEcheances() + " échéances");
+					this.journal.ajouter("L'échéancier vendeur est: " + e_vendeur.getNbEcheances() + " échéances" );
 					C.ajouterEcheancier(e_possible);
 					this.journal.ajouter("L'échéancier proposé par le vendeur est trop court, on propose " 
 							+ e_possible.toString());
-				} else if (e_vendeur == null) {
+				} else {
 					C.ajouterEcheancier(e_possible);
 					this.journal.ajouter("On propose "+ e_possible.toString());
 				}
 			} else {
-				this.journal.ajouter("La quantité demandée ajoutée à la quantité restant à livrer (" + qcc + ") est supérieure "
+				this.journal.ajouter("La quantité demandée ajoutée à la quantité restant à livrer (" + qtot + ") est supérieure "
 						+ "à 50% du stock (" + stock + ")");
 				ArrayList<Integer> e3 = new ArrayList<Integer>();
 				e3.add(8);
@@ -376,13 +389,17 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 				Echeancier e_possible = new Echeancier(Monde.LE_MONDE.getStep(), echeance, 
 						C.getQuantite()/echeance);
 				if (e_vendeur != null && e_vendeur.getNbEcheances() >= e_possible.getNbEcheances()) {
+					this.journal.ajouter("L'échéancier possible est: " + e_possible.getNbEcheances() + " échéances");
+					this.journal.ajouter("L'échéancier vendeur est: " + e_vendeur.getNbEcheances() + " échéances" );
 					C.ajouterEcheancier(e_vendeur);
 					this.journal.ajouter("On accepte l'échéancier du vendeur");
 				} else if (e_vendeur != null && e_vendeur.getNbEcheances() >= e_possible.getNbEcheances()){
+					this.journal.ajouter("L'échéancier possible est: " + e_possible.getNbEcheances() + " échéances");
+					this.journal.ajouter("L'échéancier vendeur est: " + e_vendeur.getNbEcheances() + " échéances" );
 					C.ajouterEcheancier(e_possible);
 					this.journal.ajouter("L'échéancier proposé par le vendeur est trop court, on propose " 
 							+ e_possible.toString());
-				} else if (e_vendeur == null) {
+				} else {
 					C.ajouterEcheancier(e_possible);
 					this.journal.ajouter("On propose "+ e_possible.toString());
 				}
@@ -426,41 +443,41 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 			if (cc.getProduit().equals(Chocolat.HG_E_SHP)) {
 				if (20 < prixVendeur && prixVendeur <= 70 && stock.get((Chocolat) cc.getProduit()) < 10000) {
 					cc.ajouterPrixAuKilo(prixVendeur*0.95);
-					this.journal.ajouter("Nous proposons un prix de " + prixVendeur*0.95);
+					this.journal.ajouter("Nous proposons un prix de " + prixVendeur*0.95 + " €");
 				} else if (20 < prixVendeur && prixVendeur <= 70 && stock.get((Chocolat) cc.getProduit())>=10000) {
 					cc.ajouterPrixAuKilo(prixVendeur*0.8);
-					this.journal.ajouter("Nous proposons un prix de " + prixVendeur*0.8);
+					this.journal.ajouter("Nous proposons un prix de " + prixVendeur*0.8 + " €");
 				} else if (prixVendeur <= 20) {
 					cc.ajouterPrixAuKilo(prixVendeur);
-					this.journal.ajouter("Nous proposons un prix de " + prixVendeur);
+					this.journal.ajouter("Nous proposons un prix de " + prixVendeur + " €");
 				} else {
-					this.journal.ajouter("Nous refusons le prix de " + prixVendeur);
+					this.journal.ajouter("Nous refusons le prix de " + prixVendeur + " €" );
 				}	
 			} else if (cc.getProduit().equals(Chocolat.MG_E_SHP) || cc.getProduit().equals(Chocolat.MG_NE_SHP)) {
 				if (10 < prixVendeur && prixVendeur <= 50 && stock.get((Chocolat) cc.getProduit()) < 10000) {
 					cc.ajouterPrixAuKilo(prixVendeur*0.8);
-					this.journal.ajouter("Nous proposons un prix de " + prixVendeur*0.8);
+					this.journal.ajouter("Nous proposons un prix de " + prixVendeur*0.8 + " €");
 				} else if (10 < prixVendeur && prixVendeur <= 50 && stock.get((Chocolat) cc.getProduit())>=10000) {
 					cc.ajouterPrixAuKilo(prixVendeur*0.6);
-					this.journal.ajouter("Nous proposons un prix de " + prixVendeur*0.6);
+					this.journal.ajouter("Nous proposons un prix de " + prixVendeur*0.6 + " €");
 				} else if (prixVendeur <= 10) {
 					cc.ajouterPrixAuKilo(prixVendeur);
-					this.journal.ajouter("Nous proposons un prix de " + prixVendeur);
+					this.journal.ajouter("Nous proposons un prix de " + prixVendeur + " €");
 				} else {
-					this.journal.ajouter("Nous refusons le prix de " + prixVendeur);
+					this.journal.ajouter("Nous refusons le prix de " + prixVendeur + " €");
 				}	
 			} else if (cc.getProduit().equals(Chocolat.MG_NE_HP)) {
 				if (10 < prixVendeur && prixVendeur <= 40 && stock.get((Chocolat) cc.getProduit()) < 10000) {
 					cc.ajouterPrixAuKilo(prixVendeur*0.8);
-					this.journal.ajouter("Nous proposons un prix de " + prixVendeur*0.8);
+					this.journal.ajouter("Nous proposons un prix de " + prixVendeur*0.8 + " €");
 				} else if (10 < prixVendeur && prixVendeur <= 40 && stock.get((Chocolat) cc.getProduit())>=10000) {
 					cc.ajouterPrixAuKilo(prixVendeur*0.6);
-					this.journal.ajouter("Nous proposons un prix de " + prixVendeur*0.6);
+					this.journal.ajouter("Nous proposons un prix de " + prixVendeur*0.6 + " €");
 				} else if (prixVendeur <= 10) {
 					cc.ajouterPrixAuKilo(prixVendeur);
-					this.journal.ajouter("Nous proposons un prix de " + prixVendeur);
+					this.journal.ajouter("Nous proposons un prix de " + prixVendeur + " €");
 				} else {
-					this.journal.ajouter("Nous refusons le prix de " + prixVendeur);
+					this.journal.ajouter("Nous refusons le prix de " + prixVendeur + " €");
 				}	
 			}
 		}
