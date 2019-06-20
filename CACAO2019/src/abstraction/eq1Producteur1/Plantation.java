@@ -1,6 +1,5 @@
 package abstraction.eq1Producteur1;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -8,7 +7,6 @@ import java.util.Set;
 import java.util.Map.Entry;
 
 import abstraction.eq7Romu.produits.Feve;
-import abstraction.eq7Romu.produits.Variete;
 import abstraction.eq7Romu.ventesContratCadre.ContratCadre;
 import abstraction.eq7Romu.ventesContratCadre.Echeancier;
 import abstraction.fourni.IActeur;
