@@ -503,10 +503,10 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 			if (20.0 < prixVendeur && prixVendeur <= 70.0 && stock.get((Chocolat) cc.getProduit()) < 10000) {
 				cc.ajouterPrixAuKilo(prixVendeur*0.95);
 				this.journal.ajouter("Nous proposons un prix de " + prixVendeur*0.95 + " €");
-			} else if (20 < prixVendeur && prixVendeur <= 70 && stock.get((Chocolat) cc.getProduit())>=10000) {
+			} else if (20.0 < prixVendeur && prixVendeur <= 70.0 && stock.get((Chocolat) cc.getProduit())>=10000) {
 				cc.ajouterPrixAuKilo(prixVendeur*0.8);
 				this.journal.ajouter("Nous proposons un prix de " + prixVendeur*0.8 + " €");
-			} else if (prixVendeur <= 20) {
+			} else if (prixVendeur <= 20.0) {
 				cc.ajouterPrixAuKilo(prixVendeur);
 				this.journal.ajouter("Nous proposons un prix de " + prixVendeur + " €");
 			} else {
