@@ -295,7 +295,7 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 			}
 		}
 	}
-
+	
 	// A modifier après détermination des couts de production
 	// prix au kg
 	public double getCoutProduction(Feve f) {
