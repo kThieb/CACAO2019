@@ -28,8 +28,8 @@ public class Arbre {
 		this.nbtot.put(Feve.MERCEDES_MG_NEQ, 0);
 
 		for (int i = 0; i < 37; i++) {
-			this.nbArbres.get(Feve.FORASTERO_MG_EQ).add(2025);
-			this.nbArbres.get(Feve.FORASTERO_MG_NEQ).add(18225);
+			this.nbArbres.get(Feve.FORASTERO_MG_EQ).add(125);
+			this.nbArbres.get(Feve.FORASTERO_MG_NEQ).add(525);
 			this.nbArbres.get(Feve.MERCEDES_MG_EQ).add(75);
 			this.nbArbres.get(Feve.MERCEDES_MG_NEQ).add(675);
 
@@ -68,8 +68,8 @@ public class Arbre {
 			this.nbtot.put(f, nouveauTot);
 
 		}
-		this.nbArbres.get(Feve.FORASTERO_MG_EQ).add(2025);
-		this.nbArbres.get(Feve.FORASTERO_MG_NEQ).add(18225);
+		this.nbArbres.get(Feve.FORASTERO_MG_EQ).add(525);
+		this.nbArbres.get(Feve.FORASTERO_MG_NEQ).add(8225);
 		this.nbArbres.get(Feve.MERCEDES_MG_EQ).add(75);
 		this.nbArbres.get(Feve.MERCEDES_MG_NEQ).add(675);
 	}
