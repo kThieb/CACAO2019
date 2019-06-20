@@ -1,5 +1,6 @@
 package abstraction.eq6Distributeur2;
 
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -9,7 +10,7 @@ import abstraction.fourni.Indicateur;
 import abstraction.fourni.Monde;
 
 public class Prix {
-	
+	// Nordin
     private HashMap<Chocolat,Double> prixachatParProduit;
     private HashMap<Chocolat,Double> margeParProduit;
     private double massesalariale = 100000; //à harmoniser avec le sscond distributeur
@@ -24,21 +25,22 @@ public class Prix {
     
 
 	public Prix(Distributeur2 distributeur) {
+		
 		nous = distributeur; 
-		this.prixMG_E_SHP = new Indicateur("EQ6 " + Chocolat.MG_E_SHP.toString(), nous, 50);
+		this.prixMG_E_SHP = new Indicateur("EQ6 " + Chocolat.MG_E_SHP.toString(), nous, 20);
         Monde.LE_MONDE.ajouterIndicateur(this.prixMG_E_SHP);
         this.prixMG_NE_SHP = new Indicateur("EQ6 " + Chocolat.MG_NE_SHP.toString(), nous, 50);
         Monde.LE_MONDE.ajouterIndicateur(this.prixMG_NE_SHP);
-        this.prixMG_NE_HP = new Indicateur("EQ6 "+ Chocolat.MG_NE_HP.toString(), nous, 100);
+        this.prixMG_NE_HP = new Indicateur("EQ6 "+ Chocolat.MG_NE_HP.toString(), nous, 30);
         Monde.LE_MONDE.ajouterIndicateur(this.prixMG_NE_HP);
-        this.prixHG_E_SHP = new Indicateur("EQ6 " + Chocolat.HG_E_SHP.toString(), nous, 100);
+        this.prixHG_E_SHP = new Indicateur("EQ6 " + Chocolat.HG_E_SHP.toString(), nous, 50);
         Monde.LE_MONDE.ajouterIndicateur(this.prixHG_E_SHP);
         
         this.margeParProduit = new HashMap<Chocolat, Double>();
-        this.margeParProduit.put(Chocolat.HG_E_SHP, 10.0);
-        this.margeParProduit.put(Chocolat.MG_E_SHP, 10.0);
-        this.margeParProduit.put(Chocolat.MG_NE_SHP,10.0);
-        this.margeParProduit.put(Chocolat.MG_NE_HP, 10.0);
+        this.margeParProduit.put(Chocolat.HG_E_SHP, 1.25);
+        this.margeParProduit.put(Chocolat.MG_E_SHP, 1.25);
+        this.margeParProduit.put(Chocolat.MG_NE_SHP,1.25);
+        this.margeParProduit.put(Chocolat.MG_NE_HP, 1.25);
 
         
         this.prixachatParProduit =  new HashMap<Chocolat,Double>();
@@ -102,18 +104,18 @@ public class Prix {
     public double cout (Chocolat choco) { // cout de structure a pendre en compte lors de la vente d'un produit
     	int i = Monde.LE_MONDE.getStep()%24 - 1;
     	int t = Monde.LE_MONDE.getStep();
-    	double qv=0;
+    	/*double qv=0;
     	double c = 0.25;
-    	/*if (i != 0) {
+    	if (i != 0) {
     		for (int j = 24*i; j <24*i+24 ; j++) {
     			qv = qv + nous.getIndicateurStock(choco).getHistorique().get(nous.getIndicateurStock(choco).getHistorique().getTaille() -t+j).getValeur();
     			}
     		c = (coutstructure+massesalariale)*.25/qv;
+
     	}
-    	else { c = 0.25; } 
-    	}
-    	*/
-    	return c;
+    	else { c = 0.25; } */
+    	
+    	return 1.25;
     }
 	
     public void ajustementMarge(ArrayList<Double> historique, Chocolat c ) {
@@ -124,13 +126,20 @@ public class Prix {
         		double stockprecedent = nous.getIndicateurStock(c).getHistorique().get(t-1).getValeur();
         		double stock_2 = nous.getIndicateurStock(c).getHistorique().get(t-2).getValeur();
         		double stock_3=nous.getIndicateurStock(c).getHistorique().get(t-3).getValeur();
-        		if ( historique.get(n-1)/stockprecedent < 0.1 
-                                && historique.get(n-2)/stock_2 < 0.1 
-                                &&historique.get(n-3)/stock_3 < 0.1 ) {
-                        double nouvellemarge = this.getMargeParProduit(c)*0.99;
-                        System.out.println(" nouvelle marge " +nouvellemarge +" "+ c  );
-                        setMargeParProduit(c, nouvellemarge);
-                }
+        		if (stockprecedent != 0 && stock_2!=0 && stock_3!=0) {
+        			if ( historique.get(n-1)/stockprecedent < 0.1 
+                            && historique.get(n-2)/stock_2 < 0.1 
+                            &&historique.get(n-3)/stock_3 < 0.1 ) {
+                    double nouvellemarge = this.getMargeParProduit(c)*0.95;
+                    setMargeParProduit(c, nouvellemarge);
+            }
+        			if ( historique.get(n-1)/stockprecedent > 0.9 
+                            && historique.get(n-2)/stock_2 > 0.9 
+                            &&historique.get(n-3)/stock_3 > 0.9 ) {
+                    double nouvellemarge = this.getMargeParProduit(c)*1.05;
+                    setMargeParProduit(c, nouvellemarge);
+        		}		
+        }
         }
 
 }
