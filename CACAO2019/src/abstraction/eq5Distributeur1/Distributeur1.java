@@ -114,9 +114,10 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 		//Prise en compte de coût fixe
 		this.soldeBancaire.retirer(this, ((this.soldeBancaire.getCompteBancaire()-this.soldeDebutStep)*this.coutfixe));
 		this.indicateursolde.retirer(this, ((this.soldeBancaire.getCompteBancaire()-this.soldeDebutStep)*this.coutfixe));
+		//Prise en compte de la pérénité des stocks
+		this.stock.pereniteStock(this.stock.getStock(), this);
 		//Prise en compte du coût du stock
-		//this.soldeBancaire.retirer(this, this.coutsdestockage*this.stock.getStockTotal());
-		//this.indicateursolde.retirer(this, this.coutsdestockage*this.stock.getStockTotal());
+		
 		//------------------ Publicité -----------------------------------------------------
 		//Janvier 	Step 1 à 4					Juillet 	Step 25 à 28
 		//Février 	Step 5 à 8					Août		Step 29 à 32
