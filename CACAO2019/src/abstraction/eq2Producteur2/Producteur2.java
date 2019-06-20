@@ -118,11 +118,12 @@ public void recolte(Feve f) {
 			Random rand=new Random();
 			this.maladie_predateurs=-rand.nextInt(200)/1000;
 			this.meteo=rand.nextInt(200)/1000-0.1;
-			double qualitePRoduction = maladie_predateurs+meteo;
+			double qualiteProduction = maladie_predateurs+meteo;
+			System.out.println(qualiteProduction);
 			//double qualiteProduction = (Math.random() - 0.5) / 2.5 + 1; // entre 0.8 et 1.2
 			double nouveauStock = this.gestionnaireFeve.getStock(f)
 
-						+ this.gestionnaireFeve.getProductionParStep(f) * (1 + qualitePRoduction);		
+						+ this.gestionnaireFeve.getProductionParStep(f) * (1 + qualiteProduction);		
 			this.gestionnaireFeve.setStock(this, f, nouveauStock);}}
 
 
