@@ -63,6 +63,7 @@ public class VendeurContratCadre extends Producteur1Interne implements IVendeurC
 						*/this.getPrixAboutissantAcc(produit).put(this.getPrixAuKilo().get(produit), false);
 						//this.journal1.ajouter("On répond:"+this.getPrixAuKilo().get(produit));
 						return this.getPrixAuKilo().get(produit);}
+		
 				}  
 					//else {this.journal1.ajouter("Prix de Vente"+ this.getPrixAuKilo().get(produit));
 					//return this.getPrixAuKilo().get(produit);}

@@ -73,7 +73,9 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 //	protected int compteurRecolte = 0; 
 	protected int stepRecolteExceptionnellementReduite;
 
-
+	protected Indicateur prixCriollo;
+	protected Indicateur prixFora;
+	protected Indicateur prixTrini;
 	protected Indicateur soldeBancaire;
 	// BEGIN ANTI
 	// private StockEnVente<Feve> stockEnVente;
@@ -124,6 +126,9 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		prixAuKilo.put(Feve.FORASTERO_MG_NEQ, 2.0);
 		prixAuKilo.put(Feve.TRINITARIO_MG_EQ, 2.2);
 		prixAuKilo.put(Feve.TRINITARIO_MG_NEQ, 1.5);
+		
+		this.prixCriollo=new Indicateur("EQ1 prix Criollo", this, this.prixAuKilo.get(Feve.CRIOLLO_HG_EQ));
+		Monde.LE_MONDE.ajouterIndicateur(this.prixCriollo);
 		
 		
 		/*for (int next = 0; next < dureeDeVieCacaoyer - 1; next++) {
@@ -461,7 +466,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 
 							}
 			}}			
-	}
+	}this.prixCriollo.setValeur(this, this.prixAuKilo.get(Feve.CRIOLLO_HG_EQ));
 	}
 	//END MANON
 	//BEGIN ANTI
