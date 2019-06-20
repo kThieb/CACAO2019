@@ -47,7 +47,6 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 
                 //NORDIN et Carolinecar
 
-        		gestionPrix = new Prix(this);
                 this.contratEnCoursStep=0;
                 this.journal = new Journal("Journal EQ6");
                 Monde.LE_MONDE.ajouterJournal(this.journal);
@@ -106,6 +105,8 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
                 historiqueMG_NE_SHP = new ArrayList<Double> ();
                 historiqueMG_NE_HP = new ArrayList<Double> ();
                 historiqueHG_E_SHP = new ArrayList<Double> ();
+
+        		gestionPrix = new Prix(this);
         }
 
 
@@ -714,12 +715,13 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
                 Chocolat produit = cc.getProduit();
 
                 double dernierprixpropose = cc.getPrixAuKilo();
-                double notreprix = this.getPrix(produit);
+                double notreprix = this.gestionPrix.getPrixachatParProduit(produit);
 
                 if (notreprix/dernierprixpropose >= this.gestionPrix.getMargeParProduit(produit)) {
                         satisfait = true;
                         gestionPrix.setPrixachatParProduit(produit, dernierprixpropose);
                         gestionPrix.setPrixParProduit(produit);
+                        System.out.println(" dernier prix proposé " +  dernierprixpropose + notreprix  );
                 }else {
                         satisfait = false;
                 }
