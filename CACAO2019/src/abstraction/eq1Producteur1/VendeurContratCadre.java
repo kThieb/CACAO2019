@@ -1,13 +1,11 @@
 package abstraction.eq1Producteur1;
 
 import abstraction.eq7Romu.produits.Feve;
-import abstraction.eq7Romu.produits.Variete;
 //ContratCadre;
 import abstraction.eq7Romu.ventesContratCadre.ContratCadre;
 import abstraction.eq7Romu.ventesContratCadre.Echeancier;
 import abstraction.eq7Romu.ventesContratCadre.IVendeurContratCadre;
 import abstraction.eq7Romu.ventesContratCadre.StockEnVente;
-import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 import static abstraction.fourni.Monde.*;
 

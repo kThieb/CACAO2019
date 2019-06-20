@@ -2,13 +2,8 @@ package abstraction.eq1Producteur1;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
-import java.util.Map.Entry;
-
-import abstraction.eq1Producteur1.ventesCacaoAleatoires.SuperviseurVentesCacaoAleatoires;
 import abstraction.eq7Romu.produits.Feve;
 import abstraction.eq7Romu.produits.Variete;
 import abstraction.eq7Romu.ventesContratCadre.ContratCadre;
@@ -16,7 +11,6 @@ import abstraction.fourni.IActeur;
 import abstraction.fourni.Indicateur;
 import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
-import abstraction.eq7Romu.ventesContratCadre.Echeancier;
 import static abstraction.fourni.Monde.*;
 
 
@@ -24,6 +18,11 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 
 	public static int COUT_FIXE = 00;
 	public static int COUT_VARIABLE_STOCK = 0;
+	public static int nbrEmployes = 20 ;
+	public static int salaire= 130 ;
+	public static int masseSalariale = nbrEmployes*salaire;
+
+ 
 	
 	protected Indicateur stockFeves;
 	protected Stock stockCriollo;
@@ -54,20 +53,22 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 	protected HashMap<Double, Boolean> prixTrinitarioAboutissantAcc;
 	protected HashMap<Double, Boolean> prixForasteroAboutissantAcc;
 
-	protected int compteurSteps = 0 ;
+	//protected int compteurSteps = 0 ;
 	public static int dureeDeVieCacaoyer = 960 ; 
-	protected int criolloPlante ; 
+	/*protected int criolloPlante ; 
 	protected int forasteroPlante ; 
-	protected int trinitarioPlante ;
+	protected int trinitarioPlante ;*/
 	public static int unAnEnSteps = 24 ; 
 	public static int deuxAnsEnSteps = 48 ;
 	public static int troisAnsEnSteps = 72 ; 
 	public static int quatreAnsEnSteps = 96 ;
 	public static int cinqAnsEnSteps = 120 ;
 	public static int dureeDeVieFeve = unAnEnSteps; // durée de vie en nexts
+	public static int coutPlanter = 500 ;
+	
 //END ANTI
 
-	protected int compteurRecolte = 0;
+//	protected int compteurRecolte = 0; 
 	protected int stepRecolteExceptionnellementReduite;
 
 
@@ -160,9 +161,10 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 
 	// BEGIN Nas
 	public double getRecolte(Feve feve) { // Récolte avec un évènement aléatoire qui perturberait 1 récolte par an
+
 		
 		
-		if (feve.getVariete() == Variete.CRIOLLO) {
+		if (feve.getVariete() == Variete.CRIOLLO) { 
 			return stepRecolteExceptionnellementReduite==LE_MONDE.getStep()%unAnEnSteps ? recolteCriollo*Math.random() :recolteCriollo;
 		} else if (feve.getVariete() == Variete.FORASTERO) {
 			return stepRecolteExceptionnellementReduite==LE_MONDE.getStep()%unAnEnSteps ? recolteForastero*Math.random() :recolteForastero;
@@ -185,11 +187,10 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 	 
 
 	
-	public void genereAlea() { //génère un step aléatoire dans une année
-		if (compteurRecolte<unAnEnSteps) {
-			compteurRecolte++;
-		} else {
-			compteurRecolte=0;
+
+	public void genereAlea() { // génère un step où la récolte est exceptionnellement réduite
+		if (LE_MONDE.getStep()%unAnEnSteps==0) {
+
 			Random r=new Random();
 			stepRecolteExceptionnellementReduite=r.nextInt(unAnEnSteps);
 		}
@@ -213,7 +214,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		// BEGIN Nas
 		updateStock();
 		this.updatePrix();
-		getSoldeBancaire().retirer(this, COUT_FIXE + COUT_VARIABLE_STOCK * stockFeves.getValeur());
+		getSoldeBancaire().retirer(this, COUT_FIXE + COUT_VARIABLE_STOCK * stockFeves.getValeur() + masseSalariale);
 		// END Nas
 		//BEGIN ANTI 
 		updatePlantation();
@@ -420,7 +421,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		*/
 	//END ANTI
 	//BEGIN MANON
-	public double moyenneDemande(Feve feve) {
+	public double moyenneDemande(Feve feve) { // demande moyenne par an (prend en compte les contrats programmés jusqu'à 5 ans dans le futur)
 		return getPlantation(feve).moyenneDemande();
 	}
 	
@@ -446,13 +447,16 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 			
 			else {
 				if(this.moyennePrixNonAccepte(produit)<this.getPrixAuKilo().get(produit)) { //On regarde la moyenne des prix n'ayant pas engendré de Cc si elle est inférieur au prix proposé
+
 					if(this.getStockI(produit).getValeur()*(this.getPrixAuKilo().get(produit)-0.1)>this.getCOUT_FIXE()/3+this.getStockI(produit).getValeur()*this.getCOUT_VARIABLE_STOCK()
 							||this.getStockI(produit).getValeur()*(this.getPrixAuKilo().get(produit)-0.1)>0) {// On vérifie qu'on ne vend pas à perte
 	//	System.out.println("put "+(this.getPrixAuKilo().get(produit)-0.1));
 	//	if (this.getPrixAuKilo().get(produit)-0.1<0.0) {
 	//		System.exit(0);
+
 		}
 						this.prixAuKilo.put(produit, this.getPrixAuKilo().get(produit)-0.1);//diminution du prix
+
 							}
 			}}			
 	}
@@ -511,6 +515,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		for (Feve feve:getFeve()) {
 			setRecolte(feve,getPlantation(feve).getRecolte(LE_MONDE.getStep()));
 			if(LE_MONDE.getStep()%unAnEnSteps == 0){
+				getSoldeBancaire().retirer(this, coutPlanter);
 				getPlantation(feve).updatePlantation(LE_MONDE.getStep(),getPlantation(feve).moyenneDemande()*1/40);
 			} else{
 				getPlantation(feve).updatePlantation(LE_MONDE.getStep(),0);
@@ -599,6 +604,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 	public  void setCOUT_VARIABLE_STOCK(int cOUT_VARIABLE_STOCK) {
 		COUT_VARIABLE_STOCK = cOUT_VARIABLE_STOCK;
 	}
+
 	public Indicateur getStockFeves() {
 		return stockFeves;
 	}
@@ -690,19 +696,19 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 	public void setPlantationTrinitario(HashMap<Integer, Integer> plantationTrinitario) {
 		this.plantationTrinitario = plantationTrinitario;
 	}*/
-	public int getCompteurSteps() {
+	/*public int getCompteurSteps() {
 		return compteurSteps;
 	}
 	public void setCompteurSteps(int compteurSteps) {
 		this.compteurSteps = compteurSteps;
-	}
+	}*/
 	public static int getDureeDeVieCacaoyer() {
 		return dureeDeVieCacaoyer;
 	}
 	public static void setDureeDeVieCacaoyer(int dureeDeVieCacaoyer) {
 		Producteur1Interne.dureeDeVieCacaoyer = dureeDeVieCacaoyer;
 	}
-	public int getCriolloPlante() {
+	/*public int getCriolloPlante() {
 		return criolloPlante;
 	}
 	public void setCriolloPlante(int criolloPlante) {
@@ -719,7 +725,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 	}
 	public void setTrinitarioPlante(int trinitarioPlante) {
 		this.trinitarioPlante = trinitarioPlante;
-	}
+	}*/
 	public static int getUnAnEnSteps() {
 		return unAnEnSteps;
 	}
@@ -756,12 +762,12 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 	public static void setDureeDeVieFeve(int dureeDeVieFeve) {
 		Producteur1Interne.dureeDeVieFeve = dureeDeVieFeve;
 	}
-	public int getcompteurRecolte() {
+/*	public int getcompteurRecolte() {
 		return compteurRecolte;
 	}
 	public void setcompteurRecolte(int compteurRecolte) {
 		this.compteurRecolte = compteurRecolte;
-	}
+	}*/
 	/*public int getAlea() {
 		return alea;
 	}
