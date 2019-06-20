@@ -38,7 +38,9 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	//begin sacha
 	private List<ContratCadre<Chocolat>> contratsChocolatEnCours;
 	private List<ContratCadre<Feve>> contratsFeveEnCours;
+	private List<Double> moyennesQuantiteVendues ; 
 	//end sacha
+	
 	//begin Raphael
 	private Marge margeChocolats;
 	private CoutEnFeves coutEnFeves;
@@ -136,6 +138,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		//begin sacha
 		this.contratsChocolatEnCours = new ArrayList<ContratCadre<Chocolat>>();
 		this.contratsFeveEnCours = new ArrayList<ContratCadre<Feve>>();
+		this.moyennesQuantiteVendues = new ArrayList<Double>();
 		//end sacha
 		
 
@@ -163,6 +166,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		// feves en stock = utilisables
 		
 		ArrayList<Feve> aDisposition = this.stockFeves.getProduitsEnStock();
+		ArraList<Double> moyenneQuantitéVendue = this.moyennesQuantiteVendues();
 		
 		for (Feve f: aDisposition) {
 			
