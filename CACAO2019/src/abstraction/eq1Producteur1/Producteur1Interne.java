@@ -3,8 +3,6 @@ package abstraction.eq1Producteur1;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.Random;
 import abstraction.eq7Romu.produits.Feve;
 import abstraction.eq7Romu.produits.Variete;
@@ -16,7 +14,7 @@ import abstraction.fourni.Monde;
 import static abstraction.fourni.Monde.*;
 
 
-public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire */, Observer {
+public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire */ {
 
 
 	public static int COUT_VARIABLE_STOCK = 0;
@@ -68,12 +66,11 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 	public static int cinqAnsEnSteps = 120 ;
 	public static int dureeDeVieFeve = unAnEnSteps; // durée de vie en nexts
 	public static int coutPlanter = 500 ;
-	public static int stockDepart = 3000;
 	
 //END ANTI
 
 //	protected int compteurRecolte = 0; 
-	protected int recolteExceptionnellementReduite;
+	protected int stepRecolteExceptionnellementReduite;
 
 
 	protected Indicateur soldeBancaire;
@@ -94,12 +91,11 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		this.prixCriolloAboutissantAcc=new HashMap<Double, Boolean>();
 		this.prixForasteroAboutissantAcc=new HashMap<Double, Boolean>();
 		this.prixTrinitarioAboutissantAcc=new HashMap<Double, Boolean>();
-		this.stockFeves = new Indicateur("EQ1 stock feves", this, stockDepart);  
-		this.stockFeves.addObserver(this);
+		this.stockFeves = new Indicateur("EQ1 stock feves", this, 3000);  
 		this.contratEnCours= new ArrayList<ContratCadre<Feve>> ();
 		this.historiqueSoldeBancaire= new ArrayList<Double> ();
 		Random r=new Random();
-		recolteExceptionnellementReduite=r.nextInt(2);
+		stepRecolteExceptionnellementReduite=r.nextInt(unAnEnSteps);
 		//BEGIN ANTI 
 		/*
 		this.plantationCriolloI = new Indicateur("EQ1 plantation criollo", this, 80);
@@ -170,11 +166,11 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		
 		
 		if (feve.getVariete() == Variete.CRIOLLO) { 
-			return recolteExceptionnellementReduite*unAnEnSteps/2==LE_MONDE.getStep()%unAnEnSteps ? recolteCriollo*Math.random() :recolteCriollo;
+			return stepRecolteExceptionnellementReduite==LE_MONDE.getStep()%unAnEnSteps ? recolteCriollo*Math.random() :recolteCriollo;
 		} else if (feve.getVariete() == Variete.FORASTERO) {
-			return recolteExceptionnellementReduite*unAnEnSteps/2==LE_MONDE.getStep()%unAnEnSteps ? recolteForastero*Math.random() :recolteForastero;
+			return stepRecolteExceptionnellementReduite==LE_MONDE.getStep()%unAnEnSteps ? recolteForastero*Math.random() :recolteForastero;
 		} else if (feve.getVariete() == Variete.TRINITARIO) {
-			return recolteExceptionnellementReduite*unAnEnSteps/2==LE_MONDE.getStep()%unAnEnSteps ? recolteTrinitario*Math.random() :recolteTrinitario;
+			return stepRecolteExceptionnellementReduite==LE_MONDE.getStep()%unAnEnSteps ? recolteTrinitario*Math.random() :recolteTrinitario;
 		}
 		
 		return Double.NaN;
@@ -197,7 +193,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		if (LE_MONDE.getStep()%unAnEnSteps==0) {
 
 			Random r=new Random();
-			recolteExceptionnellementReduite=r.nextInt(2);
+			stepRecolteExceptionnellementReduite=r.nextInt(unAnEnSteps);
 		}
 	}
 	
@@ -215,7 +211,6 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 	public void initialiser() {
 	}
 
-	
 	public void next() {
 		// BEGIN Nas
 		updateStock();
@@ -522,8 +517,9 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		for (Feve feve:getFeve()) {
 			setRecolte(feve,getPlantation(feve).getRecolte(step));
 			if(step%unAnEnSteps == 0){
-				double plantationActuelle = getPlantation(feve).getQuantite(step);
+				double plantationActuelle = getPlantation(feve).getInd().getValeur();
 				double demande = getPlantation(feve).moyenneDemande();
+
 				if (plantationActuelle - demande < plantationActuelle*0.05 && plantationActuelle - demande>0) {
 					double aPlanter = plantationActuelle*0.05/40; // pour pas avoir tout pile assez, on garde 5% de marge
 					getPlantation(feve).updatePlantation(step, aPlanter);
@@ -808,11 +804,6 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 	
 	public void setHistoriqueContrats(HashMap<Integer, ContratCadre<Feve>> historiqueContrats) {
 		this.historiqueContrats = historiqueContrats;
-	}
-	@Override
-	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
-		
 	}
 	
 	
