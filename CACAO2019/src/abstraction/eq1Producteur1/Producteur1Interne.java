@@ -24,6 +24,11 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 
 	public static int COUT_FIXE = 00;
 	public static int COUT_VARIABLE_STOCK = 0;
+	public static int nbrEmployes = 20 ;
+	public static int salaire= 130 ;
+	public static int masseSalariale = nbrEmployes*salaire;
+
+ 
 	
 	protected Indicateur stockFeves;
 	protected Stock stockCriollo;
@@ -65,6 +70,8 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 	public static int quatreAnsEnSteps = 96 ;
 	public static int cinqAnsEnSteps = 120 ;
 	public static int dureeDeVieFeve = unAnEnSteps; // durée de vie en nexts
+	public static int coutPlanter = 500 ;
+	
 //END ANTI
 
 	protected int compteurRecolte = 0;
@@ -213,7 +220,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		// BEGIN Nas
 		updateStock();
 		this.updatePrix();
-		getSoldeBancaire().retirer(this, COUT_FIXE + COUT_VARIABLE_STOCK * stockFeves.getValeur());
+		getSoldeBancaire().retirer(this, COUT_FIXE + COUT_VARIABLE_STOCK * stockFeves.getValeur() + masseSalariale);
 		// END Nas
 		//BEGIN ANTI 
 		updatePlantation();
@@ -443,13 +450,13 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 				this.prixAuKilo.put(produit, this.getPrixAuKilo().get(produit)+0.1);}
 			
 			else {
-				if(this.moyennePrixNonAccepte(produit)>this.getPrixAuKilo().get(produit)) {
+				//if(this.moyennePrixNonAccepte(produit)>this.getPrixAuKilo().get(produit)) {
 					if(this.getStockI(produit).getValeur()*(this.getPrixAuKilo().get(produit)-0.1)>this.getCOUT_FIXE()/3+this.getStockI(produit).getValeur()*this.getCOUT_VARIABLE_STOCK()
 							||this.getStockI(produit).getValeur()*(this.getPrixAuKilo().get(produit)-0.1)>0) {// On vérifie qu'on ne vend pas à perte
 	//	System.out.println("put "+(this.getPrixAuKilo().get(produit)-0.1));
 	//	if (this.getPrixAuKilo().get(produit)-0.1<0.0) {
 	//		System.exit(0);
-		}
+	//	}
 						this.prixAuKilo.put(produit, this.getPrixAuKilo().get(produit)-0.1);
 							}
 					else {
@@ -511,6 +518,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		for (Feve feve:getFeve()) {
 			setRecolte(feve,getPlantation(feve).getRecolte(LE_MONDE.getStep()));
 			if(LE_MONDE.getStep()%unAnEnSteps == 0){
+				getSoldeBancaire().retirer(this, coutPlanter);
 				getPlantation(feve).updatePlantation(LE_MONDE.getStep(),getPlantation(feve).moyenneDemande()*1/40);
 			} else{
 				getPlantation(feve).updatePlantation(LE_MONDE.getStep(),0);
@@ -599,6 +607,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 	public  void setCOUT_VARIABLE_STOCK(int cOUT_VARIABLE_STOCK) {
 		COUT_VARIABLE_STOCK = cOUT_VARIABLE_STOCK;
 	}
+
 	public Indicateur getStockFeves() {
 		return stockFeves;
 	}
