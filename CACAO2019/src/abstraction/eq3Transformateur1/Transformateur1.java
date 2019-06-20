@@ -177,7 +177,6 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 				for (Chocolat c: this.peutEtreProduit) {
 					if (this.coutEnFeves.getCoutEnFeves(c, f)>0.0) {
 						aProduire.add(c);
-						System.out.println("c'est le prix" + this.getPrix(c, 1000.0));
 					}
 				}
 				
