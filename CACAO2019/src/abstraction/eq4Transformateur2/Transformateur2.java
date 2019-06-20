@@ -18,7 +18,7 @@ import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 
 public class Transformateur2 implements IActeur, IAcheteurContratCadre<Feve>, IVendeurContratCadre<Chocolat> {
-	private Journal journal;
+	protected Journal journal;
 
 	// Indicateurs
 	protected Indicateur iStockFeves;
@@ -57,7 +57,7 @@ public class Transformateur2 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	// Constantes
 	public static final int STEPS_PAR_ANNEE = 24;
 	private static final double MAX_PRODUCTION_PAR_STEP = 10e3; // Production max. de chocolats par step, en kg
-	private static final int STEPS_ESTIMATION_DEMANDE_FUTURE = 12; // Le nombre de steps dans le futur pour lesquels on estime la demande
+	protected static final int STEPS_ESTIMATION_DEMANDE_FUTURE = 12; // Le nombre de steps dans le futur pour lesquels on estime la demande
 	private static final double MARGE_STOCK_CHOCOLAT = 0.1; // La marge de chocolat que l'on produit en plus de la demande estimée
 	private static final double QTE_PRODUCTION_MIN = 10.0;
 	
@@ -77,7 +77,7 @@ public class Transformateur2 implements IActeur, IAcheteurContratCadre<Feve>, IV
 
 	public void initialiser() {
 		// Initialisation du journal
-		this.journal = new Journal("jEq4");
+		this.journal = new Journal("Journal EQ4");
 		Monde.LE_MONDE.ajouterJournal(this.journal);
 		this.journal.ajouter("Initialisation du transformateur 2 (Eq4).");
 		
@@ -126,14 +126,12 @@ public class Transformateur2 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		archiverContratsTerminés(contratsFevesEnCours, archiveContratsFeves);
 		archiverContratsTerminés(contratsChocolatEnCours, archiveContratsChocolat);
 		
-		System.out.println("CCs Chocolat en cours : " + contratsChocolatEnCours.size());
-		
+	
 		/** ---- Transformations ---- (Kelian) */
 		double qteTransformee = 0.0;
 		double lastQteTransformee = 0.0;
 		do {;
 			lastQteTransformee = effectuerTransformation(); 
-			System.out.println("Transformation de " + lastQteTransformee + " kg");
 			qteTransformee += lastQteTransformee;
 		} while(lastQteTransformee != 0.0 && qteTransformee < MAX_PRODUCTION_PAR_STEP);
 		
@@ -202,8 +200,6 @@ public class Transformateur2 implements IActeur, IAcheteurContratCadre<Feve>, IV
 				qte = maxRecette.getQteProductible(soldeBancaire.getValeur() * 0.6); // on transforme le plus possible jusqu'à 60% de notre sold
 			if(qte < QTE_PRODUCTION_MIN)
 				return 0.0;
-			
-			System.out.println("Production de chocolat : " + qte);
 			
 			return qte;
 		}
