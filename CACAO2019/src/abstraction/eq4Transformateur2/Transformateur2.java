@@ -199,14 +199,14 @@ public class Transformateur2 implements IActeur, IAcheteurContratCadre<Feve>, IV
 			// à ce stade maxRecette ne devrait pas être null, sauf si on nous demande de produire un chocolat qui n'a pas de recette associée.
 			
 			double qte = 0;
-			if(maxRecette.calculCoutTransformation(c.getY()) < soldeBancaire.getValeur() * 0.6) {
-				qte = c.getY();}
-			else {
+			if(maxRecette.calculCoutTransformation(c.getY()) < soldeBancaire.getValeur() * 0.6)
+				qte = c.getY();
+			else
 				qte = maxRecette.getQteProductible(soldeBancaire.getValeur() * 0.6); // on transforme le plus possible jusqu'à 60% de notre sold
-			}
-			if(qte < QTE_PRODUCTION_MIN) {
-				return 0.0;}
-			executerRecette(maxRecette,qte);
+
+			if(qte < QTE_PRODUCTION_MIN)
+				return 0.0;
+			executerRecette(maxRecette, qte);
 			return qte;
 			
 		}
@@ -231,6 +231,7 @@ public class Transformateur2 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		double coutTotal = stockFeves.getPrix(r.getInputFeve(), fevesNecessaires) + r.calculCoutTransformation(qte);
 		stockFeves.prendreProduits(r.getInputFeve(), fevesNecessaires);
 		iStockFeves.retirer(this, fevesNecessaires);
+		System.out.println(iStockFeves.getValeur() + " après consommation de " + fevesNecessaires + " kg");
 		stocksChocolat.ajouterTas(r.getOutput(), new TasProduit<Chocolat>(qte, qte / coutTotal));
 		iStockChocolat.ajouter(this, qte);
 		

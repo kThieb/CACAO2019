@@ -162,7 +162,7 @@ public class Transformateur2AcheteurCC implements IAcheteurContratCadre<Feve> {
 		for(Feve f : t2.FEVES_ACHAT)
 			echeanciers.put(f, creerEcheancierPourPlanning(f));
 		return echeanciers;
-	}
+	}	
 	
 	/** Pour une fève donnée, crée un échéancier des quantités que l'on doit acheter pour satisfaire le planning de stock */
 	private Echeancier creerEcheancierPourPlanning(Feve f) {
