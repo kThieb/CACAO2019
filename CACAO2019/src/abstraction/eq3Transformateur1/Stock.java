@@ -38,6 +38,8 @@ public class Stock<T> {
 	//          GETTERS
 	// -----------------------------------------------------------
 	
+	
+	
 	public double getQuantiteEnStock(T produit) {
 		try { 
 			double result = 0.;
@@ -48,6 +50,15 @@ public class Stock<T> {
 		}
 		catch (NullPointerException e) { return 0.; }
 	}
+	
+	public double getQuantiteEnStockTotale() {
+		double result = 0.;
+		for (T t : this.stock.keySet()) {
+			result = result + this.getQuantiteEnStock(t);
+		}
+		return result;
+	}
+	
 	
 	public boolean estEnStock(T produit) {
 		return this.stock.containsKey(produit) && (this.getQuantiteEnStock(produit) > 1.);
@@ -159,6 +170,7 @@ public class Stock<T> {
 			}
 		}
 	}
+	
 	
 	// -----------------------------------------------------------
 	//          TESTS

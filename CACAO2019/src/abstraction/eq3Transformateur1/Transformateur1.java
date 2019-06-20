@@ -84,9 +84,9 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		// stock de chocolat
 		this.stockChocolat = new Stock<Chocolat>(this.peutEtreProduit);
 		for (Chocolat c: this.peutEtreProduit) {
-			this.stockChocolat.addQuantiteEnStock(c, 1000000);
+			this.stockChocolat.addQuantiteEnStock(c, 10000);
 		}
-		this.iStockChocolat = new Indicateur("EQ3 stock chocolat", this, this.peutEtreProduit.size()*1000000);
+		this.iStockChocolat = new Indicateur("EQ3 stock chocolat", this, this.peutEtreProduit.size()*10000);
 
 		// --------------------------------- end eve
 
@@ -127,7 +127,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		// --------------------------------- end Raph
 		
 		
-		this.soldeBancaire=new Indicateur("EQ3 solde bancaire", this, 2000000);
+		this.soldeBancaire=new Indicateur("EQ3 solde bancaire", this, 100000);
 		this.journal = new Journal ("Journal EQ3");
 		Monde.LE_MONDE.ajouterJournal(this.journal);
 		System.out.println("ajout du journal jEq3");
@@ -328,7 +328,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		}
 		this.journal.ajouter("--> solde =" + solde);
 
-		if (solde>10000.0) { // On ne cherche pas a etablir d'autres contrats d'achat si le compte bancaire est trop bas
+		if ((solde>10000.0)&&(stockFeves.getQuantiteEnStockTotale()<100000)) { // On ne cherche pas a etablir d'autres contrats d'achat si le compte bancaire est trop bas
 			List<IVendeurContratCadre<Feve>> vendeurs = new ArrayList<IVendeurContratCadre<Feve>>();
 			this.journal.ajouter("  recherche vendeur de "+f);
 			for (IActeur acteur : Monde.LE_MONDE.getActeurs()) {
@@ -577,7 +577,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 				if (Math.random()<0.25) { // probabilite de 25% d'accepter
 					cc.ajouterPrixAuKilo(cc.getPrixAuKilo());
 				} else {
-					cc.ajouterPrixAuKilo((prixVendeur*(0.9+Math.random()*0.1))); // rabais de 10% max
+					cc.ajouterPrixAuKilo((prixVendeur*(0.7+Math.random()*0.3))); // rabais de 30% max
 				}
 			}
 		}
