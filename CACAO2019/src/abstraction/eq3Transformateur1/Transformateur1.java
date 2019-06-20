@@ -166,7 +166,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		// feves en stock = utilisables
 		
 		ArrayList<Feve> aDisposition = this.stockFeves.getProduitsEnStock();
-		ArraList<Double> moyenneQuantitéVendue = this.moyennesQuantiteVendues();
+		//ArraList<Double> moyenneQuantitéVendue = this.moyennesQuantiteVendues();
 		
 		for (Feve f: aDisposition) {
 			
