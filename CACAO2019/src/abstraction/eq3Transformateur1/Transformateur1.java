@@ -204,6 +204,10 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		}
 		retireVieuxContrats();
 		
+		// -------------------------- end eve et sacha
+		
+		// -------------------------- begin eve
+		
 		// retrait des lots perimes & examen des pertes
 		double quantiteAvantFeves = 0.;
 		for (Feve f: this.stockFeves.getProduitsEnStock()) {
@@ -216,8 +220,6 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		
 		this.stockFeves.decrDate();
 		this.stockChocolat.decrDate();
-
-		// -------------------------- end eve et sacha
 
 		
 		double quantiteApresFeves = 0.;
