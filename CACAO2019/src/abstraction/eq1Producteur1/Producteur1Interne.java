@@ -72,7 +72,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 //END ANTI
 
 //	protected int compteurRecolte = 0; 
-	protected int stepRecolteExceptionnellementReduite;
+	protected int recolteExceptionnellementReduite;
 
 
 	protected Indicateur soldeBancaire;
@@ -98,7 +98,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		this.contratEnCours= new ArrayList<ContratCadre<Feve>> ();
 		this.historiqueSoldeBancaire= new ArrayList<Double> ();
 		Random r=new Random();
-		stepRecolteExceptionnellementReduite=r.nextInt(unAnEnSteps);
+		recolteExceptionnellementReduite=r.nextInt(2);
 		//BEGIN ANTI 
 		/*
 		this.plantationCriolloI = new Indicateur("EQ1 plantation criollo", this, 80);
@@ -169,11 +169,11 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		
 		
 		if (feve.getVariete() == Variete.CRIOLLO) { 
-			return stepRecolteExceptionnellementReduite==LE_MONDE.getStep()%unAnEnSteps ? recolteCriollo*Math.random() :recolteCriollo;
+			return recolteExceptionnellementReduite==LE_MONDE.getStep()%unAnEnSteps ? recolteCriollo*Math.random() :recolteCriollo;
 		} else if (feve.getVariete() == Variete.FORASTERO) {
-			return stepRecolteExceptionnellementReduite==LE_MONDE.getStep()%unAnEnSteps ? recolteForastero*Math.random() :recolteForastero;
+			return recolteExceptionnellementReduite==LE_MONDE.getStep()%unAnEnSteps ? recolteForastero*Math.random() :recolteForastero;
 		} else if (feve.getVariete() == Variete.TRINITARIO) {
-			return stepRecolteExceptionnellementReduite==LE_MONDE.getStep()%unAnEnSteps ? recolteTrinitario*Math.random() :recolteTrinitario;
+			return recolteExceptionnellementReduite==LE_MONDE.getStep()%unAnEnSteps ? recolteTrinitario*Math.random() :recolteTrinitario;
 		}
 		
 		return Double.NaN;
@@ -196,7 +196,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		if (LE_MONDE.getStep()%unAnEnSteps==0) {
 
 			Random r=new Random();
-			stepRecolteExceptionnellementReduite=r.nextInt(unAnEnSteps);
+			recolteExceptionnellementReduite=r.nextInt(2);
 		}
 	}
 	
