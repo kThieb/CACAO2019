@@ -102,16 +102,16 @@ public class Stock<T> {
 				double quantiteRestante = quantite;
 				Lot lot = ((ArrayList<Lot>) this.stock.get(produit)).get(0);
 				while (quantiteRestante > 10e-8) {
-					System.out.println("dans le while");
+//					System.out.println("dans le while");
 					lot = ((ArrayList<Lot>) this.stock.get(produit)).get(0);
 					this.stock.get(produit).remove(lot);
 					if (lot.getQuantite() > quantiteRestante) { lot.retirerQuantiteLot(quantiteRestante);
 																quantiteRestante = 0.;
-																this.stock.get(produit).add(lot);
-																System.out.println("lot 1 : " + lot.getQuantite());}
+																this.stock.get(produit).add(lot); }
+//																System.out.println("lot 1 : " + lot.getQuantite());}
 					else { 	quantiteRestante = quantiteRestante - lot.getQuantite();
 							System.out.println("lot 2 : " + lot.getQuantite()); }
-					System.out.println("reste " + quantiteRestante);
+//					System.out.println("reste " + quantiteRestante);
 				}
 			}
 		}
