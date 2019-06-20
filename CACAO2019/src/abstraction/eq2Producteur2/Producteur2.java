@@ -205,7 +205,7 @@ public void payerCoutsProd() {
 		} else {
 		//On définit prixVendeur et prixAcheteur pour cette étape de négociation
 		double prixVendeur = cc.getListePrixAuKilo().get(cc.getListePrixAuKilo().size() - 2); //On récupère le dernier prix proposé
-		double prixAcheteur = cc.getPrixAuKilo();
+		double prixAcheteur = cc.getListePrixAuKilo().get(cc.getListePrixAuKilo().size() - 1);
 		cc.ajouterPrixAuKilo(prixVendeur); // Le premier prix proposé est le prix au kilo initial
 		cc.getListePrixAuKilo().add(prixVendeur);
 		if (prixVendeur == getCoutProduction(cc.getProduit()) * 1.01) { 
