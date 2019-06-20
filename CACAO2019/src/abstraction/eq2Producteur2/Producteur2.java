@@ -33,7 +33,8 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	private int numStep;
 	private GestionnaireFeve gestionnaireFeve;
 	private Arbre arbres;
-	private double salaire=1.0/1000;
+
+	private double salaire=2;
 
 	public Producteur2() {
 		this.gestionnaireFeve = new GestionnaireFeve(this);
@@ -118,11 +119,12 @@ public void recolte(Feve f) {
 			Random rand=new Random();
 			this.maladie_predateurs=-rand.nextInt(200)/1000;
 			this.meteo=rand.nextInt(200)/1000-0.1;
-			double qualitePRoduction = maladie_predateurs+meteo;
+			double qualiteProduction = maladie_predateurs+meteo;
+			System.out.println(qualiteProduction);
 			//double qualiteProduction = (Math.random() - 0.5) / 2.5 + 1; // entre 0.8 et 1.2
 			double nouveauStock = this.gestionnaireFeve.getStock(f)
 
-						+ this.gestionnaireFeve.getProductionParStep(f) * (1 + qualitePRoduction);		
+						+ this.gestionnaireFeve.getProductionParStep(f) * (1 + qualiteProduction);		
 			this.gestionnaireFeve.setStock(this, f, nouveauStock);}}
 
 
@@ -186,7 +188,9 @@ public void payerCoutsProd() {
 			Echeancier e = cc.getEcheancier();
 			if (e.getQuantiteTotale() > this.getStockEnVente().get(cc.getProduit())) { // On s assure que la quantité
 																						// demandée est en stock
-				int echSuppl = (int) ((e.getQuantiteTotale() - this.getStockEnVente().get(cc.getProduit())))/75000 ;
+				Feve feveDuContrat = cc.getProduit();
+				double production = this.gestionnaireFeve.getProductionParStep(feveDuContrat);
+				int echSuppl = (int) ((e.getQuantiteTotale() - this.getStockEnVente().get(cc.getProduit()))/production) ;
 				cc.ajouterEcheancier(new Echeancier (e.getStepDebut(), e.getNbEcheances() + echSuppl, cc.getQuantite()/(cc.getEcheancier().getNbEcheances()+echSuppl)));;
 
 			} else {
@@ -205,7 +209,7 @@ public void payerCoutsProd() {
 		} else {
 		//On définit prixVendeur et prixAcheteur pour cette étape de négociation
 		double prixVendeur = cc.getListePrixAuKilo().get(cc.getListePrixAuKilo().size() - 2); //On récupère le dernier prix proposé
-		double prixAcheteur = cc.getPrixAuKilo();
+		double prixAcheteur = cc.getListePrixAuKilo().get(cc.getListePrixAuKilo().size() - 1);
 		cc.ajouterPrixAuKilo(prixVendeur); // Le premier prix proposé est le prix au kilo initial
 		cc.getListePrixAuKilo().add(prixVendeur);
 		if (prixVendeur == getCoutProduction(cc.getProduit()) * 1.01) { 
@@ -252,18 +256,15 @@ public void payerCoutsProd() {
 	//A modifier après détermination des couts de production
 	//prix au kg
 	public double getCoutProduction(Feve f) {
-//<<<<<<< HEAD
-		
+		System.out.println("pour la feve "+ f.toString());
 		double salaire = getSalaire(f);
-		double coutsarbres = arbres.getPrixParStep();
-		
-		return (salaire + coutsarbres)/4/getProduction() ;	}
-//=======
-		//double salaire = getSalaire(f);
-		//double coutsarbres = arbres.getPrixParStep(f);
-		//return (salaire + coutsarbres)/gestionnaireFeve.getProductionParStep(f) ;	
-//		}
-//>>>>>>> branch 'master' of https://github.com/Clementmagnin/CACAO2019.git
+		System.out.println("le salaire total vaut : "+salaire);
+		double coutsarbres = arbres.getPrixParStep(f);
+		System.out.println("le cout d'entretien des arbres est : "+coutsarbres);
+		System.out.println("la production par step est "+this.gestionnaireFeve.getProductionParStep(f));
+		System.out.println("en tout on paye : "+ (salaire + coutsarbres)/gestionnaireFeve.getProductionParStep(f));
+		return (salaire + coutsarbres)/gestionnaireFeve.getProductionParStep(f) ;}	
+
 	
 	public double getSalaire(Feve f) {
 		double cout=0;
@@ -350,7 +351,6 @@ public void payerCoutsProd() {
 		}
 	}
 
-	
 	@Override
 	public double livrer(Feve produit, double quantite, ContratCadre<Feve> cc) {
 		if (produit == null || !produit.equals(produit)) {
