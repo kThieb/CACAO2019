@@ -13,7 +13,8 @@ public class Stock<T> {
 	// T est le chocolat ou la feve ; lui est associe une quantite en stock, en kg
 	private HashMap<T, Double> stock;
 	
-	public Stock(ArrayList<T> produits) {
+	
+	public Stock(ArrayList<T> produits) {		
 		this.stock = new HashMap<T, Double>();
 		for (T p: produits) { 
 			this.stock.put(p, 0.);
