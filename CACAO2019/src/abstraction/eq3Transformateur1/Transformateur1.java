@@ -54,8 +54,6 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	public Transformateur1() {
 
 		// --------------------------------- begin eve
-		
-		
 		// stock de feves
 		ArrayList<Feve> feves = new ArrayList<Feve>();
 		feves.add(Feve.CRIOLLO_HG_EQ);
