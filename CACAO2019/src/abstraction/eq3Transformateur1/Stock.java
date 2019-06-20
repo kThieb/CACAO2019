@@ -63,6 +63,14 @@ public class Stock<T> {
 		return resultat;
 	}
 	
+	public int getNombreDeLots(ArrayList<T> produits) {
+		int nbLots = 0;
+		for (T p: produits) {
+			nbLots = nbLots + this.stock.get(p).size();
+		}
+		return nbLots;
+	}
+	
 	
 	// -----------------------------------------------------------
 	//          SETTERS
@@ -146,7 +154,7 @@ public class Stock<T> {
 				lot.setDate(lot.getDate() - 1);
 				if (lot.getDate() == 0) {
 					this.stock.get(produit).remove(lot);
-					System.out.println("lot " + lot.getnLot() + " de " + produit + " retiré, quantité " + lot.getQuantite());
+//					System.out.println("lot " + lot.getnLot() + " de " + produit + " retiré, quantité " + lot.getQuantite());
 				}
 			}
 		}
