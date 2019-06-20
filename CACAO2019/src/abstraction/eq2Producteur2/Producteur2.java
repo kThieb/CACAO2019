@@ -180,22 +180,20 @@ public void payerCoutsProd() {
 	 */
 	public void proposerEcheancierVendeur(ContratCadre<Feve> cc) {
 		
-		if (contratsEnCours.contains(cc)) {
-			Echeancier e = cc.getEcheancier();
-		} else {
+		if (!contratsEnCours.contains(cc)) {
 			contratsEnCours.add(cc);
-			Echeancier e = cc.getEcheancier();
-			if (e.getQuantiteTotale() > this.getStockEnVente().get(cc.getProduit())) { // On s assure que la quantité
+		}
+		Echeancier e = cc.getEcheancier();
+		if (e.getQuantiteTotale() > this.getStockEnVente().get(cc.getProduit())) { // On s assure que la quantité
 																						// demandée est en stock
-				Feve feveDuContrat = cc.getProduit();
-				double production = this.gestionnaireFeve.getProductionParStep(feveDuContrat);
-				int echSuppl = (int) ((e.getQuantiteTotale() - this.getStockEnVente().get(cc.getProduit()))/production) ;
-				cc.ajouterEcheancier(new Echeancier (e.getStepDebut(), e.getNbEcheances() + echSuppl, cc.getQuantite()/(cc.getEcheancier().getNbEcheances()+echSuppl)));;
+			Feve feveDuContrat = cc.getProduit();
+			double production = this.gestionnaireFeve.getProductionParStep(feveDuContrat);
+			int echSuppl = (int) ((e.getQuantiteTotale() - this.getStockEnVente().get(cc.getProduit()))/production) ;
+			cc.ajouterEcheancier(new Echeancier (e.getStepDebut(), e.getNbEcheances() + echSuppl, cc.getQuantite()/(cc.getEcheancier().getNbEcheances()+echSuppl)));;
 
-			} else {
-				cc.ajouterEcheancier(new Echeancier(e)); // on accepte la proposition de l'acheteur car on a la quantite
+		} else {
+			cc.ajouterEcheancier(new Echeancier(e)); // on accepte la proposition de l'acheteur car on a la quantite
 															// en stock
-			}
 		}
 	}
 
