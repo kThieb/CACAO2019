@@ -99,6 +99,11 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 			this.numStep++;
 
 		}
+		
+//		juste pour les prints : 
+		for(Feve f:this.gestionnaireFeve.getFeves()) {
+			System.out.println(getCoutProduction(f));
+		}
 	}
 
 // End Clément M
@@ -106,9 +111,9 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	public void actualisationProduction() {
 		for (Feve feve : this.gestionnaireFeve.keySet()) {
 			if ( feve == Feve.FORASTERO_MG_EQ || feve == Feve.FORASTERO_MG_NEQ) {
-			this.gestionnaireFeve.setProduction(this, feve, this.arbres.getNbArbres(feve)*1000);}
+			this.gestionnaireFeve.setProduction(this, feve, this.arbres.getNbArbres(feve)*1000*2);} //*1000 pour passer en kilo, et *2 pour le rapport tonne par hectare
 			if ( feve == Feve.MERCEDES_MG_EQ || feve == Feve.MERCEDES_MG_NEQ) {
-				this.gestionnaireFeve.setProduction(this, feve, this.arbres.getNbArbres(feve)*1000*2);
+				this.gestionnaireFeve.setProduction(this, feve, this.arbres.getNbArbres(feve)*1000*6);
 			}
 		}
 	}
@@ -116,10 +121,16 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 public void recolte(Feve f) {
 		if (this.numStep <= 6 || this.numStep >= 21 || (this.numStep >= 9 && this.numStep <= 14)) {
 			Random rand=new Random();
-			this.maladie_predateurs=-rand.nextInt(200)/1000;
-			this.meteo=rand.nextInt(200)/1000-0.1;
+			double aleaMaladie=rand.nextDouble();
+			double aleaMeteo=rand.nextDouble();
+			System.out.println(aleaMaladie);
+			System.out.println(aleaMeteo);
+			this.maladie_predateurs=-aleaMaladie/5;
+			this.meteo=aleaMeteo/5-0.1;
+			System.out.println(this.maladie_predateurs);
+			System.out.println(this.meteo);
 			double qualiteProduction = maladie_predateurs+meteo;
-			System.out.println(qualiteProduction);
+			System.out.println("qualité de la production : "+qualiteProduction);
 			//double qualiteProduction = (Math.random() - 0.5) / 2.5 + 1; // entre 0.8 et 1.2
 			double nouveauStock = this.gestionnaireFeve.getStock(f)
 
@@ -255,14 +266,15 @@ public void payerCoutsProd() {
 	//A modifier après détermination des couts de production
 	//prix au kg
 	public double getCoutProduction(Feve f) {
-		System.out.println("pour la feve "+ f.toString());
+//		System.out.println("pour la feve "+ f.toString());
 		double salaire = getSalaire(f);
-		System.out.println("le salaire total vaut : "+salaire);
+//		System.out.println("le salaire total vaut : "+salaire);
 		double coutsarbres = arbres.getPrixParStep(f);
-		System.out.println("le cout d'entretien des arbres est : "+coutsarbres);
-		System.out.println("la production par step est "+this.gestionnaireFeve.getProductionParStep(f));
-		System.out.println("en tout on paye : "+ (salaire + coutsarbres)/gestionnaireFeve.getProductionParStep(f));
-		return (salaire + coutsarbres)/gestionnaireFeve.getProductionParStep(f) ;	
+//		System.out.println("le cout d'entretien des arbres est : "+coutsarbres);
+//		System.out.println("la production par step est "+this.gestionnaireFeve.getProductionParStep(f));
+//		System.out.println("en tout on paye : "+ (salaire + coutsarbres)/gestionnaireFeve.getProductionParStep(f));
+		double coupProduction=(salaire + coutsarbres)/gestionnaireFeve.getProductionParStep(f);
+		return coupProduction;	
 		}
 	
 	public double getSalaire(Feve f) {
@@ -364,8 +376,6 @@ public void payerCoutsProd() {
 		
 		return livraison;
 	}
-
-	
 }
 
 // End Clément M
