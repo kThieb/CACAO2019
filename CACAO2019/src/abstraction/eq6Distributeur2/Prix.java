@@ -35,10 +35,10 @@ public class Prix {
         Monde.LE_MONDE.ajouterIndicateur(this.prixHG_E_SHP);
         
         this.margeParProduit = new HashMap<Chocolat, Double>();
-        this.margeParProduit.put(Chocolat.HG_E_SHP, 1.2);
-        this.margeParProduit.put(Chocolat.MG_E_SHP, 1.2);
-        this.margeParProduit.put(Chocolat.MG_NE_SHP,1.2);
-        this.margeParProduit.put(Chocolat.MG_NE_HP, 1.2);
+        this.margeParProduit.put(Chocolat.HG_E_SHP, 10.0);
+        this.margeParProduit.put(Chocolat.MG_E_SHP, 10.0);
+        this.margeParProduit.put(Chocolat.MG_NE_SHP,10.0);
+        this.margeParProduit.put(Chocolat.MG_NE_HP, 10.0);
 
         
         this.prixachatParProduit =  new HashMap<Chocolat,Double>();
@@ -103,29 +103,32 @@ public class Prix {
     	int i = Monde.LE_MONDE.getStep()%24 - 1;
     	int t = Monde.LE_MONDE.getStep();
     	double qv=0;
-    	double c= 0.50;
+    	double c = 0.25;
     	/*if (i != 0) {
     		for (int j = 24*i; j <24*i+24 ; j++) {
     			qv = qv + nous.getIndicateurStock(choco).getHistorique().get(nous.getIndicateurStock(choco).getHistorique().getTaille() -t+j).getValeur();
     			}
     		c = (coutstructure+massesalariale)*.25/qv;
     	}
-    	else { c = 0.25; } */
+    	else { c = 0.25; } 
+    	}
+    	*/
     	return c;
     }
-
+	
     public void ajustementMarge(ArrayList<Double> historique, Chocolat c ) {
         // je récupère le chocoalt et l'historique des variations 
         int n = historique.size();
-        if (n>3) {
-
-            System.out.println(historique.get(n-1)+historique.get(n-2)+historique.get(n-3));
-                if ( Math.abs(historique.get(n-1)) > Math.abs(historique.get(n-2)*0.95)
-                                && Math.abs(historique.get(n-1)) < Math.abs(historique.get(n-2)*1.05)
-                                // encadrement de + ou- 5%
-                                && Math.abs(historique.get(n-2)) > Math.abs(historique.get(n-3)*0.95)
-                                && Math.abs(historique.get(n-2)) < Math.abs(historique.get(n-3)*1.05) ) {
-                        double nouvellemarge = this.getMargeParProduit(c)*0.95;
+        int t = nous.getIndicateurStock(c).getHistorique().getTaille();
+        if (n>3 && t>3) {
+        		double stockprecedent = nous.getIndicateurStock(c).getHistorique().get(t-1).getValeur();
+        		double stock_2 = nous.getIndicateurStock(c).getHistorique().get(t-2).getValeur();
+        		double stock_3=nous.getIndicateurStock(c).getHistorique().get(t-3).getValeur();
+        		if ( historique.get(n-1)/stockprecedent < 0.1 
+                                && historique.get(n-2)/stock_2 < 0.1 
+                                &&historique.get(n-3)/stock_3 < 0.1 ) {
+                        double nouvellemarge = this.getMargeParProduit(c)*0.99;
+                        System.out.println(" nouvelle marge " +nouvellemarge +" "+ c  );
                         setMargeParProduit(c, nouvellemarge);
                 }
         }

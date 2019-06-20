@@ -677,12 +677,13 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
                 Chocolat produit = cc.getProduit();
 
                 double dernierprixpropose = cc.getPrixAuKilo();
-                double notreprix = this.getPrix(produit);
+                double notreprix = this.gestionPrix.getPrixachatParProduit(produit);
 
                 if (notreprix/dernierprixpropose >= this.gestionPrix.getMargeParProduit(produit)) {
                         satisfait = true;
                         gestionPrix.setPrixachatParProduit(produit, dernierprixpropose);
                         gestionPrix.setPrixParProduit(produit);
+                        System.out.println(" dernier prix proposé " +  dernierprixpropose + notreprix  );
                 }else {
                         satisfait = false;
                 }
