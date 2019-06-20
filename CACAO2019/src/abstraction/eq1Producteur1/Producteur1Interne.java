@@ -506,17 +506,22 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		}
 	}*/
 	
-	
+	//begin Pauline
 	 public void updatePlantation() {
+		int step = LE_MONDE.getStep();
 		for (Feve feve:getFeve()) {
-			setRecolte(feve,getPlantation(feve).getRecolte(LE_MONDE.getStep()));
-			if(LE_MONDE.getStep()%unAnEnSteps == 0){
-				getPlantation(feve).updatePlantation(LE_MONDE.getStep(),getPlantation(feve).moyenneDemande()*1/40);
+			setRecolte(feve,getPlantation(feve).getRecolte(step));
+			if(step%unAnEnSteps == 0){
+				double plantationActuelle = getPlantation(feve).getQuantite(step);
+				double demande = getPlantation(feve).moyenneDemande();
+				double stock = this.getStock(feve).getStock(step);
+				getPlantation(feve).updatePlantation(step,getPlantation(feve).moyenneDemande()*1/40);
 			} else{
-				getPlantation(feve).updatePlantation(LE_MONDE.getStep(),0);
+				getPlantation(feve).updatePlantation(step,0);
 			}
 		}
 	}
+	 //  End Pauline
 	
 		
 	 
