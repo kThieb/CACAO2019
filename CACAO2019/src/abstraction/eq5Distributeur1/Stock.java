@@ -58,7 +58,7 @@ public class Stock {
 	
 	/** @autho Estelle BONNET 
 	 */
-	public void pereniteStock(HashMap<Chocolat, Double> stock, IActeur acteur) {
+	public void perenniteStock(HashMap<Chocolat, Double> stock, IActeur acteur) {
 		List<Chocolat> produit = this.getProduitsEnVente();
 		double exces = 0 ;
 		for (Chocolat chocolat:produit) {
