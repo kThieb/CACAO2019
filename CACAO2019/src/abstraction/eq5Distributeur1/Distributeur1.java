@@ -30,36 +30,36 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 	private double coutsdestockage;
 	private double soldeDebutStep;
 
-	public static final int JANVIER1 = 1%24;
-	public static final int JANVIER2 = 2%24;
-	public static final int FEVRIER1 = 3%24;
-	public static final int FEVRIER2 = 4%24;
-	public static final int MARS1 = 5%24;
-	public static final int MARS2 = 6%24;
-	public static final int AVRIL1 = 7%24;
-	public static final int AVRIL2 = 8%24;
-	public static final int MAI1 = 9%24;
-	public static final int MAI2 = 10%24;
-	public static final int JUIN1 = 11%24;
-	public static final int JUIN2 = 12%24;
-	public static final int JUILLET1 = 13%24;
-	public static final int JUILLET2 = 14%24;
-	public static final int AOUT1 = 15%24;
-	public static final int AOUT2 = 16%24;
-	public static final int SEPTEMBRE1 = 17%24;
-	public static final int SEPTEMBRE2 = 18%24;
-	public static final int OCTOBRE1 = 19%24;
-	public static final int OCTOBRE2 = 20%24;
-	public static final int NOVEMBRE1 = 21%24;
-	public static final int NOVEMBRE2 = 22%24;
-	public static final int DECEMBRE1 = 23%24;
-	public static final int DECEMBRE2 = 24%24;
+	public static final int JANVIER1 = 1;
+	public static final int JANVIER2 = 2;
+	public static final int FEVRIER1 = 3;
+	public static final int FEVRIER2 = 4;
+	public static final int MARS1 = 5;
+	public static final int MARS2 = 6;
+	public static final int AVRIL1 = 7;
+	public static final int AVRIL2 = 8;
+	public static final int MAI1 = 9;
+	public static final int MAI2 = 10;
+	public static final int JUIN1 = 11;
+	public static final int JUIN2 = 12;
+	public static final int JUILLET1 = 13;
+	public static final int JUILLET2 = 14;
+	public static final int AOUT1 = 15;
+	public static final int AOUT2 = 16;
+	public static final int SEPTEMBRE1 = 17;
+	public static final int SEPTEMBRE2 = 18;
+	public static final int OCTOBRE1 = 19;
+	public static final int OCTOBRE2 = 20;
+	public static final int NOVEMBRE1 = 21;
+	public static final int NOVEMBRE2 = 22;
+	public static final int DECEMBRE1 = 23;
+	public static final int DECEMBRE2 = 24;
 	
 	/**
 	 * @author Erine DUPONT & Estelle BONNET
 	 */
 	public Distributeur1() {
-		this(0.6, 10000000.0); // La marge doit être en pourcentage !!! 5% > 0.05
+		this(0.6, 1000000.0); // La marge doit être en pourcentage !!! 5% > 0.05
 	}
 
 	/**
