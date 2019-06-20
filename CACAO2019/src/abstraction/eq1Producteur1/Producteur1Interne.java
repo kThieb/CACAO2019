@@ -18,11 +18,12 @@ import static abstraction.fourni.Monde.*;
 
 public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire */, Observer {
 
-	public static int COUT_FIXE = 00;
+
 	public static int COUT_VARIABLE_STOCK = 0;
 	public static int nbrEmployes = 20 ;
 	public static int salaire= 130 ;
 	public static int masseSalariale = nbrEmployes*salaire;
+	public static int COUT_FIXE = 00;
 
  
 	
@@ -66,7 +67,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 	public static int quatreAnsEnSteps = 96 ;
 	public static int cinqAnsEnSteps = 120 ;
 	public static int dureeDeVieFeve = unAnEnSteps; // durée de vie en nexts
-	public static int coutPlanter = 1 ; // cout pour 1 fève planté
+	public static int coutPlanter = 500 ;
 	public static int stockDepart = 3000;
 	
 //END ANTI
@@ -229,7 +230,6 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		this.getHistoriqueSoldeBancaire().add(this.getSoldeBancaire().getValeur());
 		for(Feve feve:this.getFeve()) {
 			this.journal1.ajouter("Prix de Vente de"+feve+":"+ this.getPrixAuKilo().get(feve));}
-		
 		
 
 	}
@@ -452,8 +452,10 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 				this.prixAuKilo.put(produit, this.getPrixAuKilo().get(produit)+0.1);} //augmentation des prix
 			
 			else {
-				if(this.moyennePrixNonAccepte(produit)-0.1<=this.getPrixAuKilo().get(produit)) { //On regarde la moyenne des prix n'ayant pas engendré de Cc si elle est inférieur au prix proposé
-					if(this.getStockI(produit).getValeur()*(this.getPrixAuKilo().get(produit)-0.1)>this.masseSalariale/3||this.getStockI(produit).getValeur()*(this.getPrixAuKilo().get(produit)-0.1)>0) {// On vérifie qu'on ne vend pas à perte
+				if(this.moyennePrixNonAccepte(produit)<this.getPrixAuKilo().get(produit)) { //On regarde la moyenne des prix n'ayant pas engendré de Cc si elle est inférieur au prix proposé
+
+					if(this.getStockI(produit).getValeur()*(this.getPrixAuKilo().get(produit)-0.1)>this.getCOUT_FIXE()/3+this.getStockI(produit).getValeur()*this.getCOUT_VARIABLE_STOCK()
+							||this.getStockI(produit).getValeur()*(this.getPrixAuKilo().get(produit)-0.1)>0) {// On vérifie qu'on ne vend pas à perte
 	//	System.out.println("put "+(this.getPrixAuKilo().get(produit)-0.1));
 	//	if (this.getPrixAuKilo().get(produit)-0.1<0.0) {
 	//		System.exit(0);
@@ -520,15 +522,21 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		for (Feve feve:getFeve()) {
 			setRecolte(feve,getPlantation(feve).getRecolte(step));
 			if(step%unAnEnSteps == 0){
-				double plantationActuelle = getPlantation(feve).getInd().getValeur();
+				double plantationActuelle = getPlantation(feve).getQuantite(step);
 				double demande = getPlantation(feve).moyenneDemande();
+<<<<<<< HEAD
+				double stock = this.getStock(feve).getStock(step);
+				getPlantation(feve).updatePlantation(step,getPlantation(feve).moyenneDemande()*1/40);
+				setRecolte(feve,getPlantation(feve).getRecolte(step));
+				getSoldeBancaire().retirer(this, coutPlanter);
+=======
 				if (plantationActuelle - demande < plantationActuelle*0.05 && plantationActuelle - demande>0) {
-					double aPlanter = plantationActuelle*0.05; // pour pas avoir tout pile assez, on garde 5% de marge
+					double aPlanter = plantationActuelle*0.05/40; // pour pas avoir tout pile assez, on garde 5% de marge
 					getPlantation(feve).updatePlantation(step, aPlanter);
 					setRecolte(feve,getPlantation(feve).getRecolte(step));
 					getSoldeBancaire().retirer(this, coutPlanter*aPlanter);
 				} else if (plantationActuelle - demande <0) {
-					double aPlanter = (demande - plantationActuelle)*1.05; // on plante de quoi subvenir a la demande + 5% pour avir de la marge 
+					double aPlanter = (demande - plantationActuelle)*1.05/40; // on plante de quoi subvenir a la demande + 5% pour avir de la marge 
 					getPlantation(feve).updatePlantation(step, aPlanter);
 					setRecolte(feve,getPlantation(feve).getRecolte(step));
 					getSoldeBancaire().retirer(this, coutPlanter*aPlanter);
@@ -536,6 +544,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 					getPlantation(feve).updatePlantation(step,0);
 					setRecolte(feve,getPlantation(feve).getRecolte(step));
 				}
+>>>>>>> branch 'master' of https://github.com/n18abdel/CACAO2019.git
 			} else{
 				getPlantation(feve).updatePlantation(step,0);
 			}
