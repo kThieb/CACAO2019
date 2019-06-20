@@ -230,6 +230,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		for(Feve feve:this.getFeve()) {
 			this.journal1.ajouter("Prix de Vente de"+feve+":"+ this.getPrixAuKilo().get(feve));}
 		
+		
 
 	}
 
@@ -451,9 +452,8 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 				this.prixAuKilo.put(produit, this.getPrixAuKilo().get(produit)+0.1);} //augmentation des prix
 			
 			else {
-				if(this.moyennePrixNonAccepte(produit)<this.getPrixAuKilo().get(produit)) { //On regarde la moyenne des prix n'ayant pas engendré de Cc si elle est inférieur au prix proposé
-
-					if(this.getStockI(produit).getValeur()*(this.getPrixAuKilo().get(produit)-0.1)>this.getCOUT_FIXE()/3+this.getStockI(produit).getValeur()*this.getCOUT_VARIABLE_STOCK()
+				if(this.moyennePrixNonAccepte(produit)-0.1<=this.getPrixAuKilo().get(produit)) { //On regarde la moyenne des prix n'ayant pas engendré de Cc si elle est inférieur au prix proposé
+					if(this.getStockI(produit).getValeur()*(this.getPrixAuKilo().get(produit)-0.1)>this.masseSalariale/3+this.getStockI(produit).getValeur()*this.getCOUT_VARIABLE_STOCK()
 							||this.getStockI(produit).getValeur()*(this.getPrixAuKilo().get(produit)-0.1)>0) {// On vérifie qu'on ne vend pas à perte
 	//	System.out.println("put "+(this.getPrixAuKilo().get(produit)-0.1));
 	//	if (this.getPrixAuKilo().get(produit)-0.1<0.0) {
@@ -515,18 +515,34 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		}
 	}*/
 	
-	
+	//begin Pauline
 	 public void updatePlantation() {
+		int step = LE_MONDE.getStep();
 		for (Feve feve:getFeve()) {
-			setRecolte(feve,getPlantation(feve).getRecolte(LE_MONDE.getStep()));
-			if(LE_MONDE.getStep()%unAnEnSteps == 0){
-				getSoldeBancaire().retirer(this, coutPlanter);
-				getPlantation(feve).updatePlantation(LE_MONDE.getStep(),getPlantation(feve).moyenneDemande()*1/40);
+			setRecolte(feve,getPlantation(feve).getRecolte(step));
+			if(step%unAnEnSteps == 0){
+				double plantationActuelle = getPlantation(feve).getQuantite(step);
+				double demande = getPlantation(feve).moyenneDemande();
+				if (plantationActuelle - demande/40 < plantationActuelle*0.05 && plantationActuelle - demande/40 >0) {
+					double aPlanter = plantationActuelle*0.05; // pour pas avoir tout pile assez, on garde 5% de marge
+					getPlantation(feve).updatePlantation(step, aPlanter);
+					setRecolte(feve,getPlantation(feve).getRecolte(step));
+					getSoldeBancaire().retirer(this, coutPlanter);
+				} else if (plantationActuelle - demande/40 <0) {
+					double aPlanter = (demande/40 - plantationActuelle)*1.05; // on plante de quoi subvenir a la demande + 5% pour avir de la marge 
+					getPlantation(feve).updatePlantation(step, aPlanter);
+					setRecolte(feve,getPlantation(feve).getRecolte(step));
+					getSoldeBancaire().retirer(this, coutPlanter);
+				} else {
+					getPlantation(feve).updatePlantation(step,0);
+					setRecolte(feve,getPlantation(feve).getRecolte(step));
+				}
 			} else{
-				getPlantation(feve).updatePlantation(LE_MONDE.getStep(),0);
+				getPlantation(feve).updatePlantation(step,0);
 			}
 		}
 	}
+	 //  End Pauline
 	
 		
 	 

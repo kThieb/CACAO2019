@@ -41,8 +41,11 @@ public class Plantation {
 		this(feve,act,1000);
 		
 	}
-	
-	
+	//Begin Pauline
+	public double getQuantite(int step) {
+		return plantation.get(step);
+	}
+	//End Pauline
 	
 	public Indicateur getInd() {
 		return ind;
