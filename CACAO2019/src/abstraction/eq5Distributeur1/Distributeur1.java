@@ -115,7 +115,7 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 		this.soldeBancaire.retirer(this, ((this.soldeBancaire.getCompteBancaire()-this.soldeDebutStep)*this.coutfixe));
 		this.indicateursolde.retirer(this, ((this.soldeBancaire.getCompteBancaire()-this.soldeDebutStep)*this.coutfixe));
 		//Prise en compte de la pérénité des stocks
-		this.stock.pereniteStock(this.stock.getStock(), this);
+		this.stock.perenniteStock(this.stock.getStock(), this);
 		//Prise en compte du coût du stock
 
 		//------------------ Publicité -----------------------------------------------------
