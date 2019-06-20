@@ -1,5 +1,7 @@
 package abstraction.eq2Producteur2;
 
+
+	
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,7 +10,13 @@ import java.util.List;
 import abstraction.eq7Romu.produits.Feve;
 
 public class Arbre {
-	public static final int QT_ARBRE_AN = 18225;
+	
+	private static int NB_PROD = 2;
+	
+	public static final int surface_F_NEQ = 18225;   
+	public static final int surface_F_EQ = 2025;
+	public static final int surface_M_NEQ = 675;
+	public static final int surface_M_EQ = 75;
 	private HashMap<Feve, List<Integer>> nbArbres;
 	private HashMap<Feve, Integer> nbtot;
 
@@ -29,15 +37,16 @@ public class Arbre {
 		this.nbtot.put(Feve.MERCEDES_MG_NEQ, 0);
 
 		for (int i = 0; i < 37; i++) {
-			this.nbArbres.get(Feve.FORASTERO_MG_EQ).add(125);
-			this.nbArbres.get(Feve.FORASTERO_MG_NEQ).add(525);
-			this.nbArbres.get(Feve.MERCEDES_MG_EQ).add(75);
-			this.nbArbres.get(Feve.MERCEDES_MG_NEQ).add(675);
 
-			int surface_F_EQ = this.nbtot.get(Feve.FORASTERO_MG_EQ) + 2025;
-			int surface_F_NEQ = this.nbtot.get(Feve.FORASTERO_MG_NEQ) + 18225;
-			int surface_M_EQ = this.nbtot.get(Feve.MERCEDES_MG_EQ) + 75;
-			int surface_M_NEQ = this.nbtot.get(Feve.MERCEDES_MG_NEQ) + 675;
+			this.nbArbres.get(Feve.FORASTERO_MG_EQ).add(this.surface_F_EQ);
+			this.nbArbres.get(Feve.FORASTERO_MG_NEQ).add(this.surface_F_NEQ);   
+			this.nbArbres.get(Feve.MERCEDES_MG_EQ).add(this.surface_M_EQ);
+			this.nbArbres.get(Feve.MERCEDES_MG_NEQ).add(this.surface_M_NEQ);
+
+			int surface_F_EQ = this.nbtot.get(Feve.FORASTERO_MG_EQ) + this.surface_F_EQ;
+			int surface_F_NEQ = this.nbtot.get(Feve.FORASTERO_MG_NEQ) + this.surface_F_NEQ;
+			int surface_M_EQ = this.nbtot.get(Feve.MERCEDES_MG_EQ) + this.surface_M_EQ;
+			int surface_M_NEQ = this.nbtot.get(Feve.MERCEDES_MG_NEQ) + this.surface_M_NEQ;
 
 			this.nbtot.put(Feve.FORASTERO_MG_EQ, surface_F_EQ);// replace(f, t);
 			this.nbtot.put(Feve.FORASTERO_MG_NEQ, surface_F_NEQ);// replace(f, t);
@@ -46,10 +55,10 @@ public class Arbre {
 
 		}
 		for (int i = 0; i < 3; i++) {
-			this.nbArbres.get(Feve.FORASTERO_MG_EQ).add(2025);
-			this.nbArbres.get(Feve.FORASTERO_MG_NEQ).add(18225);
-			this.nbArbres.get(Feve.MERCEDES_MG_EQ).add(75);
-			this.nbArbres.get(Feve.MERCEDES_MG_NEQ).add(675);			
+			this.nbArbres.get(Feve.FORASTERO_MG_EQ).add(this.surface_F_EQ);
+			this.nbArbres.get(Feve.FORASTERO_MG_NEQ).add(this.surface_F_NEQ);
+			this.nbArbres.get(Feve.MERCEDES_MG_EQ).add(this.surface_M_EQ);
+			this.nbArbres.get(Feve.MERCEDES_MG_NEQ).add(this.surface_M_NEQ);			
 		}
 	}
 
@@ -69,10 +78,11 @@ public class Arbre {
 			this.nbtot.put(f, nouveauTot);
 
 		}
-		this.nbArbres.get(Feve.FORASTERO_MG_EQ).add(525);
-		this.nbArbres.get(Feve.FORASTERO_MG_NEQ).add(8225);
-		this.nbArbres.get(Feve.MERCEDES_MG_EQ).add(75);
-		this.nbArbres.get(Feve.MERCEDES_MG_NEQ).add(675);
+
+		this.nbArbres.get(Feve.FORASTERO_MG_EQ).add(this.surface_F_EQ);
+		this.nbArbres.get(Feve.FORASTERO_MG_NEQ).add(this.surface_F_NEQ);
+		this.nbArbres.get(Feve.MERCEDES_MG_EQ).add(this.surface_M_EQ);
+		this.nbArbres.get(Feve.MERCEDES_MG_NEQ).add(this.surface_M_NEQ);
 	}
 	
 	public Integer getNbArbres(Feve feve) {
