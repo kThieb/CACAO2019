@@ -20,8 +20,8 @@ import abstraction.fourni.Monde;
 
 
 public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, IDistributeurChocolat {
-	
-		private Prix gestionPrix;
+        
+        private Prix gestionPrix;
         private ArrayList<Double> historiqueMG_E_SHP;
         private ArrayList<Double> historiqueMG_NE_SHP;
         private ArrayList<Double> historiqueMG_NE_HP;
@@ -105,8 +105,9 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
                 historiqueMG_NE_SHP = new ArrayList<Double> ();
                 historiqueMG_NE_HP = new ArrayList<Double> ();
                 historiqueHG_E_SHP = new ArrayList<Double> ();
+                
 
-        		gestionPrix = new Prix(this);
+                gestionPrix = new Prix(this);
         }
 
 
@@ -250,8 +251,6 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
         //nordin     
 
 
-
-
         private double fraisStockage() {
                 double cout =0;
                 cout+= 0.001*this.getStockHG_E_SHP().getValeur();
@@ -263,7 +262,7 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
 
         //Nordin
         public double getPrix(Chocolat c) {
-        	return gestionPrix.getPrixParProduit(c);
+                return gestionPrix.getPrixParProduit(c);
         }
 
         public int getArrondi(double d) {
@@ -383,43 +382,6 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
                 double demandetotaleMG_NE_SHP= 0;
                 double demandetotaleMG_NE_HP = 0;
                 double demandetotaleHG_E_SHP = 0;
-
-                /*
-                for (IActeur acteur : Monde.LE_MONDE.getActeurs()) {
-
-                        if (acteur instanceof Client1 ) {
-                                if (Monde.LE_MONDE.getStep() >= 25) {
-                                        Client1 c = (Client1)acteur;
-                                        if (c.getUnique().equals(Chocolat.MG_E_SHP)) {
-                                                demandetotaleMG_E_SHP  += c.getHist().get(this)        * c.getTemporalite().get(Monde.LE_MONDE.getStep()%24);
-                                        }
-                                        if (c.getUnique().equals(Chocolat.MG_NE_SHP)) {
-                                                demandetotaleMG_NE_SHP  += c.getHist().get(this) * c.getTemporalite().get(Monde.LE_MONDE.getStep()%24);
-                                        }
-                                        if (c.getUnique().equals(Chocolat.MG_NE_HP)) {
-                                                demandetotaleMG_NE_HP  += c.getHist().get(this) * c.getTemporalite().get(Monde.LE_MONDE.getStep()%24);
-                                        }
-                                        if (c.getUnique().equals(Chocolat.HG_E_SHP)) {
-                                                demandetotaleHG_E_SHP  += c.getHist().get(this) * c.getTemporalite().get(Monde.LE_MONDE.getStep()%24);
-                                        }
-
-                                }
-
-                                else {
-                                        Client1 c = (Client1)acteur;
-                                        if (c.getUnique().equals(Chocolat.MG_E_SHP)) {
-                                                demandetotaleMG_E_SHP  += 1000        * c.getTemporalite().get(Monde.LE_MONDE.getStep()%24);
-                                        }
-                                        if (c.getUnique().equals(Chocolat.MG_NE_SHP)) {
-                                                demandetotaleMG_NE_SHP  += 1000  * c.getTemporalite().get(Monde.LE_MONDE.getStep()%24);
-                                        }
-                                        if (c.getUnique().equals(Chocolat.MG_NE_HP)) {
-                                                demandetotaleMG_NE_HP  += 1000 * c.getTemporalite().get(Monde.LE_MONDE.getStep()%24);
-                                        }
-                                        if (c.getUnique().equals(Chocolat.HG_E_SHP)) {
-                                                demandetotaleHG_E_SHP  += 1000  * c.getTemporalite().get(Monde.LE_MONDE.getStep()%24);
-                                        }        
-                 */
 
 
                 if (Monde.LE_MONDE.getStep() >= 10) {
@@ -729,34 +691,33 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
                 return satisfait;
         }
 
-        @Override
-        //Caroline
-        public void proposerPrixAcheteur(ContratCadre<Chocolat> cc) {
-                //Si le dernier prix de la liste nous satisfait => proposer le même prix
-                //Sinon, le dernier prix nous satisfait pas :
+    	@Override
+    	//Caroline
+    	public void proposerPrixAcheteur(ContratCadre<Chocolat> cc) {
+    		//Si le dernier prix de la liste nous satisfait => proposer le même prix
+    		//Sinon, le dernier prix nous satisfait pas :
 
-                if (cc!=null) {
-                        if (satisfaitParPrixContratCadre (cc)) {
-                                cc.ajouterPrixAuKilo(cc.getPrixAuKilo());
-                                this.journal.ajouter("Accord sur Prix sur contrat n° " + cc.getNumero() + " au prix " + cc.getPrixAuKilo());
+    		if (cc!=null) {
+    			if (satisfaitParPrixContratCadre (cc)) {
+    				cc.ajouterPrixAuKilo(cc.getPrixAuKilo());
+    				this.journal.ajouter("Accord sur Prix sur contrat n° " + cc.getNumero() + " au prix " + cc.getPrixAuKilo());
 
-                        } else {
-
-                                if (cc.getListePrixAuKilo().size() >= 2) {
-
-                                        if (cc.getListePrixAuKilo().get(cc.getListePrixAuKilo().size() -2)*1.2 < this.getPrix(cc.getProduit())) {
-                                                cc.ajouterPrixAuKilo(cc.getListePrixAuKilo().get(cc.getListePrixAuKilo().size() -2)*1.2);
-                                        }
-                                        else {
-                                                cc.ajouterPrixAuKilo((cc.getPrixAuKilo()+cc.getListePrixAuKilo().get(cc.getListePrixAuKilo().size() -2))/2);
-                                                
-                                        }
-                                }else {
-                                        cc.ajouterPrixAuKilo(cc.getVendeur().getPrix(cc.getProduit(), cc.getQuantite())*0.97);
-                                }
-                        }
-                }
-        }
+    			} else {
+    				
+    				if (cc.getListePrixAuKilo().size() >= 2) {
+    					if (this.getPrix(cc.getProduit())/cc.getPrixAuKilo()*0.97 >=this.gestionPrix.getMargeParProduit(cc.getProduit()) ) { 
+    							cc.ajouterPrixAuKilo(cc.getPrixAuKilo()*0.97);
+        					}
+    						else {
+    							cc.ajouterPrixAuKilo(cc.getListePrixAuKilo().get(cc.getListePrixAuKilo().size() -2)*1.05);
+    						}
+    					}
+    				else {
+    					cc.ajouterPrixAuKilo(cc.getVendeur().getPrix(cc.getProduit(), cc.getQuantite())*0.95);
+    				}
+    			}
+    		}
+    	}
 
         @Override//Caroline
         public void notifierAcheteur(ContratCadre<Chocolat> cc) {
@@ -813,11 +774,10 @@ public class Distributeur2 implements IActeur, IAcheteurContratCadre<Chocolat>, 
         }
 
 
-		@Override
-		public String getNom() {
-			return "WallMart";
-		}
+                @Override
+                public String getNom() {
+                        return "WallMart";
+                }
 }
-
 
 

@@ -109,10 +109,14 @@ public class Prix {
     			qv = qv + nous.getIndicateurStock(choco).getHistorique().get(nous.getIndicateurStock(choco).getHistorique().getTaille() -t+j).getValeur();
     			}
     		c = (coutstructure+massesalariale)*.25/qv;
-    	}*/
-    		return 0.25;
-    }
 
+    	}
+    	else { c = 0.25; } 
+    	}
+    	*/
+    	return 0.25;
+    }
+	
     public void ajustementMarge(ArrayList<Double> historique, Chocolat c ) {
         // je récupère le chocoalt et l'historique des variations 
         int n = historique.size();
