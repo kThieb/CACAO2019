@@ -70,7 +70,7 @@ public class Stock<T> {
 	
 	private void nouveauLot(T produit, double quantite, int date) {
 		try { 	this.stock.get(produit).add(new Lot(numLot, quantite, date));
-		this.incrLot(); }
+				this.incrLot(); }
 		catch (IllegalArgumentException e) { 
 			this.stock.put(produit, new ArrayList<Lot>());
 			this.stock.get(produit).add(new Lot(numLot, quantite, date));
@@ -130,7 +130,8 @@ public class Stock<T> {
 	
 	public void decrDate() {
 		for (T produit: this.stock.keySet()) {
-			for (Lot lot: this.stock.get(produit)) {
+			ArrayList<Lot> lotsAModifier = (ArrayList<Lot>) ((ArrayList<Lot>) this.stock.get(produit)).clone();
+			for (Lot lot: lotsAModifier) {
 				lot.setDate(lot.getDate() - 1);
 				if (lot.getDate() == 0) {
 					this.stock.get(produit).remove(lot);
