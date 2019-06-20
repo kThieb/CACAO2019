@@ -2,13 +2,8 @@ package abstraction.eq1Producteur1;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
-import java.util.Map.Entry;
-
-import abstraction.eq1Producteur1.ventesCacaoAleatoires.SuperviseurVentesCacaoAleatoires;
 import abstraction.eq7Romu.produits.Feve;
 import abstraction.eq7Romu.produits.Variete;
 import abstraction.eq7Romu.ventesContratCadre.ContratCadre;
@@ -16,7 +11,6 @@ import abstraction.fourni.IActeur;
 import abstraction.fourni.Indicateur;
 import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
-import abstraction.eq7Romu.ventesContratCadre.Echeancier;
 import static abstraction.fourni.Monde.*;
 
 
@@ -160,13 +154,14 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 
 	}
 	// BEGIN Anti
-	public HashMap<Integer, ContratCadre<Feve>> getHistoriqueContrats() {
+	public HashMap<Integer, ContratCadre<Feve>> getHistoriqueContrats() { //Retourne l'ensemble des contrats cadre signés
 		return this.historiqueContrats;
 	}
 	// END Anti
 
 	// BEGIN Nas
-	public double getRecolte(Feve feve) { // récolte exceptionnellement réduite un step par an
+	public double getRecolte(Feve feve) { // Récolte avec un évènement aléatoire qui perturberait 1 récolte par an
+
 		
 		
 		if (feve.getVariete() == Variete.CRIOLLO) { 
@@ -180,7 +175,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		return Double.NaN;
 	}
 	
-	 public void setRecolte(Feve feve,double recolte){
+	 public void setRecolte(Feve feve,double recolte){ 
 	 	if (feve.getVariete() == Variete.CRIOLLO) {
 			recolteCriollo=recolte;
 		} else if (feve.getVariete() == Variete.FORASTERO) {
@@ -192,8 +187,10 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 	 
 
 	
+
 	public void genereAlea() { // génère un step où la récolte est exceptionnellement réduite
 		if (LE_MONDE.getStep()%unAnEnSteps==0) {
+
 			Random r=new Random();
 			stepRecolteExceptionnellementReduite=r.nextInt(unAnEnSteps);
 		}
@@ -222,10 +219,12 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		//BEGIN ANTI 
 		updatePlantation();
 		//END ANTI
-		//BEGINMANON
+		//BEGIN MANON
+		this.journal1.ajouter("NOUVEAU STEP");
 		this.getHistoriqueSoldeBancaire().add(this.getSoldeBancaire().getValeur());
 		for(Feve feve:this.getFeve()) {
-			this.journal1.ajouter("Prix de Vente"+ this.getPrixAuKilo().get(feve));}
+			this.journal1.ajouter("Prix de Vente de"+feve+":"+ this.getPrixAuKilo().get(feve));}
+		
 
 	}
 
@@ -235,7 +234,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		// END Pauline
 	}
 	//BEGIN MANON
-	public HashMap<Double, Boolean> getPrixAboutissantAcc(Feve feve){
+	public HashMap<Double, Boolean> getPrixAboutissantAcc(Feve feve){ //HashMap contenant le prix proposé par la méthode getPrix + si les négociations ont été engagés ou non
 		if (feve.getVariete() == Variete.CRIOLLO) {
 			return prixCriolloAboutissantAcc;
 		} else if (feve.getVariete() == Variete.FORASTERO) {
@@ -440,27 +439,28 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		return moyenne;
 	}
 	
-	public void updatePrix() {	
+	public void updatePrix() {	 //Actualise les prix en fonction de des résultat de prixAboutissantaCc
 		for (Feve produit: this.getFeve()) {
 	if(this.getHistoriqueSoldeBancaire().size()>2) { // On regarde si on est pas au premier ou deuxième step
-			if(this.moyenneDemande(produit)*2>this.getStockI(produit).getValeur() ) {
-				this.prixAuKilo.put(produit, this.getPrixAuKilo().get(produit)+0.1);}
+			if(this.moyenneDemande(produit)*2>this.getStockI(produit).getValeur() ) { // regarde si l'offre est inférieur à la demande
+				this.prixAuKilo.put(produit, this.getPrixAuKilo().get(produit)+0.1);} //augmentation des prix
 			
 			else {
-				//if(this.moyennePrixNonAccepte(produit)>this.getPrixAuKilo().get(produit)) {
+				if(this.moyennePrixNonAccepte(produit)<this.getPrixAuKilo().get(produit)) { //On regarde la moyenne des prix n'ayant pas engendré de Cc si elle est inférieur au prix proposé
+
 					if(this.getStockI(produit).getValeur()*(this.getPrixAuKilo().get(produit)-0.1)>this.getCOUT_FIXE()/3+this.getStockI(produit).getValeur()*this.getCOUT_VARIABLE_STOCK()
 							||this.getStockI(produit).getValeur()*(this.getPrixAuKilo().get(produit)-0.1)>0) {// On vérifie qu'on ne vend pas à perte
 	//	System.out.println("put "+(this.getPrixAuKilo().get(produit)-0.1));
 	//	if (this.getPrixAuKilo().get(produit)-0.1<0.0) {
 	//		System.exit(0);
-	//	}
-						this.prixAuKilo.put(produit, this.getPrixAuKilo().get(produit)-0.1);
+
+		}
+						this.prixAuKilo.put(produit, this.getPrixAuKilo().get(produit)-0.1);//diminution du prix
+
 							}
-					else {
-					this.getPrixAboutissantAcc(produit).put(this.getPrixAuKilo().get(produit), false);}
-			}  
+			}}			
 	}
-	}}
+	}
 	//END MANON
 	//BEGIN ANTI
 	
