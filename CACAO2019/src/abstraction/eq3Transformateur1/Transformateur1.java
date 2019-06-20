@@ -49,7 +49,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	private Stock<Feve> stockFeves;
 	// end eve
 	
-	private List<Chocolat> peutEtreProduit;
+	private ArrayList<Chocolat> peutEtreProduit;
 	
 	
 	
@@ -80,15 +80,11 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 
 
 		// stock de chocolat
-		ArrayList<Chocolat> chocolats = new ArrayList<Chocolat>();
-		chocolats.add(Chocolat.MG_NE_HP);
-		chocolats.add(Chocolat.MG_NE_SHP);
-		chocolats.add(Chocolat.MG_E_SHP);
-		this.stockChocolat = new Stock<Chocolat>(chocolats);
-		for (Chocolat c: chocolats) {
+		this.stockChocolat = new Stock<Chocolat>(this.peutEtreProduit);
+		for (Chocolat c: this.peutEtreProduit) {
 			this.stockChocolat.addQuantiteEnStock(c, 1000000);
 		}
-		this.iStockChocolat = new Indicateur("EQ3 stock chocolat", this, chocolats.size()*1000000);
+		this.iStockChocolat = new Indicateur("EQ3 stock chocolat", this, this.peutEtreProduit.size()*1000000);
 
 		// --------------------------------- end eve
 
@@ -98,7 +94,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 
 
 
-		this.coutEnFeves = new CoutEnFeves(chocolats,feves);
+		this.coutEnFeves = new CoutEnFeves(this.peutEtreProduit,feves);
 
 
 		this.coutEnFeves.setCoutEnFeves(Chocolat.MG_NE_HP, Feve.FORASTERO_MG_NEQ, 0.5);
@@ -113,7 +109,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 
 
 		// Marges sur chocolat
-		this.margeChocolats = new Marge(chocolats);
+		this.margeChocolats = new Marge(this.peutEtreProduit);
 		this.margeChocolats.setMargeBrute(Chocolat.MG_NE_HP, 5.);
 		this.margeChocolats.setCoutProd(Chocolat.MG_NE_HP, 3.);
 		this.margeChocolats.setMargeBrute(Chocolat.MG_NE_SHP, 10);
@@ -124,7 +120,6 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		this.PRIX_VENTE_PAR_DEFAUT.put(Chocolat.MG_NE_HP,40.);
 		this.PRIX_VENTE_PAR_DEFAUT.put(Chocolat.MG_NE_SHP,40.);
 		this.PRIX_VENTE_PAR_DEFAUT.put(Chocolat.MG_E_SHP,40.);
-		this.PRIX_VENTE_PAR_DEFAUT.put(Chocolat.HG_E_SHP,1000.);
 		
 
 		// --------------------------------- end Raph
@@ -182,7 +177,6 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 				for (Chocolat c: this.peutEtreProduit) {
 					if (this.coutEnFeves.getCoutEnFeves(c, f)>0.0) {
 						aProduire.add(c);
-						System.out.println("c'est le prix" + this.getPrix(c, 1000.0));
 					}
 				}
 				
