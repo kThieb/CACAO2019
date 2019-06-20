@@ -26,4 +26,7 @@ public class Publicite {
 		return this.budget;
 	}
 	
+	public String toString() {
+		return "Produit : " + this.getProduit() + " Budget : " + this.getBudget() + " €";
+	}
 }
