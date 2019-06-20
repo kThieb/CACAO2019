@@ -1,11 +1,14 @@
 package abstraction.eq3Transformateur1;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Arrays;
 
 import abstraction.eq7Romu.produits.Chocolat;
+import abstraction.eq7Romu.produits.Feve;
 
 /** 
  * 
@@ -22,6 +25,7 @@ public class Stock<T> {
 	
 	public Stock(ArrayList<T> produits) {
 		this.stock = new HashMap<T, Collection<Lot>>();
+	
 		for (T p: produits) { 
 			this.stock.put(p, new ArrayList<Lot>());
 		}
@@ -64,15 +68,23 @@ public class Stock<T> {
 	//          SETTERS
 	// -----------------------------------------------------------
 	
+	private void nouveauLot(T produit, double quantite, int date) {
+		try { 	this.stock.get(produit).add(new Lot(numLot, quantite, date));
+		this.incrLot(); }
+		catch (IllegalArgumentException e) { 
+			this.stock.put(produit, new ArrayList<Lot>());
+			this.stock.get(produit).add(new Lot(numLot, quantite, date));
+			this.incrLot();
+		}
+	}
+	
 	public void addQuantiteEnStock(T produit, double quantite)
 			throws IllegalArgumentException {
 		if (quantite>=0.) {
-			
 			// chocolat ou feve = pas meme date de peremption
-			if (produit instanceof Chocolat) {
-				try { this.stock.get(produit).add(new Lot(quantite, peremptionChocolat)); }
-				catch (IllegalArgumentException e) { this.stock.put(produit, new ArrayList<Lot>(new Lot(quantite, peremptionChocolat))) }
-			}
+			if (produit instanceof Chocolat) { this.nouveauLot(produit, quantite, peremptionChocolat); }
+			else if (produit instanceof Feve) { this.nouveauLot(produit, quantite, peremptionFeve); }
+			else { this.nouveauLot(produit, quantite, 1000); }
 		}
 		else {
 			throw new IllegalArgumentException("Appel de addQuantiteEnStock avec quantite negative. Utiliser plutot removeQuantiteEnStock");
@@ -87,7 +99,20 @@ public class Stock<T> {
 				throw new IllegalArgumentException("Quantite retiree trop grande !");
 			}
 			else {
-				this.stock.put(produit, newQuantiteEnStock);
+				double quantiteRestante = quantite;
+				Lot lot = ((ArrayList<Lot>) this.stock.get(produit)).get(0);
+				while (quantiteRestante > 10e-8) {
+					System.out.println("dans le while");
+					lot = ((ArrayList<Lot>) this.stock.get(produit)).get(0);
+					this.stock.get(produit).remove(lot);
+					if (lot.getQuantite() > quantiteRestante) { lot.retirerQuantiteLot(quantiteRestante);
+																quantiteRestante = 0.;
+																this.stock.get(produit).add(lot);
+																System.out.println("lot 1 : " + lot.getQuantite());}
+					else { 	quantiteRestante = quantiteRestante - lot.getQuantite();
+							System.out.println("lot 2 : " + lot.getQuantite()); }
+					System.out.println("reste " + quantiteRestante);
+				}
 			}
 		}
 		else {
@@ -102,5 +127,31 @@ public class Stock<T> {
 	private void incrLot() {
 		this.numLot ++;
 	}
-
+	
+	public void decrDate() {
+		for (T produit: this.stock.keySet()) {
+			for (Lot lot: this.stock.get(produit)) {
+				lot.setDate(lot.getDate() - 1);
+				if (lot.getDate() == 0) {
+					this.stock.get(produit).remove(lot);
+				}
+			}
+		}
+	}
+	
+	// -----------------------------------------------------------
+	//          TESTS
+	// -----------------------------------------------------------
+	
+/*	public static void main(String [] args) {
+		Stock<Chocolat> test = new Stock<Chocolat>( new ArrayList(Arrays.asList(Chocolat.values())) );
+//		test.removeQuantiteEnStock(Chocolat.MG_E_SHP, 1000);
+		test.addQuantiteEnStock(Chocolat.MG_E_SHP, 10);
+//		test.removeQuantiteEnStock(Chocolat.MG_E_SHP, 1000);
+		test.addQuantiteEnStock(Chocolat.MG_E_SHP, 100000);
+		test.removeQuantiteEnStock(Chocolat.MG_E_SHP, 1000);
+		System.out.println(test.getQuantiteEnStock(Chocolat.MG_E_SHP));
+	}
+*/
+	
 }
