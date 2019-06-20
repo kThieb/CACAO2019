@@ -42,7 +42,9 @@ public class Stock<T> {
 		try { 
 			double result = 0.;
 			for (Lot l: this.stock.get(produit)) {
-				result += l.getQuantite();
+				if (l.getQuantite() > 1.) {
+					result += l.getQuantite();
+				}
 			}
 			return result;
 		}
