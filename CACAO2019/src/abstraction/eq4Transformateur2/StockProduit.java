@@ -50,7 +50,7 @@ public class StockProduit<T> {
 				qty -= qteAPrendre;
 				prix += qteAPrendre * t.getPrixAuKilo();
 				i++;
-			}
+			} 
 			return prix;
 		}
 	}
