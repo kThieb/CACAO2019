@@ -287,19 +287,17 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 				IVendeurContratCadre<Chocolat> vendeur_choisi = vendeurs.get(0); 
 				double stock_vendeur = vendeur_choisi.getStockEnVente().get(produit);
 				double prix_vendeur = vendeur_choisi.getPrix(produit, stock_vendeur);
-				double meilleur_rapport_qp = stock_vendeur/prix_vendeur;
-				this.journal.ajouter("Le rapport quantité/prix initial est de " + meilleur_rapport_qp);
+				this.journal.ajouter("Le prix de " + vendeur_choisi +" est de " + prix_vendeur + " €");
 				for (IVendeurContratCadre<Chocolat> vendeur : vendeurs) {
 					double stock = vendeur.getStockEnVente().get(produit);
 					double prix = vendeur.getPrix(produit, stock);
-					double rapport_qp = stock/prix;
-					this.journal.ajouter("Le rapport quantité/prix de " + vendeur + " est de " + rapport_qp);;
-					if (rapport_qp > meilleur_rapport_qp) {
+					this.journal.ajouter("Le prix de " + vendeur + " est de " + prix + " €");;
+					if (prix < prix_vendeur) {
 						vendeur_choisi = vendeur;
-						meilleur_rapport_qp = rapport_qp;
-						this.journal.ajouter("Le rapport est meilleur, le vendeur est donc " + vendeur_choisi);
+						prix_vendeur = prix;
+						this.journal.ajouter("Le prix est plus bas, le vendeur est donc " + vendeur_choisi);
 					} else {
-						this.journal.ajouter("Le rapport est moins bon, le vendeur reste " + vendeur_choisi);
+						this.journal.ajouter("Le prix est plus élevé, le vendeur reste " + vendeur_choisi);
 					}
 				}
 
