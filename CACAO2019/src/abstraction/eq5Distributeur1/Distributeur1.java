@@ -127,20 +127,28 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 		//Juin		Step 21 à 24				Décembre	Step 45 à 48
 		int step_actuel = Monde.LE_MONDE.getStep();
 		int stepDansLAnnee = step_actuel%24;
-		this.journal.ajouter("-------------------------------------------- PUB -------------------------------------------------------------------------------------------");
+		publicites.clear();
 		if (stepDansLAnnee == JANVIER2 || stepDansLAnnee == FEVRIER1) {
 			Publicite pub1 = new Publicite(Chocolat.HG_E_SHP, 10000, "Europe");
+			this.journal.ajouter("-------------------------------------------- PUB -------------------------------------------------------------------------------------------");
 			this.journal.ajouter("Publicité de la Saint-Valentin:");
 			this.journal.ajouter(pub1.toString());
+			publicites.clear();
+			publicites.add(pub1);
 		}
 		if (stepDansLAnnee == MARS1 || stepDansLAnnee == MARS2 || stepDansLAnnee == AVRIL1) {
 			Publicite pub1 = new Publicite(Chocolat.HG_E_SHP, 7000, "Europe");
 			Publicite pub2 = new Publicite(Chocolat.MG_E_SHP, 5000, "Europe");
 			Publicite pub3 = new Publicite(Chocolat.MG_NE_SHP, 3000, "Europe");
+			this.journal.ajouter("-------------------------------------------- PUB -------------------------------------------------------------------------------------------");
 			this.journal.ajouter("Publicité de Pâques:");
 			this.journal.ajouter(pub1.toString());
 			this.journal.ajouter(pub2.toString());
 			this.journal.ajouter(pub3.toString());
+			publicites.clear();
+			publicites.add(pub1);
+			publicites.add(pub2);
+			publicites.add(pub3);
 		}
 		if (stepDansLAnnee == NOVEMBRE1 || stepDansLAnnee == NOVEMBRE2 || stepDansLAnnee == DECEMBRE1 
 				|| stepDansLAnnee == DECEMBRE2) {
@@ -148,15 +156,17 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 			Publicite pub2 = new Publicite(Chocolat.MG_E_SHP,5000,"Europe");
 			Publicite pub3 = new Publicite(Chocolat.MG_NE_HP,5000,"Europe");
 			Publicite pub4 = new Publicite(Chocolat.MG_NE_SHP,5000,"Europe");
-			publicites.clear();
-			publicites.add(pub2);
-			publicites.add(pub3);
-			this.journal.ajouter("-------------------------------------- PUB ---------------------------------------------");
+			this.journal.ajouter("-------------------------------------------- PUB -------------------------------------------------------------------------------------------");
 			this.journal.ajouter("Publicité de Noël:");
 			this.journal.ajouter(pub1.toString());
 			this.journal.ajouter(pub2.toString());
 			this.journal.ajouter(pub3.toString());
 			this.journal.ajouter(pub4.toString());
+			publicites.clear();
+			publicites.add(pub1);
+			publicites.add(pub2);
+			publicites.add(pub3);
+			publicites.add(pub4);
 		}
 	}
 
@@ -277,19 +287,17 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 				IVendeurContratCadre<Chocolat> vendeur_choisi = vendeurs.get(0); 
 				double stock_vendeur = vendeur_choisi.getStockEnVente().get(produit);
 				double prix_vendeur = vendeur_choisi.getPrix(produit, stock_vendeur);
-				double meilleur_rapport_qp = stock_vendeur/prix_vendeur;
-				this.journal.ajouter("Le rapport quantité/prix initial est de " + meilleur_rapport_qp);
+				this.journal.ajouter("Le prix de " + vendeur_choisi +" est de " + prix_vendeur + " €");
 				for (IVendeurContratCadre<Chocolat> vendeur : vendeurs) {
 					double stock = vendeur.getStockEnVente().get(produit);
 					double prix = vendeur.getPrix(produit, stock);
-					double rapport_qp = stock/prix;
-					this.journal.ajouter("Le rapport quantité/prix de " + vendeur + " est de " + rapport_qp);;
-					if (rapport_qp > meilleur_rapport_qp) {
+					this.journal.ajouter("Le prix de " + vendeur + " est de " + prix + " €");;
+					if (prix < prix_vendeur) {
 						vendeur_choisi = vendeur;
-						meilleur_rapport_qp = rapport_qp;
-						this.journal.ajouter("Le rapport est meilleur, le vendeur est donc " + vendeur_choisi);
+						prix_vendeur = prix;
+						this.journal.ajouter("Le prix est plus bas, le vendeur est donc " + vendeur_choisi);
 					} else {
-						this.journal.ajouter("Le rapport est moins bon, le vendeur reste " + vendeur_choisi);
+						this.journal.ajouter("Le prix est plus élevé, le vendeur reste " + vendeur_choisi);
 					}
 				}
 
@@ -503,10 +511,10 @@ public class Distributeur1 implements IActeur, IAcheteurContratCadre, IDistribut
 			if (20.0 < prixVendeur && prixVendeur <= 70.0 && stock.get((Chocolat) cc.getProduit()) < 10000) {
 				cc.ajouterPrixAuKilo(prixVendeur*0.95);
 				this.journal.ajouter("Nous proposons un prix de " + prixVendeur*0.95 + " €");
-			} else if (20 < prixVendeur && prixVendeur <= 70 && stock.get((Chocolat) cc.getProduit())>=10000) {
+			} else if (20.0 < prixVendeur && prixVendeur <= 70.0 && stock.get((Chocolat) cc.getProduit())>=10000) {
 				cc.ajouterPrixAuKilo(prixVendeur*0.8);
 				this.journal.ajouter("Nous proposons un prix de " + prixVendeur*0.8 + " €");
-			} else if (prixVendeur <= 20) {
+			} else if (prixVendeur <= 20.0) {
 				cc.ajouterPrixAuKilo(prixVendeur);
 				this.journal.ajouter("Nous proposons un prix de " + prixVendeur + " €");
 			} else {
