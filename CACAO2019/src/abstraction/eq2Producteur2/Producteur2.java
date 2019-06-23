@@ -34,6 +34,9 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	private GestionnaireFeve gestionnaireFeve;
 	private Arbre arbres;
 	private double salaire=2;
+	private double contratsConclus = 0;
+	private double beneficesDuMois = 0;
+	private int numAn=0;
 
 	public Producteur2() {
 		this.gestionnaireFeve = new GestionnaireFeve(this);
@@ -105,8 +108,10 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 
 		if (this.numStep == 24) {
 			this.numStep = 1;
-			arbres.actualise();
+			numAn+=1;
+			arbres.actualise(numAn);
 			this.actualisationProduction();
+			
 		} else {			
 			this.numStep++;
 
@@ -268,19 +273,12 @@ public void payerCoutsProd() {
 		double salaire = getSalaire(f);
 		//System.out.println("le salaire total vaut : "+salaire);
 		double coutsarbres = arbres.getPrixParStep(f);
-<<<<<<< HEAD
+
 		System.out.println("le cout d'entretien des arbres est : "+coutsarbres);
 		System.out.println("la production par step est "+this.gestionnaireFeve.getProductionParStep(f));
 		System.out.println("en tout on paye : "+ (salaire + coutsarbres)/gestionnaireFeve.getProductionParStep(f));
 		return (salaire + coutsarbres)/gestionnaireFeve.getProductionParStep(f) ;}	
 
-=======
-		//System.out.println("le cout d'entretien des arbres est : "+coutsarbres);
-		//System.out.println("la production par step est "+this.gestionnaireFeve.getProductionParStep(f));
-		//System.out.println("en tout on paye : "+ (salaire + coutsarbres)/gestionnaireFeve.getProductionParStep(f));
-		return (salaire + coutsarbres)/gestionnaireFeve.getProductionParStep(f) ;	
-		}
->>>>>>> branch 'master' of https://github.com/Clementmagnin/CACAO2019.git
 	
 	public double getSalaire(Feve f) {
 		double cout=0;

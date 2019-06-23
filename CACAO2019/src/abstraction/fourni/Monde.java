@@ -52,10 +52,10 @@ public class Monde extends Observable {
 	}
 	public void peupler() {
 		this.ajouterActeur(new CreateurRomu());
-		//this.ajouterActeur(new Producteur1());
+		this.ajouterActeur(new Producteur1());
 		this.ajouterActeur(new Producteur2());
-		//this.ajouterActeur(new Transformateur1());
-		//this.ajouterActeur(new Transformateur2());
+		this.ajouterActeur(new Transformateur1());
+		this.ajouterActeur(new Transformateur2());
 		//this.ajouterActeur(new Distributeur1());
 		//this.ajouterActeur(new Distributeur2());
 		
