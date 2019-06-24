@@ -95,10 +95,10 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 		payerCoutsProd();
 		if (this.salaire < this.salaireDemande) {
 			this.enGreve = true;
-			System.out.println("on est en grève");
+			this.journal.ajouter("on est en grève");
 
 		} else {
-			System.out.println("pas de grève");
+			this.journal.ajouter("pas de grève");
 			this.enGreve = false;
 		}
 		for (Feve f : gestionnaireFeve.getFeves()) {
@@ -120,9 +120,9 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 
 			}
 		}
-		System.out.println("balance du step : " + this.balanceDuStep());
-		System.out.println("benefices du mois : " + beneficesDuMois);
-		System.out.println("contrats conclus : " + contratsConclus);
+		this.journal.ajouter("balance du step : " + this.balanceDuStep());
+		this.journal.ajouter("benefices du mois : " + beneficesDuMois);
+		this.journal.ajouter("contrats conclus : " + contratsConclus);
 
 		contratsConclus = 0;
 		beneficesDuMois = 0;
@@ -165,7 +165,7 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 			this.maladie_predateurs = -aleaMaladie / 5;
 			this.meteo = aleaMeteo / 5 - 0.1;
 			double qualiteProduction = maladie_predateurs + meteo;
-//			System.out.println("qualité de la production : " + qualiteProduction);
+//			this.journal.ajouter("qualité de la production : " + qualiteProduction);
 			// double qualiteProduction = (Math.random() - 0.5) / 2.5 + 1; // entre 0.8 et
 			// 1.2
 			double nouveauStock = this.gestionnaireFeve.getStock(f)
