@@ -42,7 +42,7 @@ public class Transformateur2AcheteurCC implements IAcheteurContratCadre<Feve> {
 		for(ContratCadre<Chocolat> cc : t2.contratsChocolatEnCours)
 			solde += cc.getMontantRestantARegler();
 
-		// On souhaite créer un contrat pour le type de fèves dont l'on a le plus besoin
+		// On souhaite créer un contrat pour le type de fèves dont on a le plus besoin
 		HashMap<Feve, Echeancier> echeanciers = creerEcheanciersPourPlanning();
 		// On trie les fèves par quantité à acheter
 		List<Feve> triParQte = new ArrayList<Feve>();
@@ -164,7 +164,8 @@ public class Transformateur2AcheteurCC implements IAcheteurContratCadre<Feve> {
 		return echeanciers;
 	}	
 	
-	/** Pour une fève donnée, crée un échéancier des quantités que l'on doit acheter pour satisfaire le planning de stock */
+	/** Pour une fève donnée, crée un échéancier des quantités que l'on doit acheter pour satisfaire le planning de stock,
+	 * en prenant en compte le stock actuel et les contrats cadres entrants */
 	private Echeancier creerEcheancierPourPlanning(Feve f) {
 		Echeancier e = new Echeancier(Monde.LE_MONDE.getStep());
 		double qte = t2.stockFeves.getQuantiteTotale(f);
@@ -181,8 +182,11 @@ public class Transformateur2AcheteurCC implements IAcheteurContratCadre<Feve> {
 					qteManquante -= cc.getEcheancier().getQuantite(step);
 			}
 			
-			qteManquante = Math.max(0, qteManquante);
-			e.set(step, qteManquante);
+			// Si l'on a un overflow de fèves pour ce step, on considère qu'on les aura en stock au step précédent
+			if(qteManquante < 0)
+				qte += -qteManquante;
+			
+			e.set(step, Math.max(0, qteManquante));
 		}
 		if(e.getQuantiteTotale() != 0.0)
 			t2.journal.ajouter("Qte manquante pour " + f + " : " + e.getQuantiteTotale() + " kg.");
