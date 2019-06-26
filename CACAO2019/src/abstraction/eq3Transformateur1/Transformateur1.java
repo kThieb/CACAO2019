@@ -89,6 +89,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 		}
 		this.iStockChocolat = new Indicateur("EQ3 stock chocolat", this, this.peutEtreProduit.size()*10000);
 
+		
 		// --------------------------------- end eve
 
 		// --------------------------------- begin Raph
