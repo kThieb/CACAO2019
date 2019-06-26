@@ -96,10 +96,7 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 		payerCoutsProd();
 		if (this.salaire < this.salaireDemande) {
 			this.enGreve = true;
-			System.out.println("on est en grève");
-
 		} else {
-			System.out.println("pas de grève");
 			this.enGreve = false;
 		}
 		for (Feve f : gestionnaireFeve.getFeves()) {
