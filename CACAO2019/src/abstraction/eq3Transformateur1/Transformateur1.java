@@ -146,6 +146,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	// 			GETTERS & SETTERS
 	// -------------------------------------------------------------------------------------------
 	
+	
 	public String getNom() {
 		return "EQ3";
 	}
