@@ -18,8 +18,8 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 
 
 	public static int COUT_VARIABLE_STOCK = 0;
-	public static int nbrEmployes = 20 ;
-	public static int salaire= 130 ;
+	public static int nbrEmployes = 5 ;
+	public static int salaire= 60 ;
 	public static int masseSalariale = nbrEmployes*salaire;
 	public static int COUT_FIXE = 00;
 
