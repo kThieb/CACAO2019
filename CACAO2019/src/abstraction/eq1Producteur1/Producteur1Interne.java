@@ -111,7 +111,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		
 		
 		this.historiqueContrats=new HashMap<Integer, ContratCadre<Feve>>();
-		
+		 
 		stockCriollo=new Stock(Feve.CRIOLLO_HG_EQ,this);
 		stockForastero=new Stock(Feve.FORASTERO_MG_NEQ,this);
 		stockTrinitario=new Stock(Feve.TRINITARIO_MG_NEQ,this);
@@ -449,14 +449,13 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 	public void updatePrix() {	 //Actualise les prix en fonction de des résultat de prixAboutissantaCc
 		for (Feve produit: this.getFeve()) {
 	if(this.getHistoriqueSoldeBancaire().size()>2) { // On regarde si on est pas au premier ou deuxième step
-			if(this.moyenneDemande(produit)*2>this.getStockI(produit).getValeur() ) { // regarde si l'offre est inférieur à la demande
+			if(this.moyenneDemande(produit)*2/unAnEnSteps>this.getStockI(produit).getValeur() ) { // regarde si l'offre est inférieur à la demande
 				this.prixAuKilo.put(produit, this.getPrixAuKilo().get(produit)+0.1);} //augmentation des prix
 			
 			else {
 				if(this.moyennePrixNonAccepte(produit)<this.getPrixAuKilo().get(produit)) { //On regarde la moyenne des prix n'ayant pas engendré de Cc si elle est inférieur au prix proposé
 
-					if(this.getStockI(produit).getValeur()*(this.getPrixAuKilo().get(produit)-0.1)>this.getCOUT_FIXE()/3+this.getStockI(produit).getValeur()*this.getCOUT_VARIABLE_STOCK()
-							||this.getStockI(produit).getValeur()*(this.getPrixAuKilo().get(produit)-0.1)>0) {// On vérifie qu'on ne vend pas à perte
+					if(this.getStockI(produit).getValeur()*(this.getPrixAuKilo().get(produit)-0.1)>this.masseSalariale*this.nbrEmployes/3+this.getStockI(produit).getValeur()*this.getCOUT_VARIABLE_STOCK()) {// On vérifie qu'on ne vend pas à perte
 	//	System.out.println("put "+(this.getPrixAuKilo().get(produit)-0.1));
 	//	if (this.getPrixAuKilo().get(produit)-0.1<0.0) {
 	//		System.exit(0);
