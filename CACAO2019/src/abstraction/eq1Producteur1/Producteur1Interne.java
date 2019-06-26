@@ -456,7 +456,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 				this.prixAuKilo.put(produit, this.getPrixAuKilo().get(produit)+0.1);} //augmentation des prix
 			
 			else {
-				if(this.moyennePrixNonAccepte(produit)<this.getPrixAuKilo().get(produit)) { //On regarde la moyenne des prix n'ayant pas engendré de Cc si elle est inférieur au prix proposé
+				if(this.moyennePrixNonAccepte(produit)<this.getPrixAuKilo().get(produit)){ //On regarde la moyenne des prix n'ayant pas engendré de Cc si elle est inférieur au prix proposé
 
 					if(this.getStockI(produit).getValeur()*(this.getPrixAuKilo().get(produit)-0.1)>this.masseSalariale*this.nbrEmployes/3+this.getStockI(produit).getValeur()*this.getCOUT_VARIABLE_STOCK()) {// On vérifie qu'on ne vend pas à perte
 	//	System.out.println("put "+(this.getPrixAuKilo().get(produit)-0.1));
