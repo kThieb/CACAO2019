@@ -22,16 +22,15 @@ public class Transformateur2VendeurCC implements IVendeurContratCadre<Chocolat> 
 	// Guillaume
 	public List<Chocolat> getProduitsEnVente() {
 		ArrayList<Chocolat> chocolat = new ArrayList<Chocolat>();
-		chocolat.addAll(t2.stockEnVente.getProduitsEnVente());
+		chocolat.addAll(t2.getStockEnVente().getProduitsEnVente());
 		return chocolat;
 	}
 
 	@Override
 	public StockEnVente<Chocolat> getStockEnVente() {
 		StockEnVente<Chocolat> sev = new StockEnVente<Chocolat>();
-		for(Chocolat c : t2.CHOCOLATS_VENTE)
-			sev.ajouter(c, t2.stocksChocolat.getQuantiteTotale(c));	
-		t2.stockEnVente = sev;
+		for(Chocolat c : t2.getCHOCOLATS_VENTE())
+			sev.ajouter(c, t2.getStocksChocolat().getQuantiteTotale(c));	
 		return sev;
 	}
 
@@ -41,10 +40,10 @@ public class Transformateur2VendeurCC implements IVendeurContratCadre<Chocolat> 
 		//System.out.println("getPrix(" + produit + ", " + qte + ") = " + (t2.stocksChocolat.getPrix(produit, qte) * (1.0 + MARGE_VISEE) / qte));
 		
 		// Si l'on ne vend pas ce type de chocolat, on renvoie +infini
-		if(!t2.CHOCOLATS_VENTE.contains(produit) || qte == Double.POSITIVE_INFINITY)
+		if(!t2.getCHOCOLATS_VENTE().contains(produit) || qte == Double.POSITIVE_INFINITY)
 			return Double.MAX_VALUE;
 		// Quantité réelle de production de la qté de chocolat demandée + une marge (on re-divise par la quantité pour obtenir le prix au kg)
-		return t2.stocksChocolat.getPrix(produit, qte) * (1.0 + ConfigEQ4.MARGE_VISEE) / qte;
+		return t2.getStocksChocolat().getPrix(produit, qte) * (1.0 + ConfigEQ4.MARGE_VISEE) / qte;
 	}
 
 	// Adrien
@@ -69,7 +68,7 @@ public class Transformateur2VendeurCC implements IVendeurContratCadre<Chocolat> 
 			return;
 		}
 		
-		double coutProduction = t2.stocksChocolat.getPrix(cc.getProduit(), cc.getQuantite()) / cc.getQuantite();
+		double coutProduction = t2.getStocksChocolat().getPrix(cc.getProduit(), cc.getQuantite()) / cc.getQuantite();
 		double prixAcheteur = cc.getPrixAuKilo();
 		double marge = (prixAcheteur - coutProduction) / coutProduction;
 		
@@ -96,25 +95,25 @@ public class Transformateur2VendeurCC implements IVendeurContratCadre<Chocolat> 
 
 	@Override
 	public void notifierVendeur(ContratCadre<Chocolat> cc) {
-		t2.contratsChocolatEnCours.add(cc);
+		t2.getContratsChocolatEnCours().add(cc);
 
 		// Ajout de la demande à l'historique (Minh Tri)
 		Echeancier e = cc.getEcheancier();
 		for(int s = e.getStepDebut(); s <= e.getStepFin(); s++) {
 			TasProduit<Chocolat> tas = new TasProduit<>(e.getQuantite(s), cc.getPrixAuKilo());
-			t2.historiqueDemande.ajouterDemande(Monde.LE_MONDE.getStep() + s, tas, cc.getProduit());
+			t2.getHistoriqueDemande().ajouterDemande(Monde.LE_MONDE.getStep() + s, tas, cc.getProduit());
 		}
 	}
 
 	// Kelian
 	@Override
 	public double livrer(Chocolat produit, double quantite, ContratCadre<Chocolat> cc) {
-		if (produit == null || !t2.CHOCOLATS_VENTE.contains(produit))
+		if (produit == null || !t2.getCHOCOLATS_VENTE().contains(produit))
 			throw new IllegalArgumentException("Appel de la methode livrer de Transformateur2 avec un produit ne correspondant pas à un chocolat produit");
-		double livraison = Math.min(quantite, t2.stocksChocolat.getQuantiteTotale(produit));
-		t2.journal.ajouter("Livraison de " + livraison + " kg de " + produit + " à " + cc.getAcheteur());
-		t2.stocksChocolat.prendreProduits(produit, livraison);
-		t2.iStockChocolat.retirer(t2, livraison);
+		double livraison = Math.min(quantite, t2.getStocksChocolat().getQuantiteTotale(produit));
+		t2.getJournal().ajouter("Livraison de " + livraison + " kg de " + produit + " à " + cc.getAcheteur() + " (demande : " + quantite + " kg)");
+		t2.getStocksChocolat().prendreProduits(produit, livraison);
+		t2.getIndicateurStockChocolat().retirer(t2, livraison);
 		
 		return livraison;
 	}
@@ -125,6 +124,6 @@ public class Transformateur2VendeurCC implements IVendeurContratCadre<Chocolat> 
 		if (montant < 0.0) {
 			throw new IllegalArgumentException("Appel de la methode encaisser de Transformateur2 avec un montant negatif");
 		}
-		t2.soldeBancaire.ajouter(t2,  montant);
+		t2.getSoldeBancaire().ajouter(t2,  montant);
 	}
 }

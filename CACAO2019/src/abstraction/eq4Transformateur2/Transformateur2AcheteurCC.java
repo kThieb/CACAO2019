@@ -18,14 +18,17 @@ public class Transformateur2AcheteurCC implements IAcheteurContratCadre<Feve> {
 
 	private Transformateur2 t2;
 	
-	private HashMap<Feve,Double> dernierPrixAchat;
+	/** Stockage du dernier prix d'achat de chaque fève. Utilisé dans notre stratégie de négociation des prix. */
+	private HashMap<Feve, Double> dernierPrixAchat;
 	
 	public Transformateur2AcheteurCC(Transformateur2 trans2) {
 		this.t2 = trans2;
 		
+		LogiqueTransformations.t2 = t2;
+		
 		// Adrien et Guillaume
 		dernierPrixAchat = new HashMap<Feve,Double>();
-		for (Feve f : t2.FEVES_ACHAT)
+		for (Feve f : t2.getFEVES_ACHAT())
 			dernierPrixAchat.put(f, 0.0);
 	}
 	
@@ -34,10 +37,10 @@ public class Transformateur2AcheteurCC implements IAcheteurContratCadre<Feve> {
 	@Override
 	public ContratCadre<Feve> getNouveauContrat() {
 		// Calcul du solde que l'on peut dépenser en fonction des contrats sortants et entrants
-		double solde = t2.soldeBancaire.getValeur();
-		for(ContratCadre<Feve> cc : t2.contratsFevesEnCours)
+		double solde = t2.getSoldeBancaire().getValeur();
+		for(ContratCadre<Feve> cc : t2.getContratsFevesEnCours())
 			solde -= cc.getMontantRestantARegler();
-		for(ContratCadre<Chocolat> cc : t2.contratsChocolatEnCours)
+		for(ContratCadre<Chocolat> cc : t2.getContratsChocolatEnCours())
 			solde += cc.getMontantRestantARegler();
 
 		// On souhaite créer un contrat pour le type de fèves dont on a le plus besoin
@@ -52,7 +55,7 @@ public class Transformateur2AcheteurCC implements IAcheteurContratCadre<Feve> {
 		
 		for(Feve f : triParQte) {
 			if(echeanciers.get(f).getQuantiteTotale() != 0.0)
-				t2.journal.ajouter("Il manque " + echeanciers.get(f).getQuantiteTotale() + " kg de " + f);
+				t2.getJournal().ajouter("Il manque " + echeanciers.get(f).getQuantiteTotale() + " kg de " + f);
 		}
 		
 		// On prend la première fève (dans l'ordre décroissant des quantités manquantes) pour laquelle on trouve un vendeur
@@ -64,7 +67,7 @@ public class Transformateur2AcheteurCC implements IAcheteurContratCadre<Feve> {
 			if(qte != 0.0) {
 				vendeur = choisirVendeur(f, qte);
 				if(vendeur == null)
-					t2.journal.ajouter("[IMPORTANT] Pas trouvé de vendeur pour acheter " + qte + " kg de " + f + ".");
+					t2.getJournal().ajouter("[IMPORTANT] Pas trouvé de vendeur pour acheter " + qte + " kg de " + f + ".");
 			}
 			idx++;
 		}
@@ -86,7 +89,7 @@ public class Transformateur2AcheteurCC implements IAcheteurContratCadre<Feve> {
 			prix = vendeur.getPrix(feve, qte);
 		}
 
-		t2.journal.ajouter("Début négociation nouveau CC fève : " + feve + " " + qte + " kg  -  " + vendeur);
+		t2.getJournal().ajouter("Début négociation nouveau CC fève : " + feve + " " + qte + " kg  -  " + vendeur);
 		return new ContratCadre<Feve>(t2, vendeur, feve, qte);
 		
 		
@@ -132,7 +135,7 @@ public class Transformateur2AcheteurCC implements IAcheteurContratCadre<Feve> {
 			cc.ajouterEcheancier(creerEcheancierPourPlanning(cc.getProduit(), cc.getQuantite()));
 		} 
 		else {
-			t2.journal.ajouter("Proposition nouvel échéancier");
+			t2.getJournal().ajouter("Proposition nouvel échéancier");
 			Echeancier echCible = creerEcheancierPourPlanning(cc.getProduit(), cc.getQuantite());
 			
 			cc.ajouterEcheancier(moyenneEcheancier(echCible, cc.getEcheancier()));
@@ -141,7 +144,7 @@ public class Transformateur2AcheteurCC implements IAcheteurContratCadre<Feve> {
 
 	@Override
 	public void proposerPrixAcheteur(ContratCadre<Feve> cc) {
-		t2.journal.ajouter("Négo prix " + cc.getPrixAuKilo());
+		t2.getJournal().ajouter("Négo prix " + cc.getPrixAuKilo());
 		
 		double prixPropose = cc.getPrixAuKilo();
 		
@@ -178,7 +181,7 @@ public class Transformateur2AcheteurCC implements IAcheteurContratCadre<Feve> {
 	/** Pour chaque fève, crée un échéancier des quantités que l'on doit acheter pour satisfaire le planning de stock */	
 	private HashMap<Feve, Echeancier> creerEcheanciersPourPlanning() {
 		HashMap<Feve, Echeancier> echeanciers = new HashMap<Feve, Echeancier>();
-		for(Feve f : t2.FEVES_ACHAT)
+		for(Feve f : t2.getFEVES_ACHAT())
 			echeanciers.put(f, creerEcheancierPourPlanning(f, -1));
 		return echeanciers;
 	}	
@@ -188,12 +191,12 @@ public class Transformateur2AcheteurCC implements IAcheteurContratCadre<Feve> {
 	 * @param qteTotaleEcheancier */
 	private Echeancier creerEcheancierPourPlanning(Feve f, double qteTotaleEcheancier) {
 		Echeancier e = new Echeancier(Monde.LE_MONDE.getStep());
-		double qte = t2.stockFeves.getQuantiteTotale(f);
+		double qte = t2.getStockFeves().getQuantiteTotale(f);
 		double qteDansEcheancier = 0.0;
 		
 		for(int i = 0; i <= ConfigEQ4.STEPS_ESTIMATION_DEMANDE_FUTURE; i++) {
 			int step = Monde.LE_MONDE.getStep() + i;
-			double qteManquante = t2.planningStockFeves.getQuantite(f, step);
+			double qteManquante = t2.getPlanningStockFeves().getQuantite(f, step);
 
 			// On prend un maximum de fèves dans le stock actuel
 			double aPrendreDansStock = Math.min(qte, qteManquante);
@@ -201,7 +204,7 @@ public class Transformateur2AcheteurCC implements IAcheteurContratCadre<Feve> {
 			qte -= aPrendreDansStock;
 			
 			// TODO Prendre en compte mieux
-			for(ContratCadre<Feve> cc : t2.contratsFevesEnCours) {
+			for(ContratCadre<Feve> cc : t2.getContratsFevesEnCours()) {
 				if(cc.getProduit().equals(f))
 					qteManquante -= cc.getEcheancier().getQuantite(step);
 			}
@@ -302,7 +305,7 @@ public class Transformateur2AcheteurCC implements IAcheteurContratCadre<Feve> {
  
 	@Override
 	public void notifierAcheteur(ContratCadre<Feve> cc) { 
-		t2.contratsFevesEnCours.add(cc);
+		t2.getContratsFevesEnCours().add(cc);
 		dernierPrixAchat.put(cc.getProduit(), cc.getPrixAuKilo());
 	}
 
@@ -312,9 +315,9 @@ public class Transformateur2AcheteurCC implements IAcheteurContratCadre<Feve> {
 		if(quantite <= 0.0)
 			throw new IllegalArgumentException("Appel de la méthode réceptionner de Transformateur2 avec une quantité égale à " + quantite);
 		
-		t2.journal.ajouter("Réception de " + quantite + " kg de " + produit);
-		t2.stockFeves.ajouterTas(produit, new TasProduit<Feve>(quantite, cc.getPrixAuKilo()));		
-		t2.iStockFeves.ajouter(t2, quantite);
+		t2.getJournal().ajouter("Réception de " + quantite + " kg de " + produit);
+		t2.getStockFeves().ajouterTas(produit, new TasProduit<Feve>(quantite, cc.getPrixAuKilo()));		
+		t2.getIndicateurStockFeves().ajouter(t2, quantite);
 	}
 
 	// Kelian
@@ -323,8 +326,8 @@ public class Transformateur2AcheteurCC implements IAcheteurContratCadre<Feve> {
 		if(montant <= 0.0)
 			throw new IllegalArgumentException("Appel de la methode payer de Transformateur2 avec un montant negatif = " + montant);
 		
-		double paiement = Math.min(montant,  t2.soldeBancaire.getValeur());
-		t2.soldeBancaire.retirer(t2,  paiement);
+		double paiement = Math.min(montant,  t2.getSoldeBancaire().getValeur());
+		t2.getSoldeBancaire().retirer(t2,  paiement);
 		return paiement;
 	}
 	
