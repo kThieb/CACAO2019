@@ -30,6 +30,7 @@ public class Transformateur1 implements IActeur, IAcheteurContratCadre<Feve>, IV
 	private HashMap<Chocolat, Double> PRIX_VENTE_PAR_DEFAUT = new HashMap<Chocolat, Double>();
 	//End Raph
 	
+	
 	//Begin Kevin
 	private static final double stockLim = 10000.0;
 	//End Kevin
