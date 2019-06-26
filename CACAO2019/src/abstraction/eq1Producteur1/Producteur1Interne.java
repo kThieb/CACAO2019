@@ -34,10 +34,10 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 	protected Plantation plantationForastero;
 	protected Plantation plantationTrinitario;
 	 
-	protected double recolteCriollo ;
-	protected double recolteForastero ;
-	protected double recolteTrinitario ;
-    protected List<ContratCadre<Feve>> contratEnCours;  //
+	protected double recolteCriollo ; // valeur mise à jour en fct de la plantation à chaque step 
+	protected double recolteForastero ; // valeur mise à jour en fct de la plantation à chaque step 
+	protected double recolteTrinitario ; // valeur mise à jour en fct de la plantation à chaque step 
+    protected List<ContratCadre<Feve>> contratEnCours;  
     protected List<Double>historiqueSoldeBancaire;
 
 	//BEGIN ANTI 
