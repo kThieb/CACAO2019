@@ -83,7 +83,7 @@ public class Plantation {
 		double recolte=0;
 		while (stepAExplorer <=stepCourant-troisAnsEnSteps) { 
 			// les arbres sont matures après 3 ans
-			if(stepCourant%(unAnEnSteps/2)==0) {//On récolte que 2 fois par an pour chaque arbre
+			if(stepAExplorer%(unAnEnSteps/2)==0) {//On récolte que 2 fois par an pour chaque arbre
 				recolte += getPlantation().getOrDefault(stepAExplorer, (double)0);
 			}
 				stepAExplorer++;}
