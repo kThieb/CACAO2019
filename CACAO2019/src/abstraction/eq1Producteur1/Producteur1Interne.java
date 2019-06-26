@@ -449,7 +449,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 	public void updatePrix() {	 //Actualise les prix en fonction de des résultat de prixAboutissantaCc
 		for (Feve produit: this.getFeve()) {
 	if(this.getHistoriqueSoldeBancaire().size()>2) { // On regarde si on est pas au premier ou deuxième step
-			if(this.moyenneDemande(produit)*2/unAnEnSteps>this.getStockI(produit).getValeur() ) { // regarde si l'offre est inférieur à la demande
+			if(this.moyenneDemande(produit)*2>this.getStockI(produit).getValeur() ) { // regarde si l'offre est inférieur à la demande
 				this.prixAuKilo.put(produit, this.getPrixAuKilo().get(produit)+0.1);} //augmentation des prix
 			
 			else {
