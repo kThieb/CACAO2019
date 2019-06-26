@@ -21,7 +21,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 	public static int nbrEmployes = 20 ;
 	public static int salaire= 130 ;
 	public static int masseSalariale = nbrEmployes*salaire;
-	public static int COUT_FIXE = 00;
+	public static int COUT_FIXE = 0;
 
  
 	
@@ -225,6 +225,9 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 		// END Nas
 		//BEGIN ANTI 
 		updatePlantation();
+		if (this.soldeBancaire.getValeur()<0 && this.historiqueSoldeBancaire.get(this.historiqueSoldeBancaire.size()-1)-this.historiqueSoldeBancaire.get(this.historiqueSoldeBancaire.size()-2)<0&&this.nbrEmployes>0) {
+			this.nbrEmployes-=1;
+		}
 		//END ANTI
 		//BEGIN MANON
 		this.journal1.ajouter("NOUVEAU STEP");
