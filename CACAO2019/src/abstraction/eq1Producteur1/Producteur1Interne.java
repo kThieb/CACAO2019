@@ -526,6 +526,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 				double plantationActuelle = getPlantation(feve).getInd().getValeur();
 				double demande = getPlantation(feve).moyenneDemande();
 
+
 				double stock = this.getStock(feve).getStock(step);
 			
 				getPlantation(feve).updatePlantation(step,getPlantation(feve).moyenneDemande()*1/40);
@@ -533,16 +534,31 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 				getSoldeBancaire().retirer(this, coutPlanter);
 
 
+	
+				
+
 				if (plantationActuelle - demande < plantationActuelle*0.05 && plantationActuelle - demande>0) {
 					double aPlanter = plantationActuelle*0.05/40; // pour pas avoir tout pile assez, on garde 5% de marge
-					getPlantation(feve).updatePlantation(step, aPlanter);
-					setRecolte(feve,getPlantation(feve).getRecolte(step));
-					getSoldeBancaire().retirer(this, coutPlanter*aPlanter);
+					if (stock - aPlanter > 0) {
+						getPlantation(feve).updatePlantation(step,0);
+						setRecolte(feve,getPlantation(feve).getRecolte(step));
+					} else {
+						double newAPlanter = aPlanter - stock ;
+						getPlantation(feve).updatePlantation(step, newAPlanter);
+						setRecolte(feve,getPlantation(feve).getRecolte(step));
+						getSoldeBancaire().retirer(this, coutPlanter*newAPlanter);
+					}
 				} else if (plantationActuelle - demande <0) {
 					double aPlanter = (demande - plantationActuelle)*1.05/40; // on plante de quoi subvenir a la demande + 5% pour avir de la marge 
-					getPlantation(feve).updatePlantation(step, aPlanter);
-					setRecolte(feve,getPlantation(feve).getRecolte(step));
-					getSoldeBancaire().retirer(this, coutPlanter*aPlanter);
+					if (stock - aPlanter > 0) {
+						getPlantation(feve).updatePlantation(step,0);
+						setRecolte(feve,getPlantation(feve).getRecolte(step));
+					} else {
+						double newAPlanter = aPlanter - stock ;
+						getPlantation(feve).updatePlantation(step, newAPlanter);
+						setRecolte(feve,getPlantation(feve).getRecolte(step));
+						getSoldeBancaire().retirer(this, coutPlanter*newAPlanter);
+					}
 				} else {
 					getPlantation(feve).updatePlantation(step,0);
 					setRecolte(feve,getPlantation(feve).getRecolte(step));
