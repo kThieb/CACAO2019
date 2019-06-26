@@ -14,7 +14,7 @@ public class ConfigEQ4 {
 	
 	// Constantes relatives à la production
 	protected static final double QTE_PRODUCTION_MIN = 10.0; // Quantité minimale produite par transformation, en kg
-	protected static final double FONDS_ROULEMENT_CHOCOLAT = 1000;
+	protected static final double FONDS_ROULEMENT_CHOCOLAT = 10000;
 	protected static final double MAX_PRODUCTION_PAR_STEP = 10e3; // Production max. de chocolats par step, en kg
 	
 	// Constantes utilisées par l'estimateur de demande

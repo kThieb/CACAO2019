@@ -296,7 +296,7 @@ public class Transformateur2AcheteurCC implements IAcheteurContratCadre<Feve> {
 	private Echeancier moyenneEcheancier(Echeancier e1, Echeancier e2) {
 		int duree = Math.max(e1.getNbEcheances(), e2.getNbEcheances());
 		Echeancier e3 = new Echeancier(Monde.LE_MONDE.getStep());
-		for(int i = 0; i < duree; i++) {
+		for(int i = 0; i <= duree; i++) {
 			int step = Monde.LE_MONDE.getStep() + i;
 			e3.set(step, (e1.getQuantite(step) + e2.getQuantite(step)) / 2);
 		}
