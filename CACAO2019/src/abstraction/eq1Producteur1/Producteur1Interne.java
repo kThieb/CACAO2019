@@ -527,6 +527,7 @@ public class Producteur1Interne implements IActeur /* , IVendeurCacaoAleatoire *
 				double demande = getPlantation(feve).moyenneDemande();
 
 				double stock = this.getStock(feve).getStock(step);
+			
 				getPlantation(feve).updatePlantation(step,getPlantation(feve).moyenneDemande()*1/40);
 				setRecolte(feve,getPlantation(feve).getRecolte(step));
 				getSoldeBancaire().retirer(this, coutPlanter);
