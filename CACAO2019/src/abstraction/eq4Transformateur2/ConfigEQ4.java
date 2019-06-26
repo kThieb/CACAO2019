@@ -1,7 +1,7 @@
 package abstraction.eq4Transformateur2;
 
 /**
- * @author kelia
+ * @author Kelian
  * Cette classe contient toutes les constantes nécessaires au fonctionnement de notre acteur.
  */
 public class ConfigEQ4 {
@@ -14,7 +14,7 @@ public class ConfigEQ4 {
 	
 	// Constantes relatives à la production
 	protected static final double QTE_PRODUCTION_MIN = 10.0; // Quantité minimale produite par transformation, en kg
-	protected static final double FONDS_ROULEMENT_CHOCOLAT = 1000;
+	protected static final double FONDS_ROULEMENT_CHOCOLAT = 10000;
 	protected static final double MAX_PRODUCTION_PAR_STEP = 10e3; // Production max. de chocolats par step, en kg
 	
 	// Constantes utilisées par l'estimateur de demande
@@ -24,6 +24,7 @@ public class ConfigEQ4 {
 	// Constantes utilisées pour les contrats cadres d'achat de fèves
 	protected static final double POIDS_MIN_CONTRAT_ACHAT = 300.0; // Poids min d'un contrat cadre de fèves, en kg.
 	protected static final double DEPENSE_MAX_PAR_CC = 0.75; // Proportion maximale de notre solde que l'on s'autorise à dépenser pour un contrat.
+	protected static final double SEUIL_MODIFICATION_PRIX = 0.05; // Si la l'écart relatif entre le prix que l'on va proposer et le prix que l'acheteur a proposé est inférieure à ce seuil, on accepte le prix
 	
 	// Constantes utilisées pour les contrats cadres de ventes de chocolats
 	protected static final double MARGE_VISEE = 0.6; // Marge que l'on tente de faire par rapport au coût de production
