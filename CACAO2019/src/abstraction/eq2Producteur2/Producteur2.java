@@ -35,13 +35,13 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	private int numStep;
 	private GestionnaireFeve gestionnaireFeve;
 	private Arbre arbres;
-
 	private double beneficesDuMois = 0;
 	private int contratsConclus = 0;
 
 	private double salaire = 1;
 	private double salaireDemande = 0.5;
 	private boolean enGreve = false;
+
 
 	public Producteur2() {
 		this.gestionnaireFeve = new GestionnaireFeve(this);
@@ -50,6 +50,7 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 		for (Feve f : feves) {
 			Monde.LE_MONDE.ajouterIndicateur(gestionnaireFeve.get(f).getStockIndicateur());
 		}
+
 		this.soldeBancaire = new Indicateur(this.getNom() + " Solde", this, 10000000);
 
 		Monde.LE_MONDE.ajouterIndicateur(this.soldeBancaire);
@@ -61,9 +62,10 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 
 		arbres = new Arbre();
 		arbres.initialise();
-
 		this.gestionnaireFeve.setProduction(this, Feve.FORASTERO_MG_NEQ, 6750000);
 		this.gestionnaireFeve.setStock(this, Feve.FORASTERO_MG_NEQ, 200000000);
+		this.gestionnaireFeve.setProduction(this, Feve.FORASTERO_MG_NEQ, 67500000);
+		this.gestionnaireFeve.setStock(this, Feve.FORASTERO_MG_NEQ, 20000000);
 		this.gestionnaireFeve.setPrix(this, Feve.FORASTERO_MG_NEQ, 1.5);
 
 		this.gestionnaireFeve.setProduction(this, Feve.FORASTERO_MG_EQ, 750000); // TODO rectifier les productions des
@@ -96,7 +98,10 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 		payerCoutsProd();
 		if (this.salaire < this.salaireDemande) {
 			this.enGreve = true;
+			this.journal.ajouter("on est en grève");
+
 		} else {
+			this.journal.ajouter("pas de grève");
 			this.enGreve = false;
 		}
 		for (Feve f : gestionnaireFeve.getFeves()) {
@@ -112,37 +117,38 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 			}
 			this.journal.ajouter(
 					"Step " + Monde.LE_MONDE.getStep() + " : prix de vente = " + this.gestionnaireFeve.getPrixVente(f));
-			if ((contratsConclus < 12 || beneficesDuMois < 250000)
-					&& this.gestionnaireFeve.getPrixVente(f) * 0.9 > PRIX_MIN) {
-				this.gestionnaireFeve.setPrix(this, f, this.gestionnaireFeve.getPrixVente(f) * 0.9);
+			if ((beneficesDuMois <200000)
+					&& this.gestionnaireFeve.getPrixVente(f) * 0.95 > PRIX_MIN) {
+				this.gestionnaireFeve.setPrix(this, f, this.gestionnaireFeve.getPrixVente(f) * 0.95);
+
 			}
 		}
-
-		System.out.println("balance du step : " + this.balanceDuStep());
-		System.out.println("benefices du mois : " + beneficesDuMois);
-		System.out.println("contrats conclus : " + contratsConclus);
+		this.journal.ajouter("balance du step : " + this.balanceDuStep());
+		this.journal.ajouter("benefices du mois : " + beneficesDuMois);
+		this.journal.ajouter("contrats conclus : " + contratsConclus);
 
 		contratsConclus = 0;
 		beneficesDuMois = 0;
+
 		if (this.numStep == 24) {
 			this.numStep = 1;
 			this.actualisationProduction();
-			
 			arbres.actualise();
 			for (Feve f: this.gestionnaireFeve.getFeves()) {
 				this.gestionSurfaceCultivee(f);
 			}	
 			this.actualisationProduction();
 		} else {
+
 			this.numStep++;
 
-		}
+		}}
 
 //		juste pour les prints : 
 //		for (Feve f : this.gestionnaireFeve.getFeves()) {
 //			System.out.println(getCoutProduction(f));
 //		}
-	}
+	
 
 // End Clément M
 
@@ -165,7 +171,7 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 			this.maladie_predateurs = -aleaMaladie / 5;
 			this.meteo = aleaMeteo / 5 - 0.1;
 			double qualiteProduction = maladie_predateurs + meteo;
-//			System.out.println("qualité de la production : " + qualiteProduction);
+//			this.journal.ajouter("qualité de la production : " + qualiteProduction);
 			// double qualiteProduction = (Math.random() - 0.5) / 2.5 + 1; // entre 0.8 et
 			// 1.2
 			double nouveauStock = this.gestionnaireFeve.getStock(f)
@@ -263,13 +269,13 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 		if (prixAcheteur>=prixVendeur) {
 			cc.ajouterPrixAuKilo(prixAcheteur);
 		} else {
-			if (prixVendeur == getCoutProduction(cc.getProduit()) * 0.80) { 
+			if (prixVendeur == getCoutProduction(cc.getProduit()) * 1.01) { 
 				//On pose une marge minimale de 1% du cout de production
 				cc.ajouterPrixAuKilo(prixVendeur);
 			} else {
-				if (prixAcheteur < getCoutProduction(cc.getProduit())*0.80) {
+				if (prixAcheteur < getCoutProduction(cc.getProduit())*1.01) {
 					//On s'assure de conserver la marge minimale 
-					prixVendeur = getCoutProduction(cc.getProduit()) * 0.80;
+					prixVendeur = getCoutProduction(cc.getProduit()) * 1.01;
 					cc.ajouterPrixAuKilo(prixVendeur);
 				} else {
 					if ((prixVendeur - prixAcheteur) < 0.05 * prixVendeur) {
@@ -277,7 +283,7 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 							// du prixVendeur)
 						cc.ajouterPrixAuKilo(prixAcheteur);
 					} else { 
-						if (prixAcheteur >= 0.75 * prixVendeur && prixAcheteur * 1.1 >= getCoutProduction(cc.getProduit())*0.80) { 
+						if (prixAcheteur >= 0.75 * prixVendeur && prixAcheteur * 1.1 >= getCoutProduction(cc.getProduit())) { 
 							// on ne fait une proposition que si l'acheteur ne demande pas un prix trop bas, tout en respectant la marge minimale
 							prixVendeur = prixAcheteur * 1.1; // on augmente le prix proposé par l'acheteur de 10%
 							cc.ajouterPrixAuKilo(prixVendeur);
@@ -285,7 +291,7 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 							if (prixVendeur * 0.90 < getCoutProduction(cc.getProduit())) {
 
 								//On s'assure de conserver notre marge minimale
-								prixVendeur = getCoutProduction(cc.getProduit()) * 0.80;
+								prixVendeur = getCoutProduction(cc.getProduit()) * 1.01;
 
 								cc.getListePrixAuKilo().add(prixVendeur);
 								} else {
@@ -309,11 +315,13 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 //		System.out.println("le salaire total vaut : "+salaire);
 		// System.out.println("le salaire total vaut : "+salaire);
 		double coutsarbres = arbres.getPrixParStep(f);
+
 //		System.out.println("le cout d'entretien des arbres est : "+coutsarbres);
 //		System.out.println("la production par step est "+this.gestionnaireFeve.getProductionParStep(f));
 //		System.out.println("en tout on paye : "+ (salaire + coutsarbres)/gestionnaireFeve.getProductionParStep(f));
 		double coupProduction = (salaire + coutsarbres) / gestionnaireFeve.getProductionParStep(f);
 		return coupProduction;
+
 	}
 
 	public double getSalaire(Feve f) {
@@ -346,10 +354,12 @@ public class Producteur2 implements IActeur, IVendeurContratCadre<Feve> {
 	@Override
 	public void notifierVendeur(ContratCadre<Feve> cc) {
 		this.contratsEnCours.add(cc);
+
 		contratsConclus = contratsConclus + 1;
 		double prixKilo = this.gestionnaireFeve.getPrixVente(cc.getProduit());
 		double quantite = cc.getQuantite();
 		beneficesDuMois = beneficesDuMois + prixKilo * quantite;
+
 	}
 
 	@Override
