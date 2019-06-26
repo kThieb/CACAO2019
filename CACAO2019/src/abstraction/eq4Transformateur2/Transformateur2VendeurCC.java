@@ -12,13 +12,6 @@ import abstraction.eq7Romu.ventesContratCadre.StockEnVente;
 import abstraction.fourni.Monde;
 
 public class Transformateur2VendeurCC implements IVendeurContratCadre<Chocolat> {
-	// On tente de faire une marge de 30%.
-	private static final double MARGE_VISEE = 0.3;
-	// On ne propose pas un prix si la différence avec le prix proposé est inférieure à 5% (on accepte)
-	private static final double SEUIL_ACCEPTATION_FORCEE = 0.05;
-	// On ne continue pas les négociations de prix si le prix proposé est inférieur à 80% du coût de production
-	private static final double SEUIL_REFUS_FORCE = 0.80;
-	
 	private Transformateur2 t2;
 	
 	// Initialise Transformateur2VendeurCC avec un catalogue vide
@@ -51,7 +44,7 @@ public class Transformateur2VendeurCC implements IVendeurContratCadre<Chocolat> 
 		if(!t2.CHOCOLATS_VENTE.contains(produit) || qte == Double.POSITIVE_INFINITY)
 			return Double.MAX_VALUE;
 		// Quantité réelle de production de la qté de chocolat demandée + une marge (on re-divise par la quantité pour obtenir le prix au kg)
-		return t2.stocksChocolat.getPrix(produit, qte) * (1.0 + MARGE_VISEE) / qte;
+		return t2.stocksChocolat.getPrix(produit, qte) * (1.0 + ConfigEQ4.MARGE_VISEE) / qte;
 	}
 
 	// Adrien
@@ -81,18 +74,18 @@ public class Transformateur2VendeurCC implements IVendeurContratCadre<Chocolat> 
 		double marge = (prixAcheteur - coutProduction) / coutProduction;
 		
 		// On ne fait une proposition que si l'acheteur ne demande pas un prix trop bas.
-		if(prixAcheteur >= SEUIL_REFUS_FORCE * coutProduction) { 
+		if(prixAcheteur >= ConfigEQ4.SEUIL_REFUS_FORCE * coutProduction) { 
 			// Si le prix proposé nous permet de faire une marge, probabilité d'accepter dépendant de cette marge
 			if(marge > 0 && Math.random() < 2 * marge) // Ex : marge de 10% => probabilité de 20% d'accepter directement
 				cc.ajouterPrixAuKilo(cc.getPrixAuKilo());
 			else {
-				double prixSouhaite = coutProduction * MARGE_VISEE;
+				double prixSouhaite = coutProduction * ConfigEQ4.MARGE_VISEE;
 				if(prixAcheteur >= prixSouhaite) // Si le prix est suffisant pour la marge que l'on souhaite, on accepte
 					cc.ajouterPrixAuKilo(cc.getPrixAuKilo()); 
 				else {
 					double prixIntermediaire = (prixAcheteur + prixSouhaite) / 2;
 					// Si la différence de prix entre le prix de l'acheteur et le prix que l'on veut proposer est inférieure au seuil, on accepte
-					if((prixIntermediaire - prixAcheteur) / prixAcheteur < SEUIL_ACCEPTATION_FORCEE) 
+					if((prixIntermediaire - prixAcheteur) / prixAcheteur < ConfigEQ4.SEUIL_ACCEPTATION_FORCEE) 
 						cc.ajouterPrixAuKilo(cc.getPrixAuKilo());
 					else // Sinon, on propose un prix intermédiaire
 						cc.ajouterPrixAuKilo(prixIntermediaire);
@@ -119,7 +112,7 @@ public class Transformateur2VendeurCC implements IVendeurContratCadre<Chocolat> 
 		if (produit == null || !t2.CHOCOLATS_VENTE.contains(produit))
 			throw new IllegalArgumentException("Appel de la methode livrer de Transformateur2 avec un produit ne correspondant pas à un chocolat produit");
 		double livraison = Math.min(quantite, t2.stocksChocolat.getQuantiteTotale(produit));
-		t2.journal.ajouter("Livraison de " + livraison + " kg de " + produit);
+		t2.journal.ajouter("Livraison de " + livraison + " kg de " + produit + " à " + cc.getAcheteur());
 		t2.stocksChocolat.prendreProduits(produit, livraison);
 		t2.iStockChocolat.retirer(t2, livraison);
 		
